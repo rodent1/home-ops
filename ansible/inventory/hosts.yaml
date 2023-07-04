@@ -1,0 +1,28 @@
+---
+kubernetes:
+  children:
+    master:
+      hosts:
+        kube-0:
+          ansible_user: stianrs
+          ansible_host: 10.1.1.60
+        kube-1:
+          ansible_user: stianrs
+          ansible_host: 10.1.1.61
+        kube-2:
+          ansible_user: stianrs
+          ansible_host: 10.1.1.62
+    worker:
+      hosts:
+        kube-3:
+          ansible_user: stianrs
+          ansible_host: 10.1.1.63
+        kube-4:
+          ansible_user: stianrs
+          ansible_host: 10.1.1.64
+        kube-5:
+          ansible_user: stianrs
+          ansible_host: 10.1.1.65
+        kube-6:
+          ansible_user: stianrs
+          ansible_host: 10.1.1.66
