@@ -13,6 +13,8 @@ env:
 includes:
   ansible: .taskfiles/AnsibleTasks.yaml
   cluster: .taskfiles/ClusterTasks.yaml
+  es: .taskfiles/ExternalSecrets/Tasks.yaml
+  vs: .taskfiles/VolSync/Tasks.yaml
 
 tasks:
   init:
