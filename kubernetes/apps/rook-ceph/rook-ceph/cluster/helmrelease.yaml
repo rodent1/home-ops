@@ -71,12 +71,6 @@ spec:
           - name: kube-4
             devices:
               - name: /dev/xvdb
-          - name: kube-5
-            devices:
-              - name: /dev/xvdb
-          - name: kube-6
-            devices:
-              - name: /dev/xvdb
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -116,7 +110,7 @@ spec:
             resources:
               requests:
                 cpu: 1000m
-                #memory: 4Gi
+                memory: 4Gi
               limits:
                 memory: 4Gi
         storageClass:
@@ -152,7 +146,7 @@ spec:
             resources:
               requests:
                 cpu: 1000m
-                # memory: 1Gi
+                memory: 1Gi
               limits:
                 memory: 2Gi
             instances: 2
