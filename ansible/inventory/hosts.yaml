@@ -20,9 +20,3 @@ kubernetes:
         kube-4:
           ansible_user: stianrs
           ansible_host: 10.1.1.64
-        kube-5:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.65
-        kube-6:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.66
