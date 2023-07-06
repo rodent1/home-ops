@@ -35,7 +35,6 @@ tasks:
         fluxcd/tap/flux
         go-task/tap/go-task
         helm
-        jq
         kubernetes-cli
         kustomize
         sops
