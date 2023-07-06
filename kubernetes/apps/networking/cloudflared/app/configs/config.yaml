@@ -1,0 +1,17 @@
+---
+originRequest:
+  http2Origin: true
+
+# https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/ingress
+ingress:
+  - hostname: "${SECRET_DOMAIN}"
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: "ingress.${SECRET_DOMAIN}"
+      noTLSVerify: true
+  - hostname: "*.${SECRET_DOMAIN}"
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: "ingress.${SECRET_DOMAIN}"
+      noTLSVerify: true
+  - service: http_status:404
