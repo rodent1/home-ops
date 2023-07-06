@@ -4,19 +4,19 @@ kubernetes:
     master:
       hosts:
         kube-0:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.60
+          ansible_user: root
+          ansible_host: 10.1.1.40
         kube-1:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.61
+          ansible_user: root
+          ansible_host: 10.1.1.41
         kube-2:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.62
+          ansible_user: root
+          ansible_host: 10.1.1.42
     worker:
       hosts:
         kube-3:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.63
+          ansible_user: root
+          ansible_host: 10.1.1.43
         kube-4:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.64
+          ansible_user: root
+          ansible_host: 10.1.1.44
