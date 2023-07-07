@@ -1,0 +1,12 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: atlas-nfs
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 10.1.1.15
+  share: /mnt/tank/Media
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+mountOptions: ["hard", "noatime"]
