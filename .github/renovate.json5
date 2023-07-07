@@ -17,35 +17,40 @@
   ],
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-  "suppressNotifications": ["prIgnoreNotification"],
+  "suppressNotifications": [
+    "prIgnoreNotification"
+  ],
   "rebaseWhen": "conflicted",
-  "schedule": ["every saturday"],
+  "schedule": [
+    "on saturday"
+  ],
   "flux": {
     "fileMatch": [
-      "kubernetes/.+\\.ya?ml$",
-      "template/templates/kubernetes/.+\\.ya?ml.j2$"
+      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
     ]
   },
   "helm-values": {
     "fileMatch": [
-      "kubernetes/.+\\.ya?ml$",
-      "template/templates/kubernetes/.+\\.ya?ml.j2$"
+      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
     ]
   },
   "kubernetes": {
     "fileMatch": [
-      "ansible/.+\\.ya?ml(\\.j2)?$",
-      "kubernetes/.+\\.ya?ml$",
-      "template/templates/kubernetes/.+\\.ya?ml.j2$"
+      "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
+      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
+    ]
+  },
+  "kustomize": {
+    "fileMatch": [
+      "(^|/)kustomization\\.ya?ml(\\.j2)?$"
     ]
   },
   "regexManagers": [
     {
       "description": "Process various other dependencies",
       "fileMatch": [
-        "ansible/.+\\.ya?ml(\\.j2)?$",
-        "kubernetes/.+\\.ya?ml$",
-        "template/templates/kubernetes/.+\\.ya?ml.j2$"
+        "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
+        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
       ],
       "matchStrings": [
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( registryUrl=(?<registryUrl>\\S+))?\n.*?\"(?<currentValue>.*)\"\n"

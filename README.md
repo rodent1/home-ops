@@ -26,7 +26,7 @@ The following components will be installed in your [k3s](https://k3s.io/) cluste
 - [ingress-nginx](https://kubernetes.github.io/ingress-nginx/) - Kubernetes ingress controller used for a HTTP reverse proxy of Kubernetes ingresses
 - [local-path-provisioner](https://github.com/rancher/local-path-provisioner) - provision persistent local storage with Kubernetes
 
-_Additional applications include [grafana](https://github.com/grafana/grafana), [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack), [hajimari](https://github.com/toboshii/hajimari), [echo-server](https://github.com/Ealenn/Echo-Server), [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller), and [reloader](https://github.com/stakater/Reloader)
+_Additional applications can be enabled in the [addons](./template/vars/addons.sample.yaml) configuration file_
 
 ## 📝 Prerequisites
 
@@ -64,14 +64,14 @@ There is a decent guide [here](https://www.linuxtechi.com/how-to-install-debian-
     - Keep ssh server checked
     ```
 
-2. (Post install) Enable SSH for root user
+2. [Post install] Enable SSH for root user
 
     ```sh
     sed -i 's/#\?\(PermitRootLogin\s*\).*$/\1yes/' /etc/ssh/sshd_config
     systemctl restart sshd
     ```
 
-3. (Post install) Add SSH keys (or use `ssh-copy-id` on the client that is connecting)
+3. [Post install] Add SSH keys (or use `ssh-copy-id` on the client that is connecting)
 
     ```sh
     mkdir -m 700 ~/.ssh
@@ -79,7 +79,7 @@ There is a decent guide [here](https://www.linuxtechi.com/how-to-install-debian-
     chmod 600 ~/.ssh/authorized_keys
     ```
 
-4. (Post install) If you cannot run `apt update` without errors, try removing CD/DVD as apt source
+4. [Post install] If you cannot run `apt update` without errors, try removing CD/DVD as apt source
 
     ```sh
     sed -i '1d' /etc/apt/sources.list
@@ -88,18 +88,14 @@ There is a decent guide [here](https://www.linuxtechi.com/how-to-install-debian-
 
 #### Raspberry Pi / ARM64
 
-TBD
+If you choose to use a Raspberry Pi for the cluster, it is recommended to have at minimum a Raspberry Pi4 (4GB) and preferably an 8GB model. Additionally, it is also recommended to boot from an external SSD, rather than the SD card. This is supported [natively](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html), however if you have an early Raspberry Pi4, you may need to [update the bootloader](https://www.tomshardware.com/how-to/boot-raspberry-pi-4-usb).
 
-## 📂 Repository structure
+According to the documentation [here](https://raspi.debian.net/defaults-and-settings/), after you have flashed the image onto a SSD/NVMe you must mount the drive and do the following.
 
-The Git repository contains the following directories under `kubernetes` and are ordered below by how Flux will apply them.
-
-```sh
-📁 kubernetes      # Kubernetes cluster defined as code
-├─📁 bootstrap     # Flux installation
-├─📁 flux          # Main Flux configuration of repository
-└─📁 apps          # Apps deployed into the cluster grouped by namespace
-```
+1. Edit the `sysconf.txt`
+2. Add/change `root_authorized_key` to your desired public SSH key
+3. Add/change `root_pw` to your desired root password
+4. Add/change `hostname` to your desired hostname
 
 ## 🚀 Lets go
 
@@ -111,30 +107,24 @@ Clone **your new repo** to you local workstation and `cd` into it.
 
 ### 🔧 Workstation Tools
 
-📍 Install the **most recent version** of the CLI tools below. If you are **having trouble with future steps**, it is very likely you don't have the most recent version of these CLI tools, **!especially sops AND yq!**.
+📍 Install the **most recent version** of the CLI tools below. If you are **having trouble with future steps**, it is very likely you don't have the most recent version of these CLI tools. The most troublesome are `ansible`, `go-task`, and `sops`.
 
-1. Install the following CLI tools on your workstation, if you are **NOT** using [Homebrew](https://brew.sh/) on MacOS or Linux **ignore** steps 4 and 5.
+1. Install the following CLI tools on your workstation, if you are using [Homebrew](https://brew.sh/) skip this step and move onto 2 & 3.
 
-   - Required: [age](https://github.com/FiloSottile/age), [ansible](https://www.ansible.com), [flux](https://toolkit.fluxcd.io/), [cloudflared](https://github.com/cloudflare/cloudflared), [go-task](https://github.com/go-task/task), [direnv](https://github.com/direnv/direnv), [kubectl](https://kubernetes.io/docs/tasks/tools/), [python-pip3](https://pypi.org/project/pip/), [sops](https://github.com/getsops/sops)
+   - **Required**: [age](https://github.com/FiloSottile/age), [ansible](https://www.ansible.com), [flux](https://toolkit.fluxcd.io/), [cloudflared](https://github.com/cloudflare/cloudflared), [go-task](https://github.com/go-task/task), [direnv](https://github.com/direnv/direnv), [kubectl](https://kubernetes.io/docs/tasks/tools/), [python3](https://www.python.org/), [python-pip3](https://pypi.org/project/pip/), [sops](https://github.com/getsops/sops)
 
-   - Recommended: [helm](https://helm.sh/), [kustomize](https://github.com/kubernetes-sigs/kustomize), [stern](https://github.com/stern/stern)
+   - **Recommended**: [helm](https://helm.sh/), [kustomize](https://github.com/kubernetes-sigs/kustomize), [stern](https://github.com/stern/stern)
 
-2. This guide heavily relies on [go-task](https://github.com/go-task/task) as a framework for setting things up. It is advised to learn and understand the commands it is running under the hood.
-
-3. Install Python 3 and pip3 using your Linux OS package manager, or Homebrew if using MacOS.
-
-   - Ensure `pip3` is working on your command line by running `pip3 --version`
-
-4. [Homebrew] Install [go-task](https://github.com/go-task/task)
+2. [Homebrew] Install [go-task](https://github.com/go-task/task)
 
    ```sh
    brew install go-task/tap/go-task
    ```
 
-5. [Homebrew] Install workstation dependencies
+3. [Homebrew] Install the other workstation dependencies
 
    ```sh
-   task init
+   task brew:deps
    ```
 
 ### 🔐 Setting up Age
@@ -206,14 +196,12 @@ In order to expose services to the internet you will need to create a [Cloudflar
 
 ### 📄 Configuration
 
-📍 The `template/vars/config.yaml` file contains necessary configuration that is needed by Ansible and Flux.
+📍 The `template/vars/config.yaml` file contains necessary configuration that is needed by Ansible and Flux. The `template/vars/addons.yaml` file allows you to customize which additional apps you want deployed in your cluster. These files are added to the `.gitignore` file and will not be tracked by Git.
 
-1. Copy the configuration file and start filling out all the variables.
-
-   **All are required** unless otherwise noted in the comments.
+1. Copy the configuration and addons files and start filling out all the variables.
 
    ```sh
-   cp template/vars/config.sample.yaml template/vars/config.yaml
+   task init
    ```
 
 2. Once done run the following command which will verify and generate all the files needed to continue.
@@ -221,6 +209,17 @@ In order to expose services to the internet you will need to create a [Cloudflar
    ```sh
    task configure
    ```
+
+### 📂 Repository structure
+
+The configure script will have created the following directories under `./kubernetes`.
+
+```sh
+📁 kubernetes      # Kubernetes cluster defined as code
+├─📁 bootstrap     # Flux installation (not tracked by Flux)
+├─📁 flux          # Main Flux configuration of repository
+└─📁 apps          # Apps deployed into the cluster grouped by namespace
+```
 
 ### ⚡ Preparing Debian Server with Ansible
 
@@ -230,12 +229,10 @@ In order to expose services to the internet you will need to create a [Cloudflar
 
 1. Ensure you are able to SSH into your nodes from your workstation using a private SSH key **without a passphrase**. This is how Ansible is able to connect to your remote nodes.
 
-   [How to configure SSH key-based authentication](https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server)
-
 2. Install the Ansible deps
 
    ```sh
-   task ansible:init
+   task ansible:deps
    ```
 
 3. Verify Ansible can view your config
