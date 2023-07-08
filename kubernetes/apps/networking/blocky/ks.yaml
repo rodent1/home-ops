@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-blocky
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/template-namespace/blocky/app
+  path: ./kubernetes/apps/networking/blocky/app
   prune: true
   sourceRef:
     kind: GitRepository
