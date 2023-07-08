@@ -6,3 +6,14 @@ metadata:
   namespace: flux-system
 data:
   TIMEZONE: "Europe/Oslo"
+
+  # K8s
+  K8S_GATEWAY_IP: "10.1.1.150"
+
+# Cilium L2 Addresses
+  INGRESS_LB_IP: "10.1.1.151"
+  BLOCKY_LB_IP: "10.1.1.10"
+
+ # LAN
+  CLUSTER_IP_RANGE: "10.1.1.0/24"
+  GATEWAY_IP: "10.1.1.1"
