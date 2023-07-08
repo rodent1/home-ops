@@ -2,15 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-redis
+  name: cluster-apps-template-app
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/database/redis/app
+  path: ./kubernetes/apps/template-namespace/template-app/app
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
-  wait: false # no flux ks dependents
+    name: home-kubernetes
+  wait: true
   interval: 30m
   retryInterval: 1m
-  timeout: 15m
+  timeout: 5m
