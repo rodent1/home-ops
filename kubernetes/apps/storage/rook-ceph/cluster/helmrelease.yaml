@@ -67,10 +67,10 @@ spec:
         nodes:
           - name: kube-3
             devices:
-              - name: /dev/xvdb
+              - name: /dev/xvda
           - name: kube-4
             devices:
-              - name: /dev/xvdb
+              - name: /dev/xvda
     cephBlockPools:
       - name: ceph-blockpool
         spec:
