@@ -34,7 +34,7 @@ spec:
       dashboard:
         ingressClassName: nginx
         host:
-          name: &host rook.devbu.io
+          name: &host rook.${SECRET_DOMAIN}
           path: /
         tls:
           - hosts:
