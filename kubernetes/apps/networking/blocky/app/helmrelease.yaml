@@ -82,7 +82,7 @@ spec:
         enabled: true
         type: configMap
         name: blocky-configmap
-        mountPath: /app/config.yml
+        mountPath: /app/config.yaml
         subPath: config.yml
         readOnly: true
     affinity:
