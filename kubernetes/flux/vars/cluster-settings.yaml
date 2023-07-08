@@ -8,6 +8,7 @@ data:
   TIMEZONE: "Europe/Oslo"
 
   # K8s
+  CLUSTER_DNS_IP: "10.245.0.10"
   K8S_GATEWAY_IP: "10.1.1.150"
 
 # Cilium L2 Addresses
