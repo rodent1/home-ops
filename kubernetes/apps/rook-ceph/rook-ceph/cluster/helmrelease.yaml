@@ -52,7 +52,7 @@ spec:
         connections:
           compression:
             # TODO: Test out enabling this on next cluster rebuild
-            enabled: true
+            enabled: false
       crashCollector:
         disable: false
       dashboard:
