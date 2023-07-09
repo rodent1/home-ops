@@ -1,5 +1,9 @@
 ---
 # Area
+- name: area/ansible
+  color: "72ccf3"
+  description: >-
+    Changes made in the ansible directory
 - name: area/github
   color: "72ccf3"
   description: >-
@@ -8,7 +12,13 @@
   color: "72ccf3"
   description: >-
     Changes made in the kubernetes directory
+- name: area/template
+  color: "72ccf3"
+  description: >-
+    Changes made in the template directory
 # Renovate
+- name: renovate/ansible
+  color: "ffc300"
 - name: renovate/container
   color: "ffc300"
 - name: renovate/github-action
@@ -17,11 +27,7 @@
   color: "ffc300"
 - name: renovate/helm
   color: "ffc300"
-- name: renovate/terraform
-  color: "ffc300"
 # Semantic Type
-- name: type/digest
-  color: "FFEC19"
 - name: type/patch
   color: "FFEC19"
 - name: type/minor
@@ -30,9 +36,6 @@
   color: "F6412D"
 - name: type/break
   color: "F6412D"
-# Release Issue
-- name: image-not-found
-  color: "ee0701"
 # Uncategorized
 - name: bug
   color: "ee0701"
