@@ -5,6 +5,8 @@ metadata:
   name: cluster-apps-blocky
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cluster-apps-cilium
   path: ./kubernetes/apps/networking/blocky/app
   prune: true
   sourceRef:
