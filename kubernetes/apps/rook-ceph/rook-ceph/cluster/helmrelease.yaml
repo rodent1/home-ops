@@ -59,6 +59,35 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: false
+      resources:
+        api:
+          requests:
+              cpu: "500m"
+              memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        mgr:
+          requests:
+              cpu: "500m"
+              memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        mon:
+          requests:
+              cpu: "500m"
+              memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        osd:
+          requests:
+              cpu: "500m"
+              memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -110,12 +139,6 @@ spec:
           metadataServer:
             activeCount: 1
             activeStandby: true
-            resources:
-              requests:
-                cpu: 1000m
-                memory: 500m
-              limits:
-                memory: 2Gi
         storageClass:
           enabled: true
           isDefault: false
@@ -146,12 +169,6 @@ spec:
           preservePoolsOnDelete: true
           gateway:
             port: 80
-            resources:
-              requests:
-                cpu: 1000m
-                memory: 500m
-              limits:
-                memory: 2Gi
             instances: 2
           healthCheck:
             bucket:
