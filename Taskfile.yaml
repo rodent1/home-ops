@@ -11,9 +11,13 @@ env:
   SOPS_AGE_KEY_FILE: ~/.config/sops/age/keys.txt
 
 includes:
-  ansible: .taskfiles/AnsibleTasks.yaml
+  an: .taskfiles/AnsibleTasks.yaml
+  cu: .taskfiles/ClusterTasks.yaml
+  es: .taskfiles/ExternalSecrets/Tasks.yaml
+  fx: .taskfiles/Flux/Tasks.yaml
+  ku: .taskfiles/Kubernetes/Tasks.yaml
+  vs: .taskfiles/VolSync/Tasks.yaml
   brew: .taskfiles/BrewTasks.yaml
-  cluster: .taskfiles/ClusterTasks.yaml
 
 tasks:
   default: task -l
