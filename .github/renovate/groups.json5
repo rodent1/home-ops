@@ -41,17 +41,6 @@
         "commitMessageTopic": "{{{groupName}}} group"
       },
       "separateMinorPatch": true
-    },
-    {
-      "description": "Tekton Group",
-      "groupName": "Tekton",
-      "matchPackagePatterns": ["tektoncd"],
-      "matchDatasources": ["github-releases"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": false
     }
   ]
 }
