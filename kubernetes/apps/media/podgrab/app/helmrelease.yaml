@@ -78,7 +78,8 @@ spec:
         type: nfs
         server: 10.1.1.15
         path: /mnt/tank/Media
-        mountPath: /media
+        subPath: Media/Podcasts
+        mountPath: /assets
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
     resources:
