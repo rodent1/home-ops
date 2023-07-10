@@ -64,6 +64,8 @@ spec:
         server: 10.1.1.15
         path: /mnt/tank/Media/tmp
         mountPath: /complete
+    nodeSelector:
+      node-role.kubernetes.io/worker: "true"
     resources:
       requests:
         cpu: 10m
