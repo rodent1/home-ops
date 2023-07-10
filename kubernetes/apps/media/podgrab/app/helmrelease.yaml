@@ -37,7 +37,7 @@ spec:
       repository: docker.io/akhilrex/podgrab
       tag: latest
     env:
-      TZ: ${TIMEZONE}
+      TZ: Europe/Oslo
     service:
       main:
         ports:
