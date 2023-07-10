@@ -8,5 +8,6 @@ resources:
   # Flux-Kustomizations
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
+  - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./theme-park/ks.yaml
