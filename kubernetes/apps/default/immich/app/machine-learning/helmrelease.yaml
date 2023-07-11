@@ -53,7 +53,7 @@ spec:
     volumeClaimTemplates:
       - name: immich-nfs
         mountPath: /usr/src/app/upload
-        accessMode: ReadWriteOnce
+        accessMode: ReadWriteMany
         size: 5Gi
         storageClass: apps-nfs
     persistence:
