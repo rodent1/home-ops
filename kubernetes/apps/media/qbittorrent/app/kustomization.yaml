@@ -7,3 +7,9 @@ resources:
   - ./helmrelease.yaml
   - ./volsync.yaml
   - ./qbittools-tagging
+configMapGenerator:
+  - name: qbittorrent-scripts
+    files:
+      - ./config/completed.sh
+generatorOptions:
+  disableNameSuffixHash: true
