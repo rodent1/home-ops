@@ -7,15 +7,5 @@ metadata:
 data:
   TIMEZONE: "Europe/Oslo"
 
-  # K8s
-  CLUSTER_DNS_IP: "10.0.0.10"
-  K8S_GATEWAY_IP: "10.1.1.150"
-
-# Cilium L2 Addresses
-  INGRESS_LB_IP: "10.1.1.151"
-  BLOCKY_LB_IP: "10.1.1.10"
-
  # LAN
-  CLUSTER_IP_RANGE: "10.1.1.0/24"
-  GATEWAY_IP: "10.1.1.1"
   TRUENAS_IP: "10.1.1.15"
