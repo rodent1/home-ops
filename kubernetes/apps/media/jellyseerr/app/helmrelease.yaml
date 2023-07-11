@@ -10,12 +10,11 @@ spec:
     spec:
       chart: app-template
       version: 1.5.1
-      interval: 30m
       sourceRef:
         kind: HelmRepository
-        name: bjw-s-charts
+        name: bjw-s
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -27,37 +26,46 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: csi-driver-nfs
-      namespace: storage
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: backup
   values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: docker.io/fallenbagel/jellyseerr
-      tag: preview-pr184
-      #tag: 1.3.0
-
-    dnsConfig:
-      options:
-        - name: ndots
-          value: "1"
-
+      tag: 1.5.0
     env:
       LOG_LEVEL: "info"
-      PORT: 80
-
+      PORT: &port 80
     service:
       main:
         ports:
           http:
-            port: 80
-
+            port: *port
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /ping
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: nginx
         annotations:
-          external-dns-cf/is-dns-public: "true"
-          external-dns-cf/is-public: "true"
-          external-dns.target/enabled: "true"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN}/css/base/jellyseerr/nord.css"></head>';
@@ -69,26 +77,23 @@ spec:
         tls:
           - hosts:
               - *host
-
-    persistence:
-      config:
-        enabled: true
-        existingClaim: jellyseerr-config
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups: [10000]
+    volumeClaimTemplates:
+      - name: config
         mountPath: /app/config
-
+        accessMode: ReadWriteOnce
+        size: 15Gi
+        storageClass: ceph-block
+    nodeSelector:
+      node-role.kubernetes.io/worker: "true"
     resources:
       requests:
-        memory: 443M
+        cpu: 10m
+        memory: 250Mi
       limits:
-        memory: 536M
-
-    affinity:
-      nodeAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
-              matchExpressions:
-                - key: kubernetes.io/arch
-                  operator: In
-                  values:
-                    - amd64
+        memory: 2000Mi
