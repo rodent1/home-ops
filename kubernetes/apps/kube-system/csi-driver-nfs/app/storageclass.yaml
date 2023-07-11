@@ -2,11 +2,15 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: atlas-nfs
+  name: apps-nfs
 provisioner: nfs.csi.k8s.io
 parameters:
   server: 10.1.1.15
   share: /mnt/cauldron/Apps
+mountOptions:
+  - nfsvers=4.2
+  - nconnect=8
+  - hard
+  - noatime
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
-mountOptions: ["nfsvers=4.2", "nconnect=8", "hard", "noatime"]
