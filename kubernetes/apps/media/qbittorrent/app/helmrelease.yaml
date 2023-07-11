@@ -101,6 +101,14 @@ spec:
       incomplete:
         enabled: true
         type: emptyDir
+      completed-script:
+        enabled: true
+        type: configMap
+        name: qbittorrent-scripts
+        mountPath: /scripts/completed.sh
+        subPath: completed.sh
+        defaultMode: 0775
+        readOnly: true
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
     resources:
