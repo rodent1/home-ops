@@ -5,3 +5,4 @@ resources:
   - ./hajimari/ks.yaml
  #  - ./immich/ks.yaml
   - ./namespace.yaml
+  - ./nfs-test/ks.yaml
