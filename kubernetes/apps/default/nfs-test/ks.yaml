@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-nfstest
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-apps-csi-driver-nfs
+  path: ./kubernetes/apps/default/nfs-test/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
