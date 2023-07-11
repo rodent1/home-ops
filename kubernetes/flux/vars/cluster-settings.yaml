@@ -18,3 +18,4 @@ data:
  # LAN
   CLUSTER_IP_RANGE: "10.1.1.0/24"
   GATEWAY_IP: "10.1.1.1"
+  TRUENAS_IP: "10.1.1.15"
