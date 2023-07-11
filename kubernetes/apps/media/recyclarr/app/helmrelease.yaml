@@ -65,6 +65,8 @@ spec:
         subPath: recyclarr.yml
         mountPath: /config/recyclarr.yml
         readOnly: true
+    nodeSelector:
+      node-role.kubernetes.io/worker: "true"
     resources:
       requests:
         cpu: 10m
