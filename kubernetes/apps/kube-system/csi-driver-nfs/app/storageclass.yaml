@@ -5,7 +5,7 @@ metadata:
   name: apps-nfs
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: 10.1.1.15
+  server: ${TRUENAS_IP}
   share: /mnt/cauldron/Apps
 mountOptions:
   - nfsvers=4.2

@@ -76,7 +76,7 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: 10.1.1.15
+        server: ${TRUENAS_IP}
         path: /mnt/tank/Media
         subPath: Media/Podcasts
         mountPath: /assets
