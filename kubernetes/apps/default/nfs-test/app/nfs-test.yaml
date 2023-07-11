@@ -27,5 +27,5 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  volumeName: pv-nfs
+  volumeName: nfs-test
   storageClassName: nfs-csi
