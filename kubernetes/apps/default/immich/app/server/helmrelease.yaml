@@ -62,6 +62,11 @@ spec:
         accessMode: ReadWriteMany
         size: 5Gi
         storageClass: apps-nfs
+    persistence:
+      library:
+        enabled: true
+        existingClaim: immich-nfs
+        mountPath: /usr/src/app/upload
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname

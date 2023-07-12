@@ -49,12 +49,11 @@ spec:
     service:
       main:
         enabled: false
-    volumeClaimTemplates:
-      - name: immich-nfs
+    persistence:
+      library:
+        enabled: true
+        existingClaim: immich-nfs
         mountPath: /usr/src/app/upload
-        accessMode: ReadWriteMany
-        size: 5Gi
-        storageClass: apps-nfs
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
