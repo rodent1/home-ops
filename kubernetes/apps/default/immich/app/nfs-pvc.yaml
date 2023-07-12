@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: atlas-nfs
+  storageClassName: apps-nfs
