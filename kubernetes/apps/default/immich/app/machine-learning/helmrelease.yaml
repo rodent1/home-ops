@@ -50,13 +50,11 @@ spec:
         ports:
           http:
             port: 3003
-    volumeClaimTemplates:
-      - name: immich-nfs
-        mountPath: /usr/src/app/upload
-        accessMode: ReadWriteMany
-        size: 5Gi
-        storageClass: apps-nfs
     persistence:
+      library:
+        enabled: true
+        existingClaim: immich-nfs
+        mountPath: /usr/src/app/upload
       cache:
         enabled: true
         type: emptyDir

@@ -73,12 +73,11 @@ spec:
         tls:
           - hosts:
               - *host
-    volumeClaimTemplates:
-      - name: immich-nfs
+    persistence:
+      library:
+        enabled: true
+        existingClaim: immich-nfs
         mountPath: /usr/src/app/upload
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: apps-nfs
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
