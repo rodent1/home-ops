@@ -19,7 +19,7 @@ metadata:
     kubernetes.io/service-name: nas-ui
 addressType: IPv4
 ports:
-  - name: https
+  - name: http
     appProtocol: https
     protocol: TCP
     port: 443
