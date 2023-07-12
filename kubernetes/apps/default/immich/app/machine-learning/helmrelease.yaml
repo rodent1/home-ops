@@ -50,6 +50,12 @@ spec:
         ports:
           http:
             port: 3003
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups: [10000]
     persistence:
       library:
         enabled: true

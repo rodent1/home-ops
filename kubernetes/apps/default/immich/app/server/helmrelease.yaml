@@ -56,6 +56,12 @@ spec:
         ports:
           http:
             port: 3001
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups: [10000]
     volumeClaimTemplates:
       - name: immich-nfs
         mountPath: /usr/src/app/upload
