@@ -41,7 +41,7 @@ metadata:
 spec:
   rules:
     - host: tank.${SECRET_DOMAIN}
-      http:
+      https:
         paths:
           - path: /
             pathType: Prefix
