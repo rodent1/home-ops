@@ -11,7 +11,8 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: ${TRUENAS_IP}
-    path: /mnt/cauldron/Apps/Immich
+    path: /mnt/cauldron/Apps
+    subPath: Immich
   # Note: The first two options are strictly for NFSv4.2
   mountOptions: ["nfsvers=4.2", "nconnect=8", "hard", "noatime"]
 ---
