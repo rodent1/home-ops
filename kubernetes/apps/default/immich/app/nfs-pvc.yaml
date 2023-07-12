@@ -4,7 +4,7 @@ kind: PersistentVolume
 metadata:
   name: immich-nfs
 spec:
-  storageClassName: immich-nfs
+  storageClassName: apps-nfs
   capacity:
     storage: 1Mi # Size does not matter
   accessModes: ["ReadWriteMany"]
@@ -13,7 +13,7 @@ spec:
     server: ${TRUENAS_IP}
     path: /mnt/cauldron/Apps/Immich
   # Note: The first two options are strictly for NFSv4.2
-  mountOptions: ["hard", "noatime"]
+  mountOptions: ["nfsvers=4.2", "nconnect=8", "hard", "noatime"]
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
