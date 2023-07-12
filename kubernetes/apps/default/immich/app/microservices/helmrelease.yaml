@@ -53,6 +53,7 @@ spec:
       library:
         enabled: true
         existingClaim: immich-nfs
+        subPath: Immich
         mountPath: /usr/src/app/upload
     topologySpreadConstraints:
       - maxSkew: 1
