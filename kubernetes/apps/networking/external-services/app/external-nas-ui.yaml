@@ -37,11 +37,14 @@ metadata:
     app.kubernetes.io/instance: *app
   annotations:
     kubernetes.io/ingress.class: nginx
-    external-dns.alpha.kubernetes.io/target: "ingress.${SECRET_DOMAIN}"
+    external-dns.alpha.kubernetes.io/target: &host "ingress.${SECRET_DOMAIN}"
 spec:
+  tls:
+  - hosts:
+      - *host
   rules:
-    - host: tank.${SECRET_DOMAIN}
-      https:
+    - host: *host
+      http:
         paths:
           - path: /
             pathType: Prefix
