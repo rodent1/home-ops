@@ -22,7 +22,7 @@ metadata:
   namespace: default
 spec:
   accessModes: ["ReadWriteMany"]
-  storageClassName: immich-nfs
+  storageClassName: apps-nfs
   resources:
     requests:
       storage: 1Mi # Size does not matter
