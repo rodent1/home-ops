@@ -23,3 +23,4 @@ resources:
   - ./rook-ceph.yaml
   - ./stakater.yaml
   - ./weave-gitops.yaml
+  - ./zitadel.yaml
