@@ -37,7 +37,7 @@ spec:
       # Overrides the image tag whose default is the chart appVersion.
       tag: "2.3.0@sha256:97ba35342aba01622d9a1f80bc785ab6d22a41b502f4626e684e8e81add684e9"
     # Additional environment variables
-    env: {}
+    env:
     envFrom:
       - secretRef:
           name: zitadel-secret
@@ -46,20 +46,22 @@ spec:
         secretKeyRef:
           name: zitadel-secret
           key: ZITADEL_MASTERKEY
-      configMapConfig:
-        Database:
-          postgres:
-            User:
-              SSL:
-                Mode: "disable"
-            Admin:
-              SSL:
-                Mode: "disable"
-        ExternalSecure: true
-        ExternalDomain: 'auth.${SECRET_DOMAIN}'
-        ExternalPort: 443
-        TLS:
-          enabled: false
+    configMapConfig:
+      Log:
+        Level: 'debug'
+      Database:
+        postgres:
+          User:
+            SSL:
+              Mode: "disable"
+          Admin:
+            SSL:
+              Mode: "disable"
+      ExternalSecure: true
+      ExternalDomain: 'auth.${SECRET_DOMAIN}'
+      ExternalPort: 443
+      TLS:
+        enabled: false
     service:
       type: ClusterIP
       port: 8080
