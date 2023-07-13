@@ -39,7 +39,7 @@ spec:
           name: zitadel-secret
     args:
       - start-from-init
-      - --tlsMode disabled
+      - --tlsMode=disabled
     service:
       main:
         type: ClusterIP
