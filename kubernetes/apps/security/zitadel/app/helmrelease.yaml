@@ -26,42 +26,38 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    zitadel:
+      masterkey:
+        secretKeyRef:
+          name: zitadel-secret
+          key: ZITADEL_MASTERKEY
+      configMapConfig:
+        Log:
+          Level: 'debug'
+        Database:
+          postgres:
+            User:
+              SSL:
+                Mode: "disable"
+            Admin:
+              SSL:
+                Mode: "disable"
+        ExternalSecure: true
+        ExternalDomain: 'auth.${SECRET_DOMAIN}'
+        ExternalPort: 443
+        TLS:
+          enabled: false
+      dbSslRootCrtSecret:
+      dbSslClientCrtSecret:
     replicaCount: 3
     image:
       repository: ghcr.io/zitadel/zitadel
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
       tag: "2.3.0@sha256:97ba35342aba01622d9a1f80bc785ab6d22a41b502f4626e684e8e81add684e9"
-    # Additional environment variables
-    env:
     envFrom:
       - secretRef:
           name: zitadel-secret
-    zitadel:
-      masterkey:
-        secretKeyRef:
-          name: zitadel-secret
-          key: ZITADEL_MASTERKEY
-    configMapConfig:
-      Log:
-        Level: 'debug'
-      Database:
-        postgres:
-          User:
-            SSL:
-              Mode: "disable"
-          Admin:
-            SSL:
-              Mode: "disable"
-      ExternalSecure: true
-      ExternalDomain: 'auth.${SECRET_DOMAIN}'
-      ExternalPort: 443
-      TLS:
-        enabled: false
     service:
       type: ClusterIP
       port: 8080
