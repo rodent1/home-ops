@@ -44,19 +44,19 @@ spec:
     zitadel:
       masterkeySecretName: zitadel-secret
       configMapConfig:
-      database:
-        postgres:
-          User:
-            SSL:
-              Mode: disabled
-          Admin:
-            SSL:
-              Mode: disabled
-      ExternalSecure: true
-      ExternalDomain: 'auth.${SECRET_DOMAIN}'
-      ExternalPort: 443
-      TLS:
-        enabled: false
+        database:
+          postgres:
+            User:
+              SSL:
+                Mode: disabled
+            Admin:
+              SSL:
+                Mode: disabled
+        ExternalSecure: true
+        ExternalDomain: 'auth.${SECRET_DOMAIN}'
+        ExternalPort: 443
+        TLS:
+          enabled: false
     service:
       type: ClusterIP
       port: 8080
