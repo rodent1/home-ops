@@ -43,6 +43,10 @@ spec:
           name: zitadel-secret
     zitadel:
       masterkeySecretName: zitadel-secret
+      configmapConfig:
+        externalSecure: false
+        tls:
+          enabled: false
     service:
       type: ClusterIP
       port: 8080
