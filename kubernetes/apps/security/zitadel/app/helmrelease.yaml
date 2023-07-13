@@ -37,63 +37,22 @@ spec:
       # Overrides the image tag whose default is the chart appVersion.
       tag: "2.3.0@sha256:97ba35342aba01622d9a1f80bc785ab6d22a41b502f4626e684e8e81add684e9"
     # Additional environment variables
-    env:
-      - name: ZITADEL_DATABASE_POSTGRES_HOST
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: dbhost
-      - name: ZITADEL_DATABASE_POSTGRES_PORT
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: dbport
-      - name: ZITADEL_DATABASE_POSTGRES_DATABASE
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: dbname
-      - name: ZITADEL_DATABASE_POSTGRES_USER
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: dbuser
-      - name: ZITADEL_DATABASE_POSTGRES_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: dbpass
-      - name: ZITADEL_DATABASE_POSTGRES_ADMIN_USER
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: dbadminuser
-      - name: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: dbadminpass
-      - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME
-      - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD
+    env: {}
+    envFrom:
+      - secretRef:
+          name: zitadel-secret
     zitadel:
-      masterkeySecretName: zitadel-secret
+      masterkey: "{{ .ZITADEL_MASTERKEY }}"
       configMapConfig:
-        database:
+        Database:
           postgres:
+            Host: "{{ .ZITADEL_DATABASE_POSTGRES_HOST }}"
             User:
               SSL:
-                Mode: disabled
+                Mode: "disable"
             Admin:
               SSL:
-                Mode: disabled
+                Mode: "disable"
         ExternalSecure: true
         ExternalDomain: 'auth.${SECRET_DOMAIN}'
         ExternalPort: 443
