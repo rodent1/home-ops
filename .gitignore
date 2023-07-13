@@ -11,3 +11,4 @@ kubeconfig
 *.key
 # Ansible
 xanmanning.k3s*
+del.sh
