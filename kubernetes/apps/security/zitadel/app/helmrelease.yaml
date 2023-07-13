@@ -34,7 +34,10 @@ spec:
       ZITADEL_DATABASE_POSTGRES_PORT: "5432"
       ZITADEL_DATABASE_POSTGRES_DATABASE: zitadel
       ZITADEL_EXTERNALSECURE: true
-      ZITADEL_MASTERKEY: ${ZITADEL_MASTERKEY}
+      ZITADEL_MASTERKEY:
+        secretKeyRef:
+          name: zitadel-secret
+          key: ZITADEL_MASTERKEY
     envFrom:
       - secretRef:
           name: zitadel-secret
