@@ -16,12 +16,12 @@
       "automergeType": "branch",
       "ignoreTests": true,
       "matchUpdateTypes": ["digest"]
-    },
-    {
-      "description": "Auto merge minor and patch updates for all other packages",
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
-    }
+    }#,
+    #{
+    #  "description": "Auto merge minor and patch updates for all other packages",
+    #  "matchUpdateTypes": ["minor", "patch"],
+    #  "matchCurrentVersion": "!/^0/",
+    #  "automerge": true
+    #}
   ]
 }
