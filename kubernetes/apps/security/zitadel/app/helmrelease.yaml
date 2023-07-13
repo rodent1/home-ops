@@ -25,6 +25,10 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  containers:
+    envFrom: &envFrom
+      - secretRef:
+          name: zitadel-secret
   values:
     controller:
       type: statefulset
@@ -38,9 +42,7 @@ spec:
       tag: "2.3.0@sha256:97ba35342aba01622d9a1f80bc785ab6d22a41b502f4626e684e8e81add684e9"
     # Additional environment variables
     env:
-    envFrom:
-      - secretRef:
-          name: zitadel-secret
+    envFrom: *envFrom
     zitadel:
       masterkeySecretName: zitadel-secret
       configMapConfig:
