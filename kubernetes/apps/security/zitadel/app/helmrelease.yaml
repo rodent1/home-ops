@@ -42,11 +42,14 @@ spec:
       - secretRef:
           name: zitadel-secret
     zitadel:
-      masterkey: "{{ .ZITADEL_MASTERKEY }}"
+      masterkey:
+        secretKeyRef:
+          name: zitadel-secret
+          key: ZITADEL_MASTERKEY
       configMapConfig:
         Database:
           postgres:
-            Host: "{{ .ZITADEL_DATABASE_POSTGRES_HOST }}"
+            Host: postgres-rw.database.svc.cluster.local
             User:
               SSL:
                 Mode: "disable"
