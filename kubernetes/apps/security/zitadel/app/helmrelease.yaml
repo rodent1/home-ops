@@ -31,7 +31,7 @@ spec:
         secretKeyRef:
           name: zitadel-secret
           key: ZITADEL_MASTERKEY
-      secretConfig:
+      configmapConfig:
         ExternalDomain: auth.${SECRET_DOMAIN}
         # specifies if ZITADEL is exposed externally through TLS
         # this must be set to true even if TLS is not enabled on ZITADEL itself
