@@ -33,10 +33,9 @@ spec:
       ZITADEL_DATABASE_POSTGRES_HOST: postgres-rw.database.svc.cluster.local
       ZITADEL_DATABASE_POSTGRES_PORT: "5432"
       ZITADEL_DATABASE_POSTGRES_DATABASE: zitadel
-      ZITADEL_EXTERNALSECURE: true
-      ZITADEL_TLS_ENABLED: false
       ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE: disable
       ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE: disable
+      ZITADEL_EXTERNALSECURE: true
       ZITADEL_MASTERKEY:
         secretKeyRef:
           name: zitadel-secret
