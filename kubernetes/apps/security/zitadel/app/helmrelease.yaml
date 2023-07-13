@@ -37,6 +37,10 @@ spec:
     envFrom:
       - secretRef:
           name: zitadel-secret
+    extraArgs:
+      - start-from-init
+      - --masterKey "{{ .ZITADEL_MASTERKEY }}"
+      - --tlsMode disabled
     service:
       main:
         type: ClusterIP
