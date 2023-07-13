@@ -37,7 +37,7 @@ spec:
     envFrom:
       - secretRef:
           name: zitadel-secret
-    extraArgs:
+    args:
       - start-from-init
       - --masterKey "{{ .ZITADEL_MASTERKEY }}"
       - --tlsMode disabled
