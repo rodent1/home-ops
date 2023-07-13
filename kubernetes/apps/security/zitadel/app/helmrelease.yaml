@@ -49,7 +49,6 @@ spec:
       configMapConfig:
         Database:
           postgres:
-            Host: postgres-rw.database.svc.cluster.local
             User:
               SSL:
                 Mode: "disable"
