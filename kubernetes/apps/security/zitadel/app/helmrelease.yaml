@@ -8,11 +8,11 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: zitadel
-      version: 5.0.0
+      chart: app-template
+      version: 1.5.1
       sourceRef:
         kind: HelmRepository
-        name: zitadel
+        name: bjw-s
         namespace: flux-system
   maxHistory: 2
   install:
@@ -26,56 +26,42 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    zitadel:
-      masterkey:
-        secretKeyRef:
-          name: zitadel-secret
-          key: ZITADEL_MASTERKEY
-      configmapConfig:
-        ExternalDomain: auth.${SECRET_DOMAIN}
-        # specifies if ZITADEL is exposed externally through TLS
-        # this must be set to true even if TLS is not enabled on ZITADEL itself
-        # but TLS traffic is terminated on a reverse proxy
-        # !!! Changing this after initial setup breaks your system !!!
-        ExternalSecure: true
-        TLS:
-          # if enabled, ZITADEL will serve all traffic over TLS (HTTPS and gRPC)
-          # you must then also provide a private key and certificate to be used for the connection
-          # either directly or by a path to the corresponding file
-          Enabled: false
-        Database:
-          cockroach:
-            Host:
-            User:
-              SSL:
-                Mode:
-            Admin:
-              SSL:
-                Mode:
-          # Postgres is used as soon as a value is set
-          # The values describe the possible fields to set values
-          postgres:
-            Host: postgres-rw.database.svc.cluster.local
-            User:
-              SSL:
-                Mode: disable
-            Admin:
-              SSL:
-                Mode: disable
-    replicaCount: 3
     image:
       repository: ghcr.io/zitadel/zitadel
-      pullPolicy: IfNotPresent
-      # Overrides the image tag whose default is the chart appVersion.
-      tag: "2.3.0@sha256:97ba35342aba01622d9a1f80bc785ab6d22a41b502f4626e684e8e81add684e9"
+      tag: 2.3.0@sha256:97ba35342aba01622d9a1f80bc785ab6d22a41b502f4626e684e8e81add684e9
+    env:
+      ZITADEL_DATABASE_POSTGRES_HOST: postgres-rw.database.svc.cluster.local
+      ZITADEL_DATABASE_POSTGRES_PORT: "5432"
+      ZITADEL_DATABASE_POSTGRES_DATABASE: zitadel
+      ZITADEL_EXTERNALSECURE: true
     envFrom:
       - secretRef:
-          name: zitadel-secret
+          name: zitadel
     service:
-      type: ClusterIP
-      port: 8080
-      protocol: http2
-      annotations: {}
+      main:
+        type: ClusterIP
+        protocol: http2
+        ports:
+          http:
+            port: &port 8080
+    # serviceMonitor:
+    #   main:
+    #     enabled: true
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /health
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     ingress:
       main:
         enabled: true
@@ -88,28 +74,4 @@ spec:
         tls:
           - hosts:
               - *host
-    initJob:
-      # Once ZITADEL is installed, the initJob can be disabled.
-      enabled: true
-      annotations:
-        helm.sh/hook: pre-install,pre-upgrade
-        helm.sh/hook-delete-policy: before-hook-creation
-        helm.sh/hook-weight: "1"
-    setupJob:
-      annotations:
-        helm.sh/hook: pre-install,pre-upgrade
-        helm.sh/hook-delete-policy: before-hook-creation
-        helm.sh/hook-weight: "2"
-      resources: {}
-      activeDeadlineSeconds: 300
-      extraContainers: []
-      podAnnotations: {}
-      machinekeyWriterImage:
-        repository: bitnami/kubectl
-        tag: ""
-    metrics:
-      enabled: true
-      serviceMonitor:
-        # If true, the chart creates a ServiceMonitor that is compatible with Prometheus Operator
-        # https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.ServiceMonitor.
-        enabled: true
+
