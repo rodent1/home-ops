@@ -22,4 +22,4 @@ kubernetes:
           ansible_host: 10.1.1.44
         kube-5:
           ansible_user: root
-          ansible_host: 10.1.1.45
+          ansible_host: 10.1.1.44
