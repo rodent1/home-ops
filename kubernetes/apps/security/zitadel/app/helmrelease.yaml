@@ -41,6 +41,10 @@ spec:
     envFrom:
       - secretRef:
           name: zitadel-secret
+    masterkey:
+      - secretRef:
+          name: zitadel-secret
+          key: ZITADEL_MASTERKEY
     service:
       type: ClusterIP
       port: 8080
