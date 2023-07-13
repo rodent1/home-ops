@@ -44,6 +44,14 @@ spec:
           # either directly or by a path to the corresponding file
           Enabled: false
         Database:
+          cockroach:
+            Host:
+            User:
+              SSL:
+                Mode:
+            Admin:
+              SSL:
+                Mode:
           # Postgres is used as soon as a value is set
           # The values describe the possible fields to set values
           postgres:
