@@ -39,7 +39,6 @@ spec:
           name: zitadel-secret
     args:
       - start-from-init
-      - --masterKey "{{ .ZITADEL_MASTERKEY }}"
       - --tlsMode disabled
     service:
       main:
