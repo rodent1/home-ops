@@ -38,8 +38,9 @@ spec:
       - secretRef:
           name: zitadel-secret
     args:
-      - start-from-init
-      - --tlsMode=disabled
+      - "start-from-init"
+      - "--tlsMode external"
+      - "--masterkeyFromEnv"
     service:
       main:
         type: ClusterIP
