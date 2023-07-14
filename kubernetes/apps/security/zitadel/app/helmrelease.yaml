@@ -77,12 +77,16 @@ spec:
 
     # Additional environment variables
     env:
-      []
-      # - name: ZITADEL_DATABASE_POSTGRES_HOST
-      #   valueFrom:
-      #     secretKeyRef:
-      #       name: postgres-pguser-postgres
-      #       key: host
+      - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: zitadel-secret
+            key: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME
+      - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: zitadel-secret
+            key: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD
 
     service:
       type: ClusterIP
