@@ -7,7 +7,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: recyclarr-configmap
+  - name: zitadel-config-yaml
     files:
       - /config/zitadel-config-yaml=./config/config.yaml
 generatorOptions:
