@@ -36,6 +36,23 @@ spec:
             Admin:
               SSL:
                 Mode: disable
+
+          ## If you want to setup ZITADEL with a service account
+          ## instead of a human admin user, comment the following
+          ## in by deleting each lines first hash and space
+          FirstInstance:
+            # path used for volume mounts and to write the secret
+            MachineKeyPath: /machinekey/zitadel-admin-sa.json
+            Org:
+              Machine:
+                Machine:
+                  # Creates a service account with the name zitadel-admin-sa,
+                  # which results in a secret 'zitadel-admin-sa' with a key 'zitadel-admin-sa.json'
+                  Username: zitadel-admin-sa
+                  Name: Admin
+                MachineKey:
+                  Type: 1
+
         ExternalDomain: &host auth.${SECRET_DOMAIN}
         # specifies if ZITADEL is exposed externally through TLS
         # this must be set to true even if TLS is not enabled on ZITADEL itself
@@ -83,16 +100,6 @@ spec:
           secretKeyRef:
             name: zitadel-secret
             key: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
-      - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME
-      - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD
 
     service:
       type: ClusterIP
