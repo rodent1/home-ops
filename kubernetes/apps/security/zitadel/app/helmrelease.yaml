@@ -20,42 +20,14 @@ spec:
       # https://github.com/zitadel/zitadel/blob/main/cmd/defaults.yaml
       configmapConfig:
         Database:
-          cockroach:
-            Host: ""
-            User:
-              SSL:
-                Mode: "disable"
-            Admin:
-              SSL:
-                Mode: "disable"
           postgres:
             Host: postgres-rw.database.svc.cluster.local
             Port: 5432
             Database: zitadel
             User:
-              Username:
-                valueFrom:
-                  secretKeyRef:
-                    name: zitadel-secret
-                    key: ZITADEL_DATABASE_POSTGRES_USER_USERNAME
-              Password:
-                valueFrom:
-                  secretKeyRef:
-                    name: zitadel-secret
-                    key: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
               SSL:
                 Mode: disable
             Admin:
-              Username:
-                valueFrom:
-                  secretKeyRef:
-                    name: zitadel-secret
-                    key: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
-              Password:
-                valueFrom:
-                  secretKeyRef:
-                    name: zitadel-secret
-                    key: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
               SSL:
                 Mode: disable
         ExternalDomain: &host auth.${SECRET_DOMAIN}
@@ -89,6 +61,26 @@ spec:
 
     # Additional environment variables
     env:
+      - name: ZITADEL_DATABASE_POSTGRES_USER_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: zitadel-secret
+            key: ZITADEL_DATABASE_POSTGRES_USER_USERNAME
+      - name: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: zitadel-secret
+            key: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
+      - name: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: zitadel-secret
+            key: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
+      - name: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: zitadel-secret
+            key: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
       - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME
         valueFrom:
           secretKeyRef:
