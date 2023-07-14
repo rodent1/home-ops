@@ -19,6 +19,10 @@ spec:
       # See all defaults here:
       # https://github.com/zitadel/zitadel/blob/main/cmd/defaults.yaml
       configmapConfig:
+        Log:
+          Level: debug
+          Formatter:
+            Format: text
         Database:
           postgres:
             Host: postgres-rw.database.svc.cluster.local
