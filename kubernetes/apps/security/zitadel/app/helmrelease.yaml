@@ -56,7 +56,7 @@ spec:
       dbSslClientCrtSecret:
       masterkeySecretName: zitadel-secret
 
-    replicaCount: 3
+    replicaCount: 1
     image:
       repository: ghcr.io/zitadel/zitadel
       tag: v2.30.0
