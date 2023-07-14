@@ -43,23 +43,23 @@ spec:
           # The values describe the possible fields to set values
           postgres:
             User:
-              Username:
+              - Username:
                 valueFrom:
                   secretKeyRef:
                     name: zitadel-secret
                     key: ZITADEL_DATABASE_POSTGRES_USER_USERNAME
-              Password:
+              - Password:
                 valueFrom:
                   secretKeyRef:
                     name: zitadel-secret
                     key: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
             Admin:
-              Username:
+              - Username:
                 valueFrom:
                   secretKeyRef:
                     name: zitadel-secret
                     key: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
-              Password:
+              - Password:
                 valueFrom:
                   secretKeyRef:
                     name: zitadel-secret
