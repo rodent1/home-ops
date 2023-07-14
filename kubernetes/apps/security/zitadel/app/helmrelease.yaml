@@ -25,7 +25,6 @@ spec:
           secretKeyRef:
             name: zitadel-secret
             key: ZITADEL_MASTERKEY
-      configSecretName: zitadel-config
       dbSslRootCrt: false
       dbSslRootCrtSecret: false
       dbSslClientCrtSecret: false
