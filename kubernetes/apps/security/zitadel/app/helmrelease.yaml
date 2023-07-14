@@ -14,8 +14,42 @@ spec:
         kind: HelmRepository
         name: zitadel
         namespace: flux-system
-  replicas: 3
   values:
+    replicaCount: 1
+    podAnnotations: {}
     image:
       repository: ghcr.io/zitadel/zitadel
       tag: v2.30.0:sha256:97ba35342aba01622d9a1f80bc785ab6d22a41b502f4626e684e8e81add684e9
+      pullPolicy: IfNotPresent
+    imagePullSecrets: []
+    serviceAccountName: ""
+    podSecurityContext: {}
+    securityContext: {}
+    zitadel:
+      secretConfig: false
+      configSecretName: false
+      dbSslRootCrt: false
+      dbSslRootCrtSecret: false
+      dbSslClientCrtSecret: false
+      configmapConfig:
+        ExternalDomain: ""
+    service:
+      protocol: ""
+    livenessProbe:
+      enabled: false
+      initialDelaySeconds: 0
+      periodSeconds: 0
+      failureThreshold: 0
+    readinessProbe:
+      enabled: false
+      initialDelaySeconds: 0
+      periodSeconds: 0
+      failureThreshold: 0
+    startupProbe:
+      enabled: false
+      periodSeconds: 0
+      failureThreshold: 0
+    resources: {}
+    nodeSelector: {}
+    affinity: {}
+    tolerations: []
