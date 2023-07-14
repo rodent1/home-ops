@@ -20,6 +20,14 @@ spec:
       # https://github.com/zitadel/zitadel/blob/main/cmd/defaults.yaml
       configmapConfig:
         Database:
+          cockroach:
+            Host: ""
+            User:
+              SSL:
+                Mode: "disable"
+            Admin:
+              SSL:
+                Mode: "disable"
           postgres:
             Host: postgres-rw.database.svc.cluster.local
             Port: 5432
