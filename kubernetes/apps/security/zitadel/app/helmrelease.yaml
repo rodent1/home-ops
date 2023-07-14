@@ -25,9 +25,6 @@ spec:
           secretKeyRef:
             name: zitadel-secret
             key: ZITADEL_MASTERKEY
-      dbSslRootCrt: false
-      dbSslRootCrtSecret: false
-      dbSslClientCrtSecret: false
       configmapConfig:
         ExternalDomain: auth.${SECRET_DOMAIN}
         # specifies if ZITADEL is exposed externally through TLS
