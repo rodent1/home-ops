@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -8,79 +7,30 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: app-template
-      version: 1.5.1
+      chart: zitadel
+      version: 5.0.0
       sourceRef:
         kind: HelmRepository
-        name: bjw-s
+        name: zitadel
         namespace: flux-system
-  maxHistory: 2
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   values:
+    replicaCount: 3
     image:
       repository: ghcr.io/zitadel/zitadel
-      tag: 2.3.0@sha256:97ba35342aba01622d9a1f80bc785ab6d22a41b502f4626e684e8e81add684e9
+      tag: v2.30.0:sha256:97ba35342aba01622d9a1f80bc785ab6d22a41b502f4626e684e8e81add684e9
+      pullPolicy: IfNotPresent
+    zitadel:
+      masterkey: ${ZITADEL_MASTERKEY}
+      configSecretName: zitadel-config
+      dbSslRootCrt: false
+      dbSslRootCrtSecret: false
+      dbSslClientCrtSecret: false
     env:
       ZITADEL_DATABASE_POSTGRES_HOST: postgres-rw.database.svc.cluster.local
       ZITADEL_DATABASE_POSTGRES_PORT: "5432"
       ZITADEL_DATABASE_POSTGRES_DATABASE: zitadel
       ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE: disable
       ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE: disable
-      ZITADEL_EXTERNALSECURE: true
-      ZITADEL_MASTERKEY:
-        secretKeyRef:
-          name: zitadel-secret
-          key: ZITADEL_MASTERKEY
     envFrom:
       - secretRef:
           name: zitadel-secret
-    args:
-      - "start-from-init"
-      - "--masterkeyFromEnv"
-    service:
-      main:
-        type: ClusterIP
-        protocol: http2
-        ports:
-          http:
-            port: &port 8080
-    # serviceMonitor:
-    #   main:
-    #     enabled: true
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: nginx
-        hosts:
-          - host: &host "auth.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-
