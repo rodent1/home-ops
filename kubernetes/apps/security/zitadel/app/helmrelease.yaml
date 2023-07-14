@@ -118,7 +118,7 @@ spec:
 
     initJob:
       # Once ZITADEL is installed, the initJob can be disabled.
-      enabled: false
+      enabled: true
 
     readinessProbe:
       enabled: true
