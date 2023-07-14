@@ -25,45 +25,6 @@ spec:
           secretKeyRef:
             name: zitadel-secret
             key: ZITADEL_MASTERKEY
-      configmapConfig:
-        ExternalDomain: auth.${SECRET_DOMAIN}
-        # specifies if ZITADEL is exposed externally through TLS
-        # this must be set to true even if TLS is not enabled on ZITADEL itself
-        # but TLS traffic is terminated on a reverse proxy
-        # !!! Changing this after initial setup breaks your system !!!
-        ExternalSecure: true
-        TLS:
-          # if enabled, ZITADEL will serve all traffic over TLS (HTTPS and gRPC)
-          # you must then also provide a private key and certificate to be used for the connection
-          # either directly or by a path to the corresponding file
-          Enabled: false
-        WebAuthNName: ZITADEL
-        Database:
-          # Postgres is used as soon as a value is set
-          # The values describe the possible fields to set values
-          postgres:
-            User:
-              - Username:
-                valueFrom:
-                  secretKeyRef:
-                    name: zitadel-secret
-                    key: ZITADEL_DATABASE_POSTGRES_USER_USERNAME
-              - Password:
-                valueFrom:
-                  secretKeyRef:
-                    name: zitadel-secret
-                    key: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
-            Admin:
-              - Username:
-                valueFrom:
-                  secretKeyRef:
-                    name: zitadel-secret
-                    key: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
-              - Password:
-                valueFrom:
-                  secretKeyRef:
-                    name: zitadel-secret
-                    key: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
     env:
       ZITADEL_DATABASE_POSTGRES_HOST: postgres-rw.database.svc.cluster.local
       ZITADEL_DATABASE_POSTGRES_PORT: "5432"
