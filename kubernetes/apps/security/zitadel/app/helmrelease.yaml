@@ -56,6 +56,7 @@ spec:
         # but TLS traffic is terminated on a reverse proxy
         # !!! Changing this after initial setup breaks your system !!!
         ExternalSecure: true
+        ExternalPort: 443
         TLS:
           # if enabled, ZITADEL will serve all traffic over TLS (HTTPS and gRPC)
           # you must then also provide a private key and certificate to be used for the connection
