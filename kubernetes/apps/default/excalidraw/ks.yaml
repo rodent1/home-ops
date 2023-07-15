@@ -5,6 +5,8 @@ metadata:
   name: cluster-apps-excalidraw
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cluster-apps-ingress-nginx
   path: ./kubernetes/apps/default/excalidraw/app
   prune: true
   sourceRef:
