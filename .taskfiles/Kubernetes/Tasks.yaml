@@ -6,7 +6,7 @@ tasks:
   kubeconfig:
     desc: Download kubeconfig from a remote k3s master node
     vars:
-      MASTER_USERNAME: '{{.MASTER_USERNAME | default "root"}}'
+      MASTER_USERNAME: '{{.MASTER_USERNAME | default "stianrs"}}'
       MASTER_HOST: '{{.MASTER_HOST | default "10.1.1.40"}}'
       KUBERNETES_API: '{{.KUBERNETES_API | default "10.1.1.254"}}'
     cmds:
