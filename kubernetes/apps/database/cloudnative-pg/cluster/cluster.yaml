@@ -23,7 +23,7 @@ spec:
     recovery:
       source: &previousCluster postgres-v3
       recoveryTarget:
-        targetTime: "2003-07-15T00:00:00+02:00"
+        targetTime: "2023-07-15T00:00:00+02:00"
   postgresql:
     parameters:
       max_connections: "600"
@@ -38,7 +38,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster postgres-v4
+      serverName: &currentCluster cnpg-v1
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
