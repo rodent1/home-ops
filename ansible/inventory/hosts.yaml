@@ -4,7 +4,7 @@ kubernetes:
     master:
       hosts:
         kube-0:
-          ansible_user: root
+          ansible_user: stianrs
           ansible_host: 10.1.1.40
         kube-1:
           ansible_user: root
@@ -17,15 +17,9 @@ kubernetes:
         kube-3:
           ansible_user: root
           ansible_host: 10.1.1.43
-          ceph_drives:
-            - /dev/xvdb
         kube-4:
           ansible_user: root
           ansible_host: 10.1.1.44
-          ceph_drives:
-            - /dev/xvdb
         kube-5:
           ansible_user: root
-          ansible_host: 10.1.1.44
-          ceph_drives:
-            - /dev/vdb
+          ansible_host: 10.1.1.45
