@@ -51,11 +51,6 @@ spec:
       dbSslRootCrtSecret:
       # The Secret containing the client CA Certificate and key at tls.crt and tls.key needed for establishing secure database connections
       dbSslClientCrtSecret:
-      masterkey:
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: ZITADEL_MASTERKEY
 
     replicaCount: 3
     image:
@@ -95,6 +90,11 @@ spec:
           secretKeyRef:
             name: zitadel-secret
             key: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD
+      - name: ZITADEL_MASTERKEY
+        valueFrom:
+          secretKeyRef:
+            name: zitadel-secret
+            key: ZITADEL_MASTERKEY
 
     service:
       type: ClusterIP
