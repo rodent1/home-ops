@@ -6,9 +6,3 @@ metadata:
   namespace: flux-system
 data:
   TIMEZONE: "Europe/Oslo"
-
- # LAN
-  JELLYFIN_IP: "10.1.1.30"
-  PIHOLE_IP: "10.1.1.10"
-  TRUENAS_IP: "10.1.1.15"
-  XO_IP: "10.1.1.16"

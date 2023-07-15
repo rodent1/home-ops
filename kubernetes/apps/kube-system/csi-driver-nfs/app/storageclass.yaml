@@ -7,10 +7,6 @@ provisioner: nfs.csi.k8s.io
 parameters:
   server: ${TRUENAS_IP}
   share: /mnt/cauldron/Apps
-mountOptions:
-  - nfsvers=4.2
-  - nconnect=8
-  - hard
-  - noatime
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
+mountOptions: ["hard", "noatime"]
