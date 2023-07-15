@@ -3,6 +3,8 @@ kind: HelmRelease
 metadata:
   name: zitadel
   namespace: security
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   interval: 30m
   chart:
