@@ -9,10 +9,10 @@ resources:
   # - ./audiobookshelf/ks.yaml
   # - ./jellyseerr/ks.yaml
   # - ./podgrab/ks.yaml
-  - ./prowlarr/ks.yaml
+  # - ./prowlarr/ks.yaml
   # - ./qbittorrent/ks.yaml
   # - ./radarr/ks.yaml
   # - ./recyclarr/ks.yaml
   # - ./sonarr/ks.yaml
-  - ./theme-park/ks.yaml
+  # - ./theme-park/ks.yaml
   # - ./unpackerr/ks.yaml

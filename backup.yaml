@@ -1,0 +1,163 @@
+apiVersion: v1
+items:
+- apiVersion: cert-manager.io/v1
+  kind: ClusterIssuer
+  metadata:
+    creationTimestamp: "2023-07-15T15:43:44Z"
+    generation: 1
+    labels:
+      kustomize.toolkit.fluxcd.io/name: cluster-apps-cert-manager-issuers
+      kustomize.toolkit.fluxcd.io/namespace: flux-system
+    name: letsencrypt-production
+    resourceVersion: "8642"
+    uid: e754cca9-fd52-4d10-9b5b-39ec0e9a6432
+  spec:
+    acme:
+      email: stian.sporaland@rodent.cc
+      preferredChain: ""
+      privateKeySecretRef:
+        name: letsencrypt-production
+      server: https://acme-v02.api.letsencrypt.org/directory
+      solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              key: api-token
+              name: cert-manager-secret
+        selector:
+          dnsZones:
+          - rodent.cc
+  status:
+    acme:
+      lastPrivateKeyHash: qhDiKe3S+uSugIA6C+xhgPwnwjN9f7EuT1/iwzvvWmQ=
+      lastRegisteredEmail: stian.sporaland@rodent.cc
+      uri: https://acme-v02.api.letsencrypt.org/acme/acct/1208210647
+    conditions:
+    - lastTransitionTime: "2023-07-15T15:43:46Z"
+      message: The ACME account was registered with the ACME server
+      observedGeneration: 1
+      reason: ACMEAccountRegistered
+      status: "True"
+      type: Ready
+- apiVersion: cert-manager.io/v1
+  kind: ClusterIssuer
+  metadata:
+    creationTimestamp: "2023-07-15T15:43:44Z"
+    generation: 1
+    labels:
+      kustomize.toolkit.fluxcd.io/name: cluster-apps-cert-manager-issuers
+      kustomize.toolkit.fluxcd.io/namespace: flux-system
+    name: letsencrypt-staging
+    resourceVersion: "8641"
+    uid: 7feed002-0c5e-4f8e-9694-1fafd45cdf82
+  spec:
+    acme:
+      email: stian.sporaland@rodent.cc
+      preferredChain: ""
+      privateKeySecretRef:
+        name: letsencrypt-staging
+      server: https://acme-staging-v02.api.letsencrypt.org/directory
+      solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              key: api-token
+              name: cert-manager-secret
+        selector:
+          dnsZones:
+          - rodent.cc
+  status:
+    acme:
+      lastPrivateKeyHash: RgrP5lbqw2sb6/Gzbs3HlDWpKJNg3ScJjyGGuSpjUE8=
+      lastRegisteredEmail: stian.sporaland@rodent.cc
+      uri: https://acme-staging-v02.api.letsencrypt.org/acme/acct/111037464
+    conditions:
+    - lastTransitionTime: "2023-07-15T15:43:46Z"
+      message: The ACME account was registered with the ACME server
+      observedGeneration: 1
+      reason: ACMEAccountRegistered
+      status: "True"
+      type: Ready
+- apiVersion: cert-manager.io/v1
+  kind: Certificate
+  metadata:
+    creationTimestamp: "2023-07-15T15:58:20Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: kubernetes-dashboard
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: kubernetes-dashboard
+      app.kubernetes.io/version: v2.7.0
+      helm.sh/chart: kubernetes-dashboard-6.0.8
+      helm.toolkit.fluxcd.io/name: kubernetes-dashboard
+      helm.toolkit.fluxcd.io/namespace: monitoring
+    name: kubernetes-dashboard-tls
+    namespace: monitoring
+    ownerReferences:
+    - apiVersion: networking.k8s.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Ingress
+      name: kubernetes-dashboard
+      uid: 863e6ff9-d678-4453-bac1-1258178296c0
+    resourceVersion: "48574"
+    uid: 2baa95e8-b379-4a85-88f5-e06bb4806bfb
+  spec:
+    dnsNames:
+    - kubernetes.rodent.cc
+    issuerRef:
+      group: cert-manager.io
+      kind: ClusterIssuer
+      name: letsencrypt-staging
+    secretName: kubernetes-dashboard-tls
+    usages:
+    - digital signature
+    - key encipherment
+  status:
+    conditions:
+    - lastTransitionTime: "2023-07-15T16:29:54Z"
+      message: Certificate is up to date and has not expired
+      observedGeneration: 1
+      reason: Ready
+      status: "True"
+      type: Ready
+    notAfter: "2023-10-13T15:29:49Z"
+    notBefore: "2023-07-15T15:29:50Z"
+    renewalTime: "2023-09-13T15:29:49Z"
+    revision: 1
+- apiVersion: cert-manager.io/v1
+  kind: Certificate
+  metadata:
+    creationTimestamp: "2023-07-15T15:43:48Z"
+    generation: 1
+    labels:
+      kustomize.toolkit.fluxcd.io/name: cluster-apps-ingress-nginx-certificates
+      kustomize.toolkit.fluxcd.io/namespace: flux-system
+    name: rodent-cc-production
+    namespace: networking
+    resourceVersion: "21121"
+    uid: 78da617e-6009-43ea-aaa3-485ed934b9f3
+  spec:
+    commonName: rodent.cc
+    dnsNames:
+    - rodent.cc
+    - '*.rodent.cc'
+    issuerRef:
+      kind: ClusterIssuer
+      name: letsencrypt-production
+    secretName: rodent-cc-production-tls
+  status:
+    conditions:
+    - lastTransitionTime: "2023-07-15T15:57:35Z"
+      message: Certificate is up to date and has not expired
+      observedGeneration: 1
+      reason: Ready
+      status: "True"
+      type: Ready
+    notAfter: "2023-10-13T14:57:33Z"
+    notBefore: "2023-07-15T14:57:34Z"
+    renewalTime: "2023-09-13T14:57:33Z"
+    revision: 1
+kind: List
+metadata:
+  resourceVersion: ""
