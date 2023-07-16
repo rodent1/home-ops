@@ -21,7 +21,7 @@ env:
 jobs:
   publish-kubernetes-schemas:
     name: Publish Kubernetes Schemas
-    runs-on: ["self-hosted"]
+    runs-on: ["arc-runner-set-home-ops"]
     steps:
       - name: Setup Flux CLI
         uses: fluxcd/flux2/action@main
