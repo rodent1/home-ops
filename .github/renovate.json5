@@ -15,41 +15,22 @@
     "github>Rodent1/home-ops//.github/renovate/semanticCommits.json5",
     "helpers:pinGitHubActionDigests"
   ],
-  "dependencyDashboard": true,
+  "platform": "github",
+  "onboarding": false,
+  "requireConfig": "optional",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
-  "rebaseWhen": "conflicted",
-  "schedule": ["on saturday"],
-  "ansible-galaxy": {
-    "fileMatch": [
-      "(^|/)requirements\\.ya?ml(\\.j2)?$",
-      "(^|/)galaxy\\.ya?ml(\\.j2)?$"
-    ]
-  },
   "flux": {
-    "fileMatch": [
-      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
-    ]
+    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"]
   },
   "helm-values": {
-    "fileMatch": [
-      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
-    ]
+    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"]
   },
   "kubernetes": {
     "fileMatch": [
+      "(^|/)\\.taskfiles/.+\\.ya?ml(\\.j2)?$",
       "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
       "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
-    ]
-  },
-  "kustomize": {
-    "fileMatch": [
-      "(^|/)kustomization\\.ya?ml(\\.j2)?$"
-    ]
-  },
-  "pip_requirements": {
-    "fileMatch": [
-      "(^|/)[\\w-]*requirements(-\\w+)?\\.(txt|pip)(\\.j2)?$"
     ]
   },
   "regexManagers": [
@@ -85,7 +66,7 @@
       "description": "Loose versioning for non-semver packages",
       "matchDatasources": ["docker"],
       "versioning": "loose",
-      "matchPackagePatterns": ["qbittorrent"]
-    },
+      "matchPackagePatterns": ["changedetection", "plex", "qbittorrent"]
+    }
   ]
 }
