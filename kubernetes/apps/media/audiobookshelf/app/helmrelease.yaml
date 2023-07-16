@@ -38,8 +38,8 @@ spec:
       tag: 2.3.0
     env:
       TZ: Europe/Oslo
-      AUDIOBOOKSHELF_UID: 1001
-      AUDIOBOOKSHELF_GID: 1001
+      AUDIOBOOKSHELF_UID: 568
+      AUDIOBOOKSHELF_GID: 568
       CONFIG_PATH: /config
       METADATA_PATH: /config/metadata
     service:
