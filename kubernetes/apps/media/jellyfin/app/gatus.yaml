@@ -18,3 +18,5 @@ data:
           query-type: A
         conditions:
           - "len([BODY]) == 0"
+        alerts:
+          - type: pushover

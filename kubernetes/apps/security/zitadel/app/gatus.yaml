@@ -2,20 +2,20 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: audiobookshelf-gatus-ep
-  namespace: media
+  name: zitadel-gatus-ep
+  namespace: security
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: audiobookshelf
+      - name: zitadel
         group: external
-        url: https://audiobookshelf.${SECRET_DOMAIN}
+        url: https://auth.${SECRET_DOMAIN}/debug/ready
         interval: 1m
         client:
           dns-resolver: tcp://1.1.1.1:53
         conditions:
-          - "[STATUS] == 200"
+          - "[BODY] == \"ok\""
         alerts:
           - type: pushover
