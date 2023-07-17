@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: gatus-gatus-ep
-  namespace: default
+  namespace: monitoring
   labels:
     gatus.io/enabled: "true"
 data:
