@@ -11,7 +11,7 @@ data:
     endpoints:
       - name: audiobookshelf
         group: external
-        url: https://audiobooks.${SECRET_DOMAIN}
+        url: https://audiobookshelf.${SECRET_DOMAIN}
         interval: 1m
         client:
           dns-resolver: tcp://1.1.1.1:53
