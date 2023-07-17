@@ -9,7 +9,7 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-      - name: status
+      - name: excalidraw
         group: external
         url: https://draw.${SECRET_DOMAIN}
         interval: 1m
