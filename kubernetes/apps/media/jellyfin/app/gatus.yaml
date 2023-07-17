@@ -9,14 +9,13 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-      - name: jellyfin
-        group: guarded
-        url: 1.1.1.1
+      - name: plex
+        group: external
+        url: https://jelly.${SECRET_DOMAIN}/web/index.html
         interval: 1m
-        dns:
-          query-name: jelly.${SECRET_DOMAIN}
-          query-type: A
+        client:
+          dns-resolver: tcp://1.1.1.1:53
         conditions:
-          - "len([BODY]) == 0"
+          - "[STATUS] == 200"
         alerts:
           - type: pushover
