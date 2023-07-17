@@ -68,6 +68,8 @@ spec:
       main:
         enabled: true
         ingressClassName: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
         hosts:
           - host: &host "jelly.${SECRET_DOMAIN}"
             paths:
