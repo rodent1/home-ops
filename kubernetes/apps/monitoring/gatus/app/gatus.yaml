@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: jellyfin-gatus-ep
+  name: gatus-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
