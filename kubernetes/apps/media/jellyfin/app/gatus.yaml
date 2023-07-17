@@ -9,7 +9,7 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-      - name: plex
+      - name: jellyfin
         group: external
         url: https://jelly.${SECRET_DOMAIN}/web/index.html
         interval: 1m
