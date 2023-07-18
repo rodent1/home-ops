@@ -35,7 +35,7 @@ spec:
       type: statefulset
     image:
       repository: ghcr.io/advplyr/audiobookshelf
-      tag: 2.3.1
+      tag: 2.3.2
     env:
       TZ: Europe/Oslo
       AUDIOBOOKSHELF_UID: 568
