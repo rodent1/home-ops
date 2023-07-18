@@ -19,4 +19,4 @@ metadata:
   name: pool
 spec:
   cidrs:
-    - cidr: "10.1.1.0/24"
+    - cidr: "${NODE_CIDR}"
