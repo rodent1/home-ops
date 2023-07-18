@@ -8,7 +8,7 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: nvidia
+      chart: gpu-operator
       version: v23.3.2
       sourceRef:
         kind: HelmRepository
