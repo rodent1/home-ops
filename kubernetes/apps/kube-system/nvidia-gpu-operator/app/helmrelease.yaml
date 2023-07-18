@@ -8,6 +8,7 @@ spec:
   interval: 15m
   chart:
     spec:
+      # renovate: registryUrl=https://helm.ngc.nvidia.com/nvidia
       chart: gpu-operator
       version: v23.3.2
       sourceRef:
