@@ -5,6 +5,7 @@ resources:
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
   - ./csi-driver-nfs/ks.yaml
+  - ./descheduler/ks.yaml
   - ./external-secrets/ks.yaml
   - ./local-path-provisioner/ks.yaml
   - ./metrics-server/ks.yaml
