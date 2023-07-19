@@ -32,7 +32,7 @@ spec:
     driver:
       enabled: true
       repository: nvcr.io/nvidia/driver
-      tag: 525.105.17-ubuntu22.04
+      version: "525.105.17-ubuntu22.04"
     toolkit:
       enabled: true
       env:
