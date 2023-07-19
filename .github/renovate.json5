@@ -19,7 +19,6 @@
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
-  "schedule": ["on saturday"],
   "ansible-galaxy": {
     "fileMatch": [
       "(^|/)requirements\\.ya?ml(\\.j2)?$",
