@@ -17,6 +17,10 @@ kubernetes:
         kube-3:
           ansible_user: stianrs
           ansible_host: 10.1.1.43
+          ceph_drives:
+            - /dev/xvdb
         kube-4:
           ansible_user: stianrs
           ansible_host: 10.1.1.44
+          ceph_drives:
+            - /dev/xvdb
