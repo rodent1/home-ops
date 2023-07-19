@@ -6,10 +6,10 @@ metadata:
   namespace: flux-system
 data:
   TIMEZONE: "Europe/Oslo"
-  COREDNS_ADDR: "10.33.0.10"
+  COREDNS_ADDR: "10.43.0.10"
   KUBE_VIP_ADDR: "10.1.1.254"
-  CLUSTER_CIDR: "10.32.0.0/16"
-  SERVICE_CIDR: "10.33.0.0/16"
+  CLUSTER_CIDR: "10.42.0.0/16"
+  SERVICE_CIDR: "10.43.0.0/16"
   NODE_CIDR: "10.1.1.0/24"
 
   # LAN
