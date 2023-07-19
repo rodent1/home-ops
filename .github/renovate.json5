@@ -15,24 +15,35 @@
     "github>Rodent1/home-ops//.github/renovate/semanticCommits.json5",
     "helpers:pinGitHubActionDigests"
   ],
-  "platform": "github",
-  "onboarding": false,
-  "requireConfig": "optional",
+  "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
+  "rebaseWhen": "conflicted",
+  "schedule": ["on saturday"],
+  "ansible-galaxy": {
+    "fileMatch": [
+      "(^|/)requirements\\.ya?ml(\\.j2)?$",
+      "(^|/)galaxy\\.ya?ml(\\.j2)?$"
+    ]
+  },
   "flux": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
-      "(^|/)addons/.+\\.ya?ml(\\.j2)?$"]
+    "fileMatch": [
+      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
+      "(^|/)addons/.+\\.ya?ml(\\.j2)?$"
+    ]
   },
   "helm-values": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
-      "(^|/)addons/.+\\.ya?ml(\\.j2)?$"]
+    "fileMatch": [
+      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
+      "(^|/)addons/.+\\.ya?ml(\\.j2)?$"
+    ]
   },
   "kubernetes": {
     "fileMatch": [
       "(^|/)\\.taskfiles/.+\\.ya?ml(\\.j2)?$",
       "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
-      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
+      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
+      "(^|/)addons/.+\\.ya?ml(\\.j2)?$"
     ]
   },
   "kustomize": {
@@ -47,13 +58,24 @@
   },
   "regexManagers": [
     {
-      "description": "Process custom dependencies",
+      "description": "Process various other dependencies",
       "fileMatch": [
         "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
-        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
+        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
+        "(^|/)addons/.+\\.ya?ml(\\.j2)?$"
       ],
       "matchStrings": [
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( registryUrl=(?<registryUrl>\\S+))?\n.*?\"(?<currentValue>.*)\"\n"
+      ],
+      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}"
+    },
+    {
+      "description": "Process CloudnativePG Postgresql version",
+      "fileMatch": [
+        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
+      ],
+      "matchStrings": [
+        "imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "redhat"
