@@ -28,7 +28,7 @@ spec:
     keepHistory: false
   values:
     nfd:
-      enabled: false
+      enabled: true
     driver:
       enabled: true
     toolkit:
