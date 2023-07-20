@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -140,9 +138,8 @@ spec:
               size: 3
           dataPool:
             failureDomain: host
-            erasureCoded:
-              dataChunks: 4
-              codingChunks: 2
+            replicated:
+              size: 3
           preservePoolsOnDelete: true
           gateway:
             port: 80
