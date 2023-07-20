@@ -32,7 +32,7 @@ spec:
     driver:
       enabled: false
     toolkit:
-      enabled: true
+      enabled: false
       env:
         - name: CONTAINERD_CONFIG
           value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml
