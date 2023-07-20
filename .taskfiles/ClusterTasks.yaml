@@ -74,6 +74,5 @@ tasks:
       - task: helmrepositories
       - task: gitrepositories
       - task: certificates
-      - task: certificaterequests
       - task: ingresses
       - task: pods
