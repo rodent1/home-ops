@@ -33,7 +33,7 @@ spec:
       enabled: false
     toolkit:
       enabled: true
-      version: 1.12.1-1
+      version: v1.12.1
       env:
         - name: CONTAINERD_CONFIG
           value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml
