@@ -37,7 +37,11 @@ spec:
       repository: ghcr.io/onedr0p/jellyfin
       tag: 10.8.10@sha256:1ef614db6a4c589777eb48bc9004d573b9c09f0d6d573a509041c6060f3a956b
     env:
-      TZ: Europe/Oslo
+      TZ: ${TIMEZONE}
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
+    runtimeClassName: nvidia
+
     service:
       main:
         type: LoadBalancer
