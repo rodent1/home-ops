@@ -68,15 +68,12 @@ spec:
           - name: kube-3
             devices:
               - name: /dev/xvdb
-              - name: /dev/xvdc
           - name: kube-4
             devices:
               - name: /dev/xvdb
-              - name: /dev/xvdc
           - name: kube-5
             devices:
               - name: /dev/xvdb
-              - name: /dev/xvdc
     cephBlockPools:
       - name: ceph-blockpool
         spec:
