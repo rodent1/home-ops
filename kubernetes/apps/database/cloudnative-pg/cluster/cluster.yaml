@@ -36,7 +36,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster cnpg-v5
+      serverName: &currentCluster cnpg-v6
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
