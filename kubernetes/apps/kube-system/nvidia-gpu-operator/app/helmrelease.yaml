@@ -30,7 +30,7 @@ spec:
     nfd:
       enabled: true
     driver:
-      enabled: true
+      enabled: false
     toolkit:
       enabled: true
       env:
