@@ -19,9 +19,6 @@ spec:
     storageClass: local-path
   superuserSecret:
     name: cloudnative-pg-secret
-  affinity:
-    nodeSelector:
-      node-role.kubernetes.io/master=true: "true"
   bootstrap:
     recovery:
       source: &previousCluster cnpg-v1
