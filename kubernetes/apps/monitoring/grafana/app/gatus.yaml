@@ -9,13 +9,15 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-      - name: grafana
-        group: external
-        url: https://grafana.${SECRET_DOMAIN}/api/health
+      - name: prowlarr
+        group: guarded
+        url: 1.1.1.1
         interval: 1m
-        client:
-          dns-resolver: tcp://1.1.1.1:53
+        dns:
+          query-name: grafana.${SECRET_DOMAIN}
+          query-type: A
         conditions:
           - "[STATUS] == 200"
         alerts:
           - type: pushover
+
