@@ -8,7 +8,7 @@ metadata:
   annotations:
     kyverno.io/ignore: "true"
 spec:
-  instances: 2
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:14.8-7
   inheritedMetadata:
     labels:
@@ -36,7 +36,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster cnpg-v1
+      serverName: &currentCluster cnpg-3
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret

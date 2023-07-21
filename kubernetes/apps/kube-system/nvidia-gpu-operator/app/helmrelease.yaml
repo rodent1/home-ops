@@ -28,11 +28,12 @@ spec:
     keepHistory: false
   values:
     nfd:
-      enabled: false
-    driver:
       enabled: true
+    driver:
+      enabled: false
     toolkit:
       enabled: true
+      version: v1.12.1
       env:
         - name: CONTAINERD_CONFIG
           value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml

@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -10,7 +9,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph-cluster
-      version: v1.11.9
+      version: v1.12.0
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
@@ -32,7 +31,7 @@ spec:
       createPrometheusRules: true
     ingress:
       dashboard:
-        ingressClassName: nginx
+        ingressClassName: internal
         host:
           name: &host rook.${SECRET_DOMAIN}
           path: /
@@ -51,8 +50,7 @@ spec:
         provider: host
         connections:
           compression:
-            # TODO: Test out enabling this on next cluster rebuild
-            enabled: false
+            enabled: true
       crashCollector:
         disable: false
       dashboard:
@@ -73,7 +71,7 @@ spec:
               - name: /dev/xvdb
           - name: kube-5
             devices:
-              - name: /dev/vdb
+              - name: /dev/xvdb
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -113,7 +111,7 @@ spec:
             resources:
               requests:
                 cpu: 1000m
-                memory: 1Gi
+                memory: 4Gi
               limits:
                 memory: 4Gi
         storageClass:
@@ -140,16 +138,15 @@ spec:
               size: 3
           dataPool:
             failureDomain: host
-            erasureCoded:
-              dataChunks: 2
-              codingChunks: 1
+            replicated:
+              size: 3
           preservePoolsOnDelete: true
           gateway:
             port: 80
             resources:
               requests:
                 cpu: 1000m
-                memory: 500Mi
+                memory: 1Gi
               limits:
                 memory: 2Gi
             instances: 2

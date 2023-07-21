@@ -28,4 +28,4 @@ kubernetes:
           ansible_user: stianrs
           ansible_host: 10.1.1.45
           ceph_drives:
-            - /dev/vdb
+            - /dev/xvdb
