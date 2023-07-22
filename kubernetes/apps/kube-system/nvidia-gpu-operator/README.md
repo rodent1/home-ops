@@ -36,6 +36,15 @@ After your node restarts, you can confirm the Nvidia drivers are working properl
 nvidia-smi
 ```
 
+# Fix missing ldconfig.real
+
+
+```
+sudo ln -s /sbin/ldconfig /sbin/ldconfig.real
+```
+
+This command is necessary to ensure that the Nvidia GPU Operator works correctly on Debian 12.
+
 
 ## Modify GPU-Operator Manifest
 Since the latest Nvidia GPU Operator toolkit does not support Debian, we need to manually specify that we're using installed drivers and operating on K3s.
