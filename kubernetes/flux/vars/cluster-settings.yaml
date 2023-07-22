@@ -14,4 +14,4 @@ data:
 
   # External Services
   TRUENAS_IP: "10.1.1.15"
-  XO_IP: "10.1.1.16"s
+  XO_IP: "10.1.1.16"
