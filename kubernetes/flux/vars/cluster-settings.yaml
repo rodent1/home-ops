@@ -12,8 +12,6 @@ data:
   SERVICE_CIDR: "10.43.0.0/16"
   NODE_CIDR: "10.1.1.0/24"
 
-  # LAN
-  JELLYFIN_IP: "10.1.1.30"
-  PIHOLE_IP: "10.1.1.10"
+  # External Services
   TRUENAS_IP: "10.1.1.15"
-  XO_IP: "10.1.1.16"
+  XO_IP: "10.1.1.16"s
