@@ -19,9 +19,10 @@ spec:
     storageClass: local-path
   superuserSecret:
     name: cloudnative-pg-secret
-  # bootstrap:
-  #   recovery:
-  #     source: &previousCluster cnpg-v1
+  # Note: Bootstrap is needed when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: &previousCluster cnpg-3
   postgresql:
     parameters:
       max_connections: "600"
@@ -36,7 +37,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster cnpg-3
+      serverName: &currentCluster cnpg-4
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
@@ -45,18 +46,18 @@ spec:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  # externalClusters:
-  #   - name: *previousCluster
-  #     barmanObjectStore:
-  #       wal:
-  #         compression: bzip2
-  #         maxParallel: 8
-  #       destinationPath: s3://cnpg/
-  #       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-  #       s3Credentials:
-  #         accessKeyId:
-  #           name: cloudnative-pg-secret
-  #           key: aws-access-key-id
-  #         secretAccessKey:
-  #           name: cloudnative-pg-secret
-  #           key: aws-secret-access-key
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        wal:
+          compression: bzip2
+          maxParallel: 8
+        destinationPath: s3://cnpg/
+        endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+        s3Credentials:
+          accessKeyId:
+            name: cloudnative-pg-secret
+            key: aws-access-key-id
+          secretAccessKey:
+            name: cloudnative-pg-secret
+            key: aws-secret-access-key
