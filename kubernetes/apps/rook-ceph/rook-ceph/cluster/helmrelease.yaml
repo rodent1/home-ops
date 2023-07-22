@@ -69,15 +69,12 @@ spec:
           - name: kube-4
             devices:
               - name: /dev/xvdb
-          - name: kube-5
-            devices:
-              - name: /dev/xvdb
     cephBlockPools:
       - name: ceph-blockpool
         spec:
           failureDomain: host
           replicated:
-            size: 3
+            size: 2
         storageClass:
           enabled: true
           name: ceph-block
@@ -99,11 +96,11 @@ spec:
         spec:
           metadataPool:
             replicated:
-              size: 3
+              size: 2
           dataPools:
             - failureDomain: host
               replicated:
-                size: 3
+                size: 2
               name: data0
           metadataServer:
             activeCount: 1
@@ -135,11 +132,11 @@ spec:
           metadataPool:
             failureDomain: host
             replicated:
-              size: 3
+              size: 2
           dataPool:
             failureDomain: host
             replicated:
-              size: 3
+              size: 2
           preservePoolsOnDelete: true
           gateway:
             port: 80
