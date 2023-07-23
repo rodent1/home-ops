@@ -9,6 +9,8 @@ sonarr:
       type: series
 
     quality_profiles:
+      - name: WEB-720p
+        reset_unmatched_scores: true
       - name: WEB-1080p
         reset_unmatched_scores: true
       - name: WEB-2160p
@@ -90,6 +92,8 @@ radarr:
       type: movie
 
     quality_profiles:
+      - name: HD Bluray + WEB
+        reset_unmatched_scores: true
       - name: Remux + WEB 1080p
         reset_unmatched_scores: true
       - name: Remux + WEB 2160p
