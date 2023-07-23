@@ -37,9 +37,9 @@ spec:
       TZ: Europe/Oslo
       UN_WEBSERVER_METRICS: "true"
       UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local
-      UN_SONARR_0_PATHS_0: /complete/sonarr
+      UN_SONARR_0_PATHS_0: /media/tmp/tv-sonarr
       UN_RADARR_0_URL: http://radarr.media.svc.cluster.local
-      UN_RADARR_0_PATHS_0: /complete/radarr
+      UN_RADARR_0_PATHS_0: /media/tmp/radarr
     envFrom:
       - secretRef:
           name: unpackerr-secret
@@ -58,12 +58,12 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups: [10000]
     persistence:
-      complete:
+      media:
         enabled: true
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/tank/Media/tmp
-        mountPath: /complete
+        mountPath: /media
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
     resources:
