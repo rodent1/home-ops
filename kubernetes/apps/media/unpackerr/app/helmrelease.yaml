@@ -62,7 +62,7 @@ spec:
         enabled: true
         type: nfs
         server: ${TRUENAS_IP}
-        path: /mnt/tank/Media/tmp
+        path: /mnt/tank/Media
         mountPath: /media
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
