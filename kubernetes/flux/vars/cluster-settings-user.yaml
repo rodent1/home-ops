@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings-user
+  namespace: flux-system
+data:
+  # External Services
+  TRUENAS_IP: "10.1.1.15"
+  XO_IP: "10.1.1.16"

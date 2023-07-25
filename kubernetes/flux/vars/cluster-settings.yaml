@@ -11,7 +11,3 @@ data:
   CLUSTER_CIDR: "10.42.0.0/16"
   SERVICE_CIDR: "10.43.0.0/16"
   NODE_CIDR: "10.1.1.0/24"
-
-  # External Services
-  TRUENAS_IP: "10.1.1.15"
-  XO_IP: "10.1.1.16"
