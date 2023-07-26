@@ -47,7 +47,7 @@ spec:
       main:
         ports:
           http:
-            port: *port
+            port: &port 80
     probes:
       liveness: &probes
         enabled: true
