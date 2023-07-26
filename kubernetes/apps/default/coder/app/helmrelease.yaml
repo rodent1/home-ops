@@ -40,7 +40,8 @@ spec:
     image:
       repository: hcr.io/coder/code-server
       tag: 4.15.0
-    env: {}
+    env:
+      CODER_ACCESS_URL: https://coder.${SECRET_DOMAIN}
     envFrom: *envFrom
     service:
       main:
