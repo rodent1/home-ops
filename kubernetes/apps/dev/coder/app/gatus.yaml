@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: coder-gatus-ep
-  namespace: default
+  namespace: dev
   labels:
     gatus.io/enabled: "true"
 data:
