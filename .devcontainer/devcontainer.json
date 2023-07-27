@@ -1,9 +1,0 @@
-{
-  "name": "home-ops-devcontainer",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "features": {
-    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
-    "ghcr.io/mpriscella/features/sops:1": {},
-    "ghcr.io/devcontainers-contrib/features/age:1": {}
-  }
-}

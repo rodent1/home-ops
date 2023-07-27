@@ -42,7 +42,9 @@ spec:
       tag: 4.15.0
     env:
       CODER_ACCESS_URL: https://coder.${SECRET_DOMAIN}
-    envFrom: *envFrom
+    envFrom:
+      - secretRef:
+          name: coder-secret
     service:
       main:
         ports:
