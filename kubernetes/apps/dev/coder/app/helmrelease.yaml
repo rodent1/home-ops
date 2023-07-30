@@ -39,7 +39,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/coder/code-server
-      tag: 4.15.0
+      tag: 4.16.0
     env:
       CODER_ACCESS_URL: https://coder.${SECRET_DOMAIN}
     envFrom:
