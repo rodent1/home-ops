@@ -40,11 +40,12 @@ spec:
     image:
       repository: ghcr.io/coder/code-server
       tag: 4.16.0
-    env:
-      CODER_ACCESS_URL: https://coder.${SECRET_DOMAIN}
-    envFrom:
-      - secretRef:
-          name: coder-secret
+    coder:
+      env:
+        CODER_ACCESS_URL: https://coder.${SECRET_DOMAIN}
+      envFrom:
+        - secretRef:
+            name: coder-secret
     service:
       main:
         ports:
