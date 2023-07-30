@@ -8,7 +8,7 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/default/coder/app
+  path: ./kubernetes/apps/dev/coder/app
   prune: true
   sourceRef:
     kind: GitRepository
