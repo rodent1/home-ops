@@ -87,7 +87,7 @@ spec:
       #       name: coder-secret
       #       key: CODER_OIDC_CLIENT_SECRET
       ingress:
-        enabled: true
+        enable: true
         className: nginx
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
