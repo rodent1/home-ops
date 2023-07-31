@@ -66,26 +66,26 @@ spec:
             name: coder-secret
             key: CODER_GITAUTH_0_CLIENT_SECRET
       # OIDC
-      # - name: CODER_OIDC_ISSUER_URL
-      #   valueFrom:
-      #     secretKeyRef:
-      #       name: coder-secret
-      #       key: CODER_OIDC_ISSUER_URL
-      # - name: CODER_OIDC_EMAIL_DOMAIN
-      #   valueFrom:
-      #     secretKeyRef:
-      #       name: coder-secret
-      #       key: CODER_OIDC_EMAIL_DOMAIN
-      # - name: CODER_OIDC_CLIENT_ID
-      #   valueFrom:
-      #     secretKeyRef:
-      #       name: coder-secret
-      #       key: CODER_OIDC_CLIENT_ID
-      # - name: CODER_OIDC_CLIENT_SECRET
-      #   valueFrom:
-      #     secretKeyRef:
-      #       name: coder-secret
-      #       key: CODER_OIDC_CLIENT_SECRET
+      - name: CODER_OIDC_ISSUER_URL
+        valueFrom:
+          secretKeyRef:
+            name: coder-secret
+            key: CODER_OIDC_ISSUER_URL
+      - name: CODER_OIDC_EMAIL_DOMAIN
+        valueFrom:
+          secretKeyRef:
+            name: coder-secret
+            key: CODER_OIDC_EMAIL_DOMAIN
+      - name: CODER_OIDC_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: coder-secret
+            key: CODER_OIDC_CLIENT_ID
+      - name: CODER_OIDC_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: coder-secret
+            key: CODER_OIDC_CLIENT_SECRET
       ingress:
         enable: true
         className: nginx
