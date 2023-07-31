@@ -91,19 +91,19 @@ spec:
       protocol: http2
       annotations: {}
 
-    ingress:
-      enabled: true
-      className: "nginx"
-      annotations:
-        external-dns.alpha.kubernetes.io/target: "ingress.${SECRET_DOMAIN}"
-      hosts:
-        - host: *host
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - *host
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      external-dns.alpha.kubernetes.io/target: "ingress.${SECRET_DOMAIN}"
+    hosts:
+      - host: *host
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - *host
 
     initJob:
       # Once ZITADEL is installed, the initJob can be disabled.
