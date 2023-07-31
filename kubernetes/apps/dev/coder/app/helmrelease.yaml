@@ -79,71 +79,17 @@ spec:
       #     secretKeyRef:
       #       name: coder-secret
       #       key: CODER_OIDC_CLIENT_SECRET
-
----
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: coder
-  namespace: dev
-spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 1.5.1
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
-  maxHistory: 2
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
-  values:
-    initContainers:
-      01-init-db:
-        image: ghcr.io/onedr0p/postgres-init:14.8
-        imagePullPolicy: IfNotPresent
-        envFrom: &envFrom
-          - secretRef:
-              name: coder-secret
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/coder/code-server
-      tag: 4.16.0
-    coder:
-      env:
-        CODER_ACCESS_URL: https://coder.${SECRET_DOMAIN}
-      envFrom:
-        - secretRef:
-            name: coder-secret
-    service:
-      main:
-        ports:
-          http:
-            port: &port 80
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
-        hosts:
-          - host: &host "coder.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
+      ingress:
+        main:
+          enabled: true
+          ingressClassName: nginx
+          annotations:
+            external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
+          hosts:
+            - host: &host "coder.${SECRET_DOMAIN}"
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - *host
