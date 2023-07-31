@@ -8,6 +8,88 @@ spec:
   interval: 30m
   chart:
     spec:
+      chart: coder
+      version: 0.27.2
+      sourceRef:
+        kind: HelmRepository
+        name: coder
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    coder:
+      env:
+      # DB
+      - name: CODER_PG_CONNECTION_URL
+        valueFrom:
+          secretKeyRef:
+            name: coder-secret
+            key: CODER_PG_CONNECTION_URL
+      # App
+      - name: CODER_ACCESS_URL
+        value: https://coder.${SECRET_DOMAIN}
+      # Github
+      - name: CODER_GITAUTH_0_ID
+        valueFrom:
+          secretKeyRef:
+            name: coder-secret
+            key: CODER_GITAUTH_0_ID
+      - name: CODER_GITAUTH_0_TYPE
+        valueFrom:
+          secretKeyRef:
+            name: coder-secret
+            key: CODER_GITAUTH_0_TYPE
+      - name: CODER_GITAUTH_0_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: coder-secret
+            key: CODER_GITAUTH_0_CLIENT_ID
+      - name: CODER_GITAUTH_0_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: coder-secret
+            key: CODER_GITAUTH_0_CLIENT_SECRET
+      # OIDC
+      # - name: CODER_OIDC_ISSUER_URL
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: coder-secret
+      #       key: CODER_OIDC_ISSUER_URL
+      # - name: CODER_OIDC_EMAIL_DOMAIN
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: coder-secret
+      #       key: CODER_OIDC_EMAIL_DOMAIN
+      # - name: CODER_OIDC_CLIENT_ID
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: coder-secret
+      #       key: CODER_OIDC_CLIENT_ID
+      # - name: CODER_OIDC_CLIENT_SECRET
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: coder-secret
+      #       key: CODER_OIDC_CLIENT_SECRET
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: coder
+  namespace: dev
+spec:
+  interval: 30m
+  chart:
+    spec:
       chart: app-template
       version: 1.5.1
       sourceRef:
