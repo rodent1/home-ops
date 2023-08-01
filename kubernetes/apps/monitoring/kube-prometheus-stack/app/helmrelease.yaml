@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     crds: CreateReplace
     remediation:
       retries: 3
@@ -31,8 +30,6 @@ spec:
   dependsOn:
     - name: local-path-provisioner
       namespace: kube-system
-    - name: ingress-nginx
-      namespace: networking
   values:
     crds:
       enabled: true
@@ -116,7 +113,7 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: internal
         annotations:
           hajimari.io/appName: Prometheus
           hajimari.io/icon: simple-icons:prometheus
