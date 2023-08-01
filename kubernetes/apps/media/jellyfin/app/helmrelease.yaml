@@ -44,9 +44,11 @@ spec:
 
     service:
       main:
+        type: ClusterIP
+        externalTrafficPolicy: Local
         ports:
           http:
-            port: &port 80
+            port: &port 8096
     # serviceMonitor:
     #   main:
     #     enabled: true
