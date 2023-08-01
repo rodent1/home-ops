@@ -44,12 +44,9 @@ spec:
 
     service:
       main:
-        type: LoadBalancer
-        externalIPs: ["10.1.1.31"]
-        externalTrafficPolicy: Local
         ports:
           http:
-            port: &port 8096
+            port: &port 80
     # serviceMonitor:
     #   main:
     #     enabled: true
