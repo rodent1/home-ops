@@ -45,6 +45,8 @@ spec:
     image:
       repository: ghcr.io/coder/coder
       tag: v0.27.3
+    command:
+      - /opt/coder
     serviceAccount:
       create: true
       name: "coder"
