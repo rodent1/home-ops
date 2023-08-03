@@ -55,3 +55,4 @@ spec:
   tls:
     - hosts:
         - *host
+      secretName: rodent-production-tls
