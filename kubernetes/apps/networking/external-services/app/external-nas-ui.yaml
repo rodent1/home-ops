@@ -36,9 +36,11 @@ metadata:
     app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
   annotations:
-    kubernetes.io/ingress.class: nginx
     external-dns.alpha.kubernetes.io/target: "ingress.${SECRET_DOMAIN}"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS" # Indicate that the backend will use HTTPS
+    nginx.ingress.kubernetes.io/proxy-ssl-verify: "off" # Disable SSL verification
 spec:
+  ingressClassName: external
   rules:
     - host: &host tank.${SECRET_DOMAIN}
       http:
