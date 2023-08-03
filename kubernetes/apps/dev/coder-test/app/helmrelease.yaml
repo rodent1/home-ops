@@ -56,9 +56,7 @@ spec:
       CODER_ACCESS_URL: https://coder.${SECRET_DOMAIN}
       CODER_HTTP_ADDRESS: "0.0.0.0:8080"
       CODER_PROMETHEUS_ADDRESS: "0.0.0.0:2112"
-    envFrom:
-      - secretRef:
-          name: coder-secret
+    envFrom: *envFrom
     service:
       main:
         type: LoadBalancer
