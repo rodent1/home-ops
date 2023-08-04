@@ -6,9 +6,11 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
+  url: ssh://git@github.com/$user/$repo
   ref:
     branch: main
-  url: "https://github.com/Rodent1/home-ops.git"
+  secretRef:
+    name: github-deploy-key
   ignore: |
     # exclude all
     /*
