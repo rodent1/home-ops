@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
-  url: ssh://git@github.com/$user/$repo
+  url: ssh://git@github.com/Rodent1/home-ops
   ref:
     branch: main
   secretRef:
