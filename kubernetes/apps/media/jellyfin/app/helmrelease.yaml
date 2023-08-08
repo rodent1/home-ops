@@ -99,11 +99,6 @@ spec:
         accessMode: ReadWriteOnce
         size: 50Gi
         storageClass: ceph-block
-      - name: web
-        mountPath: /usr/share/jellyfin/web
-        accessMode: ReadWriteOnce
-        size: 50Gi
-        storageClass: ceph-block
     persistence:
       media:
         enabled: true
