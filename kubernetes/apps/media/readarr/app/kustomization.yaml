@@ -4,5 +4,5 @@ kind: Kustomization
 namespace: downloads
 resources:
   - ./externalsecret.yaml
- # - ./gatus.yaml
+  - ./gatus.yaml
   - ./helmrelease.yaml
