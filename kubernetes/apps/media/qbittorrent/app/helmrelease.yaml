@@ -118,6 +118,6 @@ spec:
         memory: 16Gi
     sidecars:
       reannounce:
-        image: ghcr.io/buroa/qbittools:v0.1.1
+        image: ghcr.io/buroa/qbittools:v0.2.0
         imagePullPolicy: IfNotPresent
         args: ["reannounce", "-s", "localhost", "-p", "80"]
