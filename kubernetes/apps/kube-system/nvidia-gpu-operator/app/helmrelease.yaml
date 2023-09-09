@@ -27,6 +27,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    operator:
+      upgradeCRD: true
     nfd:
       enabled: true
     driver:
