@@ -35,7 +35,8 @@ spec:
       enabled: false
     toolkit:
       enabled: true
-      version: v1.12.1
+      # renovate: registryUrl=https://nvcr.io/nvidia/k8s/container-toolkit
+      version: v1.13.5
       env:
         - name: CONTAINERD_CONFIG
           value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml
