@@ -87,20 +87,11 @@ spec:
         tls:
           - hosts:
               - *host
-    initContainers:
-      init-permission:
-        image: busybox:latest
-        command:
-        - "sh"
-        - "-c"
-        - "chown -R 568:568 /usr/share/jellyfin/web/"
-        volumeMounts:
-        - name: jellyfin-web
-          mountPath: /usr/share/jellyfin/web/
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
         - 44
         - 109
