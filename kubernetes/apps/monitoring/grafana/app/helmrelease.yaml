@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -24,12 +25,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: local-path-provisioner
-      namespace: kube-system
   values:
-    deploymentStrategy:
-      type: Recreate
     admin:
       existingSecret: grafana-admin-secret
     env:
@@ -43,6 +39,8 @@ spec:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
+      news:
+        news_feed_enabled: false
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -107,6 +105,7 @@ spec:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
+          - { name: Alertmanager, orgId: 1 }
           - { name: Loki, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
         datasources:
@@ -125,6 +124,13 @@ spec:
             url: http://loki-gateway.monitoring.svc.cluster.local
             jsonData:
               maxLines: 250
+          - name: Alertmanager
+            type: alertmanager
+            uid: alertmanager
+            access: proxy
+            url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
     dashboards:
       default:
         cloudflared:
@@ -132,18 +138,9 @@ spec:
           revision: 6
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-        cloudnative-pg:
-          url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
-          datasource: Prometheus
         external-dns:
           gnetId: 15038 # https://grafana.com/grafana/dashboards/15038?tab=revisions
           revision: 1
-          datasource: Prometheus
-        external-secrets:
-          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
-          datasource: Prometheus
-        cert-manager:
-          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
           datasource: Prometheus
         node-exporter-full:
           gnetId: 1860 # https://grafana.com/grafana/dashboards/1860?tab=revisions
@@ -158,6 +155,15 @@ spec:
           revision: 1
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
+        cloudnative-pg:
+          url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
+          datasource: Prometheus
+        cert-manager:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+          datasource: Prometheus
+        external-secrets:
+          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
+          datasource: Prometheus
       ceph:
         ceph-cluster:
           gnetId: 2842 # https://grafana.com/grafana/dashboards/2842?tab=revisions
@@ -177,6 +183,9 @@ spec:
           datasource: Prometheus
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
+          datasource: Prometheus
+        flux-logs:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/logs.json
           datasource: Prometheus
       kubernetes:
         kubernetes-api-server:
@@ -274,17 +283,16 @@ spec:
       enabled: true
     ingress:
       enabled: true
-      ingressClassName: internal
+      ingressClassName: external
       annotations:
-        hajimari.io/icon: simple-icons:grafana
+        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
       hosts:
-        - &host "grafana.${SECRET_DOMAIN}"
+        - &host grafana.${SECRET_DOMAIN}
       tls:
         - hosts:
             - *host
     persistence:
-      enabled: true
-      storageClassName: local-path
+      enabled: false
     testFramework:
       enabled: false
     topologySpreadConstraints:
