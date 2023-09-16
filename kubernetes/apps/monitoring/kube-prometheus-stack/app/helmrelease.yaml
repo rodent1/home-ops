@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -17,12 +18,10 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
     remediation:
       retries: 3
   uninstall:
@@ -30,26 +29,33 @@ spec:
   dependsOn:
     - name: local-path-provisioner
       namespace: kube-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     crds:
       enabled: true
     cleanPrometheusOperatorObjectNames: true
-    alertmanager:
-      enabled: false
-    kube-state-metrics:
-      metricLabelsAllowlist:
-        - "deployments=[*]"
-        - "persistentvolumeclaims=[*]"
-        - "pods=[*]"
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
-              regex: ^(.*)$
-              replacement: $1
-              targetLabel: kubernetes_node
+    # alertmanager:
+    #   ingress:
+    #     enabled: true
+    #     pathType: Prefix
+    #     ingressClassName: internal
+    #     hosts:
+    #       - &host alertmanager.${SECRET_DOMAIN}
+    #     tls:
+    #       - hosts:
+    #           - *host
+    #   alertmanagerSpec:
+    #     replicas: 2
+    #     useExistingSecret: true
+    #     configSecret: alertmanager-secret
+    #     storage:
+    #       volumeClaimTemplate:
+    #         spec:
+    #           storageClassName: local-path
+    #           resources:
+    #             requests:
+    #               storage: 1Gi
     kubelet:
       enabled: true
       serviceMonitor:
@@ -109,21 +115,24 @@ spec:
             sourceLabels: ["__name__"]
             regex: "(apiserver_audit|apiserver_client|apiserver_delegated|apiserver_envelope|apiserver_storage|apiserver_webhooks|authenticated_user|authentication|disabled_metric|go|hidden_metric|kubernetes_build|kubernetes_feature|leader_election|process_cpu|process_max|process_open|process_resident|process_start|process_virtual|registered_metric|rest_client|scheduler|scrape_duration|scrape_samples|scrape_series|workqueue)_(.+)"
     kubeProxy:
-      enabled: false # Disabled due to eBPF
+      enabled: false
     prometheus:
       ingress:
         enabled: true
         ingressClassName: internal
-        annotations:
-          hajimari.io/appName: Prometheus
-          hajimari.io/icon: simple-icons:prometheus
         pathType: Prefix
         hosts:
-          - &host "prometheus.${SECRET_DOMAIN}"
+          - &host prometheus.${SECRET_DOMAIN}
         tls:
           - hosts:
               - *host
+      thanosService:
+        enabled: true
+      thanosServiceMonitor:
+        enabled: true
       prometheusSpec:
+        replicas: 2
+        replicaExternalLabelName: __replica__
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
@@ -131,14 +140,24 @@ spec:
         scrapeConfigSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
-        retentionSize: 8GB
+        enableFeatures:
+          - auto-gomaxprocs
+          - memory-snapshot-on-shutdown
+          - new-service-discovery-manager
+        thanos:
+          image: quay.io/thanos/thanos:v0.32.2
+          objectStorageConfig:
+            name: thanos-objstore-secret
+            key: objstore.yml
+        retention: 2d
+        retentionSize: 15GB
         storageSpec:
           volumeClaimTemplate:
             spec:
               storageClassName: local-path
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 20Gi
     grafana:
       enabled: false
       forceDeployDashboards: true
@@ -147,3 +166,7 @@ spec:
           multicluster:
             etcd:
               enabled: true
+    nodeExporter:
+      enabled: false
+    kubeStateMetrics:
+      enabled: false
