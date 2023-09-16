@@ -114,9 +114,9 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+            url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
             jsonData:
-              prometheusType: Prometheus
+              prometheusType: Thanos
             isDefault: true
           - name: Loki
             type: loki
