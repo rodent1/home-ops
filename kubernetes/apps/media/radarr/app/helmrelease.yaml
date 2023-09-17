@@ -96,9 +96,6 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups: [10000]
     persistence:
-      config:
-        enabled: true
-        existingClaim: radarr-config
       media:
         enabled: true
         type: nfs
