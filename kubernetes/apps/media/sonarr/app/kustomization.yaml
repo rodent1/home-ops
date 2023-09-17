@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: media
 resources:
   - ./externalsecret.yaml
-  - ./helmrelease.yaml
-  - ./volsync.yaml
   - ./gatus.yaml
+  - ./helmrelease.yaml
+  - ./pvc.yaml
+  - ./volsync.yaml
