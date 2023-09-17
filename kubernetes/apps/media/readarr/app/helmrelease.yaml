@@ -16,7 +16,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -28,8 +27,6 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: backup
   values:
     initContainers:
       01-init-db:
@@ -39,7 +36,6 @@ spec:
           - secretRef:
               name: readarr-secret
     controller:
-      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
     image:
