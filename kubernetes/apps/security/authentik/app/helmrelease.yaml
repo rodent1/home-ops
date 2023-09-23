@@ -45,7 +45,7 @@ spec:
     postgresql:
       enabled: false
     redis:
-      enabled: false
+      enabled: true
     geoip:
       enabled: false
     prometheus:
