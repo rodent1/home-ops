@@ -5,14 +5,26 @@ metadata:
   name: &app authentik-ldap
   namespace: security
 spec:
+  interval: 30m
   chart:
     spec:
       chart: app-template
       version: 1.5.1
       sourceRef:
-        name: bjw-s
         kind: HelmRepository
+        name: bjw-s
         namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     global:
       fullnameOverride: *app
