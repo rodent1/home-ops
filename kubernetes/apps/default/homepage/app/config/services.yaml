@@ -32,7 +32,7 @@
         description: Mediaserver
         widget:
           type: jellyfin
-          url: https://jellyfin.media.svc.home.local
+          url: http://jellyfin.media.svc.home.local:8096
           key: ${HOMEPAGE_VAR_JELLYFIN_TOKEN}
     - Jellyseerr:
         href: https://requests.${SECRET_DOMAIN}
@@ -40,7 +40,7 @@
         description: TODO
         widget:
           type: jellyseerr
-          url: https://jellyseer.media.svc.home.local
+          url: http://jellyseer.media.svc.home.local
           key: ${HOMEPAGE_VAR_JELLYSEER_TOKEN}
     - qBittorrent:
         href: https://qbit.${SECRET_DOMAIN}
@@ -48,7 +48,7 @@
         description: TODO
         widget:
           type: qbittorrent
-          url: https://qbittorrent.media.svc.home.local
+          url: http://qbittorrent.media.svc.home.local
           username: ${HOMEPAGE_VAR_QBITTORRENT_USERNAME}
           password: ${HOMEPAGE_VAR_QBITTORRENT_PASSWORD}
     - Prowlarr:
@@ -57,7 +57,7 @@
         description: TODO
         widget:
           type: prowlarr
-          url: https://prowlarr.media.svc.home.local
+          url: http://prowlarr.media.svc.home.local
           key: ${HOMEPAGE_VAR_PROWLARR_TOKEN}
     - Radarr:
         href: https://radarr.${SECRET_DOMAIN}
@@ -65,7 +65,7 @@
         description: TODO
         widget:
           type: radarr
-          url: https://radarr.media.svc.home.local
+          url: http://radarr.media.svc.home.local
           key: ${HOMEPAGE_VAR_RADARR_TOKEN}
     - Readarr:
         href: https://readarr.${SECRET_DOMAIN}
@@ -73,7 +73,7 @@
         description: TODO
         widget:
           type: readarr
-          url: https://readarr.media.svc.home.local
+          url: http://readarr.media.svc.home.local
           key: ${HOMEPAGE_VAR_READARR_TOKEN}
     - Sonarr:
         href: https://sonarr.$${SECRET_DOMAIN}
@@ -81,7 +81,7 @@
         description: TODO
         widget:
           type: sonarr
-          url: https://sonarr.media.svc.home.local
+          url: http://sonarr.media.svc.home.local
           key: ${HOMEPAGE_VAR_SONARR_TOKEN}
 - Storage:
     - TrueNAS:
@@ -90,6 +90,6 @@
         description: TrueNAS WebUI
         widget:
             type: truenas
-            url: https://10.1.1.15
+            url: https://10.1.1.15:443
             key: ${HOMEPAGE_VAR_TRUENAS_TOKEN}
 
