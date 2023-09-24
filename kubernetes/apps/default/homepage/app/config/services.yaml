@@ -90,6 +90,6 @@
         description: TrueNAS WebUI
         widget:
             type: truenas
-            url: https://tank.${SECRET_DOMAIN}
+            url: https://10.1.1.15
             key: ${HOMEPAGE_VAR_TRUENAS_TOKEN}
 
