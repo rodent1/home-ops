@@ -57,7 +57,7 @@
         description: TODO
         widget:
           type: prowlarr
-          url: http://prowlarr.media
+          url: https://prowlarr.${SECRET_DOMAIN}
           key: ${HOMEPAGE_VAR_PROWLARR_TOKEN}
     - Radarr:
         href: https://radarr.${SECRET_DOMAIN}
