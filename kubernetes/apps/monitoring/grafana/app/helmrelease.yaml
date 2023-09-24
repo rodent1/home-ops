@@ -26,8 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # admin:
-    #   existingSecret: grafana-admin-secret
+    admin:
+      existingSecret: grafana-admin-secret
     envFromSecret: "grafana-secret"
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true

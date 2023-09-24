@@ -1,1 +1,34 @@
 ---
+- Media:
+- Infrastructure:
+    - Cloudflared:
+        href: https://dash.cloudflare.com/
+        icon: cloudflare-zero-trust.png
+        description: Cloudflared Tunnel
+        widget:
+          type: cloudflared
+          accountid: {{HOMEPAGE_VAR_CLOUDFLARED_ACCOUNTID}}
+          tunnelid: {{HOMEPAGE_VAR_CLOUDFLARED_TUNNELID}}
+          key: {{HOMEPAGE_VAR_CLOUDFLARED_API_TOKEN}}
+    - Unifi:
+        href: https://unifi.ui.com
+        icon: unifi.png
+        description: Unifi Dashboard
+        widget:
+          type: unifi
+          url: https://10.1.1.1:443
+          username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
+          password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
+    - NextDNS:
+        icon: nextdns.png
+        description: NextDNS
+        widget:
+          type: nextdns
+          profile: {{HOMEPAGE_VAR_NEXTDNS_ID}}
+          key: {{HOMEPAGE_VAR_NEXTDNS_API}}
+- Storage:
+    - TrueNAS:
+        href: https://tank.${SECRET_DOMAIN}
+        icon: truenas.png
+        description: TrueNAS WebUI
+
