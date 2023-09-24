@@ -32,7 +32,7 @@
         description: Mediaserver
         widget:
           type: jellyfin
-          url: http://jellyfin.media.svc.cluster.local:8096
+          url: http://jellyfin.media:8096
           key: ${HOMEPAGE_VAR_JELLYFIN_TOKEN}
     - Jellyseerr:
         href: https://requests.${SECRET_DOMAIN}
@@ -40,15 +40,15 @@
         description: TODO
         widget:
           type: jellyseerr
-          url: http://jellyseer.media.svc.cluster.local
+          url: http://jellyseer.media
           key: ${HOMEPAGE_VAR_JELLYSEER_TOKEN}
     - qBittorrent:
-        href: https://qbit.${SECRET_DOMAIN}
+        href: https://qb.${SECRET_DOMAIN}
         icon: qbittorrent.png
         description: TODO
         widget:
           type: qbittorrent
-          url: http://qbittorrent.media.svc.cluster.local
+          url: http://qbittorrent.media
           username: ${HOMEPAGE_VAR_QBITTORRENT_USERNAME}
           password: ${HOMEPAGE_VAR_QBITTORRENT_PASSWORD}
     - Prowlarr:
@@ -57,7 +57,7 @@
         description: TODO
         widget:
           type: prowlarr
-          url: http://prowlarr.media.svc.cluster.local
+          url: http://prowlarr.media
           key: ${HOMEPAGE_VAR_PROWLARR_TOKEN}
     - Radarr:
         href: https://radarr.${SECRET_DOMAIN}
@@ -65,7 +65,7 @@
         description: TODO
         widget:
           type: radarr
-          url: http://radarr.media.svc.cluster.local
+          url: http://radarr.media
           key: ${HOMEPAGE_VAR_RADARR_TOKEN}
     - Readarr:
         href: https://readarr.${SECRET_DOMAIN}
@@ -73,7 +73,7 @@
         description: TODO
         widget:
           type: readarr
-          url: http://readarr.media.svc.cluster.local
+          url: http://readarr.media
           key: ${HOMEPAGE_VAR_READARR_TOKEN}
     - Sonarr:
         href: https://sonarr.$${SECRET_DOMAIN}
@@ -81,7 +81,7 @@
         description: TODO
         widget:
           type: sonarr
-          url: http://sonarr.media.svc.cluster.local
+          url: http://sonarr.media
           key: ${HOMEPAGE_VAR_SONARR_TOKEN}
 - Storage:
     - TrueNAS:
@@ -90,6 +90,6 @@
         description: TrueNAS WebUI
         widget:
             type: truenas
-            url: https://10.1.1.15:443
+            url: http://tank.${SECRET_DOMAIN}
             key: ${HOMEPAGE_VAR_TRUENAS_TOKEN}
 
