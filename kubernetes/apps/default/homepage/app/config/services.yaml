@@ -1,5 +1,62 @@
 ---
 - Media:
+    - Jellyfin:
+        href: https://jelly.${SECRET_DOMAIN}
+        icon: jellyfin.png
+        description: Mediaserver
+        widget:
+          type: jellyfin
+          url: https://jelly.${SECRET_DOMAIN}
+          key: ${HOMEPAGE_VAR_JELLYFIN_TOKEN}
+    - Jellyseerr:
+        href: https://requests.${SECRET_DOMAIN}
+        icon: jellyseerr.png
+        description: TODO
+        widget:
+          type: jellyseerr
+          url: https://requests.${SECRET_DOMAIN}
+          key: ${HOMEPAGE_VAR_JELLYSEER_TOKEN}
+    - qBittorrent:
+        href: https://qbittorrent.${SECRET_DOMAIN}
+        icon: qbittorrent.png
+        description: TODO
+        widget:
+          type: qbittorrent
+          url: https://qbittorrent.${SECRET_DOMAIN}
+          username: ${HOMEPAGE_VAR_QBITTORRENT_USERNAME}
+          password: ${HOMEPAGE_VAR_QBITTORRENT_PASSWORD}
+    - Prowlarr:
+        href: https://prowlarr.${SECRET_DOMAIN}
+        icon: prowlarr.png
+        description: TODO
+        widget:
+          type: prowlarr
+          url: https://prowlarr.${SECRET_DOMAIN}
+          key: ${HOMEPAGE_VAR_PROWLARR_TOKEN}
+    - Radarr:
+        href: https://radarr.${SECRET_DOMAIN}
+        icon: radarr.png
+        description: TODO
+        widget:
+          type: radarr
+          url: https://radarr.${SECRET_DOMAIN}
+          key: ${HOMEPAGE_VAR_RADARR_TOKEN}
+    - Readarr:
+        href: https://readarr.${SECRET_DOMAIN}
+        icon: readarr.png
+        description: TODO
+        widget:
+          type: readarr
+          url: https://readarr.${SECRET_DOMAIN}
+          key: ${HOMEPAGE_VAR_READARR_TOKEN}
+    - Sonarr:
+        href: https://sonarr.$${SECRET_DOMAIN}
+        icon: sonarr.png
+        description: TODO
+        widget:
+          type: sonarr
+          url: https://sonarr.${SECRET_DOMAIN}
+          key: ${HOMEPAGE_VAR_SONARR_TOKEN}
 - Infrastructure:
     - Cloudflared:
         href: https://dash.cloudflare.com/
