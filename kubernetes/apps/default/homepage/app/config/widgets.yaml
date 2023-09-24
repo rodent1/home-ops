@@ -24,11 +24,6 @@
     longitude: ${LONGITUDE}
     units: metric
     cache: 5
-- longhorn:
-    expanded: false
-    total: true
-    labels: true
-    nodes: false
 - datetime:
     text_size: l
     format:
