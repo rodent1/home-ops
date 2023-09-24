@@ -3,9 +3,6 @@
     provider: [bing, google]
     focus: false
     target: _blank
-- greeting:
-    text_size: xl
-    text: "Howdy Hey!"
 - kubernetes:
     cluster:
       cpu: true
@@ -20,8 +17,8 @@
       showLabel: true
 - openmeteo:
     label: Home
-    latitude: ${LATITUDE}
-    longitude: ${LONGITUDE}
+    latitude: ${SECRET_LATITUDE}
+    longitude: ${SECRET_LONGITUDE}
     units: metric
     cache: 5
 - datetime:
