@@ -40,7 +40,7 @@
         description: TODO
         widget:
           type: jellyseerr
-          url: http://jellyseer.media
+          url: https://requests.${SECRET_DOMAIN}
           key: ${HOMEPAGE_VAR_JELLYSEER_TOKEN}
     - qBittorrent:
         href: https://qb.${SECRET_DOMAIN}
