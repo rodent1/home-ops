@@ -51,8 +51,11 @@ spec:
 
         initContainers:
           01-init-db:
-            image: ghcr.io/onedr0p/postgres-init:14.9
-            imagePullPolicy: IfNotPresent
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag_: 14.9
+              imagePullPolicy: IfNotPresent
+
             envFrom: &envFrom
               - secretRef:
                   name: prowlarr-secret
@@ -62,12 +65,15 @@ spec:
             image:
               repository: ghcr.io/onedr0p/prowlarr-develop
               tag: 1.9.2.3992@sha256:f257660e8048d84631f0c9735fcfe151a60fede04ee47ae032d8e3d382ba517c
+              pullPolicy: IfNotPresent
+
             env:
               TZ: Europe/Oslo
               PROWLARR__INSTANCE_NAME: Prowlarr
               PROWLARR__PORT: &port 80
               PROWLARR__LOG_LEVEL: info
               PROWLARR__AUTHENTICATION_METHOD: External
+
             envFrom: *envFrom
 
             probes:
