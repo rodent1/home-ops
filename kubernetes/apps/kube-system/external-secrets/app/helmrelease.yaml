@@ -12,11 +12,10 @@ spec:
       version: 0.9.5
       sourceRef:
         kind: HelmRepository
-        name: external-secrets-charts
+        name: external-secrets
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,6 +26,7 @@ spec:
     keepHistory: false
   values:
     installCRDs: true
+    replicaCount: 2
     serviceMonitor:
       enabled: true
       interval: 1m
