@@ -138,9 +138,7 @@ spec:
       config-file:
         type: configMap
         name: gatus-configmap
-        advancedMounts:
-          main:
-            main:
-              - path: /config/config.yaml
-                subPath: config.yaml
-                readOnly: true
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
