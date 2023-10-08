@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -26,49 +26,64 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: docker.io/golift/unpackerr
-      tag: unstable
-    env:
-      TZ: Europe/Oslo
-      UN_WEBSERVER_METRICS: "true"
-      UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local
-      UN_SONARR_0_PATHS_0: /media/tmp/tv-sonarr
-      UN_RADARR_0_URL: http://radarr.media.svc.cluster.local
-      UN_RADARR_0_PATHS_0: /media/tmp/radarr
-    envFrom:
-      - secretRef:
-          name: unpackerr-secret
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+
+      nodeSelector:
+        node-role.kubernetes.io/worker: "true"
+
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        type: deployment
+        strategy: Recreate
+
+        containers:
+          main:
+            image:
+              repository: docker.io/golift/unpackerr
+              tag: unstable
+              pullPolicy: IfNotPresent
+
+            env:
+              TZ: Europe/Oslo
+              UN_WEBSERVER_METRICS: "true"
+              UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local
+              UN_SONARR_0_PATHS_0: /media/tmp/tv-sonarr
+              UN_RADARR_0_URL: http://radarr.media.svc.cluster.local
+              UN_RADARR_0_PATHS_0: /media/tmp/radarr
+
+            envFrom:
+              - secretRef:
+                  name: unpackerr-secret
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
+              limits:
+                memory: 2000Mi
+
     service:
       main:
         ports:
           http:
             port: 5656
+
     serviceMonitor:
       main:
         enabled: true
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
+
     persistence:
       media:
-        enabled: true
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/tank/Media
-        mountPath: /media
-    nodeSelector:
-      node-role.kubernetes.io/worker: "true"
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 2000Mi
+        globalMounts:
+          - path: /media
