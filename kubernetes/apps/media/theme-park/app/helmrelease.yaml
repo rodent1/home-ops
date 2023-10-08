@@ -33,9 +33,6 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
 
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
-
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
