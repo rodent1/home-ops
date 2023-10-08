@@ -28,7 +28,7 @@ spec:
     controllers:
       main:
         type: deployment
-        strategy: Recreate
+        strategy: RollingUpdate
 
         containers:
           main:
