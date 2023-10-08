@@ -144,9 +144,9 @@ spec:
         type: configMap
         name: qbittorrent-scripts
         advancedMounts:
-          main: # the controller with the "main" identifier
-            main: # the container with the "main" identifier
+          main:
+            main:
               - path: /scripts/completed.sh
-                readOnly: true
                 subPath: completed.sh
+                readOnly: true
                 defaultMode: 0775
