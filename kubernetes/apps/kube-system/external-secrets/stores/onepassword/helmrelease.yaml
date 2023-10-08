@@ -126,7 +126,7 @@ spec:
       main:
         ports:
           http:
-            port: *port
+            port: *portSync
 
     ingress:
       main:
@@ -139,7 +139,7 @@ spec:
                 pathType: Prefix
                 service:
                   name: main
-                  port: *port
+                  port: *portSync
         tls:
           - hosts:
               - *host
