@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -31,37 +31,74 @@ spec:
     - name: volsync
       namespace: backup
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/advplyr/audiobookshelf
-      tag: 2.4.4
-    env:
-      TZ: Europe/Oslo
-      AUDIOBOOKSHELF_UID: 568
-      AUDIOBOOKSHELF_GID: 568
-      CONFIG_PATH: /config
-      METADATA_PATH: /config/metadata
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups:
+          - 1000
+
+      nodeSelector:
+        node-role.kubernetes.io/worker: "true"
+
+    controllers:
+      main:
+        strategy: RollingUpdate
+        type: statefulset
+        containers:
+          main:
+            image:
+              repository: ghcr.io/advplyr/audiobookshelf
+              tag: 2.4.4
+              pullPolicy: IfNotPresent
+
+            env:
+              TZ: Europe/Oslo
+              AUDIOBOOKSHELF_UID: 568
+              AUDIOBOOKSHELF_GID: 568
+              CONFIG_PATH: /config
+              METADATA_PATH: /config/metadata
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              globalMounts:
+                - path: /config
+              accessMode: ReadWriteOnce
+              size: 15Gi
+              storageClass: ceph-block
+
     service:
       main:
         ports:
           http:
-            port: &port 80
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
             port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
+
     ingress:
       main:
         enabled: true
@@ -73,37 +110,21 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: *port
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 15Gi
-        storageClass: ceph-block
+
     persistence:
       media:
-        enabled: true
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/tank/Media
-        mountPath: /media
+        globalMounts:
+          - path: /media
       cache:
-        enabled: true
-        mountPath: /.npm
+        globalMounts:
+          - path: /.npm
         type: emptyDir
-    nodeSelector:
-      node-role.kubernetes.io/worker: "true"
-    resources:
-      requests:
-        cpu: 100m
-        memory: 100Mi
-      limits:
-        memory: 500Mi

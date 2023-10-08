@@ -92,6 +92,7 @@ spec:
               limits:
                 nvidia.com/gpu: 1  # Limit to 1 GPU
                 memory: 4000Mi
+
         statefulset:
           volumeClaimTemplates:
             - name: config
