@@ -93,7 +93,7 @@ spec:
             env:
               OP_BUS_PORT: "11221"
               OP_BUS_PEERS: "localhost:11220"
-              OP_HTTP_PORT: &portSync 8081
+              OP_HTTP_PORT: &portsync 8081
               OP_SESSION:
                   valueFrom:
                     secretKeyRef:
@@ -101,26 +101,18 @@ spec:
                       key: 1password-credentials.json
 
             probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /heartbeat
-                    port: *portSync
-                  initialDelaySeconds: 15
-                  periodSeconds: 30
-                  failureThreshold: 3
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: *portSync
-                  initialDelaySeconds: 15
-              startup:
-                enabled: false
+              readinessProbe:
+                httpGet:
+                  path: /health
+                  port: *portsync
+                initialDelaySeconds: 15
+              livenessProbe:
+                httpGet:
+                  path: /heartbeat
+                  port: *portsync
+                failureThreshold: 3
+                periodSeconds: 30
+                initialDelaySeconds: 15
 
     service:
       main:
