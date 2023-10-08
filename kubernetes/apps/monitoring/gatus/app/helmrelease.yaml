@@ -53,6 +53,25 @@ spec:
               - secretRef:
                   name: gatus-secret
 
+          02-config-sync:
+            image:
+              repository: ghcr.io/kiwigrid/k8s-sidecar
+              tag: 1.25.2
+              imagePullPolicy: IfNotPresent
+
+            env:
+              - { name: FOLDER, value: /config }
+              - { name: LABEL, value: gatus.io/enabled }
+              - { name: NAMESPACE, value: ALL }
+              - { name: RESOURCE, value: both }
+              - { name: UNIQUE_FILENAMES, value: "true" }
+              - { name: METHOD, value: LIST }
+
+            envFrom: *envFrom
+
+            volumeMounts:
+              - { name: config, mountPath: /config }
+
         containers:
           main:
             image:
@@ -73,22 +92,6 @@ spec:
                 memory: 100Mi
               limits:
                 memory: 500Mi
-
-          config-sync:
-            image:
-              repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.25.2
-              imagePullPolicy: IfNotPresent
-
-            env:
-              - { name: FOLDER, value: /config }
-              - { name: LABEL, value: gatus.io/enabled }
-              - { name: NAMESPACE, value: ALL }
-              - { name: RESOURCE, value: both }
-              - { name: UNIQUE_FILENAMES, value: "true" }
-              - { name: METHOD, value: LIST }
-
-            envFrom: *envFrom
 
     service:
       main:
@@ -121,6 +124,7 @@ spec:
                 service:
                   name: main
                   port: *port
+
         tls:
           - hosts:
               - *host
@@ -131,11 +135,9 @@ spec:
 
     persistence:
       config:
-        enabled: true
         type: emptyDir
         globalMounts:
           - path: /config
-            readonly: false
 
       config-file:
         type: configMap
