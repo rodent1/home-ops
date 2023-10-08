@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -31,20 +31,67 @@ spec:
     - name: volsync
       namespace: backup
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/onedr0p/jellyfin
-      tag: 10.8.11@sha256:041977cb09d964ed4e00dec2bd0af3208f0121b8385a69617d30657596ffa292
-    env:
-      DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
-      JELLYFIN_FFmpeg__probesize: 50000000
-      JELLYFIN_FFmpeg__analyzeduration: 50000000
-      JELLYFIN_PublishedServerUrl: &loadBalancerIP 10.1.1.30
-      TZ: ${TIMEZONE}
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
-    runtimeClassName: nvidia
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups:
+          - 44
+          - 104
+
+      nodeSelector:
+        node-role.kubernetes.io/worker: "true"
+        # intel.feature.node.kubernetes.io/gpu: "true"
+        nvidia.com/gpu.present: "true"
+
+      runtimeClassName: nvidia
+
+    controllers:
+      main:
+        strategy: Recreate
+        type: statefulset
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/jellyfin
+              tag: 10.8.11@sha256:041977cb09d964ed4e00dec2bd0af3208f0121b8385a69617d30657596ffa292
+              pullPolicy: IfNotPresent
+
+            env:
+              DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
+              JELLYFIN_FFmpeg__probesize: 50000000
+              JELLYFIN_FFmpeg__analyzeduration: 50000000
+              JELLYFIN_PublishedServerUrl: &loadBalancerIP 10.1.1.30
+              TZ: ${TIMEZONE}
+              NVIDIA_VISIBLE_DEVICES: all
+              NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
+            resources:
+              requests:
+                nvidia.com/gpu: 1  # Request 1 GPU
+                cpu: 100m
+                memory: 1000Mi
+              limits:
+                nvidia.com/gpu: 1  # Limit to 1 GPU
+                memory: 4000Mi
 
     service:
       main:
@@ -58,25 +105,10 @@ spec:
     # serviceMonitor:
     #   main:
     #     enabled: true
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
+
     ingress:
       main:
-        enabled: true
-        ingressClassName: external
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -88,40 +120,25 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: *port
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [44, 104]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
+
+    persistence:
+      config:
+        type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 50Gi
-        storageClass: ceph-block
-    persistence:
+        globalMounts:
+          - path: /config
       media:
-        enabled: true
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/tank/Media
-        mountPath: /media
+        globalMounts:
+          - path: /media
       transcode:
-        enabled: true
         type: emptyDir
-    nodeSelector:
-      node-role.kubernetes.io/worker: "true"
-      # intel.feature.node.kubernetes.io/gpu: "true"
-      nvidia.com/gpu.present: "true"
-    resources:
-      requests:
-        nvidia.com/gpu: 1  # Request 1 GPU
-        cpu: 100m
-        memory: 1000Mi
-      limits:
-        nvidia.com/gpu: 1  # Limit to 1 GPU
-        memory: 4000Mi
