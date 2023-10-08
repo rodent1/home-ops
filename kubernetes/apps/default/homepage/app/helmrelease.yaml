@@ -81,23 +81,21 @@ spec:
               - *host
 
     persistence:
-      config-files:
+      config:
         enabled: true
         type: configMap
-        name: homepage-configmap
-        advancedMounts:
-          main:
-            main:
-              - path: /app/config/bookmarks.yaml
-                subPath: bookmarks.yaml
-              - path: /app/config/kubernetes.yaml
-                subPath: kubernetes.yaml
-              - path: /app/config/services.yaml
-                subPath: services.yaml
-              - path: /app/config/settings.yaml
-                subPath: settings.yaml
-              - path: /app/config/widgets.yaml
-                subPath: widgets.yaml
+        name: homepage-config
+        globalMounts:
+          - path: bookmarks.yaml
+            subPath: /app/config/bookmarks.yaml
+          - path: kubernetes.yaml
+            subPath: /app/config/kubernetes.yaml
+          - path: services.yaml
+            subPath: /app/config/services.yaml
+          - subPath: settings.yaml
+            path: /app/config/settings.yaml
+          - path: widgets.yaml
+            subPath: /app/config/widgets.yaml
 
     serviceAccount:
       create: true
