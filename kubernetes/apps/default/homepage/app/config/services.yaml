@@ -32,7 +32,7 @@
         description: Mediaserver
         widget:
           type: jellyfin
-          url: http://jellyfin.media:8096
+          url: http://jellyfin:8096
           key: ${HOMEPAGE_VAR_JELLYFIN_TOKEN}
     - Jellyseerr:
         href: https://requests.${SECRET_DOMAIN}
@@ -67,16 +67,8 @@
           type: radarr
           url: http://radarr.media
           key: ${HOMEPAGE_VAR_RADARR_TOKEN}
-    - Readarr:
-        href: https://readarr.${SECRET_DOMAIN}
-        icon: readarr.png
-        description: TODO
-        widget:
-          type: readarr
-          url: http://readarr.media
-          key: ${HOMEPAGE_VAR_READARR_TOKEN}
     - Sonarr:
-        href: https://sonarr.$${SECRET_DOMAIN}
+        href: https://sonarr.${SECRET_DOMAIN}
         icon: sonarr.png
         description: TODO
         widget:
