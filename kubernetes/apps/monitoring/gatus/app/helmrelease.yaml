@@ -88,6 +88,8 @@ spec:
               - { name: UNIQUE_FILENAMES, value: "true" }
               - { name: METHOD, value: LIST }
 
+            envFrom: *envFrom
+
     service:
       main:
         ports:
