@@ -83,9 +83,15 @@ spec:
     persistence:
       config:
         enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /app/config
+            readOnly: false
+
+      config-map:
+        enabled: true
         type: configMap
         name: homepage-config
-        readOnly: false
         advancedMounts:
           main:
             main:
