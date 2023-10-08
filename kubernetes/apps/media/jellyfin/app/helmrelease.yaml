@@ -50,6 +50,9 @@ spec:
 
     controllers:
       main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
         strategy: RollingUpdate
         type: statefulset
         containers:
