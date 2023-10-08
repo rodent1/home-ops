@@ -87,15 +87,15 @@ spec:
         name: homepage-config
         globalMounts:
           - path: bookmarks.yaml
-            subPath: /app/config/bookmarks.yaml
+            subPath: /config/bookmarks.yaml
           - path: kubernetes.yaml
-            subPath: /app/config/kubernetes.yaml
+            subPath: /config/kubernetes.yaml
           - path: services.yaml
-            subPath: /app/config/services.yaml
-          - subPath: settings.yaml
-            path: /app/config/settings.yaml
+            subPath: /config/services.yaml
+          - path: settings.yaml
+            subPath: /config/settings.yaml
           - path: widgets.yaml
-            subPath: /app/config/widgets.yaml
+            subPath: /config/widgets.yaml
 
     serviceAccount:
       create: true
