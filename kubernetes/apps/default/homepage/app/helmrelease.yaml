@@ -85,9 +85,6 @@ spec:
         enabled: true
         type: configMap
         name: homepage-config
-        globalMounts:
-          - path: /app/config
-            readOnly: false
         advancedMounts:
           main:
             main:
