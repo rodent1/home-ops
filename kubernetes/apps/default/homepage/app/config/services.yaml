@@ -32,7 +32,7 @@
         description: Mediaserver
         widget:
           type: jellyfin
-          url: http://jellyfin:8096
+          url: https://jelly.${SECRET_DOMAIN}
           key: ${HOMEPAGE_VAR_JELLYFIN_TOKEN}
     - Jellyseerr:
         href: https://requests.${SECRET_DOMAIN}
