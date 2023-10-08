@@ -8,7 +8,7 @@ resources:
   - ./helmrelease.yaml
   - ./rbac.yaml
 configMapGenerator:
-  - name: homepage-configmap
+  - name: homepage-config
     files:
       - ./config/bookmarks.yaml
       - ./config/kubernetes.yaml
