@@ -37,9 +37,7 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
-        supplementalGroups:
-          - 44
-          - 104
+        supplementalGroups: [44, 104]
 
       nodeSelector:
         node-role.kubernetes.io/worker: "true"
@@ -53,8 +51,9 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        strategy: RollingUpdate
         type: statefulset
+        strategy: RollingUpdate
+
         containers:
           main:
             image:
@@ -148,5 +147,6 @@ spec:
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
+
       transcode:
         type: emptyDir
