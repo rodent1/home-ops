@@ -92,6 +92,14 @@ spec:
               limits:
                 nvidia.com/gpu: 1  # Limit to 1 GPU
                 memory: 4000Mi
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              globalMounts:
+                - path: /config
+              accessMode: ReadWriteOnce
+              size: 50Gi
+              storageClass: ceph-block
 
     service:
       main:
@@ -129,12 +137,6 @@ spec:
               - *host
 
     persistence:
-      config:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 50Gi
-        globalMounts:
-          - path: /config
       media:
         type: nfs
         server: ${TRUENAS_IP}
