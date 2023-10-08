@@ -85,17 +85,19 @@ spec:
         enabled: true
         type: configMap
         name: homepage-config
-        globalMounts:
-          - path: bookmarks.yaml
-            subPath: /config/bookmarks.yaml
-          - path: kubernetes.yaml
-            subPath: /config/kubernetes.yaml
-          - path: services.yaml
-            subPath: /config/services.yaml
-          - path: settings.yaml
-            subPath: /config/settings.yaml
-          - path: widgets.yaml
-            subPath: /config/widgets.yaml
+        advancedMounts:
+          main:
+            main:
+            - path: /config/bookmarks.yaml
+              subPath: bookmarks.yaml
+            - path: /config/kubernetes.yaml
+              subPath: kubernetes.yaml
+            - path: /config/services.yaml
+              subPath: services.yaml
+            - path: /config/settings.yaml
+              subPath: settings.yaml
+            - path: /config/widgets.yaml
+              subPath: widgets.yaml
 
     serviceAccount:
       create: true
