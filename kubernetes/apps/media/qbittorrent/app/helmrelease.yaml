@@ -93,7 +93,7 @@ spec:
             port: *port
 
       bittorrent:
-        enabled: true
+        controller: main
         type: LoadBalancer
         ports:
           bittorrent:
