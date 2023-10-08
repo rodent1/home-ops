@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -31,21 +31,67 @@ spec:
     - name: volsync
       namespace: backup
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/onedr0p/qbittorrent
-      tag: 4.5.5@sha256:16ddd3697593e8f0e82de2b2eae4edbe1b67eb04936cdb2dccae79fda3338850
-    env:
-      TZ: Europe/Oslo
-      QBITTORRENT__PORT: &port 80
-      QBITTORRENT__BT_PORT: &bittorrentPort 50413
-      QBT_Application__MemoryWorkingSetLimit: 12000
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+
+      nodeSelector:
+        node-role.kubernetes.io/worker: "true"
+
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        type: statefulset
+        strategy: RollingUpdate
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: 4.5.5@sha256:16ddd3697593e8f0e82de2b2eae4edbe1b67eb04936cdb2dccae79fda3338850
+              pullPolicy: IfNotPresent
+
+            env:
+              TZ: Europe/Oslo
+              QBITTORRENT__PORT: &port 80
+              QBITTORRENT__BT_PORT: &bittorrentPort 50413
+              QBT_Application__MemoryWorkingSetLimit: 12000
+
+          reannounce:
+            image:
+              repository: ghcr.io/buroa/qbittools
+              tag: v0.9.5
+              imagePullPolicy: IfNotPresent
+
+            args: ["reannounce", "-s", "localhost", "-p", "80"]
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
+              limits:
+                memory: 16Gi
+
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              globalMounts:
+                - path: /config
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+
     service:
       main:
         ports:
           http:
             port: *port
+
       bittorrent:
         enabled: true
         type: LoadBalancer
@@ -55,11 +101,13 @@ spec:
             port: *bittorrentPort
             protocol: TCP
             targetPort: *bittorrentPort
+
         externalTrafficPolicy: Local
+
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        className: internal
         annotations:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_hide_header "x-webkit-csp";
@@ -68,56 +116,37 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN}/css/base/qbittorrent/nord.css"></head>';
             sub_filter_once on;
+
         hosts:
           - host: &host qb.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: *port
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-    # Note: If downloading very large torrents it might be worth using NFS for your download directory.
-    # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.
+
     persistence:
       media:
-        enabled: true
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/tank/Media
-        mountPath: /media
+        globalMounts:
+          - path: /media
+
       incomplete:
-        enabled: true
         type: emptyDir
+
       completed-script:
-        enabled: true
         type: configMap
         name: qbittorrent-scripts
-        mountPath: /scripts/completed.sh
-        subPath: completed.sh
-        defaultMode: 0775
-        readOnly: true
-    nodeSelector:
-      node-role.kubernetes.io/worker: "true"
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 16Gi
-    sidecars:
-      reannounce:
-        image: ghcr.io/buroa/qbittools:v0.9.5
-        imagePullPolicy: IfNotPresent
-        args: ["reannounce", "-s", "localhost", "-p", "80"]
+        advancedMounts:
+          main: # the controller with the "main" identifier
+            main: # the container with the "main" identifier
+              - path: /scripts/completed.sh
+                readOnly: true
+                subPath: completed.sh
+                defaultMode: 0775
