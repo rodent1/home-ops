@@ -81,11 +81,11 @@ spec:
               - *host
 
     persistence:
-      config:
+      app:
         enabled: true
         type: emptyDir
         globalMounts:
-          - path: /app/config
+          - path: /app
             readOnly: false
 
       config-map:
