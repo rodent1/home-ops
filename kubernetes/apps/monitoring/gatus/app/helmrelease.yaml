@@ -130,13 +130,8 @@ spec:
     persistence:
       config:
         type: emptyDir
-        advancedMounts:
-          main:
-            main:
-              - path: /config
-
-            config-sync:
-              - path: /config
+        globalMounts:
+          - path: /config
 
       config-file:
         type: configMap
