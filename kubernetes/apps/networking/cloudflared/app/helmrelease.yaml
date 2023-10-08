@@ -65,8 +65,8 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /ready
-                    port: http
+                    path: /ping
+                    port: 8080
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
