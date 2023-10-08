@@ -85,6 +85,9 @@ spec:
         enabled: true
         type: configMap
         name: homepage-config
+        globalMounts:
+          - path: /app/config
+            readOnly: false
         advancedMounts:
           main:
             main:
@@ -98,6 +101,12 @@ spec:
               subPath: settings.yaml
             - path: /app/config/widgets.yaml
               subPath: widgets.yaml
+
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /app/config/logs
+            readOnly: false
 
     serviceAccount:
       create: true
