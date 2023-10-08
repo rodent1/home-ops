@@ -56,7 +56,7 @@ spec:
           secret.reloader.stakater.com/reload: &secret immich-secret
 
         type: deployment
-        strategy: Recreate
+        strategy: RollingUpdate
         replicas: 2
 
         initContainers:
