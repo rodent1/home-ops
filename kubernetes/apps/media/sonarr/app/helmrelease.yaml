@@ -74,7 +74,7 @@ spec:
               SONARR__PORT: &port 80
               SONARR__LOG_LEVEL: info
 
-              envFrom: *envFrom
+            envFrom: *envFrom
 
             probes:
               liveness: &probes
