@@ -88,15 +88,15 @@ spec:
         advancedMounts:
           main:
             main:
-            - path: /config/bookmarks.yaml
+            - path: /app/config/bookmarks.yaml
               subPath: bookmarks.yaml
-            - path: /config/kubernetes.yaml
+            - path: /app/config/kubernetes.yaml
               subPath: kubernetes.yaml
-            - path: /config/services.yaml
+            - path: /app/config/services.yaml
               subPath: services.yaml
-            - path: /config/settings.yaml
+            - path: /app/config/settings.yaml
               subPath: settings.yaml
-            - path: /config/widgets.yaml
+            - path: /app/config/widgets.yaml
               subPath: widgets.yaml
 
     serviceAccount:
