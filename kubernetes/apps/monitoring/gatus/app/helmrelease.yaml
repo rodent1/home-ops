@@ -129,9 +129,11 @@ spec:
 
     persistence:
       config:
+        enabled: true
         type: emptyDir
         globalMounts:
           - path: /config
+            readonly: false
 
       config-file:
         type: configMap
