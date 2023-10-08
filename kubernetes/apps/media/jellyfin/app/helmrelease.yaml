@@ -50,7 +50,7 @@ spec:
 
     controllers:
       main:
-        strategy: Recreate
+        strategy: RollingUpdate
         type: statefulset
         containers:
           main:
