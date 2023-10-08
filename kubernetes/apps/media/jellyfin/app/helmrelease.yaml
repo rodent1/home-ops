@@ -128,6 +128,7 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</body>' '<script plugin="Jellyscrub" version="1.0.0.0" src="/Trickplay/ClientScript"></script></body>';
             sub_filter_once on;
+
         hosts:
           - host: &host "jelly.${SECRET_DOMAIN}"
             paths:
