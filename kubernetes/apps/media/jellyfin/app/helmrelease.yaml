@@ -75,7 +75,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: *port
+                    port: &port 8096
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -101,7 +101,7 @@ spec:
         externalTrafficPolicy: Cluster
         ports:
           http:
-            port: &port 8096
+            port: *port
     # serviceMonitor:
     #   main:
     #     enabled: true
