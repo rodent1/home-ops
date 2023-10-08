@@ -88,9 +88,6 @@ spec:
               - { name: UNIQUE_FILENAMES, value: "true" }
               - { name: METHOD, value: LIST }
 
-            volumeMounts:
-              - { name: config, mountPath: /config }
-
     service:
       main:
         ports:
@@ -133,6 +130,13 @@ spec:
     persistence:
       config:
         type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+
+            config-sync:
+              - path: /config
 
       config-file:
         type: configMap
