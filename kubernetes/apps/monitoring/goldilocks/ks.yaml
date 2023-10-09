@@ -6,8 +6,6 @@ metadata:
   name: cluster-apps-goldilocks
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: cluster-apps-vpa
   path: ./kubernetes/apps/monitoring/goldilocks/app
   prune: true
   sourceRef:
