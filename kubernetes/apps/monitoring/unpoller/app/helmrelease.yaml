@@ -48,21 +48,21 @@ spec:
               tag: v2.9.2
               imagePullPolicy: IfNotPresent
 
-              env:
-                TZ: Europe/Oslo
-                UP_UNIFI_DEFAULT_ROLE: home-ops
-                UP_UNIFI_DEFAULT_URL: https://10.1.1.1
-                UP_UNIFI_DEFAULT_VERIFY_SSL: false
-                UP_UNIFI_DEFAULT_USER: unifipoller
-                UP_UNIFI_DEFAULT_PASS: 1nternalUseOnly
-                UP_INFLUXDB_DISABLE: true
+            env:
+              TZ: Europe/Oslo
+              UP_UNIFI_DEFAULT_ROLE: home-ops
+              UP_UNIFI_DEFAULT_URL: https://10.1.1.1
+              UP_UNIFI_DEFAULT_VERIFY_SSL: false
+              UP_UNIFI_DEFAULT_USER: unifipoller
+              UP_UNIFI_DEFAULT_PASS: 1nternalUseOnly
+              UP_INFLUXDB_DISABLE: true
 
-              resources:
-                requests:
-                  cpu: 10m
-                  memory: 100Mi
-                limits:
-                  memory: 500Mi
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
 
     service:
       main:
