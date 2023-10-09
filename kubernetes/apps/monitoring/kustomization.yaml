@@ -6,7 +6,7 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./gatus/ks.yaml
-  - ./goldilocks/ks.yaml
+  # - ./goldilocks/ks.yaml
   - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./kube-state-metrics/ks.yaml
@@ -14,5 +14,5 @@ resources:
   - ./node-exporter/ks.yaml
   - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
-  - ./vpa/ks.yaml
+  # - ./vpa/ks.yaml
   - ./vector/ks.yaml
