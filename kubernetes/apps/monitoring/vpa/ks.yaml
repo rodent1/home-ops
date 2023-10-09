@@ -3,15 +3,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: monitoring-vpa
+  name: cluster-apps-vpa
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cluster-apps-thanos
   path: ./kubernetes/apps/monitoring/vpa/app
+  prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-kubernetes
-  prune: true
-  wait: false
+    name: home-kubernetes
+  wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
