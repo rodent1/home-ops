@@ -65,7 +65,7 @@ spec:
           reannounce:
             image:
               repository: ghcr.io/buroa/qbittools
-              tag: v0.9.5
+              tag: v0.10.0
               imagePullPolicy: IfNotPresent
 
             args: ["reannounce", "-s", "localhost", "-p", "80"]
