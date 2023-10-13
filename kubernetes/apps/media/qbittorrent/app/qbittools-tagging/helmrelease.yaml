@@ -45,7 +45,7 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/buroa/qbittools
+              repository: ghcr.io/buroa/qbtools
               tag: v0.10.0
               pullPolicy: IfNotPresent
 
