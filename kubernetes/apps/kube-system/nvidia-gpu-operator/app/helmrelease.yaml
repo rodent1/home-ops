@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://helm.ngc.nvidia.com/nvidia
       chart: gpu-operator
-      version: v23.6.1
+      version: v23.9.0
       sourceRef:
         kind: HelmRepository
         name: nvidia
@@ -28,6 +28,7 @@ spec:
     keepHistory: false
   values:
     operator:
+      cleanupCRD: true
       upgradeCRD: true
     nfd:
       enabled: true
@@ -35,14 +36,11 @@ spec:
       enabled: false
     toolkit:
       enabled: true
-      # renovate: registryUrl=https://nvcr.io/nvidia/k8s/container-toolkit
-      version: v1.13.5
       env:
         - name: CONTAINERD_CONFIG
           value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml
         - name: CONTAINERD_SOCKET
           value: /run/k3s/containerd/containerd.sock
-        - name: CONTAINERD_RUNTIME_CLASS
-          value: nvidia
-        - name: CONTAINERD_SET_AS_DEFAULT
-          value: "true"
+    cdi:
+      enabled: true
+      default: true
