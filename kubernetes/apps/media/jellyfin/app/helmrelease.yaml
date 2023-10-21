@@ -39,12 +39,12 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups: [44, 104]
 
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
+      # nodeSelector:
+        # node-role.kubernetes.io/worker: "true"
         # intel.feature.node.kubernetes.io/gpu: "true"
-        nvidia.com/gpu.present: "true"
+        # nvidia.com/gpu.present: "true"
 
-      # runtimeClassName: nvidia
+      runtimeClassName: nvidia-cdi
 
     controllers:
       main:
