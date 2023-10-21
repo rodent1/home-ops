@@ -44,7 +44,7 @@ spec:
         # intel.feature.node.kubernetes.io/gpu: "true"
         # nvidia.com/gpu.present: "true"
 
-      runtimeClassName: nvidia
+      # runtimeClassName: nvidia
 
     controllers:
       main:
