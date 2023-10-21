@@ -39,6 +39,8 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups: [44, 104]
 
+        runtimeClassName: nvidia-cdi
+
     controllers:
       main:
         annotations:
