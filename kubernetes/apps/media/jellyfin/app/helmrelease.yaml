@@ -39,7 +39,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups: [44, 104]
 
-        runtimeClassName: nvidia
+      runtimeClassName: nvidia
 
     controllers:
       main:
