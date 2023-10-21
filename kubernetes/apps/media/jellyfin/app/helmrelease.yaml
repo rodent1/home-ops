@@ -39,8 +39,6 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups: [44, 104]
 
-      # runtimeClassName: nvidia
-
     controllers:
       main:
         annotations:
@@ -81,7 +79,6 @@ spec:
 
             resources:
               requests:
-                nvidia.com/gpu: 1  # Request 1 GPU
                 cpu: 100m
                 memory: 1000Mi
               limits:
