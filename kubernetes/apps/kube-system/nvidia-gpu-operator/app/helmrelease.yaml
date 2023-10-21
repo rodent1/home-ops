@@ -36,6 +36,3 @@ spec:
       enabled: false
     toolkit:
       enabled: false
-    cdi:
-      enabled: true
-      default: true
