@@ -7,7 +7,7 @@ resources:
   - ./node-exporter/ks.yaml
   # - ./prowlarr-exporter/ks.yaml
   - ./qbittorrent-exporter/ks.yaml
-  - ./radarr-exporter/ks.yaml
+  # - ./radarr-exporter/ks.yaml
   # - ./snmp-exporter/ks.yaml
-  # - ./sonarr-exporter/ks.yaml
+  - ./sonarr-exporter/ks.yaml
   - ./speedtest-exporter/ks.yaml
