@@ -24,6 +24,40 @@ spec:
       retries: 5
   values:
     controller:
+      rbac:
+        extraRules:
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - '*'
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - postgresql.cnpg.io
+          resources:
+          - clusters
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - actions.github.com
+          resources:
+          - '*'
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - '*'
+          verbs:
+          - get
+          - list
+          - watch
       resources:
         requests:
           cpu: 25m
