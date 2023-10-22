@@ -3,10 +3,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-node-exporter
+  name: cluster-apps-kube-state-metrics
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/monitoring/node-exporter/app
+  path: ./kubernetes/apps/monitoring/exporters/kube-state-metrics/app
   prune: true
   sourceRef:
     kind: GitRepository
