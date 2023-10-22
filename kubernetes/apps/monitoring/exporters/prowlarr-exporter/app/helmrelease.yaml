@@ -39,7 +39,7 @@ spec:
               - --enable-additional-metrics
             env:
               PORT: 9707
-              URL: http://prowlarr.media.svc.cluster.local:80
+              URL: http://prowlarr.media.svc.cluster.local
             envFrom:
               - secretRef:
                   name: prowlarr-exporter-secret
