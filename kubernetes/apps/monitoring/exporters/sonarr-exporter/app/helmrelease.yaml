@@ -37,7 +37,7 @@ spec:
 
             args:
               - sonarr
-              - --enable-additional-metrics
+              # - --enable-additional-metrics
               - --enable-unknown-queue-items
 
             env:
