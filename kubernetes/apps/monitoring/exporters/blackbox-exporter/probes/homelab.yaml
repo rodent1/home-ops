@@ -5,12 +5,12 @@ metadata:
   name: homelab
   namespace: monitoring
 spec:
-  module: icmp
+  module: http_2xx
   prober:
     url: blackbox-exporter.monitoring.svc.cluster.local:9115
   targets:
     staticConfig:
       static:
-        - unifi.${SECRET_DOMAIN}
-        - tank.${SECRET_DOMAIN}
-        - xo.${SECRET_DOMAIN}
+        - https://unifi.${SECRET_DOMAIN}
+        - https://tank.${SECRET_DOMAIN}
+        - https://xo.${SECRET_DOMAIN}
