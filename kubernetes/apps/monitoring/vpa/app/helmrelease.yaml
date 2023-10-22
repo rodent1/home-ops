@@ -19,13 +19,27 @@ spec:
   timeout: 20m
   maxHistory: 3
   install:
+    timeout: 10m
+    replace: true
+    crds: CreateReplace
     createNamespace: true
     remediation:
       retries: 3
   upgrade:
-    cleanupOnFail: true
     remediation:
+      remediateLastFailure: true
       retries: 3
+      strategy: rollback
+    cleanupOnFail: true
+    crds: CreateReplace
+  test:
+    # Disable tests as they don't support multi-arch images and are not configurable
+    # https://github.com/FairwindsOps/charts/blob/master/stable/vpa/templates/tests/crd-available.yaml
+    enable: false
+  rollback:
+    recreate: true
+    force: true
+    cleanupOnFail: true
   uninstall:
     keepHistory: false
   values:
