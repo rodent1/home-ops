@@ -23,7 +23,7 @@ includes:
   es: .taskfiles/ExternalSecrets/Tasks.yaml
   fx: .taskfiles/Flux/Tasks.yaml
   ku: .taskfiles/Kubernetes/Tasks.yaml
-  rook: .taskfiles/rook/tasks.yaml
+  rook: .taskfiles/Rook/Tasks.yaml
   vs: .taskfiles/VolSync/Tasks.yaml
   brew: .taskfiles/BrewTasks.yaml
 
