@@ -37,9 +37,6 @@ spec:
         containers:
           - name: runner
             image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:5c022f2b91aa48384e05428015f1ff29062623293296e400e03b031f2104151a
-    controllerServiceAccount:
-      name: actions-runner-controller-gha-rs-controller
-      namespace: actions-runner-system
   valuesFrom:
     - kind: Secret
       name: actions-runner-controller-auth-secret
