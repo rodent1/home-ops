@@ -17,7 +17,7 @@ data:
           hide-hostname: true
           hide-url: true
         dns:
-          query-name: atuin.${SECRET_DOMAIN}
+          query-name: sh.${SECRET_DOMAIN}
           query-type: A
         conditions:
           - "len([BODY]) == 0"
