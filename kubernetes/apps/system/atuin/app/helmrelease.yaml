@@ -72,7 +72,7 @@ spec:
         enabled: true
         className: internal
         hosts:
-          - host: &host "sh.{$SECRET_DOMAIN}"
+          - host: &host "sh.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
