@@ -56,6 +56,13 @@ spec:
         metric-for-pod-labels: kube_pod_labels{job="kube-state-metrics"}[8d]
         pod-namespace-label: namespace
         pod-name-label: pod
+      resources:
+        requests:
+          cpu: 15m
+          memory: 549M
+        limits:
+          cpu: 15m
+          memory: 549M
     updater:
       enabled: false
     admissionController:

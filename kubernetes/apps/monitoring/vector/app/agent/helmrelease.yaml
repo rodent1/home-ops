@@ -119,3 +119,11 @@ spec:
         globalMounts:
           - path: /host/sys
             readOnly: true
+
+    resources:
+      requests:
+        cpu: 35m
+        memory: 249M
+      limits:
+        cpu: 35m
+        memory: 249M

@@ -26,6 +26,13 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
     fullnameOverride: node-exporter
     releaseLabel: true # disable for victoria-metrics
     podLabels:

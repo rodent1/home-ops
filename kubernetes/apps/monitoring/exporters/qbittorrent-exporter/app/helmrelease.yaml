@@ -37,10 +37,11 @@ spec:
               QBITTORRENT_PORT: 80
             resources:
               requests:
-                cpu: 5m
-                memory: 36M
+                cpu: 15m
+                memory: 105M
               limits:
-                memory: 128M
+                cpu: 15m
+                memory: 105M
         pod:
           securityContext:
             runAsUser: 568
