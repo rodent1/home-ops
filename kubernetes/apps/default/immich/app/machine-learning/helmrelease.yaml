@@ -46,9 +46,6 @@ spec:
             matchLabels:
               app.kubernetes.io/name: *app
 
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
-
     controllers:
       main:
         annotations:
