@@ -4,8 +4,9 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: &app goldilocks
+  namespace: monitoring
 spec:
-  interval: 15m
+  interval: 5m
   chart:
     spec:
       chart: *app
@@ -15,74 +16,27 @@ spec:
         name: fairwinds
         namespace: flux-system
       interval: 15m
+  timeout: 20m
+  maxHistory: 3
   install:
+    timeout: 10m
+    replace: true
+    crds: CreateReplace
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
     remediation:
-      retries: 5
-  values:
-    controller:
-      rbac:
-        extraRules:
-        - apiGroups:
-          - ceph.rook.io
-          resources:
-          - '*'
-          verbs:
-          - get
-          - list
-          - watch
-        - apiGroups:
-          - postgresql.cnpg.io
-          resources:
-          - clusters
-          verbs:
-          - get
-          - list
-          - watch
-        - apiGroups:
-          - actions.github.com
-          resources:
-          - '*'
-          verbs:
-          - get
-          - list
-          - watch
-        - apiGroups:
-          - monitoring.coreos.com
-          resources:
-          - '*'
-          verbs:
-          - get
-          - list
-          - watch
-      resources:
-        requests:
-          cpu: 25m
-          memory: 50Mi
-        limits:
-          cpu: 500m
-          memory: 200Mi
-    dashboard:
-      replicaCount: 1
-      ingress:
-        enabled: true
-        ingressClassName: internal
-        hosts:
-          - host: &host goldilocks.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                type: Prefix
-        tls:
-          - hosts:
-              - *host
-
-      resources:
-        requests:
-          cpu: 25m
-          memory: 50Mi
-        limits:
-          cpu: 500m
-          memory: 200Mi
+      remediateLastFailure: true
+      retries: 3
+      strategy: rollback
+    cleanupOnFail: true
+    crds: CreateReplace
+  test:
+    enable: true
+  rollback:
+    recreate: true
+    force: true
+    cleanupOnFail: true
+  uninstall:
+    keepHistory: false
