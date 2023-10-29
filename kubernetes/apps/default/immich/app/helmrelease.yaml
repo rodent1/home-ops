@@ -41,6 +41,8 @@ spec:
               app.kubernetes.io/name: *app
 
     controllers:
+      main:
+        enabled: false
       server:
         annotations:
           configmap.reloader.stakater.com/reload: &configMap immich-configmap
