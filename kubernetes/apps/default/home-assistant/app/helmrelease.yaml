@@ -79,14 +79,6 @@ spec:
               startup:
                 enabled: false
 
-            resources:
-              requests:
-                cpu: 15m
-                memory: 249M
-              limits:
-                cpu: 15m
-                memory: 249M
-
         statefulset:
           volumeClaimTemplates:
             - name: config

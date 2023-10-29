@@ -320,13 +320,6 @@ spec:
             - name: DS_PROMETHEUS
               value: Prometheus
     sidecar:
-      resources:
-        requests:
-          cpu: 22m
-          memory: 145M
-        limits:
-          cpu: 22m
-          memory: 145M
       dashboards:
         enabled: true
         searchNamespace: ALL
@@ -359,13 +352,6 @@ spec:
       tls:
         - hosts:
             - *host
-    resources:
-      requests:
-        cpu: 78m
-        memory: 249M
-      limits:
-        cpu: 78m
-        memory: 249M
     persistence:
       enabled: false
     testFramework:

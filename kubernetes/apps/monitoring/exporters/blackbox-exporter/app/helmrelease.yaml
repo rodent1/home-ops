@@ -44,13 +44,6 @@ spec:
       capabilities:
         add:
           - NET_RAW
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 15m
-        memory: 105M
     config:
       modules:
         http_2xx:

@@ -81,11 +81,6 @@ spec:
 
             resources:
               requests:
-                cpu: 15m
-                memory: 2976M
-              limits:
-                cpu: 15m
-                memory: 2976M
                 nvidia.com/gpu: 1  # Limit to 1 GPU
 
         statefulset:

@@ -35,13 +35,6 @@ spec:
             env:
               QBITTORRENT_HOST: qbittorrent.media.svc.cluster.local
               QBITTORRENT_PORT: 80
-            resources:
-              requests:
-                cpu: 15m
-                memory: 105M
-              limits:
-                cpu: 15m
-                memory: 105M
         pod:
           securityContext:
             runAsUser: 568

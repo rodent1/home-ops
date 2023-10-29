@@ -43,13 +43,6 @@ spec:
             envFrom:
               - secretRef:
                   name: prowlarr-exporter-secret
-            resources:
-              requests:
-                cpu: 15m
-                memory: 105M
-              limits:
-                cpu: 15m
-                memory: 105M
         pod:
           securityContext:
             runAsUser: 568

@@ -71,15 +71,6 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-
-            resources:
-              requests:
-                cpu: 63m
-                memory: 512M
-              limits:
-                cpu: 63m
-                memory: 512M
-
         statefulset:
           volumeClaimTemplates:
             - name: config

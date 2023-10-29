@@ -8,8 +8,9 @@ resources:
   - ./externalsecret.yaml
   - ./configmap.yaml
   - ./nfs-pvc.yaml
-  - ./typesense
-  - ./server
-  - ./microservices
-  - ./machine-learning
-  - ./web
+  # - ./typesense
+  # - ./server
+  # - ./microservices
+  # - ./machine-learning
+  # - ./web
+  - ./helmrelease.yaml

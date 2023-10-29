@@ -50,14 +50,6 @@ spec:
               - secretRef:
                   name: homepage-secret
 
-            resources:
-              requests:
-                cpu: 15m
-                memory: 249M
-              limits:
-                cpu: 15m
-                memory: 249M
-
     service:
       main:
         ports:

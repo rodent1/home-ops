@@ -115,11 +115,3 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /usr/share/GeoIP
-
-    resources:
-      requests:
-        cpu: 15m
-        memory: 273M
-      limits:
-        cpu: 15m
-        memory: 273M

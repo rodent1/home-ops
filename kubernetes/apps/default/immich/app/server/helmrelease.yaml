@@ -80,14 +80,6 @@ spec:
 
             envFrom: *envFrom
 
-            resources:
-              requests:
-                cpu: 15m
-                memory: 164M
-              limits:
-                cpu: 15m
-                memory: 164M
-
     service:
       main:
         ports:

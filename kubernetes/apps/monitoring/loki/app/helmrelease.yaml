@@ -107,13 +107,6 @@ spec:
         analytics:
           reporting_enabled: false
     gateway:
-      resources:
-        requests:
-          cpu: 15m
-          memory: 105M
-        limits:
-          cpu: 15m
-          memory: 105M
       replicas: 2
       image:
         registry: ghcr.io
@@ -129,13 +122,6 @@ spec:
           - hosts:
               - *host
     read:
-      resources:
-        requests:
-          cpu: 15m
-          memory: 110M
-        limits:
-          cpu: 15m
-          memory: 110M
       replicas: 2
       persistence:
         storageClass: local-path
@@ -146,24 +132,10 @@ spec:
         - name: rules
           emptyDir: {}
     write:
-      resources:
-        requests:
-          cpu: 35m
-          memory: 324M
-        limits:
-          cpu: 35m
-          memory: 324M
       replicas: 2
       persistence:
         storageClass: local-path
     backend:
-      resources:
-        requests:
-          cpu: 11m
-          memory: 145M
-        limits:
-          cpu: 11m
-          memory: 145M
       replicas: 2
       persistence:
         storageClass: local-path

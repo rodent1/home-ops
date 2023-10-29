@@ -71,14 +71,6 @@ spec:
               - secretRef:
                   name: *secret
 
-            resources:
-              requests:
-                cpu: 23m
-                memory: 164M
-              limits:
-                cpu: 23m
-                memory: 164M
-
     service:
       main:
         enabled: false

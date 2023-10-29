@@ -90,14 +90,6 @@ spec:
               startup:
                 enabled: false
 
-            resources:
-              requests:
-                cpu: 109m
-                memory: 324M
-              limits:
-                cpu: 109m
-                memory: 324M
-
     service:
       main:
         ports:
