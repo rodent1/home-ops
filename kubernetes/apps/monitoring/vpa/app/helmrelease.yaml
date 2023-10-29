@@ -49,7 +49,7 @@ spec:
       extraArgs:
         storage: prometheus
         prometheus-address: http://thanos-query.monitoring.svc.cluster.local:9090
-        # Test
+        # https://github.com/kubernetes/autoscaler/issues/5031#issuecomment-1450583325
         prometheus-cadvisor-job-name: kubelet
         container-pod-name-label: pod
         container-name-label: container
