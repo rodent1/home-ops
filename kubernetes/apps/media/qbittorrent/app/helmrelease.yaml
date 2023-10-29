@@ -62,6 +62,14 @@ spec:
               QBITTORRENT__BT_PORT: &bittorrentPort 50413
               QBT_Application__MemoryWorkingSetLimit: 12000
 
+            resources:
+              requests:
+                cpu: 23m
+                memory: 814M
+              limits:
+                cpu: 23m
+                memory: 814M
+
           reannounce:
             image:
               repository: ghcr.io/buroa/qbittools
@@ -72,10 +80,11 @@ spec:
 
             resources:
               requests:
-                cpu: 10m
-                memory: 250Mi
+                cpu: 11m
+                memory: 53M
               limits:
-                memory: 16Gi
+                cpu: 11m
+                memory: 53M
 
         statefulset:
           volumeClaimTemplates:

@@ -82,10 +82,11 @@ spec:
 
             resources:
               requests:
-                cpu: 100m
-                memory: 100Mi
+                cpu: 15m
+                memory: 110M
               limits:
-                memory: 500Mi
+                cpu: 15m
+                memory: 110M
 
         statefulset:
           volumeClaimTemplates:

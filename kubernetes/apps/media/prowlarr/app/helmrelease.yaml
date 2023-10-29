@@ -94,10 +94,11 @@ spec:
 
             resources:
               requests:
-                cpu: 10m
-                memory: 100Mi
+                cpu: 35m
+                memory: 145M
               limits:
-                memory: 500Mi
+                cpu: 35m
+                memory: 145M
 
     service:
       main:

@@ -81,11 +81,12 @@ spec:
 
             resources:
               requests:
-                cpu: 100m
-                memory: 1000Mi
+                cpu: 15m
+                memory: 2976M
               limits:
+                cpu: 15m
+                memory: 2976M
                 nvidia.com/gpu: 1  # Limit to 1 GPU
-                memory: 4000Mi
 
         statefulset:
           volumeClaimTemplates:
