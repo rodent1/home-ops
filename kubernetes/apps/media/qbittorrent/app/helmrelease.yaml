@@ -75,6 +75,14 @@ spec:
 
             args: ["reannounce", "-s", "localhost", "-p", "80"]
 
+          resources:
+            requests:
+              cpu: 22m
+              memory: 852M
+            limits:
+              cpu: 222m
+              memory: 8378M
+
         statefulset:
           volumeClaimTemplates:
             - name: config
