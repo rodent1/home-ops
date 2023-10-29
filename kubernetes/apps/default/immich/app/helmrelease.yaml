@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app immich-server
+  name: &app immich
   namespace: default
 spec:
   interval: 30m
@@ -80,11 +80,7 @@ spec:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.83.0
               imagePullPolicy: IfNotPresent
-            envFrom:
-              - configMapRef:
-                  name: *configMap
-              - secretRef:
-                  name: *secret
+            envFrom: *envFrom
 
       microservices:
         annotations:
@@ -102,11 +98,7 @@ spec:
 
             args: ["start-microservices.sh"]
 
-            envFrom:
-              - configMapRef:
-                  name: *configMap
-              - secretRef:
-                  name: *secret
+            envFrom: *envFrom
 
 
       typesense:
@@ -121,11 +113,7 @@ spec:
               repository: docker.io/typesense/typesense
               tag: 0.25.1
               imagePullPolicy: IfNotPresent
-            envFrom:
-              - configMapRef:
-                  name: *configMap
-              - secretRef:
-                  name: *secret
+            envFrom: *envFrom
             probes:
               liveness: &typesenseProbes
                 enabled: true
