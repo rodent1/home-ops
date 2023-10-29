@@ -12,7 +12,7 @@ resources:
   - ./loki/ks.yaml
   - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
-  - ./vpa/ks.yaml
+  # - ./vpa/ks.yaml
   - ./vector/ks.yaml
   # Exporters
   - ./exporters
