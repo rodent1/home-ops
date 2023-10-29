@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   values:
     podAnnotations:
-      secret.reloader.stakater.com/reload: authentik-secret
+      secret.reloader.stakater.com/reload: coder-secret
     # initContainers:
     #   01-init-db:
     #     image: ghcr.io/onedr0p/postgres-init:14.8
@@ -36,6 +36,13 @@ spec:
     #       - secretRef:
     #           name: coder-secret
     coder:
+      resources:
+        requests:
+          cpu: 15m
+          memory: 145M
+        limits:
+          cpu: 15m
+          memory: 145M
       env:
       # DB
       - name: CODER_PG_CONNECTION_URL
