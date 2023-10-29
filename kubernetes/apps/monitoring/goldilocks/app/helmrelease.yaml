@@ -3,13 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app goldilocks
+  name: goldilocks
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: *app
+      chart: goldilocks
       version: 7.3.1
       sourceRef:
         kind: HelmRepository
@@ -19,24 +19,31 @@ spec:
   timeout: 20m
   maxHistory: 3
   install:
-    timeout: 10m
-    replace: true
-    crds: CreateReplace
     createNamespace: true
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      remediateLastFailure: true
       retries: 3
-      strategy: rollback
-    cleanupOnFail: true
-    crds: CreateReplace
-  test:
-    enable: true
-  rollback:
-    recreate: true
-    force: true
-    cleanupOnFail: true
   uninstall:
     keepHistory: false
+  values:
+    dashboard:
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 15m
+          memory: 64Mi
+        limits:
+          memory: 105M
+      ingress:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          ingress.home.arpa/type: "internal"
+        hosts:
+          - host: "goldilocks.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                type: Prefix
