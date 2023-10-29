@@ -27,6 +27,13 @@ spec:
     parameters:
       max_connections: "600"
       shared_buffers: 512MB
+  resources:
+    requests:
+      cpu: 15m
+      memory: 105M
+    limits:
+      cpu: 15m
+      memory: 105M
   monitoring:
     enablePodMonitor: true
   backup:
