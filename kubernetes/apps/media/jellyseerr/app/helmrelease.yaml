@@ -39,9 +39,6 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups: [1000]
 
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
-
     controllers:
       main:
         annotations:
