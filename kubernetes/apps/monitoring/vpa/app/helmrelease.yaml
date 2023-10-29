@@ -33,9 +33,7 @@ spec:
     cleanupOnFail: true
     crds: CreateReplace
   test:
-    # Disable tests as they don't support multi-arch images and are not configurable
-    # https://github.com/FairwindsOps/charts/blob/master/stable/vpa/templates/tests/crd-available.yaml
-    enable: false
+    enable: true
   rollback:
     recreate: true
     force: true
@@ -57,6 +55,8 @@ spec:
         pod-recommendation-min-cpu-millicores: 15
         pod-recommendation-min-memory-mb: 61
         storage: prometheus
-        prometheus-address: http://thanos-query.monitoring:9090
+        prometheus-address: http://thanos-query.monitoring.svc.cluster.local:9090
     updater:
+      enabled: false
+    admissionController:
       enabled: false
