@@ -6,13 +6,13 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  # - ./audiobookshelf/ks.yaml
-  # - ./jellyfin/ks.yaml
-  # - ./jellyseerr/ks.yaml
+  - ./audiobookshelf/ks.yaml
+  - ./jellyfin/ks.yaml
+  - ./jellyseerr/ks.yaml
   # - ./prowlarr/ks.yaml
-  # - ./qbittorrent/ks.yaml
+  - ./qbittorrent/ks.yaml
   # - ./radarr/ks.yaml
-  # - ./recyclarr/ks.yaml
+  - ./recyclarr/ks.yaml
   # - ./sonarr/ks.yaml
-  # - ./theme-park/ks.yaml
-  # - ./unpackerr/ks.yaml
+  - ./theme-park/ks.yaml
+  - ./unpackerr/ks.yaml
