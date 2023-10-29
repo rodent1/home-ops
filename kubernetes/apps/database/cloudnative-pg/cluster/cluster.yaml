@@ -7,7 +7,7 @@ metadata:
   namespace: database
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:14.9-15
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.0-8
   inheritedMetadata:
     labels:
       kube-image-keeper.enix.io/image-caching-policy: ignore
@@ -21,7 +21,7 @@ spec:
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
   # bootstrap:
   #   recovery:
-  #     source: &previousCluster cnpg-4
+  #     source: &previousCluster cnpg-5
   postgresql:
     parameters:
       max_connections: "600"
@@ -36,7 +36,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster cnpg-5
+      serverName: &currentCluster cnpg16-1
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
