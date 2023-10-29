@@ -37,7 +37,6 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
-
     controllers:
       main:
         annotations:
@@ -61,11 +60,11 @@ spec:
 
             resources:
               requests:
-                cpu: 23m
-                memory: 814M
+                cpu: 22m
+                memory: 852M
               limits:
-                cpu: 23m
-                memory: 814M
+                cpu: 211m
+                memory: 7951M
 
           reannounce:
             image:
@@ -75,13 +74,13 @@ spec:
 
             args: ["reannounce", "-s", "localhost", "-p", "80"]
 
-          resources:
-            requests:
-              cpu: 22m
-              memory: 852M
-            limits:
-              cpu: 222m
-              memory: 8378M
+            resources:
+              requests:
+                cpu: 10m
+                memory: 53M
+              limits:
+                cpu: 101m
+                memory: 333M
 
         statefulset:
           volumeClaimTemplates:
