@@ -6,3 +6,4 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./atuin/ks.yaml
+  - ./kyverno/ks.yaml
