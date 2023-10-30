@@ -26,6 +26,7 @@ includes:
   rook: .taskfiles/Rook/Tasks.yaml
   vs: .taskfiles/VolSync/Tasks.yaml
   brew: .taskfiles/BrewTasks.yaml
+  pg: .taskfiles/PGTasks.yaml
 
 tasks:
   default: task -l
