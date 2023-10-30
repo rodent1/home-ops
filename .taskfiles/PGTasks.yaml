@@ -10,7 +10,7 @@ tasks:
       - kubectl scale deployment/authentik-server --replicas=0 -n security
       - kubectl scale deployment/authentik-worker --replicas=0 -n security
       - kubectl scale deployment/coder --replicas=0 -n dev
-      #- kubectl scale deployment/gatus --replicas=0 -n monitoring
+      - kubectl scale deployment/gatus --replicas=0 -n monitoring
       - kubectl scale statefulset/home-assistant --replicas=0 -n default
       - kubectl scale deployment/immich-web --replicas=0 -n default
       - kubectl scale deployment/immich-machine-learning --replicas=0 -n default
@@ -29,7 +29,7 @@ tasks:
       - kubectl scale deployment/authentik-server --replicas=1 -n security
       - kubectl scale deployment/authentik-worker --replicas=1 -n security
       - kubectl scale deployment/coder --replicas=1 -n dev
-      #- kubectl scale deployment/gatus --replicas=1 -n monitoring
+      - kubectl scale deployment/gatus --replicas=1 -n monitoring
       - kubectl scale statefulset/home-assistant --replicas=1 -n default
       - kubectl scale deployment/immich-web --replicas=2 -n default
       - kubectl scale deployment/immich-machine-learning --replicas=1 -n default
