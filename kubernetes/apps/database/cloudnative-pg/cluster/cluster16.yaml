@@ -12,7 +12,7 @@ spec:
       kube-image-keeper.enix.io/image-caching-policy: ignore
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 20Gi
+    size: 10Gi
     storageClass: local-path
   superuserSecret:
     name: cloudnative-pg-secret
@@ -25,7 +25,7 @@ spec:
         databases: ["*"]
         roles: ["*"]
         source:
-          externalCluster: postgres
+          externalCluster: cnpg-6
   postgresql:
     parameters:
       max_connections: "600"
@@ -53,7 +53,7 @@ spec:
   #   recovery:
   #     source: &previousCluster cnpg-5
   externalClusters:
-    - name: cluster-pg96
+    - name: cnpg-6
       connectionParameters:
         # Use the correct IP or host name for the source database
         host: postgres-rw.database.svc.cluster.local
