@@ -66,7 +66,7 @@ spec:
 
             env:
               TZ: Europe/Oslo
-              POSTGRES_HOST: postgres-rw.database.svc.cluster.local
+              POSTGRES_HOST: ${POSTGRES_URL}
               POSTGRES_DB: home_assistant
 
             envFrom: *envFrom
