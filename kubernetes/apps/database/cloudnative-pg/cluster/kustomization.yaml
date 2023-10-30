@@ -9,4 +9,4 @@ resources:
   - ./prometheusrule.yaml
   - ./service.yaml
   # Upgrade from cluster:
-  - ./cluster16.yaml
+  # - ./cluster16.yaml
