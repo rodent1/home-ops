@@ -85,7 +85,6 @@ spec:
                 memory: 1000Mi
                 nvidia.com/gpu: 1
               limits:
-                cpu: 500m
                 memory: 4000Mi
                 nvidia.com/gpu: 1
 
