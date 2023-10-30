@@ -3,7 +3,7 @@ version: '3'
 
 tasks:
   down:
-    description: Scale down the specified apps
+    desc: Scale down the apps requiring postgres
     cmds:
       - kubectl scale deployment/atuin --replicas=0 -n system
       - kubectl scale deployment/ak-outpost-ldap --replicas=0 -n security
@@ -22,7 +22,7 @@ tasks:
       - kubectl scale deployment/sonarr --replicas=0 -n media
 
   up:
-    description: Scale up the specified apps
+    desc: Scale up the apps requiring postgres
     cmds:
       - kubectl scale deployment/atuin --replicas=1 -n system
       - kubectl scale deployment/ak-outpost-ldap --replicas=1 -n security
