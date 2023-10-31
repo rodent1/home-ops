@@ -71,7 +71,7 @@ spec:
           main:
             image:
               repository: docker.io/timberio/vector
-              tag: 0.33.0-debian
+              tag: 0.33.1-debian
               pullPolicy: IfNotPresent
 
             args: ["--config", "/etc/vector/vector.yaml"]
