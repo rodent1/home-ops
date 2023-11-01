@@ -65,7 +65,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.83.0
+              tag: v1.84.0
               imagePullPolicy: IfNotPresent
             args: ["start-server.sh"]
             envFrom: *envFrom
@@ -80,7 +80,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v1.83.0
+              tag: v1.84.0
               imagePullPolicy: IfNotPresent
             envFrom: *envFrom
 
@@ -95,7 +95,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.83.0
+              tag: v1.84.0
               imagePullPolicy: IfNotPresent
 
             args: ["start-microservices.sh"]
