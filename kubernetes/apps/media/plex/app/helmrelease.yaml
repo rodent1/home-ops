@@ -47,11 +47,11 @@ spec:
               TZ: ${TIMEZONE}
             resources:
               requests:
-                # nvidia.com/gpu: 1
+                nvidia.com/gpu: 1
                 cpu: 100m
                 memory: 2Gi
               limits:
-                # nvidia.com/gpu: 1
+                nvidia.com/gpu: 1
                 memory: 10Gi
         pod:
           securityContext:
@@ -94,6 +94,8 @@ spec:
       transcode:
         type: emptyDir
       media:
-        existingClaim: media
+        type: nfs
+        server: ${TRUENAS_IP}
+        path: /mnt/tank/Media
         globalMounts:
-          - readOnly: true
+          - path: /media
