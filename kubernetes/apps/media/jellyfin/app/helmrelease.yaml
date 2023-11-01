@@ -83,10 +83,10 @@ spec:
               requests:
                 cpu: 100m
                 memory: 1000Mi
-                nvidia.com/gpu: 1
+               # nvidia.com/gpu: 1
               limits:
                 memory: 4000Mi
-                nvidia.com/gpu: 1
+               #nvidia.com/gpu: 1
 
 
         statefulset:
