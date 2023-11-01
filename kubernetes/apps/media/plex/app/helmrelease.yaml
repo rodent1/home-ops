@@ -33,6 +33,14 @@ spec:
     - name: volsync
       namespace: backup
   values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 105, 10000]
+      runtimeClassName: nvidia
     controllers:
       main:
         type: statefulset
@@ -53,13 +61,6 @@ spec:
               limits:
                 nvidia.com/gpu: 1
                 memory: 10Gi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [44, 105, 10000]
         statefulset:
           volumeClaimTemplates:
             - name: config
