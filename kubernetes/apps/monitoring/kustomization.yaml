@@ -6,13 +6,11 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./gatus/ks.yaml
-  - ./goldilocks/ks.yaml
   - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
   - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
-  - ./vpa/ks.yaml
   - ./vector/ks.yaml
   # Exporters
   - ./exporters
