@@ -131,8 +131,6 @@ spec:
       thanosServiceMonitor:
         enabled: true
       prometheusSpec:
-        replicas: 2
-        replicaExternalLabelName: __replica__
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
@@ -140,16 +138,6 @@ spec:
         scrapeConfigSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
-        enableFeatures:
-          - auto-gomaxprocs
-          - memory-snapshot-on-shutdown
-          - new-service-discovery-manager
-        thanos:
-          image: quay.io/thanos/thanos:v0.32.5
-          objectStorageConfig:
-            name: thanos-objstore-secret
-            key: objstore.yml
-        retention: 2d
         retentionSize: 15GB
         storageSpec:
           volumeClaimTemplate:
