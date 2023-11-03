@@ -123,21 +123,42 @@ spec:
       thanosServiceMonitor:
         enabled: true
       prometheusSpec:
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
+        alertingEndpoints:
+          - namespace: monitoring
+            name: alertmanager
+            port: 9093
+            apiVersion: v2
+        enableAdminAPI: true
+        enableFeatures:
+          - auto-gomaxprocs
+          - memory-snapshot-on-shutdown
+          - new-service-discovery-manager
+        externalLabels:
+          cluster: home-ops
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
+        replicas: 1
+        replicaExternalLabelName: "__replica__" # must match with thanos value `.query.replicaLabel[0]`
+        resources:
+          requests:
+            cpu: 257m
+            memory: 3760M
+          limits:
+            memory: 3760M
+        retention: 2d
+        retentionSize: "15GB"
+        ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
-        enableAdminAPI: true
-        walCompression: true
-        retentionSize: 15GB
+        scrapeInterval: 1m
+        serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: local-path
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 20Gi
+        walCompression: true
     grafana:
       enabled: false
       forceDeployDashboards: true
