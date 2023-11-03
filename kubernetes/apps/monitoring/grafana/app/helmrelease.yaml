@@ -40,8 +40,6 @@ spec:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
-      news:
-        news_feed_enabled: false
       auth.generic_oauth:
         enabled: true
         name: Authentik
@@ -54,6 +52,42 @@ spec:
         use_pkce: true
         role_attribute_path: |
           contains(groups[*], 'Grafana admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
+      date_formats:
+        use_browser_locale: true
+      explore:
+        enabled: true
+      grafana_net:
+        url: https://grafana.net
+      log:
+        mode: console
+      news:
+        news_feed_enabled: false
+      panels:
+        disable_sanitize_html: true
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      security:
+        allow_embedding: true
+        cookie_samesite: grafana
+      server:
+        root_url: https://grafana.${SECRET_DOMAIN}
+
+
+    imageRenderer:
+      enabled: true
+
+    ingress:
+      enabled: true
+      ingressClassName: internal-nginx
+      hosts:
+        - &host grafana.${SECRET_DOMAIN}
+      tls:
+        - hosts:
+            - *host
+
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -325,47 +359,43 @@ spec:
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
+
+    persistence:
+      enabled: false
+
+    plugins:
+      - natel-discrete-panel
+      - pr0ps-trackmap-panel
+      - grafana-piechart-panel
+      - vonage-status-panel
+      - grafana-worldmap-panel
+      - grafana-clock-panel
+
+    rbac:
+      pspEnabled: false
+
+    resources:
+      limits:
+        memory: 219M
+      requests:
+        cpu: 23m
+        memory: 127M
+
+    serviceMonitor:
+      enabled: true
+
     sidecar:
       dashboards:
         enabled: true
-        searchNamespace: ALL
         labelValue: ""
         label: grafana_dashboard
         folderAnnotation: grafana_folder
+        searchNamespace: ALL
         provider:
           disableDelete: true
           foldersFromFilesStructure: true
       datasources:
         enabled: true
-        searchNamespace: ALL
         labelValue: ""
-    plugins:
-      - grafana-clock-panel
-      - grafana-piechart-panel
-      - grafana-worldmap-panel
-      - natel-discrete-panel
-      - pr0ps-trackmap-panel
-      - vonage-status-panel
-    serviceMonitor:
-      enabled: true
-    ingress:
-      enabled: true
-      ingressClassName: external
-      annotations:
-        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-      hosts:
-        - &host grafana.${SECRET_DOMAIN}
-      tls:
-        - hosts:
-            - *host
-    persistence:
-      enabled: false
-    testFramework:
-      enabled: false
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: grafana
+        searchNamespace: ALL
+      logLevel: INFO
