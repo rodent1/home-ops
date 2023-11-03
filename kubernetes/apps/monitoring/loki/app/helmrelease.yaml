@@ -166,7 +166,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
       persistence:
         size: 20Gi
-        storageClass: local-hostpath
+        storageClass: local-path
 
     read:
       replicas: 3
@@ -193,7 +193,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
       persistence:
         size: 20Gi
-        storageClass: local-hostpath
+        storageClass: local-path
 
     monitoring:
       dashboards:
