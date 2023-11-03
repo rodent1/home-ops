@@ -81,7 +81,7 @@ spec:
 
     ingress:
       enabled: true
-      ingressClassName: internal-nginx
+      ingressClassName: internal
       hosts:
         - &host grafana.${SECRET_DOMAIN}
       tls:
