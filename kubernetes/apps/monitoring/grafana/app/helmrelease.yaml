@@ -42,6 +42,18 @@ spec:
         reporting_enabled: false
       news:
         news_feed_enabled: false
+      auth.generic_oauth:
+        enabled: true
+        name: Authentik
+        icon: signin
+        scopes: openid profile email
+        empty_scopes: false
+        login_attribute_path: preferred_username
+        groups_attribute_path: groups
+        name_attribute_path: name
+        use_pkce: true
+        role_attribute_path: |
+          contains(groups[*], 'Grafana admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -113,33 +125,27 @@ spec:
     datasources:
       datasources.yaml:
         apiVersion: 1
-        deleteDatasources:
-          - { name: Alertmanager, orgId: 1 }
-          - { name: Loki, orgId: 1 }
-          - { name: Prometheus, orgId: 1 }
         datasources:
-          - name: Prometheus
-            type: prometheus
-            uid: prometheus
-            access: proxy
-            url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
-            jsonData:
-              prometheusType: Thanos
+          - access: proxy
             isDefault: true
-          - name: Loki
+            name: Prometheus
+            type: prometheus
+            url: http://thanos-query.monitoring:9090
+          - access: proxy
+            name: Loki
             type: loki
-            uid: loki
-            access: proxy
-            url: http://loki-gateway.monitoring.svc.cluster.local
-            jsonData:
-              maxLines: 250
+            url: http://loki-gateway.monitoring.svc.cluster.local:80
           - name: Alertmanager
             type: alertmanager
-            uid: alertmanager
             access: proxy
-            url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+            url: http://alertmanager.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
+        deleteDatasources:
+          - name: Loki
+            orgId: 1
+          - name: Alertmanager
+            orgId: 1
     dashboards:
       default:
         node-exporter-full:
