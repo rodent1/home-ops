@@ -16,7 +16,21 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-      interval: 30m
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: local-path-provisioner
+      namespace: kube-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     loki:
       structuredConfig:
