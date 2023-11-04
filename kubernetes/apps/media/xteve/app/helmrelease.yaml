@@ -55,21 +55,30 @@ spec:
               TZ: ${TIMEZONE}
         statefulset:
           volumeClaimTemplates:
-            - name: data
+            - name: config
               accessMode: ReadWriteOnce
-              size: 10Gi
+              size: 1Gi
               storageClass: ceph-block
-              advancedMounts:
-                main:
-                  main:
-                    - path: /config
-                      subPath: /data/config
-                    - path: /xteve
-                      subPath: /data/xteve
-                    - path: /guide2go
-                      subPath: /data/guide2go
-                    - path: /playlists
-                      subPath: /data/playlists
+              globalMounts:
+                - path: /config
+            - name: xteve
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /xteve
+            - name: guide2go
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /guide2go
+            - name: playlists
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /playlists
 
     service:
       main:
