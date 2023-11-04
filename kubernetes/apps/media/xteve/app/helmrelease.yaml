@@ -49,8 +49,8 @@ spec:
         containers:
           main:
             image:
-              repository: dnsforge/xteve
-              tag: latest@sha256:4d9a685c8c28b2edff8faeb94ad9705dce2ed4dd7b0675613743f43210596a6b
+              repository: ghcr.io/k8s-at-home/xteve
+              tag: v2.2.0.200@sha256:292b3614670f6bf4017cc65643c513cccb18323bd5269178bd3e36c8c68f5107
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
@@ -61,13 +61,7 @@ spec:
               size: 5Gi
               storageClass: ceph-block
               globalMounts:
-                - path: /home/xteve/conf
-            - name: guide2go
-              accessMode: ReadWriteOnce
-              size: 5Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /home/guide2go/conf
+                - path: /config
     service:
       main:
         type: LoadBalancer
