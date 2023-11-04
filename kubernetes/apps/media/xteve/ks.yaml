@@ -6,8 +6,6 @@ metadata:
   name: cluster-apps-xteve
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/media/xteve/app
   prune: true
   sourceRef:
