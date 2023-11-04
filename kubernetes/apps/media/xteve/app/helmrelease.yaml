@@ -55,12 +55,18 @@ spec:
               TZ: ${TIMEZONE}
         statefulset:
           volumeClaimTemplates:
-            - name: xteve
+            - name: config
               accessMode: ReadWriteOnce
               size: 5Gi
               storageClass: ceph-block
               globalMounts:
-                - path: /home/xteve
+                - path: /home/xteve/conf
+            - name: guide2go
+              accessMode: ReadWriteOnce
+              size: 5Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /home/guide2go/conf
     service:
       main:
         type: LoadBalancer
