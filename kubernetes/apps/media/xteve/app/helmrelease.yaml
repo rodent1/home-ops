@@ -48,38 +48,19 @@ spec:
         containers:
           main:
             image:
-              repository: taylorbourne/xteve_lazystream
-              tag: latest@sha256:e5a130b5e3d08c0d814bc70561deab3de5538299d030aaa2d568cab5e7931331
+              repository: dnsforge/xteve
+              tag: latest@sha256:4d9a685c8c28b2edff8faeb94ad9705dce2ed4dd7b0675613743f43210596a6b
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
         statefulset:
           volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
             - name: xteve
               accessMode: ReadWriteOnce
-              size: 1Gi
+              size: 5Gi
               storageClass: ceph-block
               globalMounts:
-                - path: /xteve
-            - name: guide2go
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /guide2go
-            - name: playlists
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /playlists
-
+                - path: /home/xteve
     service:
       main:
         type: LoadBalancer
@@ -105,8 +86,3 @@ spec:
         tls:
           - hosts:
               - *host
-    persistence:
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp/xteve
