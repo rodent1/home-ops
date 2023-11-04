@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: media
 resources:
   - ./helmrelease.yaml
-  - ./volsync/ks.yaml
+  - ./volsync.yaml
