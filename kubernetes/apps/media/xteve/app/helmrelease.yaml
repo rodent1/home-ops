@@ -59,8 +59,19 @@ spec:
               accessMode: ReadWriteOnce
               size: 10Gi
               storageClass: ceph-block
-              globalMounts:
-                - path: /home/xteve
+              advancedMounts:
+                main:
+                  main:
+                    - path: /data/config
+                      subPath: /config
+                    - path: /data/playlists
+                      subPath: /playlist
+                    - path: /data/guide2go
+                      subPath: /guide2go
+                    - path: /data/xteve
+                      subPath: /xteve
+                    - path: /data/tmp
+                      subPath: /tmp/xteve
 
     service:
       main:
