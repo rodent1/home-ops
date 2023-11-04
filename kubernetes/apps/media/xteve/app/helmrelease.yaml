@@ -48,8 +48,8 @@ spec:
         containers:
           main:
             image:
-              repository: dnsforge/xteve
-              tag: latest@sha256:4d9a685c8c28b2edff8faeb94ad9705dce2ed4dd7b0675613743f43210596a6b
+              repository: taylorbourne/xteve_lazystream
+              tag: latest@sha256:e5a130b5e3d08c0d814bc70561deab3de5538299d030aaa2d568cab5e7931331
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
