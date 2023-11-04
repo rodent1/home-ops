@@ -30,7 +30,7 @@ metadata:
   name: xteve
   namespace: media
 spec:
-  sourcePVC: config-xteve-0
+  sourcePVC: data-xteve-0
   trigger:
     schedule: "0 7 * * *"
   restic:
