@@ -70,8 +70,6 @@ spec:
                       subPath: /guide2go
                     - path: /data/xteve
                       subPath: /xteve
-                    - path: /data/tmp
-                      subPath: /tmp/xteve
 
     service:
       main:
