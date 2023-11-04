@@ -34,9 +34,9 @@ spec:
   values:
     defaultPodOptions:
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: "OnRootMismatch"
 
     controllers:
@@ -53,20 +53,6 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
-              XTEVE_PORT: 34400
-              use_xTeveAPI: true
-              trim_xmltv: false
-              use_lazystream: true
-              include_nhl: true
-              nhl_start_channel: 1000
-              include_mlb: true
-              mlb_start_channel: 2000
-              cdn: akc
-              use_guide2go: false
-              use_plexAPI: true
-              lazyStreamReleaseName: x86_64-unknown-linux-musl
-              lazyStreamReleaseNameAarch64: aarch64-unknown-linux-gnu
-              quality: 720p60
         statefulset:
           volumeClaimTemplates:
             - name: config
