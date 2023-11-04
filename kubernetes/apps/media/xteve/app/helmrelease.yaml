@@ -106,8 +106,6 @@ spec:
           - hosts:
               - *host
     persistence:
-      run:
-        type: emptyDir
       tmp:
         type: emptyDir
         globalMounts:
