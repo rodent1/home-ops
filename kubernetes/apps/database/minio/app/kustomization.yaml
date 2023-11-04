@@ -5,3 +5,4 @@ namespace: database
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./pvc.yaml
