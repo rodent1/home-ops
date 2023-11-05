@@ -158,7 +158,7 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://prometheus-prometheus.monitoring.svc.cluster.local:9090
+            url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
             isDefault: true
           - name: Alertmanager
             type: alertmanager
