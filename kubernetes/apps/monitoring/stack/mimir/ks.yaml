@@ -7,9 +7,9 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-local-path-provisioner
-    - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-minio
+    - name: cluster-apps-local-path-provisioner
   path: ./kubernetes/apps/monitoring/stack/mimir/app
   prune: true
   sourceRef:
