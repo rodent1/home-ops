@@ -6,7 +6,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./gatus/ks.yaml
-  - ./grafana/ks.yaml
   - ./unpoller/ks.yaml
   # Exporters
   - ./exporters
