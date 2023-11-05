@@ -14,3 +14,5 @@ resources:
   - ./vector/ks.yaml
   # Exporters
   - ./exporters
+  # Stack
+  - ./stack
