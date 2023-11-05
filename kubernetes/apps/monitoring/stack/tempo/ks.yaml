@@ -10,7 +10,7 @@ spec:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-minio
     - name: cluster-apps-local-path-provisioner
-  path: ./kubernetes/apps/monitoring/stack/loki/app
+  path: ./kubernetes/apps/monitoring/stack/tempo/app
   prune: true
   sourceRef:
     kind: GitRepository
