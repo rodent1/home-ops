@@ -109,7 +109,7 @@ spec:
 
       prometheusSpec:
         remote_write:
-          - url: http://localhost:9009/api/v1/push
+          - url: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
         alertingEndpoints:
           - namespace: monitoring
             name: alertmanager
