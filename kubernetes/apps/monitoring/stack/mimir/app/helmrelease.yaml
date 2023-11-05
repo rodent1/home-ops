@@ -253,6 +253,13 @@ spec:
             insecure: true
             s3forcepathstyle: true
 
+        ruler_storage:
+          backend: s3
+          s3:
+            s3: null
+            insecure: true
+            s3forcepathstyle: true
+
         blocks_storage:
           tsdb:
             dir: /data/tsdb
@@ -295,13 +302,6 @@ spec:
           scheduler_address: mimir-query-scheduler-headless.monitoring.svc.cluster.local:9095
         frontend_worker:
           scheduler_address: mimir-query-scheduler-headless.monitoring.svc.cluster.local:9095
-
-        ruler_storage:
-          backend: s3
-          s3:
-            s3: null
-            insecure: true
-            s3forcepathstyle: true
 
         limits:
           compactor_blocks_retention_period: 1y
