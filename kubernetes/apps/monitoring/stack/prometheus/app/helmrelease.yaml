@@ -108,6 +108,8 @@ spec:
               - *host
 
       prometheusSpec:
+        remote_write:
+          - url: http://localhost:9009/api/v1/push
         alertingEndpoints:
           - namespace: monitoring
             name: alertmanager
