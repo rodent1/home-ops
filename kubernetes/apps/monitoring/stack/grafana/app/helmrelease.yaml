@@ -152,6 +152,11 @@ spec:
               path: /var/lib/grafana/dashboards/media
     datasources:
       datasources.yaml:
+        deleteDatasources:
+          - { name: Alertmanager, orgId: 1 }
+          - { name: Loki, orgId: 1 }
+          - { name: Prometheus, orgId: 1 }
+          - { name: Mimir, orgId: 1 }
         apiVersion: 1
         datasources:
           - name: Prometheus
@@ -333,7 +338,7 @@ spec:
 
     persistence:
       type: pvc
-      enabled: false
+      enabled: true
       storageClassName: ceph-block
       accessModes:
         - ReadWriteOnce
