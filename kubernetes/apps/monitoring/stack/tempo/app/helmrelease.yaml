@@ -33,7 +33,15 @@ spec:
         remoteWriteUrl: "http://kube-prometheus-stack-prometheus.monitoring:9090/api/v1/write"
 
     tempoQuery:
-      repository: grafana/tempo-query
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: internal
+        hosts:
+          - &host "tempo-query.${SECRET_DOMAIN}"
+        tls:
+          hosts:
+            - *host
 
     serviceMonitor:
       enabled: true
