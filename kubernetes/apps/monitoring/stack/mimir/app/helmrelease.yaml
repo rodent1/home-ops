@@ -250,15 +250,13 @@ spec:
           storage_prefix: alertmanager
           backend: s3
           s3:
-            s3: null
-            insecure: true
+            endpoint: null
 
         ruler_storage:
           storage_prefix: ruler
           backend: s3
           s3:
-            s3: null
-            insecure: true
+            endpoint: null
 
         blocks_storage:
           storage_prefix: blocks
@@ -266,8 +264,7 @@ spec:
             dir: /data/tsdb
           backend: s3
           s3:
-            s3: null
-            insecure: true
+            endpoint: null
 
           bucket_store:
             chunks_cache:
