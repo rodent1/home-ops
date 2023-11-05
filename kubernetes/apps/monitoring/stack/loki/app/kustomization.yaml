@@ -7,7 +7,6 @@ resources:
   - ./externalsecret.yaml
   - ./gatus.yaml
   - ./helmrelease.yaml
-  - ./objectbucketclaim.yaml
 configMapGenerator:
   - name: loki-alerting-rules
     files:
