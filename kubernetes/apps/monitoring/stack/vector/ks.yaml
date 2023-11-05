@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/monitoring/vector/app
+  path: ./kubernetes/apps/monitoring/stack/vector/app
   prune: true
   sourceRef:
     kind: GitRepository
