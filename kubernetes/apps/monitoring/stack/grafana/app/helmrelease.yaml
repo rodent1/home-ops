@@ -346,13 +346,6 @@ spec:
     rbac:
       pspEnabled: false
 
-    resources:
-      limits:
-        memory: 219M
-      requests:
-        cpu: 23m
-        memory: 127M
-
     serviceMonitor:
       enabled: true
 
