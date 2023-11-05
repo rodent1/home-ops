@@ -17,20 +17,15 @@ spec:
         namespace: flux-system
   values:
     tempo:
-      repository: grafana/tempo
-      retention: 336h
-      storage:
-        trace:
-          backend: local # s3
-          local:
-            path: /var/tempo/traces
-          s3:
-            insecure: false
-          wal:
-            path: /var/tempo/wal
-        metricsGenerator:
+      reportingEnabled: false
+      metricsGenerator:
         enabled: true
         remoteWriteUrl: "http://kube-prometheus-stack-prometheus.monitoring:9090/api/v1/write"
+      storage:
+        trace:
+          backend: s3
+          s3:
+            insecure: true
 
     tempoQuery:
       ingress:
@@ -47,10 +42,7 @@ spec:
       enabled: true
 
     persistence:
-      enabled: true
-      accessModes:
-        - ReadWriteOnce
-      size: 20Gi
+      enabled: false
 
   valuesFrom:
     - kind: Secret
