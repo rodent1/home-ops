@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-rook-ceph-cluster
-  path: ./kubernetes/apps/monitoring/alertmanager/app
+  path: ./kubernetes/apps/monitoring/stack/alertmanager/app
   prune: true
   sourceRef:
     kind: GitRepository
