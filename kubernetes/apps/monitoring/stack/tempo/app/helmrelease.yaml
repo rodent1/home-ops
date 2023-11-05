@@ -9,7 +9,7 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: tempo
+      chart: tempo-distributed
       version: 1.7.0
       sourceRef:
         kind: HelmRepository
@@ -27,6 +27,27 @@ spec:
     keepHistory: false
   values:
     replicas: 2
+    global:
+      clusterDomain: 'cluster.local'
+    gateway:
+      enabled: true
+    minio:
+      enabled: true
+    storage:
+      trace:
+        backend: s3
+        s3:
+          insecure: false
+    traces:
+      otlp:
+        http:
+          enabled: true
+        grpc:
+          enabled: true
+    distributor:
+      config:
+        log_received_spans:
+          enabled: true
     tempo:
       reportingEnabled: false
       metricsGenerator:
@@ -35,6 +56,7 @@ spec:
       storage:
         trace:
           backend: s3
+            force
     persistence:
       enabled: false
     tempoQuery:
