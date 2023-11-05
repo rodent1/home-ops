@@ -156,7 +156,6 @@ spec:
           - { name: Alertmanager, orgId: 1 }
           - { name: Loki, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
-          - { name: Mimir, orgId: 1 }
         apiVersion: 1
         datasources:
           - name: Prometheus
@@ -179,11 +178,33 @@ spec:
             url: http://loki-gateway.monitoring.svc.cluster.local:80
             jsonData:
               maxLines: 250
-          - name: Mimir
-            type: prometheus
+          - name: Tempo
+            type: tempo
+            url: http://tempo.monitoring.svc.cluster.local:3100
             access: proxy
-            url: http://mimir-nginx.monitoring.svc.cluster.local:80/prometheus
-            isDefault: false
+            jsonData:
+              tracesToLogsV2:
+                datasourceUid: 'Loki'
+                tags: ['job', 'instance', 'pod', 'namespace']
+                filterByTraceID: true
+                filterBySpanID: true
+                customQuery: true
+              tracesToMetrics:
+                datasourceUid: 'Prometheus'
+                tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+              serviceMap:
+                datasourceUid: 'Prometheus'
+              nodeGraph:
+                enabled: true
+              search:
+                hide: false
+              lokiSearch:
+                datasourceUid: 'Loki'
+              traceQuery:
+                timeShiftEnabled: true
+              spanBar:
+                type: 'Tag'
+                tag: 'http.path'
     dashboards:
       default:
         node-exporter-full:
