@@ -251,14 +251,12 @@ spec:
           s3:
             s3: null
             insecure: true
-            s3forcepathstyle: true
 
         ruler_storage:
           backend: s3
           s3:
             s3: null
             insecure: true
-            s3forcepathstyle: true
 
         blocks_storage:
           tsdb:
@@ -267,7 +265,6 @@ spec:
           s3:
             s3: null
             insecure: true
-            s3forcepathstyle: true
 
           bucket_store:
             chunks_cache:
@@ -314,7 +311,7 @@ spec:
     - kind: Secret
       name: mimir-secret
       valuesKey: S3_BUCKET_NAME
-      targetPath: mimir.structuredConfig.common.storage.s3.bucketnames
+      targetPath: mimir.structuredConfig.common.storage.s3.bucket_name
     - kind: Secret
       name: mimir-secret
       valuesKey: S3_BUCKET_HOST
