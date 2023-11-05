@@ -25,7 +25,7 @@ spec:
         trace:
           backend: s3
           s3:
-            insecure: true
+            insecure: false
 
     tempoQuery:
       ingress:
