@@ -358,12 +358,13 @@ spec:
               value: Prometheus
 
     persistence:
-      type: pvc
-      enabled: true
-      storageClassName: ceph-block
-      accessModes:
-        - ReadWriteOnce
-      size: 10Gi
+      enabled: false
+      # type: pvc
+      # enabled: true
+      # storageClassName: ceph-block
+      # accessModes:
+      #   - ReadWriteOnce
+      # size: 10Gi
 
     plugins:
       - natel-discrete-panel
