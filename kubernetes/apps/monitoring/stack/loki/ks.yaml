@@ -7,8 +7,9 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-kube-prometheus-stack
     - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-minio
+    - name: cluster-apps-local-path-provisioner
   path: ./kubernetes/apps/monitoring/stack/loki/app
   prune: true
   sourceRef:
