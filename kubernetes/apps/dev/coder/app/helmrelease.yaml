@@ -101,5 +101,5 @@ spec:
         wildcardHost: "*.coder.${SECRET_DOMAIN}"
         tls:
           enable: true
-          secretName: "rodent-cc-production-tls"
+          secretName: "coder-wildcard-tls"
           wildcardSecretName: "coder-wildcard-tls"
