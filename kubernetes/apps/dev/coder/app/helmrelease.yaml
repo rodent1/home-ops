@@ -47,6 +47,8 @@ spec:
       # App
       - name: CODER_ACCESS_URL
         value: https://coder.${SECRET_DOMAIN}
+      - name: CODER_WILDCARD_ACCESS_URL
+        value: https://*.coder.${SECRET_DOMAIN}
       # Github
       - name: CODER_GITAUTH_0_ID
         valueFrom:
@@ -94,4 +96,10 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
         host: "coder.${SECRET_DOMAIN}"
+        wildcardHost: "*.coder.${SECRET_DOMAIN}"
+        tls:
+          enable: true
+          secretName: "rodent-cc-production-tls"
+          wildcardSecretName: "coder-wildcard-tls"
