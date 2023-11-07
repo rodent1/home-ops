@@ -96,9 +96,4 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
         host: "coder.${SECRET_DOMAIN}"
-        wildcardHost: "*.coder.${SECRET_DOMAIN}"
-        tls:
-          enable: true
-          secretName: "coder-wildcard-tls"
