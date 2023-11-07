@@ -48,7 +48,7 @@ spec:
       - name: CODER_ACCESS_URL
         value: https://coder.${SECRET_DOMAIN}
       - name: CODER_WILDCARD_ACCESS_URL
-        value: https://*.coder.${SECRET_DOMAIN}
+        value: "*.coder.${SECRET_DOMAIN}"
       # Github
       - name: CODER_GITAUTH_0_ID
         valueFrom:
