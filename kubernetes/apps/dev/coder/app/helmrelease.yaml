@@ -94,4 +94,4 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        host: "*.coder.${SECRET_DOMAIN}"
+        host: "coder.${SECRET_DOMAIN}"
