@@ -75,12 +75,12 @@ spec:
                 memory: 1Gi
         statefulset:
           volumeClaimTemplates:
-            - name: config
+            - name: podcasts
               accessMode: ReadWriteOnce
               size: 100Gi
               storageClass: ceph-block
               globalMounts:
-                - path: /app
+                - path: /app/podcasts
     service:
       main:
         ports:
