@@ -67,6 +67,7 @@ spec:
               SERVER_URL: https://podfetch.${SECRET_DOMAIN}
               OIDC_AUTH: true
               PGDATA: /data/postgres
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 100m
