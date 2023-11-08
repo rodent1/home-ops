@@ -42,11 +42,9 @@ spec:
         supplementalGroups: [44, 105, 10000]
     controllers:
       main:
+        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-
-        type: deployment
-        strategy: Recreate
 
         initContainers:
           01-init-db:
