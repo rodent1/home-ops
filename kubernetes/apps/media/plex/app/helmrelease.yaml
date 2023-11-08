@@ -55,11 +55,11 @@ spec:
               TZ: ${TIMEZONE}
             resources:
               requests:
-                nvidia.com/gpu: 1
+               #  nvidia.com/gpu: 1
                 cpu: 100m
                 memory: 2Gi
               limits:
-                nvidia.com/gpu: 1
+               #  nvidia.com/gpu: 1
                 memory: 10Gi
         statefulset:
           volumeClaimTemplates:
