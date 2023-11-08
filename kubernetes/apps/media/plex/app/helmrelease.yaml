@@ -40,7 +40,7 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 105, 10000]
-      runtimeClassName: nvidia
+      # runtimeClassName: nvidia
     controllers:
       main:
         type: statefulset
