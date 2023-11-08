@@ -66,6 +66,7 @@ spec:
               POLLING_INTERVAL: 300
               SERVER_URL: https://podfetch.${SECRET_DOMAIN}
               OIDC_AUTH: true
+              PGDATA: /data/postgres
             resources:
               requests:
                 cpu: 100m
