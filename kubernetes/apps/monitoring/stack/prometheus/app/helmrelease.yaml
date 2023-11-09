@@ -27,7 +27,7 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: local-hostpath
+    - name: local-path-provisioner
       namespace: system
     - name: rook-ceph-cluster
       namespace: rook-ceph
