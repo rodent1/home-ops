@@ -27,7 +27,7 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: local-hostpath-provisioner
+    - name: local-path-provisioner
       namespace: system
   values:
     crds:
