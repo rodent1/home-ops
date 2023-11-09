@@ -7,7 +7,6 @@ resources:
   - ./csi-driver-nfs/ks.yaml
   - ./descheduler/ks.yaml
   - ./external-secrets/ks.yaml
-  - ./local-path-provisioner/ks.yaml
   - ./metrics-server/ks.yaml
   - ./namespace.yaml
   - ./nvidia-gpu-operator/ks.yaml
