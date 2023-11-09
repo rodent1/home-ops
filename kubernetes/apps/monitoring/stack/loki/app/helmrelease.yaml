@@ -188,7 +188,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
       persistence:
         size: 20Gi
-        storageClass: local-path
+        storageClass: local-hostpath
 
     monitoring:
       dashboards:
