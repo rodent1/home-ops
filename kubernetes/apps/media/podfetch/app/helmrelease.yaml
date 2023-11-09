@@ -66,6 +66,8 @@ spec:
               POLLING_INTERVAL: 300
               SERVER_URL: https://podfetch.${SECRET_DOMAIN}
               OIDC_AUTH: true
+              GPODDER_INTEGRATION_ENABLED: true
+
             envFrom: *envFrom
 
         statefulset:
