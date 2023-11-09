@@ -8,3 +8,4 @@ resources:
   - ./atuin/ks.yaml
   - ./democratic-csi/ks.yaml
   - ./kyverno/ks.yaml
+  - ./snapshot-controller/ks.yaml

@@ -11,4 +11,3 @@ resources:
   - ./namespace.yaml
   - ./nvidia-gpu-operator/ks.yaml
   - ./reloader/ks.yaml
-  - ./snapshot-controller/ks.yaml
