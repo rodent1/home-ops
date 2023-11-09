@@ -46,7 +46,11 @@ spec:
           protocol: http
           host: ${TRUENAS_IP}
           port: 80
-          apiKey: ${TRUENAS_API_KEY}
+          apiKey:
+            valueFrom:
+              secretKeyRef:
+                name: democratic-csi-secret
+                key: API_KEY
           allowInsecure: true
         zfs:
           datasetParentName: cauldron/Apps/nfs
