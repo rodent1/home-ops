@@ -58,14 +58,14 @@ spec:
           datasetEnableQuotas: true
           datasetEnableReservation: false
           datasetPermissionsMode: "0777"
-          datasetPermissionsUser: 0
-          datasetPermissionsGroup: 0
+          datasetPermissionsUser: 568
+          datasetPermissionsGroup: 568
         nfs:
           shareHost: ${TRUENAS_IP}
           shareAlldirs: false
           shareAllowedHosts: []
           shareAllowedNetworks: []
-          shareMaprootUser: root
-          shareMaprootGroup: root
-          shareMapallUser: ""
-          shareMapallGroup: ""
+          shareMaprootUser: ""
+          shareMaprootGroup: ""
+          shareMapallUser: "apps"
+          shareMapallGroup: "apps"
