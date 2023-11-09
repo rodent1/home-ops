@@ -8,5 +8,3 @@ resources:
   - ./scheduledbackup.yaml
   - ./prometheusrule.yaml
   - ./service.yaml
-  # Upgrade from cluster:
-  # - ./cluster16.yaml

@@ -27,8 +27,8 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: local-path-provisioner
-      namespace: kube-system
+    - name: local-hostpath-provisioner
+      namespace: system
   values:
     crds:
       create: true
