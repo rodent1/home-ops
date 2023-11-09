@@ -6,5 +6,5 @@ namespace: media
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./volsync.yaml
+  # - ./volsync.yaml
   - ./gatus.yaml
