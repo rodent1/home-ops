@@ -6,4 +6,5 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./atuin/ks.yaml
+  - ./democratic-csi/ks.yaml
   - ./kyverno/ks.yaml
