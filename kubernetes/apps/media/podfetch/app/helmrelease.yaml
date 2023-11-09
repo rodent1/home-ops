@@ -59,8 +59,8 @@ spec:
         containers:
           main:
             image:
-              repository: samuel19982/podfetch
-              tag: v4.4.0-postgres-b2febd8@sha256:55aaf228859e66bc3032e984a3420268c5217e92aba6318f0ab07c14d50eda22
+              repository: ghcr.io/samtv12345/podfetch
+              tag: v4.4.0-postgres-b2febd8@sha256:35d4f3f485d94c6efc9ecf9a6458157632f2c24b74ea59057f8fb9035e4bd1cd
             env:
               TZ: ${TIMEZONE}
               POLLING_INTERVAL: 300
