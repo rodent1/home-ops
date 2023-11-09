@@ -53,7 +53,7 @@ spec:
           allowInsecure: true
         zfs:
           datasetParentName: cauldron/Apps/nfs
-          detachedSnapshotsDatasetParentName: cauldron/Apps/nfs/s
+          detachedSnapshotsDatasetParentName: cauldron/Apps/snaps
           datasetEnableQuotas: true
           datasetEnableReservation: false
           datasetPermissionsMode: "0777"
