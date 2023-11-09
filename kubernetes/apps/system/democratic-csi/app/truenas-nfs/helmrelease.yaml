@@ -64,7 +64,7 @@ spec:
           shareHost: ${TRUENAS_IP}
           shareAlldirs: false
           shareAllowedHosts: []
-          shareAllowedNetworks: []
+          shareAllowedNetworks: [10.0.0.0/8]
           shareMaprootUser: ""
           shareMaprootGroup: ""
           shareMapallUser: "apps"
