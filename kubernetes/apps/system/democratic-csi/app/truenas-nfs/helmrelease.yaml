@@ -47,6 +47,7 @@ spec:
           host: ${TRUENAS_IP}
           port: 443
           apiKey: ${TRUENAS_API_KEY}
+          allowInsecure: true
         zfs:
           datasetParentName: cauldron/Apps/nfs
           detachedSnapshotsDatasetParentName: cauldron/Apps/nfs-snapshots
