@@ -66,5 +66,4 @@ spec:
     driver:
       config:
         driver: freenas-api-nfs
-        allowInsecure: true
       existingConfigSecret: *secret
