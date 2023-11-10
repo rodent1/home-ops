@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: system
 resources:
   - ./local-path
-  # - ./truenas-nfs
+  - ./truenas-nfs
