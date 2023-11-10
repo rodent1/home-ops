@@ -8,5 +8,5 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi
-  storageClassName: apps-nfs
+      storage: 20Gi
+  storageClassName: nfs
