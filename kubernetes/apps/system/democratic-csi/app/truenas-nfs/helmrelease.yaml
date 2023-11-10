@@ -39,6 +39,7 @@ spec:
       parameters:
         detachedSnapshots: "true"
     driver:
+      image: ghcr.io/democratic-csi/democratic-csi:v1.8.4
       config:
         driver: freenas-api-nfs
         instance_id:
@@ -49,6 +50,8 @@ spec:
           apiKey: ${TRUENAS_API_KEY}
           allowInsecure: true
         zfs:
+          datasetProperties:
+            "org.freenas:description": "{{`{{ parameters.[csi.storage.k8s.io/pvc/name] }}`}}"
           datasetParentName: cauldron/Apps/nfs
           detachedSnapshotsDatasetParentName: cauldron/Apps/nfs-snapshots
           datasetEnableQuotas: true
