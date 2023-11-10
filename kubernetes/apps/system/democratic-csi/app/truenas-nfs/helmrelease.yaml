@@ -3,18 +3,29 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: nfs-provisioner
-  namespace: system
+  name: democratic-csi-nfs
+  namespace: storage
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: democratic-csi
       version: 0.14.2
       sourceRef:
-        name: democratic-csi
         kind: HelmRepository
+        name: democratic-csi
         namespace: flux-system
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 5
+  uninstall:
+    keepHistory: false
   values:
     controller:
       podAnnotations:
