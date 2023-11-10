@@ -48,8 +48,6 @@ spec:
           port: 443
           apiKey: ${TRUENAS_API_KEY}
         zfs:
-          datasetProperties:
-            "org.freenas:description": "{{`{{ parameters.[csi.storage.k8s.io/pvc/name] }}`}}"
           datasetParentName: cauldron/Apps/nfs
           detachedSnapshotsDatasetParentName: cauldron/Apps/nfs-snapshots
           datasetEnableQuotas: true
@@ -58,7 +56,6 @@ spec:
           datasetPermissionsUser: 0
           datasetPermissionsGroup: 0
         nfs:
-          shareCommentTemplate: "{{`{{ parameters.[csi.storage.k8s.io/pvc/name] }}`}}"
           shareHost: "${TRUENAS_IP}"
           shareAlldirs: false
           shareAllowedHosts: []
