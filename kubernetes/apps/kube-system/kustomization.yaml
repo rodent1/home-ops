@@ -9,5 +9,5 @@ resources:
   - ./external-secrets/ks.yaml
   - ./metrics-server/ks.yaml
   - ./namespace.yaml
-  - ./nvidia-gpu-operator/ks.yaml
+  # - ./nvidia-gpu-operator/ks.yaml
   - ./reloader/ks.yaml
