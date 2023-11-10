@@ -26,11 +26,8 @@ spec:
         allowVolumeExpansion: true
         parameters:
           fsType: nfs
-          # csi.storage.k8s.io/fstype: nfs
-        mountOptions:
-          - nfsvers=4.2
-          - nconnect=8
-          - hard
+        # Note: The first two options are strictly for NFSv4.2
+        mountOptions: ["nfsvers=4.2", "nconnect=8", "hard", "noatime"]
         secrets:
           provisioner-secret:
           controller-publish-secret:
@@ -50,21 +47,18 @@ spec:
           host: ${TRUENAS_IP}
           port: 443
           apiKey: ${TRUENAS_API_KEY}
-          allowInsecure: true
         zfs:
           datasetParentName: cauldron/Apps/nfs
           detachedSnapshotsDatasetParentName: cauldron/Apps/snapshots
-          datasetEnableQuotas: true
-          datasetEnableReservation: false
           datasetPermissionsMode: "0777"
-          datasetPermissionsUser: 0
-          datasetPermissionsGroup: 0
+          datasetPermissionsUser: 568
+          datasetPermissionsGroup: 568
         nfs:
           shareHost: ${TRUENAS_IP}
           shareAlldirs: false
           shareAllowedHosts: []
           shareAllowedNetworks: []
-          shareMaprootUser: root
-          shareMaprootGroup: root
-          shareMapallUser: ""
-          shareMapallGroup: ""
+          shareMaprootUser: ""
+          shareMaprootGroup: ""
+          shareMapallUser: "apps"
+          shareMapallGroup: "apps"
