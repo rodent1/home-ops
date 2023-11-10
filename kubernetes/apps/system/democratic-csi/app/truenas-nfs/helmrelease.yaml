@@ -52,7 +52,7 @@ spec:
         parameters:
           fsType: nfs
         # Note: The first two options are strictly for NFSv4.2
-        mountOptions: ["nfsvers=4.2", "nconnect=8", "hard", "noatime"]
+        mountOptions: ["nfsvers=4.2", "nconnect=8", "hard", "noatime", "nodiratime"]
         secrets:
           provisioner-secret:
           controller-publish-secret:
@@ -66,4 +66,5 @@ spec:
     driver:
       config:
         driver: freenas-api-nfs
+        allowInsecure: true
       existingConfigSecret: *secret
