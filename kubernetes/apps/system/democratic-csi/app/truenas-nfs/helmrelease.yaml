@@ -19,21 +19,24 @@ spec:
     csiDriver:
       name: "nfs"
     storageClasses:
-    - name: nfs
-      defaultClass: false
-      reclaimPolicy: Delete
-      volumeBindingMode: Immediate
-      allowVolumeExpansion: true
-      parameters:
-        fsType: nfs
-        detachedVolumesFromSnapshots: "false"
-      mountOptions: ["nfsvers=4.2", "nconnect=8", "hard", "noatime", "nodiratime"]
-      secrets:
-        provisioner-secret:
-        controller-publish-secret:
-        node-stage-secret:
-        node-publish-secret:
-        controller-expand-secret:
+      - name: nfs
+        defaultClass: false
+        reclaimPolicy: Delete
+        volumeBindingMode: Immediate
+        allowVolumeExpansion: true
+        parameters:
+          fsType: nfs
+          # csi.storage.k8s.io/fstype: nfs
+        mountOptions:
+          - nfsvers=4.2
+          - nconnect=8
+          - hard
+        secrets:
+          provisioner-secret:
+          controller-publish-secret:
+          node-stage-secret:
+          node-publish-secret:
+          controller-expand-secret:
     volumeSnapshotClasses:
     - name: nfs
       parameters:
@@ -46,26 +49,22 @@ spec:
           protocol: http
           host: ${TRUENAS_IP}
           port: 80
-          apiKey:
-            valueFrom:
-              secretKeyRef:
-                name: democratic-csi-secret
-                key: API_KEY
+          apiKey: ${TRUENAS_API_KEY}
           allowInsecure: true
         zfs:
           datasetParentName: cauldron/Apps/nfs
-          detachedSnapshotsDatasetParentName: cauldron/Apps/snaps
+          detachedSnapshotsDatasetParentName: cauldron/Apps/snapshots
           datasetEnableQuotas: true
           datasetEnableReservation: false
           datasetPermissionsMode: "0777"
-          datasetPermissionsUser: 568
-          datasetPermissionsGroup: 568
+          datasetPermissionsUser: 0
+          datasetPermissionsGroup: 0
         nfs:
           shareHost: ${TRUENAS_IP}
           shareAlldirs: false
           shareAllowedHosts: []
-          shareAllowedNetworks: [10.0.0.0/8]
-          shareMaprootUser: ""
-          shareMaprootGroup: ""
-          shareMapallUser: "apps"
-          shareMapallGroup: "apps"
+          shareAllowedNetworks: []
+          shareMaprootUser: root
+          shareMaprootGroup: root
+          shareMapallUser: ""
+          shareMapallGroup: ""
