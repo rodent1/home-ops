@@ -11,4 +11,3 @@ data:
   CLUSTER_CIDR: "10.42.0.0/16"
   SERVICE_CIDR: "10.43.0.0/16"
   NODE_CIDR: "10.1.1.0/24"
-  POSTGRES_URL: "postgres16-rw.database.svc.cluster.local"
