@@ -11,5 +11,5 @@ spec:
   - ReadWriteMany
   resources:
     requests:
-      storage: 500Gi
-  storageClassName: apps-nfs
+      storage: 50Gi
+  storageClassName: nfs
