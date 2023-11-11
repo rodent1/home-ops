@@ -25,13 +25,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: nvidia-gpu-operator
-      namespace: system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-    - name: volsync
-      namespace: backup
   values:
     defaultPodOptions:
       securityContext:
