@@ -26,11 +26,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: local-path-provisioner
-      namespace: system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     crds:
       enabled: true

@@ -6,6 +6,9 @@ metadata:
   name: cluster-apps-prometheus
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cluster-apps-democratic-csi-localpath
+    - name: cluster-apps-rook-ceph-cluster
   path: ./kubernetes/apps/monitoring/stack/prometheus/app
   prune: true
   sourceRef:
