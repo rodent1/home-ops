@@ -9,6 +9,8 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/home-assistant/app
   prune: true
   sourceRef:
