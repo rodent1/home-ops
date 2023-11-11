@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ./alertmanager/ks.yaml
   - ./grafana/ks.yaml
-  # - ./loki/ks.yaml
+  - ./loki/ks.yaml
   # - ./mimir/ks.yaml
   - ./prometheus/ks.yaml
   # - ./tempo/ks.yaml
