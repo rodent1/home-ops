@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: nvidia-gpu-operator
-      namespace: kube-system
+      namespace: system
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
