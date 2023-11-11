@@ -7,4 +7,3 @@ resources:
   - ./external-secrets/ks.yaml
   - ./metrics-server/ks.yaml
   - ./namespace.yaml
-  - ./reloader/ks.yaml
