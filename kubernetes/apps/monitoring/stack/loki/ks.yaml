@@ -8,7 +8,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-minio
     - name: cluster-apps-democratic-csi-localpath
   path: ./kubernetes/apps/monitoring/stack/loki/app
   prune: true
