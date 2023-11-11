@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: authentik-gatus-ep
-  namespace: security
+  namespace: system
   labels:
     gatus.io/enabled: "true"
 data:
