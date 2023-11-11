@@ -3,10 +3,27 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-democratic-csi
+  name: cluster-apps-democratic-csi-localpath
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/democratic-csi/app
+  path: ./kubernetes/apps/system/democratic-csi/local-path
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-democratic-csi-nfs
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/system/democratic-csi/truenas-nfs
   prune: true
   sourceRef:
     kind: GitRepository
