@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: org.democratic-csi.nfs
+    volume.kubernetes.io/provisioner-deletion-secret-name: provisioner-secret-nfs-democratic-csi-nfs
+    volume.kubernetes.io/provisioner-deletion-secret-namespace: system
+  creationTimestamp: "2023-11-11T10:28:26Z"
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: pvc-3f52df8d-28ed-414e-93e5-dad66c181782
+  resourceVersion: "129988333"
+  uid: 0ddfb26b-ffb3-4d69-97f2-04c96fc1c6be
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 20Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: immich-nfs
+    namespace: default
+  csi:
+    controllerExpandSecretRef:
+      name: controller-expand-secret-nfs-democratic-csi-nfs
+      namespace: system
+    controllerPublishSecretRef:
+      name: controller-publish-secret-nfs-democratic-csi-nfs
+      namespace: system
+    driver: org.democratic-csi.nfs
+    fsType: nfs
+    nodePublishSecretRef:
+      name: node-publish-secret-nfs-democratic-csi-nfs
+      namespace: system
+    nodeStageSecretRef:
+      name: node-stage-secret-nfs-democratic-csi-nfs
+      namespace: system
+    volumeAttributes:
+      node_attach_driver: nfs
+      provisioner_driver: freenas-api-nfs
+      server: ${TRUENAS_IP}
+      share: /mnt/cauldron/Apps/nfs/pvc-3f52df8d-28ed-414e-93e5-dad66c181782
+      storage.kubernetes.io/csiProvisionerIdentity: 1699695825732-5846-org.democratic-csi.nfs
+    volumeHandle: pvc-3f52df8d-28ed-414e-93e5-dad66c181782
+  mountOptions:
+  - nfsvers=4.2
+  - nconnect=8
+  - hard
+  - noatime
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs
+  volumeMode: Filesystem
+status:
+  phase: Bound
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-nfs
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: nfs

@@ -7,10 +7,9 @@ resources:
   - ./gatus.yaml
   - ./externalsecret.yaml
   - ./configmap.yaml
-  - ./nfs-pvc.yaml
+  - ./nfs.yaml
   - ./typesense
   - ./server
   - ./microservices
   - ./machine-learning
   - ./web
-  # - ./helmrelease.yaml
