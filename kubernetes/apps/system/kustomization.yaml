@@ -8,6 +8,6 @@ resources:
   - ./atuin/ks.yaml
   - ./democratic-csi/ks.yaml
   # - ./kyverno/ks.yaml
-  - ./nvidia-gpu-operator/ks.yaml
+  # - ./nvidia-gpu-operator/ks.yaml
   - ./snapshot-controller/ks.yaml
   # - ./system-upgrade-controller/ks.yaml
