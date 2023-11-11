@@ -26,8 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    # - name: nvidia-gpu-operator
-    #   namespace: kube-system
+    - name: nvidia-gpu-operator
+      namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -40,7 +40,7 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 105, 10000]
-      # runtimeClassName: nvidia
+      runtimeClassName: nvidia
     controllers:
       main:
         type: statefulset
@@ -55,11 +55,11 @@ spec:
               TZ: ${TIMEZONE}
             resources:
               requests:
-               #  nvidia.com/gpu: 1
+                nvidia.com/gpu: 1
                 cpu: 100m
                 memory: 2Gi
               limits:
-               #  nvidia.com/gpu: 1
+                nvidia.com/gpu: 1
                 memory: 10Gi
         statefulset:
           volumeClaimTemplates:
