@@ -11,7 +11,7 @@ resources:
   - ./descheduler/ks.yaml
   - ./external-secrets/ks.yaml
   - ./kyverno/ks.yaml
-  - ./nvidia-gpu-operator/ks.yaml
+  # - ./nvidia-gpu-operator/ks.yaml
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./volsync/ks.yaml
