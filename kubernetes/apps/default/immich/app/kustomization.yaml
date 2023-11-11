@@ -8,8 +8,3 @@ resources:
   - ./externalsecret.yaml
   - ./configmap.yaml
   - ./nfs.yaml
-  - ./typesense
-  - ./server
-  - ./microservices
-  - ./machine-learning
-  - ./web
