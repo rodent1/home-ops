@@ -23,6 +23,8 @@ metadata:
   name: cluster-apps-democratic-csi-nfs
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/system/democratic-csi/truenas-nfs
   prune: true
   sourceRef:
