@@ -8,6 +8,8 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-volsync
+    - name: cluster-apps-rook-ceph-cluster
   path: ./kubernetes/apps/media/recyclarr/app
   prune: true
   sourceRef:
