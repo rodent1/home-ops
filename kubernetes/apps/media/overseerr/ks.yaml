@@ -6,6 +6,9 @@ metadata:
   name: cluster-apps-overseerr
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cluster-apps-volsync
+    - name: cluster-apps-rook-ceph-cluster
   path: ./kubernetes/apps/media/overseerr/app
   prune: true
   sourceRef:
