@@ -9,4 +9,4 @@ data:
   TRUENAS_IP: "10.1.1.15"
   XO_IP: "10.1.1.16"
   POSTGRES_URL: "postgres16-rw.database.svc.cluster.local"
-  MINIO_URL: ""
+  MINIO_URL: "10.1.1.15"
