@@ -11,7 +11,7 @@ data:
       # This is the default auth mechanism and does not require any additional configuration.
       local:
         # Enable or disable local authentication
-        enabled: true
+        enabled: false
       # OpenID configuration will allow users to authenticate through a third-party OpenID Connect compatible provider.
       # The provider needs to support the `openid`, `profile` and `email` scopes.
       # **Note:** Some openid providers (like gitlab) only make the email of the user available through openid claims if they have set it to be publicly visible.
