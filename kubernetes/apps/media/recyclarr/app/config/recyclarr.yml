@@ -14,12 +14,12 @@ sonarr:
           enabled: true
         upgrade:
           allowed: true
-          until_quality: WEB-720p
+          until_quality: WEB 720p
           until_score: 0
         min_format_score: 0
         quality_sort: top
         qualities:
-          - name: WEB-720p
+          - name: WEB 720p
             qualities:
               - WEBDL-720p
               - WEBRip-720p
@@ -28,7 +28,7 @@ sonarr:
           enabled: true
         upgrade:
           allowed: true
-          until_quality: WEB-1080p
+          until_quality: WEB 1080p
           until_score: 0
         min_format_score: 0
         quality_sort: top
@@ -43,7 +43,7 @@ sonarr:
           enabled: true
         upgrade:
           allowed: true
-          until_quality: WEB-2160p
+          until_quality: WEB 2160p
           until_score: 0
         min_format_score: 0
         quality_sort: top
