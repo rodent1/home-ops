@@ -131,12 +131,12 @@ radarr:
           enabled: true
         upgrade:
           allowed: true
-          until_quality: Blueray-1080p
+          until_quality: Bluray-1080p
           until_score: 0
         min_format_score: 0
         quality_sort: top
         qualities:
-          - name: Blueray-1080p
+          - name: Bluray-1080p
           - name: WEB 1080p
             qualities:
               - WEBDL-1080p
