@@ -2,46 +2,79 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: recyclarr-restic
+  name: recylarr-restic
   namespace: media
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect
   target:
-    name: recyclarr-restic-secret
+    name: recylarr-restic-secret
     creationPolicy: Owner
     template:
       engineVersion: v2
       data:
-        RESTIC_REPOSITORY: '{{ .REPOSITORY_TEMPLATE }}/recyclarr'
-        RESTIC_PASSWORD: '{{ .RESTIC_PASSWORD }}'
-        AWS_ACCESS_KEY_ID: '{{ .AWS_ACCESS_KEY_ID }}'
-        AWS_SECRET_ACCESS_KEY: '{{ .AWS_SECRET_ACCESS_KEY }}'
+        RESTIC_REPOSITORY: "{{ .REPOSITORY_TEMPLATE }}/recylarr"
+        RESTIC_PASSWORD: "{{ .RESTIC_PASSWORD }}"
+        AWS_ACCESS_KEY_ID: "{{ .AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
   dataFrom:
     - extract:
         key: volsync-restic-template
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: recylarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: recylarr-dst
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-block
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: recylarr-dst
+  namespace: media
+  annotations:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    copyMethod: Snapshot
+    repository: recylarr-restic-secret
+    cacheStorageClassName: local-hostpath
+    storageClassName: ceph-block
+    volumeSnapshotClassName: csi-ceph-blockpool
+    accessModes:
+      - ReadWriteOnce
+    capacity: 1Gi
+---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: recyclarr
+  name: recylarr-src
   namespace: media
 spec:
-  sourcePVC: config-recyclarr-0
+  sourcePVC: recylarr-config
   trigger:
-    schedule: "0 7 * * *"
+    schedule: "15 */8 * * *"
   restic:
     copyMethod: Snapshot
-    pruneIntervalDays: 7
-    repository: recyclarr-restic-secret
-    cacheCapacity: 10Gi
-    volumeSnapshotClassName: csi-ceph-blockpool
+    repository: recylarr-restic-secret
+    cacheStorageClassName: local-hostpath
     storageClassName: ceph-block
-    moverSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+    volumeSnapshotClassName: csi-ceph-blockpool
+    pruneIntervalDays: 7
     retain:
       daily: 7
       within: 3d

@@ -33,43 +33,30 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
-
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        type: statefulset
-        strategy: RollingUpdate
-
         containers:
           main:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 6.0.2
               imagePullPolicy: IfNotPresent
-
             env:
               TZ: Europe/Oslo
-
             envFrom:
               - secretRef:
                   name: recyclarr-secret
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /config
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-
     service:
       main:
         enabled: false
-
     persistence:
+      config:
+        enabled: true
+        existingClaim: recylarr-config
+        globalMounts:
+          - path: /config
       config-file:
         type: configMap
         name: recyclarr-configmap
