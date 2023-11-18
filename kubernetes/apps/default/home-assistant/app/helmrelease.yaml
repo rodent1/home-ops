@@ -38,35 +38,26 @@ spec:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        type: statefulset
-        strategy: RollingUpdate
-
         initContainers:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 14.9
               imagePullPolicy: IfNotPresent
-
             envFrom: &envFrom
               - secretRef:
                   name: home-assistant-secret
-
         containers:
           main:
             image:
               repository: ghcr.io/onedr0p/home-assistant
               tag: 2023.11.2@sha256:29a2a48386bcd182c97229892ef123f4ee9d4b1dead7e5ea31a2ecc85fa13ab3
               imagePullPolicy: IfNotPresent
-
             env:
               TZ: Europe/Oslo
               POSTGRES_HOST: ${POSTGRES_URL}
               POSTGRES_DB: home_assistant
-
             envFrom: *envFrom
-
             probes:
               liveness:
                 enabled: false
@@ -74,15 +65,6 @@ spec:
                 enabled: false
               startup:
                 enabled: false
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /config
-              accessMode: ReadWriteOnce
-              size: 50Gi
-              storageClass: ceph-block
 
     service:
       main:
@@ -96,7 +78,6 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-
         hosts:
           - host: &host hass.${SECRET_DOMAIN}
             paths:
@@ -108,3 +89,8 @@ spec:
         tls:
           - hosts:
               - *host
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: home-assistant

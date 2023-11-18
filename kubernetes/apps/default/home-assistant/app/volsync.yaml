@@ -1,43 +1,88 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/external-secrets.io/externalsecret_v1beta1.json
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: home-assistant-restic
+  name: home-assistant-volsync
   namespace: default
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect
   target:
-    name: home-assistant-restic-secret
+    name: home-assistant-volsync-secret
     creationPolicy: Owner
     template:
       engineVersion: v2
       data:
         RESTIC_REPOSITORY: '{{ .REPOSITORY_TEMPLATE }}/home-assistant'
         RESTIC_PASSWORD: '{{ .RESTIC_PASSWORD }}'
-        AWS_ACCESS_KEY_ID: '{{ .AWS_ACCESS_KEY_ID }}'
-        AWS_SECRET_ACCESS_KEY: '{{ .AWS_SECRET_ACCESS_KEY }}'
+        AWS_ACCESS_KEY_ID: '{{ .MINIO_ROOT_USER }}'
+        AWS_SECRET_ACCESS_KEY: '{{ .MINIO_ROOT_PASSWORD }}'
   dataFrom:
     - extract:
-        key: volsync-restic-template
+        key: volsync-minio-template
+    - extract:
+        key: minio
 ---
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationSource
+apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: home-assistant
   namespace: default
 spec:
-  sourcePVC: config-home-assistant-0
+  accessModes: ["ReadWriteMany"]
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: home-assistant-rdst
+  resources:
+    requests:
+      storage: 5Gi # must match the ReplicationDestination `.spec.capacity` below
+  storageClassName: ceph-filesystem
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: home-assistant-rdst
+  namespace: default
+  annotations:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
   trigger:
-    schedule: "0 7 * * *"
+    manual: restore-once
+  restic:
+    repository: home-assistant-volsync-secret
+    copyMethod: Snapshot
+    volumeSnapshotClassName: csi-ceph-filesystem
+    cacheStorageClassName: local-path
+    cacheAccessModes: ["ReadWriteOnce"]
+    cacheCapacity: 8Gi
+    storageClassName: ceph-filesystem
+    accessModes: ["ReadWriteMany"]
+    capacity: 5Gi # must match the PersistentVolumeClaim `.resources.requests.storage` size above
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: home-assistant-rsrc
+  namespace: default
+spec:
+  sourcePVC: home-assistant
+  trigger:
+    schedule: "15 */8 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 7
-    repository: home-assistant-restic-secret
-    cacheCapacity: 10Gi
-    volumeSnapshotClassName: csi-ceph-blockpool
-    storageClassName: ceph-block
+    repository: home-assistant-volsync-secret
+    volumeSnapshotClassName: csi-ceph-filesystem
+    cacheCapacity: 8Gi
+    cacheStorageClassName: local-path
+    cacheAccessModes: ["ReadWriteOnce"]
+    storageClassName: ceph-filesystem
+    accessModes: ["ReadWriteMany"]
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568
