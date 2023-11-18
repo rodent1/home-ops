@@ -62,7 +62,7 @@ tasks:
           exit 1
         fi
         mkdir -p ./archive/apps/{{.ns}}
-        mv ./kubernetes/apps/{{.ns}}/{{.app}} ./archive/apps/{{.ns}}/{{.app}}
+        mv ./kubernetes/apps/{{.ns}}/{{.app}} ./archive/./kubernetes/apps/{{.ns}}/{{.app}}
         sed -i '/{{.app}}\/ks.yaml/d' ./kubernetes/apps/{{.ns}}/kustomization.yaml
 
     vars:
