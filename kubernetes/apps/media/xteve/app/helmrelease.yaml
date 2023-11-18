@@ -34,13 +34,10 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
         allowPrivilegeEscalation: true
-
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-        type: statefulset
-        strategy: RollingUpdate
         containers:
           main:
             image:
@@ -49,20 +46,11 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 5Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
     service:
       main:
         ports:
           http:
             port: 34400
-
     ingress:
       main:
         enabled: true
@@ -78,3 +66,9 @@ spec:
         tls:
           - hosts:
               - *host
+    persistence:
+      config:
+        enabled: true
+        existingClaim: xteve-config
+        globalMounts:
+          - path: /app/config

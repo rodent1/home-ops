@@ -21,23 +21,23 @@ spec:
   dataFrom:
     - extract:
         key: volsync-restic-template
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: xteve-config
-#   namespace: media
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   dataSourceRef:
-#     kind: ReplicationDestination
-#     apiGroup: volsync.backube
-#     name: xteve-dst
-#   resources:
-#     requests:
-#       storage: 5Gi
-#   storageClassName: ceph-block
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: xteve-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: xteve-dst
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ceph-block
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
@@ -65,7 +65,7 @@ metadata:
   name: xteve-src
   namespace: media
 spec:
-  sourcePVC: config-xteve-0
+  sourcePVC: xteve-config
   trigger:
     schedule: "15 */8 * * *"
   restic:
