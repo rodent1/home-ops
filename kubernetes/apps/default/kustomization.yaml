@@ -8,4 +8,4 @@ resources:
   - ./home-assistant/ks.yaml
   # - ./homepage/ks.yaml
   - ./immich/ks.yaml
-  - ./vikunja/ks.yaml
+  # - ./vikunja/ks.yaml
