@@ -35,28 +35,22 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups:
           - 1000
-
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        strategy: RollingUpdate
-        type: statefulset
         containers:
           main:
             image:
               repository: ghcr.io/advplyr/audiobookshelf
               tag: 2.5.0
               pullPolicy: IfNotPresent
-
             env:
               TZ: Europe/Oslo
               AUDIOBOOKSHELF_UID: 568
               AUDIOBOOKSHELF_GID: 568
               CONFIG_PATH: /config
               METADATA_PATH: /config/metadata
-
             probes:
               liveness: &probes
                 enabled: true
@@ -72,22 +66,11 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /config
-              accessMode: ReadWriteOnce
-              size: 15Gi
-              storageClass: ceph-block
-
     service:
       main:
         ports:
           http:
             port: *port
-
     ingress:
       main:
         enabled: true
@@ -105,8 +88,14 @@ spec:
         tls:
           - hosts:
               - *host
-
     persistence:
+      config:
+        enabled: true
+        existingClaim: audiobookshelf-config
+        advancedMounts:
+          main:
+            main:
+              - path: /config
       media:
         type: nfs
         server: ${TRUENAS_IP}
