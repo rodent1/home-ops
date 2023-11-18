@@ -33,7 +33,6 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
-
     controllers:
       main:
         annotations:
@@ -65,13 +64,11 @@ spec:
                 enabled: false
               startup:
                 enabled: false
-
     service:
       main:
         ports:
           http:
             port: &port 8123
-
     ingress:
       main:
         enabled: true
@@ -89,7 +86,6 @@ spec:
         tls:
           - hosts:
               - *host
-
     persistence:
       config:
         enabled: true
