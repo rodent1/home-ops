@@ -34,7 +34,7 @@ spec:
     name: audiobookshelf-dst
   resources:
     requests:
-      storage: 1Gi
+      storage: 10Gi
   storageClassName: ceph-block
 ---
 apiVersion: volsync.backube/v1alpha1
@@ -54,7 +54,7 @@ spec:
     volumeSnapshotClassName: csi-ceph-blockpool
     accessModes:
       - ReadWriteOnce
-    capacity: 1Gi
+    capacity: 10Gi
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
