@@ -31,11 +31,12 @@ metadata:
   name: home-assistant
   namespace: default
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes:
+    - ReadWriteOnce
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: home-assistant-rdst
+    name: home-assistant-dst
   resources:
     requests:
       storage: 5Gi # must match the ReplicationDestination `.spec.capacity` below
