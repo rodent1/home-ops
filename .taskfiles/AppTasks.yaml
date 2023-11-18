@@ -13,9 +13,41 @@ tasks:
           exit 1
         fi
         mkdir -p ./kubernetes/apps/{{.ns}}/{{.app}}/app
-        touch ./kubernetes/apps/{{.ns}}/{{.app}}/ks.yaml
-        touch ./kubernetes/apps/{{.ns}}/{{.app}}/app/helmrelease.yaml
-        touch ./kubernetes/apps/{{.ns}}/{{.app}}/app/kustomization.yaml
+        echo "---
+        # yaml-language-server: \$schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: cluster-apps-{{.app}}
+          namespace: flux-system
+        spec:
+          path: ./kubernetes/apps/{{.ns}}/{{.app}}/app
+          prune: true
+          sourceRef:
+            kind: GitRepository
+            name: home-kubernetes
+          wait: false
+          interval: 30m
+          retryInterval: 1m
+          timeout: 5m
+        " > ./kubernetes/apps/{{.ns}}/{{.app}}/ks.yaml
+        echo "---
+        # yaml-language-server: \$schema=https://json.schemastore.org/kustomization
+        apiVersion: kustomize.config.k8s.io/v1beta1
+        kind: Kustomization
+        namespace: {{.ns}}
+        resources:
+          - ./helmrelease.yaml
+        " > ./kubernetes/apps/{{.ns}}/{{.app}}/app/kustomization.yaml
+        echo "---
+        # yaml-language-server: \$schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+        apiVersion: helm.toolkit.fluxcd.io/v2beta1
+        kind: HelmRelease
+        metadata:
+          name: {{.app}}
+          namespace: {{.ns}}
+        spec:
+        " > ./kubernetes/apps/{{.ns}}/{{.app}}/app/helmrelease.yaml
     vars:
       app: '{{ or .app (fail "Appname `app` is required") }}'
       ns: '{{.ns | default "default"}}'
