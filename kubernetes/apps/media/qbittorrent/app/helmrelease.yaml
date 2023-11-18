@@ -37,23 +37,17 @@ spec:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        type: statefulset
-        strategy: RollingUpdate
-
         containers:
           main:
             image:
               repository: ghcr.io/onedr0p/qbittorrent
               tag: 4.6.0@sha256:cb6259df3be61a5108bc4f85b09a523fc4b250589ca9b315ef927cbdf779afb6
               pullPolicy: IfNotPresent
-
             env:
               TZ: Europe/Oslo
               QBITTORRENT__PORT: &port 80
               QBITTORRENT__BT_PORT: &bittorrentPort 50413
               QBT_Application__MemoryWorkingSetLimit: 12000
-
             resources:
               requests:
                 cpu: 22m
@@ -61,15 +55,12 @@ spec:
               limits:
                 cpu: 211m
                 memory: 7951M
-
           reannounce:
             image:
               repository: ghcr.io/buroa/qbittools
               tag: v0.10.0
               imagePullPolicy: IfNotPresent
-
             args: ["reannounce", "-s", "localhost", "-p", "80"]
-
             resources:
               requests:
                 cpu: 10m
@@ -77,22 +68,11 @@ spec:
               limits:
                 cpu: 101m
                 memory: 333M
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /config
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-
     service:
       main:
         ports:
           http:
             port: *port
-
       bittorrent:
         controller: main
         type: LoadBalancer
@@ -102,9 +82,7 @@ spec:
             port: *bittorrentPort
             protocol: TCP
             targetPort: *bittorrentPort
-
         externalTrafficPolicy: Local
-
     ingress:
       main:
         enabled: true
@@ -117,7 +95,6 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN}/css/base/qbittorrent/nord.css"></head>';
             sub_filter_once on;
-
         hosts:
           - host: &host qb.${SECRET_DOMAIN}
             paths:
@@ -129,18 +106,20 @@ spec:
         tls:
           - hosts:
               - *host
-
     persistence:
+      config:
+        enabled: true
+        existingClaim: qbittorrent-config
+        globalMounts:
+          - path: /config
       media:
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
-
       incomplete:
         type: emptyDir
-
       completed-script:
         type: configMap
         name: qbittorrent-scripts
