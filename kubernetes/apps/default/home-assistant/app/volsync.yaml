@@ -49,7 +49,7 @@ spec:
     manual: restore-once
   restic:
     copyMethod: Snapshot
-    repository: home-assistant-restic-secret
+    repository: home-assistant-volsync-secret
     cacheStorageClassName: local-hostpath
     storageClassName: ceph-block
     volumeSnapshotClassName: csi-ceph-blockpool
@@ -67,7 +67,7 @@ spec:
     schedule: "15 */8 * * *"
   restic:
     copyMethod: Snapshot
-    repository: home-assistant-restic-secret
+    repository: home-assistant-volsync-secret
     cacheStorageClassName: local-hostpath
     storageClassName: ceph-block
     volumeSnapshotClassName: csi-ceph-blockpool
