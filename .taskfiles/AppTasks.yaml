@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/go-task/task/main/docs/static/schema.json
+version: '3'
+
+tasks:
+  create:
+    desc: Create a new app in ./kubernetes/apps/{namespace}/{appname} (ex. task app:createa app=plex [ns=default])
+    silent: true
+    cmds:
+      - |
+        if [ -d "./kubernetes/apps/{{.ns}}/{{.app}}" ]; then
+          echo "App already exists"
+          exit 1
+        fi
+        mkdir -p ./kubernetes/apps/{{.ns}}/{{.app}}/app
+        touch ./kubernetes/apps/{{.ns}}/{{.app}}/ks.yaml
+        touch ./kubernetes/apps/{{.ns}}/{{.app}}/app/helmrelease.yaml
+        touch ./kubernetes/apps/{{.ns}}/{{.app}}/app/kustomization.yaml
+    vars:
+      app: '{{ or .app (fail "Appname `app` is required") }}'
+      ns: '{{.ns | default "default"}}'
+
+  archive:
+    desc: Move the specified app to archive (ex. task app:archive app=plex [ns=default])
+    silent: true
+    cmds:
+      - |
+        if [ ! -d "./kubernetes/apps/{{.ns}}/{{.app}}" ]; then
+          echo "App does not exist"
+          exit 1
+        fi
+        mkdir -p ./archive/apps/{{.ns}}
+        mv ./kubernetes/apps/{{.ns}}/{{.app}} ./archive/apps/{{.ns}}/{{.app}}
+        sed -i '/{{.app}}\/ks.yaml/d' ./kubernetes/apps/{{.ns}}/kustomization.yaml
+
+    vars:
+      app: '{{ or .app (fail "Appname `app` is required") }}'
+      ns: '{{.ns | default "default"}}'

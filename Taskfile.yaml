@@ -19,6 +19,7 @@ env:
 
 includes:
   an: .taskfiles/AnsibleTasks.yaml
+  app: .taskfiles/AppTasks.yaml
   cu: .taskfiles/ClusterTasks.yaml
   es: .taskfiles/ExternalSecrets/Tasks.yaml
   fx: .taskfiles/Flux/Tasks.yaml
