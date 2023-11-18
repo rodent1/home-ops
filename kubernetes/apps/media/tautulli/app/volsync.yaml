@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/external-secrets.io/externalsecret_v1beta1.json
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -15,36 +14,67 @@ spec:
     template:
       engineVersion: v2
       data:
-        RESTIC_REPOSITORY: '{{ .REPOSITORY_TEMPLATE }}/tautulli'
-        RESTIC_PASSWORD: '{{ .RESTIC_PASSWORD }}'
-        AWS_ACCESS_KEY_ID: '{{ .AWS_ACCESS_KEY_ID }}'
-        AWS_SECRET_ACCESS_KEY: '{{ .AWS_SECRET_ACCESS_KEY }}'
+        RESTIC_REPOSITORY: "{{ .REPOSITORY_TEMPLATE }}/tautulli"
+        RESTIC_PASSWORD: "{{ .RESTIC_PASSWORD }}"
+        AWS_ACCESS_KEY_ID: "{{ .AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
   dataFrom:
     - extract:
         key: volsync-restic-template
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tautulli-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: tautulli-dst
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-block
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: tautulli-dst
+  namespace: media
+  annotations:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    copyMethod: Snapshot
+    repository: tautulli-restic-secret
+    cacheStorageClassName: local-hostpath
+    storageClassName: ceph-block
+    volumeSnapshotClassName: csi-ceph-blockpool
+    accessModes:
+      - ReadWriteOnce
+    capacity: 1Gi
+---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: tautulli
+  name: tautulli-src
   namespace: media
 spec:
-  sourcePVC: config-tautulli-0
+  sourcePVC: tautulli-config
   trigger:
-    schedule: "0 7 * * *"
+    schedule: "15 */8 * * *"
   restic:
     copyMethod: Snapshot
-    pruneIntervalDays: 7
     repository: tautulli-restic-secret
-    cacheCapacity: 8Gi
-    cacheStorageClassName: local-path
-    volumeSnapshotClassName: csi-ceph-blockpool
+    cacheStorageClassName: local-hostpath
     storageClassName: ceph-block
-    moverSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+    volumeSnapshotClassName: csi-ceph-blockpool
+    pruneIntervalDays: 7
     retain:
       daily: 7
       within: 3d

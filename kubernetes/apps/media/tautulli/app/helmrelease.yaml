@@ -28,7 +28,6 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -65,14 +64,6 @@ spec:
             runAsGroup: 568
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 5Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
     service:
       main:
         ports:
@@ -93,5 +84,10 @@ spec:
           - hosts:
               - *host
     persistence:
+      config:
+        enabled: true
+        existingClaim: tautulli-config
+        globalMounts:
+          - path: /config
       add-ons:
         type: emptyDir

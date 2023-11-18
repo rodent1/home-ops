@@ -71,4 +71,4 @@ spec:
         enabled: true
         existingClaim: xteve-config
         globalMounts:
-          - path: /app/config
+          - path: /config
