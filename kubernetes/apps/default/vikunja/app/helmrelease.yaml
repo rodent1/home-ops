@@ -73,7 +73,7 @@ spec:
               tag: 2.7.5-alpine
         statefulset:
           volumeClaimTemplates:
-            - name: files
+            - name: config
               accessMode: ReadWriteOnce
               size: 1Gi
               storageClass: ceph-block
