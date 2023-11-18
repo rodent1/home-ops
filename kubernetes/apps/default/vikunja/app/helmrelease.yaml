@@ -56,6 +56,7 @@ spec:
               VIKUNJA_MAILER_HOST: smtp.office365.com
               VIKUNJA_MAILER_PORT: "587"
               VIKUNJA_MAILER_FROMEMAIL: Vikunja <mailer@${SECRET_DOMAIN}>
+              VIKUNJA_MAILER_AUTHTYPE: login
             resources:
               requests:
                 cpu: 5m
@@ -72,7 +73,7 @@ spec:
               tag: 2.7.5-alpine
         statefulset:
           volumeClaimTemplates:
-            - name: config
+            - name: files
               accessMode: ReadWriteOnce
               size: 1Gi
               storageClass: ceph-block
@@ -105,13 +106,13 @@ spec:
     persistence:
       caddy-config:
         type: configMap
-        name: vikunja-configmap-caddy
+        name: vikunja-configmap
         globalMounts:
           - path: /etc/caddy/Caddyfile
             subPath: Caddyfile
       vikunja-config:
         type: configMap
-        name: vikunja-configmap-config
+        name: vikunja-configmap
         globalMounts:
           - path: /etc/vikunja/config.yml
-            subPath: Vikunja.yaml
+            subPath: config.yml
