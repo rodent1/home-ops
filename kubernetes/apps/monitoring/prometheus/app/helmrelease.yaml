@@ -34,7 +34,26 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
-      enabled: false
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: internal
+        hosts:
+          - &host alertmanager.${SECRET_DOMAIN}
+        tls:
+          - hosts:
+              - *host
+      alertmanagerSpec:
+        replicas: 2
+        useExistingSecret: true
+        configSecret: alertmanager-secret
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-path
+              resources:
+                requests:
+                  storage: 1Gi
 
     kubelet:
       enabled: true
@@ -108,15 +127,7 @@ spec:
               - *host
 
       prometheusSpec:
-        # remoteWrite:
-        #   - url: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
-        remoteWriteDashboards: true
-        alertingEndpoints:
-          - namespace: monitoring
-            name: alertmanager
-            port: 9093
-            apiVersion: v2
-        replicas: 1
+        replicas: 2
         replicaExternalLabelName: __replica__
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
@@ -129,13 +140,12 @@ spec:
           - auto-gomaxprocs
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
-
         retention: 2d
         retentionSize: 15GB
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: local-hostpath
+              storageClassName: local-path
               resources:
                 requests:
                   storage: 20Gi

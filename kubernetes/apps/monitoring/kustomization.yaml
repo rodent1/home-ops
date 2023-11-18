@@ -5,9 +5,13 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
+  - ./alertmanager/ks.yaml
   - ./gatus/ks.yaml
+  - ./grafana/ks.yaml
+  - ./loki/ks.yaml
+  - ./prometheus/ks.yaml
   - ./unpoller/ks.yaml
+  - ./vector/ks.yaml
   # Exporters
   - ./exporters
-  # Stack
-  - ./stack
+
