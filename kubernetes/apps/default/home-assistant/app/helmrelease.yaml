@@ -93,4 +93,8 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: home-assistant
+        existingClaim: home-assistant-config
+        advancedMounts:
+          main:
+            main:
+              - path: /config

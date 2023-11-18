@@ -28,8 +28,8 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: home-assistant
-  namespace: default
+  name: home-assistant-config
+  namespace: home-automation
 spec:
   accessModes:
     - ReadWriteOnce
@@ -39,8 +39,8 @@ spec:
     name: home-assistant-dst
   resources:
     requests:
-      storage: 5Gi # must match the ReplicationDestination `.spec.capacity` below
-  storageClassName: ceph-filesystem
+      storage: 1Gi
+  storageClassName: ceph-block
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
