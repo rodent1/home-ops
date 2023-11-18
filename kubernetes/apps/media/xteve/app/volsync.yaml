@@ -1,0 +1,80 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: xteve-restic
+  namespace: media
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: xteve-restic-secret
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        RESTIC_REPOSITORY: "{{ .REPOSITORY_TEMPLATE }}/xteve"
+        RESTIC_PASSWORD: "{{ .RESTIC_PASSWORD }}"
+        AWS_ACCESS_KEY_ID: "{{ .AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
+  dataFrom:
+    - extract:
+        key: volsync-restic-template
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: xteve-config
+#   namespace: media
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   dataSourceRef:
+#     kind: ReplicationDestination
+#     apiGroup: volsync.backube
+#     name: xteve-dst
+#   resources:
+#     requests:
+#       storage: 5Gi
+#   storageClassName: ceph-block
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: xteve-dst
+  namespace: media
+  annotations:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    copyMethod: Snapshot
+    repository: xteve-restic-secret
+    cacheStorageClassName: local-hostpath
+    storageClassName: ceph-block
+    volumeSnapshotClassName: csi-ceph-blockpool
+    accessModes:
+      - ReadWriteOnce
+    capacity: 5Gi
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: xteve-src
+  namespace: media
+spec:
+  sourcePVC: config-xteve-0
+  trigger:
+    schedule: "15 */8 * * *"
+  restic:
+    copyMethod: Snapshot
+    repository: xteve-restic-secret
+    cacheStorageClassName: local-hostpath
+    storageClassName: ceph-block
+    volumeSnapshotClassName: csi-ceph-blockpool
+    pruneIntervalDays: 7
+    retain:
+      daily: 7
+      within: 3d
