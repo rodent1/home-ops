@@ -45,4 +45,4 @@ spec:
       volumes:
         - name: tf-controller-sops-key
           secret:
-            secretName: tf-controller-sops-secret
+            secretName: tf-controller-sops-key
