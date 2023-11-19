@@ -7,4 +7,4 @@ resources:
   # Flux-Kustomizations
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
-  - ./vikunja/ks.yaml
+  # - ./vikunja/ks.yaml
