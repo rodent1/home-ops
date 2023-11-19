@@ -1,4 +1,4 @@
-module "cf_domain_hardware" {
+module "cf_domain_home" {
   source     = "./modules/cf_domain"
   domain     = "rodent.cc"
   account_id = cloudflare_account.main.id

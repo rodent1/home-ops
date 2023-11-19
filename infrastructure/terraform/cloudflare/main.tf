@@ -28,7 +28,3 @@ module "onepassword_item_cloudflare" {
   vault  = "home-ops"
   item   = "Cloudflare"
 }
-
-data "cloudflare_zone" "domain" {
-  name = "rodent.cc"
-}
