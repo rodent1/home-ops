@@ -8,9 +8,27 @@ module "cf_domain_home" {
       name  = "ipv4"
       value = local.home_ipv4
     },
+    # Generic settings
+    {
+      name  = "_dmarc"
+      value = "v=DMARC1; p=quarantine;"
+      type  = "TXT"
+    },
   ]
 
   waf_custom_rules = [
+    {
+      enabled     = true
+      description = "Allow GitHub flux API"
+      expression  = "(ip.geoip.asnum eq 36459 and http.host eq \"flux-webhook.rodent.cc\")"
+      action      = "skip"
+      action_parameters = {
+        ruleset = "current"
+      }
+      logging = {
+        enabled = false
+      }
+    },
     {
       enabled     = true
       description = "Firewall rule to block bots and threats determined by CF"
