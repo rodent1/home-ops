@@ -26,7 +26,6 @@ Thumbs.db
 
 # Other files
 kubeconfig
-.decrypted~*.yaml
 .config.env
 *.agekey
 *.pub

@@ -25,7 +25,7 @@ data "http" "ipv4_lookup_raw" {
 
 module "onepassword_item_cloudflare" {
   source = "github.com/bjw-s/terraform-1password-item?ref=main"
-  vault  = "Services"
+  vault  = "home-ops"
   item   = "Cloudflare"
 }
 
