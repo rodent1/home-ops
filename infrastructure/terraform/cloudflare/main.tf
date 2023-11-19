@@ -1,10 +1,10 @@
 terraform {
-  # cloud {
-  #   organization = ""
-  #   workspaces {
-  #     name = ""
-  #   }
-  # }
+  cloud {
+    organization = "rodent-cc"
+    workspaces {
+      name = "home-cloudflare-provisioner"
+    }
+  }
 
   required_providers {
     cloudflare = {
