@@ -35,9 +35,8 @@ spec:
         containers:
           main:
             image:
-              image:
-                repository: docker.io/filebrowser/filebrowser
-                tag: latest
+              repository: docker.io/filebrowser/filebrowser
+              tag: latest
             resources:
               requests:
                 cpu: 10m
