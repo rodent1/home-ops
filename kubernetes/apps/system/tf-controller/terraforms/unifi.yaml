@@ -4,7 +4,7 @@
 # kind: OCIRepository
 # metadata:
 #   name: oci-terraform-unifi
-#   namespace: flux-system
+#   namespace: system
 # spec:
 #   interval: 1m
 #   url: oci://ghcr.io/rodent1/terraform/unifi
@@ -15,7 +15,7 @@
 # kind: Terraform
 # metadata:
 #   name: unifi
-#   namespace: flux-system
+#   namespace: system
 # spec:
 #   interval: 12h
 #   approvePlan: "auto"
@@ -27,7 +27,7 @@
 #   sourceRef:
 #     kind: OCIRepository
 #     name: oci-terraform-unifi
-#     namespace: flux-system
+#     namespace: system
 #   runnerPodTemplate:
 #     spec:
 #       env:
