@@ -8,9 +8,9 @@ resources:
   - ./gatus.yaml
   - ./helmrelease.yaml
   - ./prometheusrules.yaml
-# configMapGenerator:
-#   - name: loki-alerting-rules
-#     files:
-#       - loki-alerting-rules.yaml=./rules/loki-alerting-rules.yaml
-# generatorOptions:
-#   disableNameSuffixHash: true
+configMapGenerator:
+  - name: loki-alerting-rules
+    files:
+      - loki-alerting-rules.yaml=./rules/loki-alerting-rules.yaml
+generatorOptions:
+  disableNameSuffixHash: true
