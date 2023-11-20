@@ -47,7 +47,7 @@ spec:
               service:
                 name: *app
                 port:
-                  number: 443
+                  number: 9002
   tls:
     - hosts:
         - *host

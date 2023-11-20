@@ -47,4 +47,4 @@ spec:
               service:
                 name: *app
                 port:
-                  number: 80
+                  number: 9000
