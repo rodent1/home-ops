@@ -7,9 +7,10 @@ resources:
   - ./externalsecret.yaml
   - ./gatus.yaml
   - ./helmrelease.yaml
-configMapGenerator:
-  - name: loki-alerting-rules
-    files:
-      - loki-alerting-rules.yaml=./rules/loki-alerting-rules.yaml
-generatorOptions:
-  disableNameSuffixHash: true
+  - ./prometheusrules.yaml
+# configMapGenerator:
+#   - name: loki-alerting-rules
+#     files:
+#       - loki-alerting-rules.yaml=./rules/loki-alerting-rules.yaml
+# generatorOptions:
+#   disableNameSuffixHash: true
