@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebrowser-gatus-ep
+  namespace: default
+  labels:
+    gatus.io/enabled: "true"
+data:
+  config.yaml: |
+    endpoints:
+      - name: filebrowser
+        group: external
+        url: https://share.${SECRET_DOMAIN}
+        interval: 1m
+        client:
+          dns-resolver: tcp://1.1.1.1:53
+          insecure: true
+        conditions:
+          - "[STATUS] == 200"
+        alerts:
+          - type: pushover
