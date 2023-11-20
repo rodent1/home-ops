@@ -358,15 +358,15 @@ spec:
     sidecar:
       dashboards:
         enabled: true
+        searchNamespace: ALL
         labelValue: ""
         label: grafana_dashboard
         folderAnnotation: grafana_folder
-        searchNamespace: ALL
         provider:
           disableDelete: true
           foldersFromFilesStructure: true
       datasources:
         enabled: true
-        labelValue: ""
         searchNamespace: ALL
+        labelValue: ""
       logLevel: INFO
