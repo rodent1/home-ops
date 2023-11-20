@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
   - ./external-nas-ui.yaml
   - ./external-xen-ui.yaml
+  - ./internal-s3.yaml
   - ./internal-unifi.yaml
