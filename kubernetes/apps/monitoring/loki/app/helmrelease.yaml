@@ -58,17 +58,16 @@ spec:
 
         schema_config:
           configs:
-            - from: "2021-08-01"
+            - from: "2022-01-11" # quote
               store: boltdb-shipper
               object_store: s3
-              schema: v11
+              schema: v12
               index:
                 prefix: loki_index_
                 period: 24h
-
         common:
           path_prefix: /var/loki
-          replication_factor: 3
+          replication_factor: 2
           storage:
             s3:
               s3: null
@@ -77,7 +76,6 @@ spec:
           ring:
             kvstore:
               store: memberlist
-
         ruler:
           enable_api: true
           enable_alertmanager_v2: true
@@ -86,16 +84,14 @@ spec:
             type: local
             local:
               directory: /rules
-          rule_path: /rules
+          rule_path: /tmp/scratch
           ring:
             kvstore:
               store: memberlist
-
         distributor:
           ring:
             kvstore:
               store: memberlist
-
         compactor:
           working_directory: /var/loki/boltdb-shipper-compactor
           shared_store: s3
@@ -103,14 +99,12 @@ spec:
           retention_enabled: true
           retention_delete_delay: 2h
           retention_delete_worker_count: 150
-
         ingester:
           max_chunk_age: 1h
           lifecycler:
             ring:
               kvstore:
                 store: memberlist
-
         analytics:
           reporting_enabled: false
 
