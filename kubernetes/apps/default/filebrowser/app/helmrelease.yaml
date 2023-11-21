@@ -89,6 +89,11 @@ spec:
           - hosts:
               - *host
     persistence:
+      config:
+        enabled: true
+        existingClaim: config-filebrowser
+        globalMounts:
+          - path: /config
       srv:
         type: nfs
         server: ${TRUENAS_IP}
