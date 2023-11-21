@@ -20,3 +20,10 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substitute:
+      APP: home-assistant
+      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_ACCESSMODES: ReadWriteMany
+      VOLSYNC_STORAGECLASS: ceph-filesystem
+      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
