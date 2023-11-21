@@ -29,7 +29,6 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -58,14 +57,6 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 10Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
     service:
       main:
         ports:
