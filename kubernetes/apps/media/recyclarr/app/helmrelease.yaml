@@ -54,7 +54,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-recylarr
+        existingClaim: config-recyclarr
         globalMounts:
           - path: /config
       config-file:
