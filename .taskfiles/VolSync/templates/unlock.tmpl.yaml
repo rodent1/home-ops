@@ -16,4 +16,4 @@ spec:
           args: ["unlock", "--remove-all"]
           envFrom:
             - secretRef:
-                name: "${app}-volsync-secret"
+                name: "${app}-volsync-r2-secret"
