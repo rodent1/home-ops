@@ -85,7 +85,7 @@ spec:
         controller: main
         ports:
           http:
-            port: 2283
+            port: 3000
 
     ingress:
       main:
@@ -113,7 +113,7 @@ spec:
                 pathType: Prefix
                 service:
                   name: immich-server-web
-                  port: 2283
+                  port: 3000
               - path: /api
                 pathType: Prefix
                 service:
