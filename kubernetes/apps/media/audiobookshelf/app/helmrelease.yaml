@@ -91,7 +91,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: audiobookshelf-config
+        existingClaim: config-audiobookshelf
         advancedMounts:
           main:
             main:
