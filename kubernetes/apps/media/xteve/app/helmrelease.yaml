@@ -69,6 +69,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: xteve-config
+        existingClaim: config-xteve
         globalMounts:
           - path: /config
