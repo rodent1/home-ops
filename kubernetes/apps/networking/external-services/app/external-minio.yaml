@@ -35,8 +35,11 @@ metadata:
   labels:
     app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
 spec:
-  ingressClassName: internal
+  ingressClassName: external
+
   rules:
     - host: &host minio.${SECRET_DOMAIN}
       http:
