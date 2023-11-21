@@ -29,10 +29,8 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-
         initContainers:
           01-init-db:
             image:
@@ -42,7 +40,6 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: vikunja-secret
-
         containers:
           main:
             image:
@@ -71,21 +68,11 @@ spec:
             image:
               repository: caddy
               tag: 2.7.5-alpine
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /app/vikunja/files
-
     service:
       main:
         ports:
           http:
             port: 8080
-
     ingress:
       main:
         enabled: true
@@ -102,8 +89,12 @@ spec:
         tls:
           - hosts:
               - *host
-
     persistence:
+      config:
+        enabled: true
+        existingClaim: config-vikunja
+        globalMounts:
+          - path: /app/vikunja/files
       caddy-config:
         type: configMap
         name: vikunja-configmap
