@@ -112,7 +112,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: web
+                  name: immich-server-web
                   port: 2283
               - path: /api
                 pathType: Prefix
