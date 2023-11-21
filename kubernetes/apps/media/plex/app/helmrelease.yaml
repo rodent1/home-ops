@@ -82,7 +82,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: plex-config
+        existingClaim: config-plex
         globalMounts:
           - path: /config
       transcode:
