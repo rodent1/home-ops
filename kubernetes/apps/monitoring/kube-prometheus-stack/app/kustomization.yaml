@@ -7,7 +7,6 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./prometheusrules
-  - ./scrapeconfigs
     # Templates
   - ../../../../templates/gatus/guarded
 configMapGenerator:
