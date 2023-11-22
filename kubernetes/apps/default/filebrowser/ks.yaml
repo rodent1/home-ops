@@ -18,4 +18,5 @@ spec:
   postBuild:
     substitute:
       APP: filebrowser
+      GATUS_URL: share
       VOLSYNC_CAPACITY: 10Gi

@@ -21,4 +21,5 @@ spec:
   postBuild:
     substitute:
       APP: overseerr
+      GATUS_URL: requests
       VOLSYNC_CAPACITY: 5Gi

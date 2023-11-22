@@ -23,4 +23,5 @@ spec:
   postBuild:
     substitute:
       APP: home-assistant
+      GATUS_URL: hass
       VOLSYNC_CAPACITY: 5Gi
