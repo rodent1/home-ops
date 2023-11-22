@@ -22,4 +22,5 @@ spec:
   postBuild:
     substitute:
       APP: plex
+      GATUS_PATH: /web/index.html
       VOLSYNC_CAPACITY: 150Gi
