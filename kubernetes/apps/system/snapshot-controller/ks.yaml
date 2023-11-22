@@ -6,6 +6,8 @@ metadata:
   name: cluster-apps-snapshot-controller
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cert-manager
   path: ./kubernetes/apps/system/snapshot-controller/app
   prune: true
   sourceRef:
