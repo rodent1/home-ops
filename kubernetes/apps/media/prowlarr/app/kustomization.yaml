@@ -6,4 +6,5 @@ namespace: media
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./gatus.yaml
+  # Templates
+  - ../../../../templates/gatus/guarded

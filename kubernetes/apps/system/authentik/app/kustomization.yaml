@@ -4,8 +4,9 @@ kind: Kustomization
 namespace: system
 resources:
   - ./externalsecret.yaml
-  - ./gatus.yaml
   - ./helmrelease.yaml
+  # Templates
+  - ../../../../templates/gatus/external
 labels:
   - pairs:
       app.kubernetes.io/name: authentik
