@@ -8,4 +8,4 @@ resources:
   - ./configmap.yaml
   - ./nfs.yaml
   # Templates
-  - ../../../../templates/gatus/guarded
+  - ../../../../templates/gatus/external
