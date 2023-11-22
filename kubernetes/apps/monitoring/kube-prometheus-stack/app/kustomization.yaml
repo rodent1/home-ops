@@ -9,7 +9,7 @@ resources:
   - ./prometheusrules
   - ./scrapeconfigs
     # Templates
-  - ../../../../templates/gatus/internal
+  - ../../../../templates/gatus/guarded
 configMapGenerator:
   - name: alertmanager-config-tpl
     files:
