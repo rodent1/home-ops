@@ -18,4 +18,5 @@ spec:
   postBuild:
     substitute:
       APP: vikunja
+      GATUS_URL: tasks
       VOLSYNC_CAPACITY: 5Gi
