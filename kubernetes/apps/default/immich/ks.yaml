@@ -21,6 +21,10 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substitute:
+      APP: immich
+      GATUS_URL: photos
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -75,10 +79,6 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: immich
-      GATUS_URL: photos
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
