@@ -7,4 +7,4 @@ resources:
   - ./helmrelease.yaml
   - ./secret.sops.yaml
   # Templates
-  - ../../../../templates/gatus/guarded
+  - ../../../../templates/gatus/external
