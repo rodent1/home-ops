@@ -7,7 +7,9 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./prometheusrules
-  - ./gatus.yaml
+  - ./scrapeconfigs
+    # Templates
+  - ../../../../templates/gatus/internal
 configMapGenerator:
   - name: alertmanager-config-tpl
     files:
