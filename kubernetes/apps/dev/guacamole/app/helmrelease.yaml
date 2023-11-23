@@ -130,3 +130,4 @@ spec:
         existingClaim: config-guacamole
         globalMounts:
           - path: /config
+          - path: /config/migrations
