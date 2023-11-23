@@ -72,6 +72,7 @@ spec:
               imagePullPolicy: IfNotPresent
             env:
               TZ: "${TIMEZONE}"
+              GUACAMOLE_HOME: /config
             envFrom: *envFrom
             resources:
               requests:
@@ -90,6 +91,7 @@ spec:
               TZ: "${TIMEZONE}"
               GUACD_HOSTNAME: guacd
               GUACD_PORT: "4822"
+              GUACAMOLE_HOME: /config
             envFrom: *envFrom
             resources:
               requests:
