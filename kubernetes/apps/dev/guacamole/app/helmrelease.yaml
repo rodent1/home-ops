@@ -37,7 +37,6 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: guacamole-secret
-
           02-init-schema:
             image:
               repository: docker.io/guacamole/guacamole
@@ -47,7 +46,6 @@ spec:
             args: ["-c", "/opt/guacamole/bin/initdb.sh --postgres > /migrations/init.sql"]
             envFrom:
               - secretRef: *envFrom
-
           03-init-migrations:
             image:
               repository: ghcr.io/onedr0p/postgres-init
@@ -66,7 +64,6 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           main:
-            nameOverride: guacd
             image:
               repository: docker.io/guacamole/guacd
               tag: 1.5.3
@@ -80,7 +77,7 @@ spec:
               limits:
                 memory: 500Mi
           guacamole:
-            dependsOn: [ main ]
+            dependsOn: [ "main" ]
             image:
               repository: docker.io/guacamole/guacamole
               tag: 1.5.3
