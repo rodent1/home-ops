@@ -65,6 +65,7 @@ spec:
         containers:
           main:
             nameOverride: guacd
+            order: 1
             image:
               repository: docker.io/guacamole/guacd
               tag: 1.5.3
@@ -79,8 +80,7 @@ spec:
                 memory: 500Mi
 
           guacamole:
-            dependsOn:
-              - guacd
+            order: 2
             image:
               repository: docker.io/guacamole/guacamole
               tag: 1.5.3
