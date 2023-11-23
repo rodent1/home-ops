@@ -131,6 +131,7 @@ spec:
         globalMounts:
           - path: /config
       migrations:
+        type: emptyDir
         advancedMounts:
           main:
             02-init-schema:
