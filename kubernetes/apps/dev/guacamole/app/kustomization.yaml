@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: dev
 resources:
   - ./externalsecrets.yaml
-  - ./helmrelease.yaml
+  # - ./helmrelease.yaml
   # Templates
   - ../../../../templates/volsync
   - ../../../../templates/gatus/external
