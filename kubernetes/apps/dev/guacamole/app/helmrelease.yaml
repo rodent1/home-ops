@@ -128,13 +128,15 @@ spec:
       config:
         enabled: true
         existingClaim: config-guacamole
-        globalMounts:
-          - path: /config
-      migrations:
-        type: emptyDir
         advancedMounts:
           main:
+            main:
+              - path: /config
+            guacamole:
+              - path: /config
             02-init-schema:
               - path: /migrations
+                subPath: /config/migrations
             03-init-migrations:
               - path: /migrations
+                subPath: /config/migrations
