@@ -119,7 +119,7 @@ spec:
         hosts:
           - host: &host "console.${SECRET_DOMAIN}"
             paths:
-              - path: /
+              - path: /guacamole
                 service:
                   name: main
                   port: http
