@@ -58,7 +58,7 @@ spec:
             args:
               - -c
               - |
-                export PGPASSWORD=$POSTGRES_PASSWORD
+                export PGPASSWORD=$POSTGRESSQL_PASSWORD
                 psql -h $POSTGRESQL_HOSTNAME -d $POSTGRESQL_DATABASE -U $POSTGRESQL_USER -a -w -f /migrations/init.sql || true
             envFrom: *envFrom
 
