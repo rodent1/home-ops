@@ -22,4 +22,5 @@ spec:
     substitute:
       APP: guacamole
       GATUS_URL: console
+      GATUS_PATH: /guacamole
       VOLSYNC_CAPACITY: 5Gi
