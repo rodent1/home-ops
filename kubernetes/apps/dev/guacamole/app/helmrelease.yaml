@@ -102,6 +102,7 @@ spec:
           http:
             port: 8080
       guacd:
+        controller: main
         ports:
           http:
             port: 4822
