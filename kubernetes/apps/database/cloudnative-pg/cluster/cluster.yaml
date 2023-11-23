@@ -6,7 +6,7 @@ metadata:
   name: postgres16
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.1-2
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.1-3
   inheritedMetadata:
     labels:
       kube-image-keeper.enix.io/image-caching-policy: ignore
