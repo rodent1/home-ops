@@ -79,7 +79,7 @@ spec:
                 memory: 500Mi
           guacamole:
             dependsOn:
-              - name: guacd
+              - name: main
             image:
               repository: docker.io/guacamole/guacamole
               tag: 1.5.3
