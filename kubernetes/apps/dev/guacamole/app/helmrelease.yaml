@@ -80,7 +80,7 @@ spec:
 
           guacamole:
             dependsOn:
-              - name: guacd
+              - guacd
             image:
               repository: docker.io/guacamole/guacamole
               tag: 1.5.3
