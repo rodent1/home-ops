@@ -65,7 +65,8 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          guacd:
+          main:
+            nameOverride: guacd
             image:
               repository: docker.io/guacamole/guacd
               tag: 1.5.3
