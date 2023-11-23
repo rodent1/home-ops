@@ -64,6 +64,7 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           main:
+            nameOverride: guacd
             image:
               repository: docker.io/guacamole/guacd
               tag: 1.5.3
@@ -77,7 +78,8 @@ spec:
               limits:
                 memory: 500Mi
           guacamole:
-            dependsOn: [ "main" ]
+            dependsOn:
+              - name: guacd
             image:
               repository: docker.io/guacamole/guacamole
               tag: 1.5.3
