@@ -73,7 +73,9 @@ spec:
             env:
               TZ: "${TIMEZONE}"
               GUACAMOLE_HOME: /config
-            envFrom: *envFrom
+            envFrom: &envFrom
+              - secretRef:
+                  name: guacamole-secret
             resources:
               requests:
                 cpu: 5m
