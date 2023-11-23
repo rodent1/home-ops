@@ -46,7 +46,7 @@ spec:
               tag: 1.5.3
               imagePullPolicy: IfNotPresent
             command: ["/bin/sh"]
-            args: ["-c", "/opt/guacamole/bin/initdb.sh --postgres > /migrations/init.sql"]
+            args: ["-c", "/opt/guacamole/bin/initdb.sh --postgres > /config/migrations/init.sql"]
             envFrom: *envFrom
 
           03-init-migrations:
@@ -59,7 +59,7 @@ spec:
               - -c
               - |
                 export PGPASSWORD=$(POSTGRES_PASSWORD)
-                psql -h $(POSTGRES_HOSTNAME) -d $(POSTGRES_DATABASE) -U $(POSTGRES_USER) -a -w -f /migrations/init.sql || true
+                psql -h $(POSTGRES_HOSTNAME) -d $(POSTGRES_DATABASE) -U $(POSTGRES_USER) -a -w -f /config/migrations/init.sql || true
             envFrom: *envFrom
 
         containers:
@@ -128,15 +128,5 @@ spec:
       config:
         enabled: true
         existingClaim: config-guacamole
-        advancedMounts:
-          main:
-            main:
-              - path: /config
-            guacamole:
-              - path: /config
-            02-init-schema:
-              - path: /migrations
-                subPath: /config/migrations
-            03-init-migrations:
-              - path: /migrations
-                subPath: /config/migrations
+        globalMounts:
+          - path: /config
