@@ -22,6 +22,7 @@
   "platform": "github",
   "onboarding": false,
   "requireConfig": "optional",
+  "timezone": "Europe/Oslo",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
   "ignorePaths": ["**/archive/**"],
