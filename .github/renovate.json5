@@ -21,6 +21,7 @@
   ],
   "platform": "github",
   "onboarding": false,
+  "platformCommit": true,
   "requireConfig": "optional",
   "timezone": "Europe/Oslo",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
