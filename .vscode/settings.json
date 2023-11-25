@@ -1,14 +1,27 @@
 {
-    "files.associations": {
-        "*.json5": "jsonc",
-        "**/ansible/**/*.yaml": "ansible",
-        "**/ansible/**/*.sops.yaml": "yaml",
-        "**/ansible/**/inventory/**/*.yaml": "yaml",
-        "**/kubernetes/**/*.sops.toml": "plaintext"
-    },
+  "ansible.validation.lint.arguments": "-c .ansible-lint",
+  "files.associations": {
+      "*.json5": "jsonc",
+      "**/ansible/**/*.yaml": "ansible",
+      "**/ansible/**/*.sops.yaml": "yaml",
+      "**/ansible/**/inventory/**/*.yaml": "yaml",
+      "**/terraform/**/*.tf": "terraform",
+      "**/kubernetes/**/*.sops.toml": "plaintext"
+  },
+    "yaml.schemaStore.enable": true,
     "yaml.schemas": {
-        "ansible": "**/ansible/*.yaml",
-        "Kubernetes": "**/kubernetes/*.yaml"
+      "ansible": "ansible/**/*.yaml",
+      "kubernetes": "kubernetes/**/*.yaml"
     },
+    "editor.fontLigatures": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.guides.bracketPairsHorizontal": true,
+    "editor.guides.highlightActiveBracketPair": true,
+    "editor.hover.delay": 1500,
+    "editor.stickyScroll.enabled": false,
+    "explorer.autoReveal": false,
+    "files.trimTrailingWhitespace": true,
+    "ansible.python.interpreterPath": "/usr/bin/python3",
     "sops.defaults.ageKeyFile": "age.key"
 }

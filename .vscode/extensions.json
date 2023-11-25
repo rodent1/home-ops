@@ -1,14 +1,15 @@
 {
-    "recommendations": [
-        "albert.TabOut",
-        "britesnow.vscode-toggle-quotes",
-        "fcrespo82.markdown-table-formatter",
-        "mikestead.dotenv",
-        "mitchdenny.ecdc",
-        "redhat.ansible",
-        "signageos.signageos-vscode-sops",
-        "will-stone.in-any-case",
-        "EditorConfig.editorconfig",
-        "vscode-icons-team.vscode-icons",
-    ]
+  "recommendations": [
+      "albert.TabOut",
+      "britesnow.vscode-toggle-quotes",
+      "fcrespo82.markdown-table-formatter",
+      "mikestead.dotenv",
+      "mitchdenny.ecdc",
+      "redhat.ansible",
+      "redhat.vscode-yaml",
+      "signageos.signageos-vscode-sops",
+      "will-stone.in-any-case",
+      "BriteSnow.vscode-toggle-quotes",
+      "pjmiravalle.terraform-advanced-syntax-highlighting",
+  ]
 }
