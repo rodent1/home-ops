@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-redis
+    - name: authentik-redis
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets
   path: ./kubernetes/apps/security/authentik/app
@@ -22,3 +22,24 @@ spec:
   postBuild:
     substitute:
       APP: authentik
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname authentik-redis
+  namespace: flux-system
+spec:
+  targetNamespace: security
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/main/apps/security/authentik/redis"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  wait: true
+  dependsOn:
+    - name: external-secrets-stores

@@ -8,11 +8,6 @@
       "**/terraform/**/*.tf": "terraform",
       "**/kubernetes/**/*.sops.toml": "plaintext"
   },
-    "yaml.schemaStore.enable": true,
-    "yaml.schemas": {
-      "ansible": "ansible/**/*.yaml",
-      "kubernetes": "kubernetes/**/*.yaml",
-    },
     "editor.fontLigatures": true,
     "editor.bracketPairColorization.enabled": true,
     "editor.hover.delay": 1500,
