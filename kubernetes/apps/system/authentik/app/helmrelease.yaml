@@ -46,7 +46,7 @@ spec:
     postgresql:
       enabled: false
     redis:
-      enabled: true
+      enabled: false
     geoip:
       enabled: false
     prometheus:
@@ -57,3 +57,5 @@ spec:
     authentik:
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
+      redis:
+        host: "redis.database.svc.cluster.local"
