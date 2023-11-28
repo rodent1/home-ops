@@ -34,6 +34,13 @@ spec:
       clusterIP: "${COREDNS_ADDR}"
     serviceAccount:
       create: true
+    resources:
+      limits:
+        cpu: 400m
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 128Mi
     deployment:
       annotations:
         reloader.stakater.com/auto: "true"
