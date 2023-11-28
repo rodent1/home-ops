@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -7,7 +8,7 @@ resources:
   # Flux-Kustomizations
   - ./actions-runner-controller/ks.yaml
   - ./atuin/ks.yaml
-  - ./authentik/ks.yaml
+ #  - ./authentik/ks.yaml
   - ./democratic-csi/ks.yaml
   - ./descheduler/ks.yaml
   - ./external-secrets/ks.yaml
