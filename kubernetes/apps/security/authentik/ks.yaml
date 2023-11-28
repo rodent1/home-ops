@@ -35,7 +35,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/main/apps/security/authentik/redis"
+  path: "./kubernetes/apps/security/authentik/redis"
   prune: true
   sourceRef:
     kind: GitRepository
