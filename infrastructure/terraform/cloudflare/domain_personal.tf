@@ -1,6 +1,6 @@
-module "cf_domain_home" {
+module "cf_domain_personal" {
   source     = "./modules/cf_domain"
-  domain     = "rodent.cc"
+  domain     = "stianrs.dev"
   account_id = cloudflare_account.main.id
 
   dns_entries = [
@@ -17,18 +17,6 @@ module "cf_domain_home" {
   ]
 
   waf_custom_rules = [
-    {
-      enabled     = true
-      description = "Allow GitHub flux API"
-      expression  = "(ip.geoip.asnum eq 36459 and http.host eq \"flux-webhook.rodent.cc\")"
-      action      = "skip"
-      action_parameters = {
-        ruleset = "current"
-      }
-      logging = {
-        enabled = false
-      }
-    },
     {
       enabled     = true
       description = "Firewall rule to block bots and threats determined by CF"
