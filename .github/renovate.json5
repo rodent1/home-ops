@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended",
     "docker:enableMajor",
+    "replacements:k8s-registry-move",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
@@ -17,7 +18,8 @@
     "github>Rodent1/home-ops//.github/renovate/labels.json5",
     "github>Rodent1/home-ops//.github/renovate/packageRules.json5",
     "github>Rodent1/home-ops//.github/renovate/semanticCommits.json5",
-    "helpers:pinGitHubActionDigests"
+    "helpers:pinGitHubActionDigests",
+    "security:openssf-scorecard"
   ],
   "platform": "github",
   "onboarding": false,
@@ -26,6 +28,14 @@
   "timezone": "Europe/Oslo",
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "automerge": true,
+    "automergeType": "branch",
+    "schedule": ["at any time"]
+  },
+  "osvVulnerabilityAlerts": true,
+  "dependencyDashboardOSVVulnerabilitySummary": "all",
   "ignorePaths": ["**/archive/**"],
   "flux": {
     "fileMatch": [
