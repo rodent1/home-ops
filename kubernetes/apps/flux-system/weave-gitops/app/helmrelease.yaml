@@ -26,10 +26,26 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    podAnnotations:
+      secret.reloader.stakater.com/reload: oidc-auth,cluster-user-auth
+
     adminUser:
       create: true
       createSecret: false
-      username: admin
+      username: &admin_user admin
+
+    rbac:
+      create: true
+      additionalRules:
+        - apiGroups:
+            - "infra.contrib.fluxcd.io"
+          resources:
+            - "terraforms"
+          verbs:
+            - "get"
+            - "list"
+            - "patch"
+
     ingress:
       enabled: true
       className: internal
@@ -43,12 +59,9 @@ spec:
       tls:
         - hosts:
             - *host
+
     networkPolicy:
       create: false
+
     metrics:
       enabled: true
-    rbac:
-      create: true
-      impersonationResourceNames: ["admin"]
-    podAnnotations:
-      secret.reloader.stakater.com/reload: cluster-user-auth
