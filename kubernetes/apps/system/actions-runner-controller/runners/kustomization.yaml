@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: system
 resources:
   - ./containers.yaml
-  - ./helmrelease.yaml
+  - ./home-ops.yaml
