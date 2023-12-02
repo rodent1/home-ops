@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
-  url: ssh://git@github.com/onedr0p/home-ops
+  url: ssh://git@github.com/rodent1/home-ops
   ref:
     branch: main
   secretRef:
