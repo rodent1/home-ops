@@ -13,6 +13,7 @@ resources:
   - ./nvidia-gpu-operator/ks.yaml
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
+  - ./spegel/ks.yaml
   - ./system-upgrade-controller/ks.yaml
   - ./tf-controller/ks.yaml
   - ./volsync/ks.yaml

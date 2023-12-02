@@ -33,3 +33,4 @@ resources:
   - ./stakater.yaml
   - ./weave-gitops.yaml
   - ./weaveworks.yaml
+  - ./xenitab.yaml
