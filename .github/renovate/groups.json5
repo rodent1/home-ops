@@ -13,16 +13,6 @@
       "separateMinorPatch": true
     },
     {
-      "description": "Immich Group",
-      "groupName": "Immich",
-      "matchPackagePatterns": ["immich"],
-      "matchDatasources": ["docker"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": true
-    },
-    {
       "description": "Rook-Ceph Group",
       "groupName": "Rook-Ceph",
       "matchPackagePatterns": ["rook.ceph"],
@@ -33,25 +23,14 @@
       "separateMinorPatch": true
     },
     {
-      "description": "External Snapshotter Group",
-      "groupName": "External Snapshotter",
-      "matchPackageNames": ["snapshot-controller", "snapshot-validation-webhook"],
-      "matchDatasources": ["helm"],
+      "description": "System Upgrade Controller Group",
+      "groupName": "System Upgrade Controller",
+      "matchPackagePatterns": ["rancher/system-upgrade-controller"],
+      "matchDatasources": ["docker", "github-releases"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       },
       "separateMinorPatch": true
-    },
-    {
-      "description": "Vector image and chart - versions do not match",
-      "groupName": "Vector",
-      "matchPackagePatterns": ["vector"],
-      "matchDatasources": ["docker", "github-releases", "helm"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group",
-      },
-      "separateMinorPatch": false,
-    },
+    }
   ]
 }
