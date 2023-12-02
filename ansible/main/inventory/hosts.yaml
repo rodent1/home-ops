@@ -15,8 +15,6 @@ kubernetes:
         kube-2:
           ansible_user: stianrs
           ansible_host: 10.1.1.42
-    worker:
-      hosts:
         kube-3:
           ansible_user: stianrs
           ansible_host: 10.1.1.43
