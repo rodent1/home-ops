@@ -3,9 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: coder
+  name: &app coder
   namespace: flux-system
 spec:
+  targetNamespace: dev
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg-cluster
     - name: external-secrets-stores
@@ -20,4 +24,4 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: coder
+      APP: *app
