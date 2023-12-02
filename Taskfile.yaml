@@ -14,8 +14,6 @@ vars:
   TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
 
 includes:
-  app:
-    taskfile: .taskfiles/App/Taskfile.yaml
   ansible:
     taskfile: .taskfiles/Ansible/Taskfile.yaml
   brew:
