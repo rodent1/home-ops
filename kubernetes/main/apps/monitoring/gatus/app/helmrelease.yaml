@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: gatus
-  namespace: monitoring
 spec:
   interval: 30m
   chart:
@@ -17,7 +16,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,115 +25,103 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        type: deployment
-        strategy: Recreate
-
         initContainers:
-          01-init-db:
+          init-db:
+            order: 1
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 15
-              imagePullPolicy: IfNotPresent
-
+              pullPolicy: IfNotPresent
             envFrom: &envFrom
               - secretRef:
                   name: gatus-secret
-
-          02-config-sync:
-            image:
+          # TODO: Convert this to a proper 'sidecar' container someday
+          init-config:
+            order: 2
+            image: &configSyncImage
               repository: ghcr.io/kiwigrid/k8s-sidecar
               tag: 1.25.3
-              imagePullPolicy: IfNotPresent
-
+              pullPolicy: IfNotPresent
             env:
-              - { name: FOLDER, value: /config }
-              - { name: LABEL, value: gatus.io/enabled }
-              - { name: NAMESPACE, value: ALL }
-              - { name: RESOURCE, value: both }
-              - { name: UNIQUE_FILENAMES, value: "true" }
-              - { name: METHOD, value: LIST }
-
-            envFrom: *envFrom
-
+              FOLDER: /config
+              LABEL: gatus.io/enabled
+              NAMESPACE: ALL
+              RESOURCE: both
+              UNIQUE_FILENAMES: true
+              METHOD: LIST
+            resources: &configSyncResources
+              requests:
+                cpu: 10m
+                memory: 10Mi
+              limits:
+                memory: 128Mi
         containers:
           main:
             image:
               repository: ghcr.io/twin/gatus
               tag: v5.7.0
-              pullPolicy: IfNotPresent
-
             env:
               TZ: Europe/Oslo
               GATUS_CONFIG_PATH: /config
               CUSTOM_WEB_PORT: &port 80
-
             envFrom: *envFrom
-
             resources:
               requests:
-                cpu: 15m
-                memory: 105M
+                cpu: 10m
+                memory: 256M
               limits:
-                cpu: 15m
-                memory: 105M
-
+                memory: 512M
+          config-sync:
+            image: *configSyncImage
+            env:
+              FOLDER: /config
+              LABEL: gatus.io/enabled
+              NAMESPACE: ALL
+              RESOURCE: both
+              UNIQUE_FILENAMES: true
+              METHOD: WATCH
+            resources: *configSyncResources
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
     service:
       main:
         ports:
           http:
             port: *port
-
     serviceMonitor:
       main:
         enabled: true
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
-
     ingress:
       main:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-
+          external-dns.alpha.kubernetes.io/target: external.devbu.io
         hosts:
           - host: &host status.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   name: main
-                  port: *port
-
+                  port: http
         tls:
           - hosts:
               - *host
-
     serviceAccount:
       create: true
       name: gatus
-
     persistence:
       config:
         enabled: true
         type: emptyDir
-
       config-file:
         type: configMap
         name: gatus-configmap

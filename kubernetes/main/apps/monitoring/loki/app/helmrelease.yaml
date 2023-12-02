@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: loki
-  namespace: monitoring
 spec:
   interval: 30m
   timeout: 15m
@@ -100,10 +99,6 @@ spec:
                 store: memberlist
         analytics:
           reporting_enabled: false
-
-      podAnnotations:
-        secret.reloader.stakater.com/reload: loki-secret
-
     gateway:
       replicas: 2
       image:
@@ -119,12 +114,6 @@ spec:
         tls:
           - hosts:
               - *host
-
-    write:
-      replicas: 2
-      persistence:
-        storageClass: local-hostpath
-
     read:
       replicas: 2
       persistence:
@@ -135,7 +124,10 @@ spec:
       extraVolumes:
         - name: rules
           emptyDir: {}
-
+    write:
+      replicas: 2
+      persistence:
+        storageClass: local-hostpath
     backend:
       replicas: 2
       persistence:
@@ -151,7 +143,6 @@ spec:
             name: loki-alerting-rules
         - name: scratch
           emptyDir: {}
-
     monitoring:
       dashboards:
         annotations:
@@ -166,6 +157,9 @@ spec:
           installOperator: false
       lokiCanary:
         enabled: false
+    sidecar:
+      image:
+        repository: ghcr.io/kiwigrid/k8s-sidecar
     test:
       enabled: false
 

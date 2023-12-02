@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: vector-agent
-  namespace: monitoring
 spec:
   interval: 30m
   timeout: 15m
@@ -29,23 +28,17 @@ spec:
   dependsOn:
     - name: vector-aggregator
   values:
-    defaultPodOptions:
-      securityContext:
-        privileged: true
-
     controllers:
       main:
         type: daemonset
-
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
               repository: docker.io/timberio/vector
               tag: 0.34.1-debian
-              imagePullPolicy: IfNotPresent
-
-            args: ["--config", "/etc/vector/vector.yaml"]
-
             env:
               PROCFS_ROOT: /host/proc
               SYSFS_ROOT: /host/sys
@@ -64,15 +57,15 @@ spec:
                   fieldRef:
                     apiVersion: v1
                     fieldPath: metadata.namespace
-
+            args: ["--config", "/etc/vector/vector.yaml"]
+            securityContext:
+              privileged: true
     service:
       main:
         enabled: false
-
     serviceAccount:
       create: true
       name: vector-agent
-
     persistence:
       config:
         enabled: true
@@ -82,12 +75,10 @@ spec:
           - path: /etc/vector/vector.yaml
             subPath: vector.yaml
             readOnly: true
-
       data:
         type: emptyDir
         globalMounts:
           - path: /vector-data-dir
-
       var-log:
         type: hostPath
         hostPath: /var/log
@@ -95,7 +86,6 @@ spec:
         globalMounts:
           - path: /var/log
             readOnly: true
-
       var-lib:
         type: hostPath
         hostPath: /var/lib
@@ -103,7 +93,6 @@ spec:
         globalMounts:
           - path: /var/lib
             readOnly: true
-
       procfs:
         type: hostPath
         hostPath: /proc
@@ -111,7 +100,6 @@ spec:
         globalMounts:
           - path: /host/proc
             readOnly: true
-
       sysfs:
         type: hostPath
         hostPath: /sys
