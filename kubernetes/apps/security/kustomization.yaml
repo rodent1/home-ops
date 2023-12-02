@@ -7,5 +7,5 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./authentik/ks.yaml
-  # - ./external-secrets/ks.yaml
+  - ./external-secrets/ks.yaml
 
