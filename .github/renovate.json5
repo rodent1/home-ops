@@ -9,7 +9,7 @@
     ":semanticCommits",
     ":automergeDigest",
     ":automergeBranch",
-    ":timezone(America/Oslo)",
+    ":timezone(Europe/Oslo)",
     "github>rodent1/home-ops//.github/renovate/allowedVersions.json5",
     "github>rodent1/home-ops//.github/renovate/autoMerge.json5",
     "github>rodent1/home-ops//.github/renovate/clusters.json5",
