@@ -31,7 +31,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &&app authentik-redis
+  name: &app authentik-redis
   namespace: flux-system
 spec:
   targetNamespace: security
