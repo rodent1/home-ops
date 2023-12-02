@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-immich
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-apps-cloudnative-pg-cluster
+    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-redis
+    - name: cluster-apps-democratic-csi-nfs
+  path: ./kubernetes/apps/default/immich/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  postBuild:
+    substitute:
+      APP: immich
+      GATUS_URL: photos
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-immich-machine-learning
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-apps-immich-server
+  path: ./kubernetes/apps/default/immich/app/machine-learning
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-immich-microservices
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-apps-immich-typesense
+  path: ./kubernetes/apps/default/immich/app/microservices
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-immich-server
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-apps-immich-typesense
+  path: ./kubernetes/apps/default/immich/app/server
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-immich-typesense
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-apps-immich
+  path: ./kubernetes/apps/default/immich/app/typesense
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m

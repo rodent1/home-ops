@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-qbittorrent
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-apps-volsync
+    - name: cluster-apps-rook-ceph-cluster
+  path: ./kubernetes/apps/media/qbittorrent/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  postBuild:
+    substitute:
+      APP: qbittorrent
+      VOLSYNC_CAPACITY: 5Gi
