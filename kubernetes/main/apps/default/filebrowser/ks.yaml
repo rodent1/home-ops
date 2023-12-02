@@ -20,6 +20,6 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: filebrowser
+      APP: *app
       GATUS_URL: share
       VOLSYNC_CAPACITY: 10Gi

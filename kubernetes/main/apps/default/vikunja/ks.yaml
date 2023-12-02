@@ -9,6 +9,10 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cloudnative-pg-cluster
+    - name: external-secrets-stores
+    - name: rook-ceph-cluster
   path: ./kubernetes/main/apps/default/vikunja/app
   prune: true
   sourceRef:
@@ -20,6 +24,6 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: vikunja
+      APP: *app
       GATUS_URL: tasks
       VOLSYNC_CAPACITY: 5Gi
