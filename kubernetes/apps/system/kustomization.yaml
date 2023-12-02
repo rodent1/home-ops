@@ -9,6 +9,7 @@ resources:
   - ./atuin/ks.yaml
   - ./democratic-csi/ks.yaml
   - ./descheduler/ks.yaml
+  - ./external-secrets/ks.yaml
   - ./kyverno/ks.yaml
   - ./nvidia-gpu-operator/ks.yaml
   - ./reloader/ks.yaml
