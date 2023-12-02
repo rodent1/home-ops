@@ -6,6 +6,10 @@ metadata:
   name: &app redis
   namespace: flux-system
 spec:
+  targetNamespace: database
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: ./kubernetes/main/apps/database/redis/app
   prune: true
   sourceRef:

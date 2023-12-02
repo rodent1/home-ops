@@ -6,6 +6,9 @@ metadata:
   name: &app immich
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg-cluster
     - name: external-secrets-stores
@@ -32,6 +35,9 @@ metadata:
   name: &app immich-machine-learning
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: immich-server
   path: ./kubernetes/main/apps/default/immich/app/machine-learning
@@ -50,6 +56,9 @@ metadata:
   name: &app immich-microservices
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: immich-typesense
   path: ./kubernetes/main/apps/default/immich/app/microservices
@@ -68,6 +77,9 @@ metadata:
   name: &app immich-server
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: immich-typesense
   path: ./kubernetes/main/apps/default/immich/app/server
@@ -86,6 +98,9 @@ metadata:
   name: &app immich-typesense
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: immich
   path: ./kubernetes/main/apps/default/immich/app/typesense
