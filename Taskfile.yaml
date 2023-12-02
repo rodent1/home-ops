@@ -1,66 +1,32 @@
 ---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-vars:
-  PYTHON_BIN: python3
-  BOOTSTRAP_DIR: "{{.ROOT_DIR}}/bootstrap"
-  ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
-  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+# TODO: Clean up `--context` usage
+# https://github.com/go-task/task/issues/1038
 
 env:
-  KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"
   SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
-  PATH: "{{.ROOT_DIR}}/.venv/bin:$PATH"
-  VIRTUAL_ENV: "{{.ROOT_DIR}}/.venv"
-  ANSIBLE_COLLECTIONS_PATH: "{{.ROOT_DIR}}/.venv/galaxy"
-  ANSIBLE_ROLES_PATH: "{{.ROOT_DIR}}/.venv/galaxy/ansible_roles"
-  ANSIBLE_VARS_ENABLED: "host_group_vars,community.sops.sops"
-  K8S_AUTH_KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"
+
+vars:
+  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+  ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
+  TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
 
 includes:
-  an: .taskfiles/AnsibleTasks.yaml
-  app: .taskfiles/AppTasks.yaml
-  cu: .taskfiles/ClusterTasks.yaml
-  es: .taskfiles/ExternalSecrets/Tasks.yaml
-  fx: .taskfiles/Flux/Tasks.yaml
-  ku: .taskfiles/Kubernetes/Tasks.yaml
-  rook: .taskfiles/Rook/Tasks.yaml
-  vs: .taskfiles/VolSync/Tasks.yaml
-  brew: .taskfiles/BrewTasks.yaml
-  pg: .taskfiles/PGTasks.yaml
+  ansible:
+    taskfile: .taskfiles/Ansible/Taskfile.yaml
+  external-secrets:
+    taskfile: .taskfiles/ExternalSecrets/Taskfile.yaml
+  flux:
+    taskfile: .taskfiles/Flux/Taskfile.yaml
+  kubernetes:
+    taskfile: .taskfiles/Kubernetes/Taskfile.yaml
+  volsync:
+    taskfile: .taskfiles/VolSync/Taskfile.yaml
 
 tasks:
-  default: task -l
 
-  deps:
-    desc: Create a Python virtual env and install required packages
-    cmds:
-      - "{{.PYTHON_BIN}} -m venv {{.ROOT_DIR}}/.venv"
-      - .venv/bin/python3 -m pip install --upgrade pip setuptools wheel
-      - .venv/bin/python3 -m pip install --upgrade --requirement "{{.ROOT_DIR}}/requirements.txt"
-      - .venv/bin/ansible-galaxy install --role-file "{{.ROOT_DIR}}/requirements.yaml" --force
-
-  init:
-    desc: Initialize configuration files
-    dir: "{{.BOOTSTRAP_DIR}}"
-    cmds:
-      - cp -n vars/addons.sample.yaml vars/addons.yaml
-      - cp -n vars/config.sample.yaml vars/config.yaml
-      - cmd: echo "=== Configuration files copied ==="
-        silent: true
-      - cmd: echo "Proceed with updating the configuration files..."
-        silent: true
-      - cmd: echo "{{.BOOTSTRAP_DIR}}/vars/config.yaml"
-        silent: true
-      - cmd: echo "{{.BOOTSTRAP_DIR}}/vars/addons.yaml"
-        silent: true
-    status:
-      - test -f "{{.BOOTSTRAP_DIR}}/vars/addons.yaml"
-      - test -f "{{.BOOTSTRAP_DIR}}/vars/config.yaml"
-
-  configure:
-    desc: Configure repository from Ansible vars
-    dir: "{{.BOOTSTRAP_DIR}}"
-    cmd: ansible-playbook configure.yaml
-    env:
-      ANSIBLE_DISPLAY_SKIPPED_HOSTS: "false"
+  default:
+    silent: true
+    cmd: task -l
