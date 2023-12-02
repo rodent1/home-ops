@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: xteve
-  namespace: media
 spec:
   interval: 30m
   chart:
@@ -17,7 +16,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,13 +25,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-        allowPrivilegeEscalation: true
     controllers:
       main:
         annotations:
@@ -45,7 +36,7 @@ spec:
               tag: v2.2.0.200@sha256:292b3614670f6bf4017cc65643c513cccb18323bd5269178bd3e36c8c68f5107
               pullPolicy: IfNotPresent
             env:
-              TZ: ${TIMEZONE}
+              TZ: Europe/Oslo
     service:
       main:
         ports:
@@ -59,7 +50,6 @@ spec:
           - host: &host "xteve.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   name: main
                   port: http
@@ -70,5 +60,4 @@ spec:
       config:
         enabled: true
         existingClaim: config-xteve
-        globalMounts:
-          - path: /config
+

@@ -1,10 +1,9 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: prowlarr
-  namespace: media
 spec:
   interval: 30m
   chart:
@@ -17,7 +16,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,48 +25,34 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        type: deployment
-        strategy: Recreate
-
         initContainers:
-          01-init-db:
+          init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 15
-              imagePullPolicy: IfNotPresent
-
+              pullPolicy: IfNotPresent
             envFrom: &envFrom
               - secretRef:
                   name: prowlarr-secret
-
         containers:
           main:
             image:
               repository: ghcr.io/onedr0p/prowlarr-develop
               tag: 1.10.5.4116@sha256:5caf9ec78ec9f1ef1776be99cc95e5ff7957aea61fc607ac630c9a0d6d21fdc2
-              pullPolicy: IfNotPresent
-
             env:
-              TZ: Europe/Oslo
+              # https://github.com/Radarr/Radarr/issues/7030#issuecomment-1039689518
+              # https://github.com/dotnet/runtime/issues/9336
+              COMPlus_EnableDiagnostics: "0"
               PROWLARR__INSTANCE_NAME: Prowlarr
               PROWLARR__PORT: &port 80
               PROWLARR__LOG_LEVEL: info
               PROWLARR__AUTHENTICATION_METHOD: External
-
+              TZ: Europe/Oslo
             envFrom: *envFrom
-
             probes:
               liveness: &probes
                 enabled: true
@@ -84,13 +68,28 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128M
+              limits:
+                memory: 1Gi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
     service:
       main:
         ports:
           http:
             port: *port
-
-
     ingress:
       main:
         enabled: true
@@ -105,15 +104,13 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   name: main
-                  port: *port
-
+                  port: http
         tls:
           - hosts:
               - *host
-
     persistence:
       config:
+        enabled: true
         type: emptyDir

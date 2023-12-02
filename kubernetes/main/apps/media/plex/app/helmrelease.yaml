@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: plex
-  namespace: media
 spec:
   interval: 30m
   chart:
@@ -26,14 +25,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 105, 10000]
-      runtimeClassName: nvidia
     controllers:
       main:
         annotations:
@@ -44,19 +35,45 @@ spec:
               repository: ghcr.io/onedr0p/plex
               tag: 1.32.7.7621-871adbd44@sha256:f9f77dc5e17cab9fae5ece663a64d026e3c75142b3b60bb4a52bf061957412be
             env:
-              TZ: ${TIMEZONE}
+              TZ: Europe/Oslo
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 nvidia.com/gpu: 1
-                cpu: 100m
+                cpu: 200m
                 memory: 2Gi
               limits:
                 nvidia.com/gpu: 1
                 memory: 10Gi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [44, 105, 10000]
     service:
       main:
         type: LoadBalancer
-        externalTrafficPolicy: Cluster
         annotations:
           io.cilium/lb-ipam-ips: "10.1.1.31"
         ports:
@@ -83,8 +100,8 @@ spec:
       config:
         enabled: true
         existingClaim: config-plex
-        globalMounts:
-          - path: /config
+      tmp:
+        type: emptyDir
       transcode:
         type: emptyDir
       media:
@@ -93,3 +110,4 @@ spec:
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
+            readOnly: true

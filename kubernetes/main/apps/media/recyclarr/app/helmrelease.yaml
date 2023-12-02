@@ -1,10 +1,9 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: recyclarr
-  namespace: media
 spec:
   interval: 30m
   chart:
@@ -17,7 +16,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,27 +25,44 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
     controllers:
       main:
+        type: cronjob
         annotations:
           reloader.stakater.com/auto: "true"
+        cronjob:
+          schedule: "@daily"
         containers:
           main:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 6.0.2
-              imagePullPolicy: IfNotPresent
             env:
+              # https://github.com/Radarr/Radarr/issues/7030#issuecomment-1039689518
+              # https://github.com/dotnet/runtime/issues/9336
+              COMPlus_EnableDiagnostics: "0"
               TZ: Europe/Oslo
             envFrom:
               - secretRef:
                   name: recyclarr-secret
+            args: ["sync"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64M
+              limits:
+                memory: 128M
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
     service:
       main:
         enabled: false
@@ -55,14 +70,10 @@ spec:
       config:
         enabled: true
         existingClaim: config-recyclarr
-        globalMounts:
-          - path: /config
       config-file:
         type: configMap
         name: recyclarr-configmap
-        advancedMounts:
-          main:
-            main:
-              - path: /config/recyclarr.yml
-                subPath: recyclarr.yml
-                readOnly: true
+        globalMounts:
+          - path: /config/recyclarr.yml
+            subPath: recyclarr.yml
+            readOnly: true

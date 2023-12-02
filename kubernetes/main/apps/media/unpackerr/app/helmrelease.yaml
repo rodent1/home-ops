@@ -1,10 +1,9 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: unpackerr
-  namespace: media
 spec:
   interval: 30m
   chart:
@@ -17,7 +16,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,28 +25,15 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        type: deployment
-        strategy: Recreate
-
         containers:
           main:
             image:
               repository: docker.io/golift/unpackerr
-              tag: unstable
-              pullPolicy: IfNotPresent
-
+              tag: 0.12.0
             env:
               TZ: Europe/Oslo
               UN_WEBSERVER_METRICS: "true"
@@ -60,17 +45,27 @@ spec:
             envFrom:
               - secretRef:
                   name: unpackerr-secret
-
+            resources:
+              requests:
+                cpu: 10m
+                memory: 1Gi
+              limits:
+                memory: 4Gi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [10000]
     service:
       main:
         ports:
           http:
             port: 5656
-
     serviceMonitor:
       main:
         enabled: true
-
     persistence:
       media:
         type: nfs

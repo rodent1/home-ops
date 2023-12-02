@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: sonarr
-  namespace: media
 spec:
   interval: 30m
   chart:
@@ -26,50 +25,35 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        type: deployment
-        strategy: Recreate
-
         initContainers:
-          01-init-db:
+          init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 15
-              imagePullPolicy: IfNotPresent
-
+              pullPolicy: IfNotPresent
             envFrom: &envFrom
               - secretRef:
                   name: sonarr-secret
-
         containers:
           main:
             image:
               repository: ghcr.io/onedr0p/sonarr-develop
               tag: 4.0.0.733@sha256:820dcce58696fa45049ad1c3afff1ae695644f67cbab87911670e6e4303da796
-              imagePullPolicy: IfNotPresent
-
             env:
-              TZ: Europe/Oslo
-              PUSHOVER_DEBUG: "false"
+              # https://github.com/Radarr/Radarr/issues/7030#issuecomment-1039689518
+              # https://github.com/dotnet/runtime/issues/9336
+              COMPlus_EnableDiagnostics: "0"
               SONARR__AUTHENTICATION_METHOD: External
               SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
               SONARR__INSTANCE_NAME: Sonarr
               SONARR__PORT: &port 80
               SONARR__LOG_LEVEL: info
-
+              TZ: Europe/Oslo
             envFrom: *envFrom
-
             probes:
               liveness: &probes
                 enabled: true
@@ -85,13 +69,29 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256M
+              limits:
+                memory: 1Gi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [10000]
     service:
       main:
         ports:
           http:
             port: *port
-
     ingress:
       main:
         enabled: true
@@ -101,23 +101,18 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN}/css/base/sonarr/nord.css"></head>';
             sub_filter_once on;
-
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   name: main
-                  port: *port
-
+                  port: http
         tls:
           - hosts:
               - *host
-
     persistence:
       media:
-        enabled: true
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/tank/Media

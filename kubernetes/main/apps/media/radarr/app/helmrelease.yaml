@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: radarr
-  namespace: media
 spec:
   interval: 30m
   chart:
@@ -26,51 +25,35 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-
-        type: deployment
-        strategy: Recreate
-
         initContainers:
-          01-init-db:
+          init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 15
-              imagePullPolicy: IfNotPresent
-
+              pullPolicy: IfNotPresent
             envFrom: &envFrom
               - secretRef:
                   name: radarr-secret
-
         containers:
           main:
             image:
               repository: ghcr.io/onedr0p/radarr-develop
               tag: 5.2.3.8303@sha256:7a759f7c28393af8edd20aa47572dd9c75003c53f34f86bbacb3ab43f0b45996
-              imagePullPolicy: IfNotPresent
-
             env:
-              TZ: Europe/Oslo
-              PUSHOVER_DEBUG: "false"
+              # https://github.com/Radarr/Radarr/issues/7030#issuecomment-1039689518
+              # https://github.com/dotnet/runtime/issues/9336
+              COMPlus_EnableDiagnostics: "0"
               RADARR__AUTHENTICATION_METHOD: External
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              RADARR__APPLICATION_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 80
               RADARR__LOG_LEVEL: info
-
+              TZ: Europe/Oslo
             envFrom: *envFrom
-
             probes:
               liveness: &probes
                 enabled: true
@@ -86,13 +69,29 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256M
+              limits:
+                memory: 1Gi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [10000]
     service:
       main:
         ports:
           http:
             port: *port
-
     ingress:
       main:
         enabled: true
@@ -102,26 +101,20 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN}/css/base/radarr/nord.css"></head>';
             sub_filter_once on;
-
         hosts:
-          - host: *host
+          - host: &host radarr.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   name: main
-                  port: *port
-
+                  port: http
         tls:
           - hosts:
               - *host
-
     persistence:
       media:
-        enabled: true
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
-
