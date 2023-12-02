@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
@@ -6,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
-  url: ssh://git@github.com/Rodent1/home-ops
+  url: ssh://git@github.com/onedr0p/home-ops
   ref:
     branch: main
   secretRef:
@@ -15,8 +16,9 @@ spec:
     # exclude all
     /*
     # include kubernetes directory
-    !/kubernetes
+    !/kubernetes/main
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -38,5 +40,7 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: cluster-settings
+        optional: false
       - kind: Secret
         name: cluster-secrets
+        optional: false
