@@ -6,6 +6,7 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
+  - ./actions-control-runner/ks.yaml
   - ./atuin/ks.yaml
   - ./democratic-csi/ks.yaml
   - ./descheduler/ks.yaml
