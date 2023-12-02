@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/media/prowlarr/app
+  path: ./kubernetes/main/apps/media/prowlarr/app
   prune: true
   sourceRef:
     kind: GitRepository

@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-prowlarr
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/monitoring/exporters/prowlarr-exporter/app
+  path: ./kubernetes/main/apps/monitoring/exporters/prowlarr-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository

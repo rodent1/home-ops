@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-volsync
     - name: cluster-apps-rook-ceph-cluster
-  path: ./kubernetes/apps/media/xteve/app
+  path: ./kubernetes/main/apps/media/xteve/app
   prune: true
   sourceRef:
     kind: GitRepository

@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-qbittorrent
-  path: ./kubernetes/apps/monitoring/exporters/qbittorrent-exporter/app
+  path: ./kubernetes/main/apps/monitoring/exporters/qbittorrent-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository

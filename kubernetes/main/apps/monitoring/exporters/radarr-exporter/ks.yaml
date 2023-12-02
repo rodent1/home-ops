@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-radarr
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/monitoring/exporters/radarr-exporter/app
+  path: ./kubernetes/main/apps/monitoring/exporters/radarr-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository

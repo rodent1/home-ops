@@ -289,10 +289,10 @@ spec:
           datasource: Prometheus
       nginx:
         nginx:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
+          url: https://raw.githubusercontent.co./kubernetes/main/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
           datasource: Prometheus
         nginx-request-handling-performance:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
+          url: https://raw.githubusercontent.co./kubernetes/main/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
           datasource: Prometheus
       unifi:
         unifi-insights:

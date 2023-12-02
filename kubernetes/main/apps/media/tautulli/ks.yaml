@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-volsync
     - name: cluster-apps-rook-ceph-cluster
-  path: ./kubernetes/apps/media/tautulli/app
+  path: ./kubernetes/main/apps/media/tautulli/app
   prune: true
   sourceRef:
     kind: GitRepository

@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-filebrowser
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/default/filebrowser/app
+  path: ./kubernetes/main/apps/default/filebrowser/app
   prune: true
   sourceRef:
     kind: GitRepository

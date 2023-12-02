@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/dev/guacamole/app
+  path: ./kubernetes/main/apps/dev/guacamole/app
   prune: true
   sourceRef:
     kind: GitRepository

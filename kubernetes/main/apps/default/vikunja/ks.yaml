@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-vikunja
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/default/vikunja/app
+  path: ./kubernetes/main/apps/default/vikunja/app
   prune: true
   sourceRef:
     kind: GitRepository

@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-reloader
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/reloader/app
+  path: ./kubernetes/main/apps/system/reloader/app
   prune: true
   sourceRef:
     kind: GitRepository

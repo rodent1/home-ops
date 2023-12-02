@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/system/tf-controller/app
+  path: ./kubernetes/main/apps/system/tf-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -28,7 +28,7 @@ spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: tf-controller
-  path: ./kubernetes/apps/system/tf-controller/terraforms
+  path: ./kubernetes/main/apps/system/tf-controller/terraforms
   prune: true
   sourceRef:
     kind: GitRepository

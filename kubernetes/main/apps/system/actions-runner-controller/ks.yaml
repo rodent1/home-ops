@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/system/actions-runner-controller/app
+  path: ./kubernetes/main/apps/system/actions-runner-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -26,7 +26,7 @@ metadata:
 spec:
   dependsOn:
     - name: actions-runner-controller
-  path: ./kubernetes/apps/system/actions-runner-controller/runners
+  path: ./kubernetes/main/apps/system/actions-runner-controller/runners
   prune: true
   sourceRef:
     kind: GitRepository

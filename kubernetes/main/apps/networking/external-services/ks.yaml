@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-nginx-external
-  path: ./kubernetes/apps/networking/external-services/app
+  path: ./kubernetes/main/apps/networking/external-services/app
   prune: true
   sourceRef:
     kind: GitRepository

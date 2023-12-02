@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-cert-manager
-  path: ./kubernetes/apps/system/snapshot-controller/app
+  path: ./kubernetes/main/apps/system/snapshot-controller/app
   prune: true
   sourceRef:
     kind: GitRepository

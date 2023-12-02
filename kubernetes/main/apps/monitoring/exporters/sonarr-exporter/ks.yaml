@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-sonarr
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/monitoring/exporters/sonarr-exporter/app
+  path: ./kubernetes/main/apps/monitoring/exporters/sonarr-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository

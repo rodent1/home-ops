@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-snapshot-controller
-  path: ./kubernetes/apps/rook-ceph/rook-ceph/app
+  path: ./kubernetes/main/apps/rook-ceph/rook-ceph/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -26,7 +26,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-rook-ceph
-  path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
+  path: ./kubernetes/main/apps/rook-ceph/rook-ceph/cluster
   prune: true
   sourceRef:
     kind: GitRepository
