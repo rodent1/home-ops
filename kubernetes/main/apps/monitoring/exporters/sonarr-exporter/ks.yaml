@@ -3,12 +3,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-sonarr-exporter
+  name: sonarr-exporter
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-sonarr
-    - name: cluster-apps-external-secrets-stores
+    - name: sonarr
+    - name: external-secrets-stores
   path: ./kubernetes/main/apps/monitoring/exporters/sonarr-exporter/app
   prune: true
   sourceRef:

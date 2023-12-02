@@ -3,11 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-volsync
+  name: volsync
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-snapshot-controller
+    - name: snapshot-controller
   path: ./kubernetes/main/apps/system/volsync/app
   prune: true
   sourceRef:

@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-democratic-csi-localpath
+  name: democratic-csi-localpath
   namespace: flux-system
 spec:
   path: ./kubernetes/main/apps/system/democratic-csi/local-path
@@ -20,11 +20,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-democratic-csi-nfs
+  name: democratic-csi-nfs
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
   path: ./kubernetes/main/apps/system/democratic-csi/truenas-nfs
   prune: true
   sourceRef:

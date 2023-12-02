@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-nvidia-gpu-operator
+  name: nvidia-gpu-operator
   namespace: flux-system
 spec:
   path: ./kubernetes/main/apps/system/nvidia-gpu-operator/app

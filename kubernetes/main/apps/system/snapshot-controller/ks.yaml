@@ -3,11 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-snapshot-controller
+  name: snapshot-controller
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-cert-manager
+    - name: cert-manager
   path: ./kubernetes/main/apps/system/snapshot-controller/app
   prune: true
   sourceRef:
