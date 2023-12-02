@@ -3,19 +3,6 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Process generic dependencies",
-      "fileMatch": [
-        "(^|/)\\.taskfiles/.+\\.ya?ml(\\.j2)?$",
-        "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
-        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
-      ],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>.*?)(?:\\s+extractVersion=(?<extractVersion>.+?))?(?:\\s+versioning=(?<versioning>.+?))?\\s+depName=(?<depName>.+?)?\\s(?:.*(?:[v|V]ersion):\\s+(?<currentValue>.*))?(?:.*(?:[r|R]ef):\\s+(?<currentDigest>.*))?"
-      ],
-      "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
-    },
-    {
-      "customType": "regex",
       "description": "Process custom dependencies",
       "fileMatch": [
         "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
@@ -37,18 +24,6 @@
     },
     {
       "customType": "regex",
-      "description": "Process Grafana dashboards",
-      "fileMatch": [
-        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
-      ],
-      "matchStrings": [
-        "#\\s+renovate:\\s+depName=\"(?<depName>.*)\"\\n\\s+gnetId:\\s+(?<packageName>.*?)\\n\\s+revision:\\s+(?<currentValue>.*)"
-      ],
-      "versioningTemplate": "regex:^(?<major>\\d+)$",
-      "datasourceTemplate": "custom.grafana-dashboards"
-    },
-    {
-      "customType": "regex",
       "description": "Process CloudnativePG Postgresql version",
       "fileMatch": [
         "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
@@ -58,6 +33,18 @@
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "redhat"
+    },
+    {
+      "customType": "regex",
+      "description": "Process Grafana dashboards",
+      "fileMatch": [
+        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
+      ],
+      "matchStrings": [
+        "depName=\"(?<depName>.*)\"\\n\\s+gnetId:\\s+(?<packageName>.*?)\\n\\s+revision:\\s+(?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "custom.grafana-dashboards",
+      "versioningTemplate": "regex:^(?<major>\\d+)$"
     }
   ]
 }

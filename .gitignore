@@ -1,35 +1,16 @@
-# Ansible
-.venv*
-
-# Folders
-ignore/
-logs/
-testing/
-
-# Trash
 .DS_Store
 Thumbs.db
-
-# Sops
-.decrypted~*
-
-# Terraform
-## Local .terraform directories
-**/.terraform/*
-
-## .tfstate files
+.private/
+.venv/
+.task/
+.terraform
+*.tfvars
 *.tfstate
 *.tfstate.*
-
-## terraform plan output
-*tfplan*
-
-# Other files
-kubeconfig
-.config.env
+.decrypted~*
 *.agekey
 *.pub
 *.key
-
-# Talos clusterconfigs
-infrastructure/talos/**/clusterconfig
+*.pem
+kubeconfig*
+config.xml

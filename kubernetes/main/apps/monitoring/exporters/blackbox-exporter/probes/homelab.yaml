@@ -1,0 +1,16 @@
+---
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: homelab
+  namespace: monitoring
+spec:
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.monitoring.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://unifi.${SECRET_DOMAIN}
+        - https://tank.${SECRET_DOMAIN}
+        - https://xo.${SECRET_DOMAIN}
