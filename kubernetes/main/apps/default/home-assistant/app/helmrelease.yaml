@@ -24,6 +24,17 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: database
+    - name: democratic-csi-nfs
+      namespace: system
+    - name: external-secrets-stores
+      namespace: security
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: system
   values:
     controllers:
       main:

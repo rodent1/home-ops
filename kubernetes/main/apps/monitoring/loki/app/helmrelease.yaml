@@ -25,6 +25,11 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: democratic-csi-hostpath
+      namespace: system
+    - name: external-secrets-stores
+      namespace: security
   values:
     loki:
       structuredConfig:

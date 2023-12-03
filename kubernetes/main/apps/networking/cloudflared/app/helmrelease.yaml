@@ -25,6 +25,8 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
+    - name: external-secrets-stores
+      namespace: security
     - name: nginx-external
       namespace: networking
   values:

@@ -25,6 +25,11 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: democratic-csi-localpath
+      namespace: system
+    - name: external-secrets-stores
+      namespace: security
   values:
     crds:
       create: true

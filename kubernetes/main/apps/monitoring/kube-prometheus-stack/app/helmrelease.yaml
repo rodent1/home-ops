@@ -27,6 +27,15 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: democratic-csi-hostpath
+      namespace: system
+    - name: external-secrets-stores
+      namespace: security
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: system
   values:
     crds:
       enabled: true
