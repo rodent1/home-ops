@@ -18,7 +18,7 @@ tasks:
     desc: Pull the latest CRD schemas for this cluster
     cmds:
       - mkdir -p {{.CLUSTER_DIR}}/schemas
-      - flux pull artifact oci://ghcr.io/onedr0p/kubernetes-schemas-oci:latest \
+      - flux pull artifact oci://ghcr.io/rodent1/kubernetes-schemas-oci:latest \
           --output={{.CLUSTER_DIR}}/schemas
 
   mount:
