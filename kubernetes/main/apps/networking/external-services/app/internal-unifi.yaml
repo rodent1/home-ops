@@ -2,39 +2,28 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: unifi-ui
-spec:
-  ports:
-    - protocol: TCP
-      port: 443
-      targetPort: 443
----
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
-metadata:
-  name: unifi-ui
+  name: unifi
   labels:
-    kubernetes.io/service-name: unifi-ui
-addressType: IPv4
-ports:
-  - name: https
-    appProtocol: https
-    protocol: TCP
-    port: 443
-endpoints:
-  - addresses:
-      - "10.1.1.1"
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+spec:
+  type: ExternalName
+  externalName: unifi.
+  ports:
+    - name: http
+      port: &port 443
+      protocol: TCP
+      targetPort: *port
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app unifi-ui
-  labels:
-    app.kubernetes.io/name: *app
-    app.kubernetes.io/instance: *app
+  name: unifi
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS" # Indicate that the backend will use HTTPS
-    nginx.ingress.kubernetes.io/proxy-ssl-verify: "off" # Disable SSL verification
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  labels:
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
 spec:
   ingressClassName: internal
   rules:
@@ -45,7 +34,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: *app
+                name: unifi
                 port:
                   number: 443
   tls:
