@@ -6,25 +6,36 @@
   "ansible.validation.lint.arguments": "-c ansible/.ansible-lint",
   "ansible.validation.lint.enabled": true,
   "ansible.validation.lint.path": ".venv/bin/ansible-lint",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.fontLigatures": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.bracketPairsHorizontal": true,
+  "editor.guides.highlightActiveBracketPair": true,
+  "editor.hover.delay": 1500,
+  "editor.rulers": [
+    100
+  ],
+  "editor.stickyScroll.enabled": false,
+  "explorer.autoReveal": false,
   "files.associations": {
       "*.json5": "jsonc",
-      "**/ansible/**/*.yaml": "ansible",
-      "**/ansible/**/*.sops.yaml": "yaml",
-      "**/ansible/**/inventory/**/*.yaml": "yaml",
-      "**/terraform/**/*.tf": "terraform",
-      "**/kubernetes/**/*.sops.toml": "plaintext"
+      "./ansible/**/*.yaml": "ansible",
+      "./ansible/**/*.sops.yaml": "yaml",
+      "./ansible/**/inventory/**/*.yaml": "yaml",
+      "./terraform/**/*.tf": "terraform",
+      "./kubernetes/**/*.sops.toml": "plaintext"
   },
-    "editor.fontLigatures": true,
-    "editor.bracketPairColorization.enabled": true,
-    "editor.hover.delay": 1500,
-    "editor.stickyScroll.enabled": false,
-    "explorer.autoReveal": false,
-    "files.trimTrailingWhitespace": true,
-    "sops.defaults.ageKeyFile": "age.key",
-    "vs-kubernetes": {
-      "vs-kubernetes.kubeconfig": "./kubeconfig",
-      "vs-kubernetes.knownKubeconfigs": [
-        "./kubeconfig"
-      ]
-    }
+  "files.trimTrailingWhitespace": true,
+  "sops.defaults.ageKeyFile": "age.key",
+  "vs-kubernetes": {
+    "vs-kubernetes.kubeconfig": "./kubeconfig",
+    "vs-kubernetes.knownKubeconfigs": [
+      "./kubeconfig"
+    ]
+  },
+  "yaml.schemaStore.enable": true,
+  "yaml.schemas": {
+    "ansible": "./ansible/**/*.yaml",
+    "kubernetes": "./kubernetes/**/*.yaml"
+  }
 }

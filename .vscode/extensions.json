@@ -10,6 +10,6 @@
       "signageos.signageos-vscode-sops",
       "will-stone.in-any-case",
       "BriteSnow.vscode-toggle-quotes",
-      "pjmiravalle.terraform-advanced-syntax-highlighting",
+      "HashiCorp.terraform",
   ]
 }
