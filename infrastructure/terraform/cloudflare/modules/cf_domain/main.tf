@@ -11,6 +11,10 @@ resource "cloudflare_zone" "zone" {
   account_id = var.account_id
   plan       = "free"
   type       = "full"
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "cloudflare_zone_settings_override" "cloudflare_settings" {
