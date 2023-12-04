@@ -24,9 +24,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: external-secrets-stores
-      namespace: security
   values:
     installCRDs: true
     extraArgs:
