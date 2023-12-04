@@ -9,7 +9,7 @@ resources:
   - ./cloudflared/ks.yaml
   - ./echo-server/ks.yaml
   - ./external-dns/ks.yaml
-  # - ./external-services/ks.yaml
+  - ./external-services/ks.yaml
   - ./k8s-gateway/ks.yaml
   # - ./multus/ks.yaml
   - ./nginx/ks.yaml
