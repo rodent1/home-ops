@@ -24,9 +24,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: external-secrets-stores
-      namespace: security
   values:
     podAnnotations:
       secret.reloader.stakater.com/reload: oidc-auth,cluster-user-auth
