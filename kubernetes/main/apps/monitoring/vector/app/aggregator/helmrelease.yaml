@@ -4,6 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: &app vector-aggregator
+  namespace: monitoring
 spec:
   interval: 30m
   timeout: 15m
@@ -25,9 +26,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: external-secrets-stores
-      namespace: security
   values:
     controllers:
       main:

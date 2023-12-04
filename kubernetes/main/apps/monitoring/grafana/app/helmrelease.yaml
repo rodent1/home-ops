@@ -4,6 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: grafana
+  namespace: monitoring
 spec:
   interval: 30m
   chart:
@@ -24,11 +25,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: cloudnative-pg-cluster
-      namespace: database
-    - name: external-secrets-stores
-      namespace: security
   values:
     extraInitContainers:
       - name: 01-init-db
