@@ -8,4 +8,4 @@ resources:
   # - ./filebrowser/ks.yaml
   # - ./home-assistant/ks.yaml
   # - ./immich/ks.yaml
-  - ./vikunja/ks.yaml
+  # - ./vikunja/ks.yaml
