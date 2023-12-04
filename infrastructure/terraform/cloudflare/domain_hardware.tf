@@ -1,4 +1,4 @@
-module "cf_domain_ingress" {
+module "cf_domain_hardware" {
   source     = "./modules/cf_domain"
   domain     = "rodent.casa"
   account_id = cloudflare_account.main.id
