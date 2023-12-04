@@ -13,7 +13,7 @@ spec:
     solvers:
       - dns01:
           cloudflare:
-            email: devin.kray@gmail.com
+            email: "${SECRET_CLOUDFLARE_EMAIL}"
             apiKeySecretRef:
               name: cloudflare-secret
               key: CLOUDFLARE_API_KEY
@@ -35,7 +35,7 @@ spec:
     solvers:
       - dns01:
           cloudflare:
-            email: devin.kray@gmail.com
+            email: "${SECRET_CLOUDFLARE_EMAIL}"
             apiKeySecretRef:
               name: cloudflare-secret
               key: CLOUDFLARE_API_KEY
