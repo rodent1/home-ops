@@ -57,11 +57,11 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                nvidia.com/gpu: 1
+                # nvidia.com/gpu: 1
                 cpu: 200m
                 memory: 2Gi
               limits:
-                nvidia.com/gpu: 1
+                # nvidia.com/gpu: 1
                 memory: 10Gi
         pod:
           securityContext:
