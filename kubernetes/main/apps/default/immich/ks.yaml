@@ -6,6 +6,7 @@ metadata:
   name: &app immich
   namespace: flux-system
 spec:
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -35,6 +36,7 @@ metadata:
   name: &app immich-machine-learning
   namespace: flux-system
 spec:
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -56,6 +58,7 @@ metadata:
   name: &app immich-microservices
   namespace: flux-system
 spec:
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -77,6 +80,7 @@ metadata:
   name: &app immich-server
   namespace: flux-system
 spec:
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -98,6 +102,7 @@ metadata:
   name: &app immich-typesense
   namespace: flux-system
 spec:
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

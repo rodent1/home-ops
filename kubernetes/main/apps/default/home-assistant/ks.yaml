@@ -6,6 +6,7 @@ metadata:
   name: &app home-assistant
   namespace: flux-system
 spec:
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -37,6 +38,7 @@ metadata:
   name: &app home-assistant-code
   namespace: flux-system
 spec:
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
