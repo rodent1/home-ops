@@ -7,5 +7,5 @@ resources:
   # Flux-Kustomizations
   - ./filebrowser/ks.yaml
   - ./home-assistant/ks.yaml
- #  - ./immich/ks.yaml
+  - ./immich/ks.yaml
   - ./vikunja/ks.yaml
