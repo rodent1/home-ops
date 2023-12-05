@@ -16,6 +16,7 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -25,6 +26,12 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
     controllers:
       main:
         annotations:
@@ -33,50 +40,33 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/qbittorrent
-              tag: 4.6.2@sha256:ab8cc91bcf93d2a147767032d37c52ca2528439d037090657a18ea39cfeb272b
+              tag: 4.6.2@sha256:252b90e64ae43113f1fdb5dd941728a752eed13fc5fbc4ac5b63e2acccad8f7f
+              pullPolicy: IfNotPresent
             env:
               TZ: Europe/Oslo
               QBITTORRENT__PORT: &port 80
               QBITTORRENT__BT_PORT: &bittorrentPort 50413
-              QBT_Preferences__WebUI__AlternativeUIEnabled: false
-              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
-              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
-                10.32.0.0/16, 192.168.42.0/24
-              QBT_Preferences__WebUI__LocalHostAuth: false
-              QBT_BitTorrent__Session__Interface: eth0
-              QBT_BitTorrent__Session__InterfaceAddress:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: status.podIP
-              QBT_BitTorrent__Session__InterfaceName: eth0
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /api/v2/app/version
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: false
+              QBT_Application__MemoryWorkingSetLimit: 12000
             resources:
               requests:
-                cpu: 200m
-                memory: 2Gi
+                cpu: 22m
+                memory: 852M
               limits:
-                memory: 16Gi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [10000]
+                cpu: 211m
+                memory: 7951M
+          reannounce:
+            image:
+              repository: ghcr.io/buroa/qbittools
+              tag: v0.10.1
+              imagePullPolicy: IfNotPresent
+            args: ["reannounce", "-s", "localhost", "-p", "80"]
+            resources:
+              requests:
+                cpu: 10m
+                memory: 53M
+              limits:
+                cpu: 101m
+                memory: 333M
     service:
       main:
         ports:
@@ -85,24 +75,33 @@ spec:
       bittorrent:
         controller: main
         type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: 10.1.1.233
         ports:
           bittorrent:
             enabled: true
             port: *bittorrentPort
             protocol: TCP
+            targetPort: *bittorrentPort
+        externalTrafficPolicy: Local
     ingress:
       main:
         enabled: true
         className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_hide_header "x-webkit-csp";
+            proxy_hide_header "content-security-policy";
+            proxy_hide_header "X-Frame-Options";
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN}/css/base/qbittorrent/nord.css"></head>';
+            sub_filter_once on;
         hosts:
           - host: &host qb.${SECRET_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   name: main
-                  port: http
+                  port: *port
         tls:
           - hosts:
               - *host
@@ -110,17 +109,23 @@ spec:
       config:
         enabled: true
         existingClaim: config-qbittorrent
-      completed-script:
-        type: configMap
-        name: qbittorrent-scripts
-        defaultMode: 0775
         globalMounts:
-          - path: /scripts/completed.sh
-            subPath: completed.sh
-            readOnly: true
+          - path: /config
       media:
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
+      incomplete:
+        type: emptyDir
+      completed-script:
+        type: configMap
+        name: qbittorrent-scripts
+        advancedMounts:
+          main:
+            main:
+              - path: /scripts/completed.sh
+                subPath: completed.sh
+                readOnly: true
+                defaultMode: 0775
