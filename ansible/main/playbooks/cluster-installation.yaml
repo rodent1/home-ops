@@ -28,6 +28,11 @@
       vars:
         k3s_state: installed
 
+    - name: Kubeconfig
+      ansible.builtin.include_tasks: tasks/kubeconfig.yaml
+      vars:
+        repository_base: "{{ lookup('ansible.builtin.pipe', 'git rev-parse --show-toplevel') }}"
+
     - name: Wait for custom manifests to rollout
       when:
         - k3s_primary_control_node
@@ -77,10 +82,10 @@
         group: root
         mode: "0644"
 
-  # handlers:
-  #   - name: Restart Kubernetes
-  #     ansible.builtin.include_role:
-  #       name: xanmanning.k3s
-  #       public: true
-  #     vars:
-  #       k3s_state: restarted
+  handlers:
+    - name: Restart Kubernetes
+      ansible.builtin.include_role:
+        name: xanmanning.k3s
+        public: true
+      vars:
+        k3s_state: restarted

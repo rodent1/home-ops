@@ -12,5 +12,5 @@ Thumbs.db
 *.pub
 *.key
 *.pem
-kubeconfig*
+kubeconfig
 config.xml
