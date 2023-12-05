@@ -1,59 +1,86 @@
 ---
-name: "Publish Terraform"
+name: "Terraform: Build OCI artifacts"
 
-on:
+on: # yamllint disable-line rule:truthy
   workflow_dispatch:
   push:
-    branches: ["main"]
-    paths: ["infrastructure/terraform/**"]
+    branches:
+      - main
+    paths:
+      - "infrastructure/terraform/**"
 
 jobs:
-  publish-terraform:
-    name: Publish Terraform
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+  changed-files:
+    name: Generate matrix for building images
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: Generate Token
-        uses: actions/create-github-app-token@46e4a501e119d39574a54e53a06c9a705efc55c9 # v1.6.1
-        id: app-token
-        with:
-          app-id: "${{ secrets.BOT_APP_ID }}"
-          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
-
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        with:
-          token: "${{ steps.app-token.outputs.token }}"
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - name: Setup Homebrew
+      - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Setup Tools
-        shell: bash
-        run: brew install cosign fluxcd/tap/flux
+        run: |
+          brew install jo
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+        with:
+          dir_names: true
+          dir_names_max_depth: 3
+          json: true
+          files: |
+            infrastructure/terraform/**
+
+      - name: List all changed files
+        run: |
+          echo '${{ steps.changed-files.outputs.all_changed_files }}'
+
+      - name: Store changed projects
+        id: set-matrix
+        run: |
+          if [[ "${{ steps.changed-files.outputs.all_changed_files }}" == "[]" ]]; then
+            echo "matrix={\"project\":$(find infrastructure/terraform -type d -mindepth 1 -maxdepth 1 | jo -a)}" >> "${GITHUB_OUTPUT}"
+          else
+            echo "matrix={\"project\":${{ steps.changed-files.outputs.all_changed_files }}}" >> "${GITHUB_OUTPUT}"
+          fi
+
+  publish:
+    runs-on: ubuntu-22.04
+    needs:
+      - changed-files
+    strategy:
+      matrix: ${{ fromJSON(needs.changed-files.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Tools
+        run: |
+          brew install fluxcd/tap/flux
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: "${{ github.actor }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate tag
-        id: generate-tag
-        shell: bash
-        run: echo "tag=ghcr.io/${{ github.repository_owner }}/manifests/terraform:$(git rev-parse --short HEAD)" >> "${GITHUB_OUTPUT}"
-
-      - name: Publish manifests
-        shell: bash
+      - name: Publish OCI
         run: |
-          flux push artifact oci://${{ steps.generate-tag.outputs.tag }} \
-              --path="./infrastructure/terraform" \
-              --source="$(git config --get remote.origin.url)" \
-              --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
+          flux push artifact "oci://ghcr.io/${{ github.repository_owner }}/terraform/$(basename ${{ matrix.project }}):$(git rev-parse --short HEAD)" \
+            --path="./${{ matrix.project }}" \
+            --source="$(git config --get remote.origin.url)" \
+            --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
 
-      - name: Tag manifests
-        shell: bash
-        run: flux tag artifact oci://${{ steps.generate-tag.outputs.tag }} --tag main
+      - name: Tag OCI
+        run: |
+          flux tag artifact "oci://ghcr.io/${{ github.repository_owner }}/terraform/$(basename ${{ matrix.project }}):$(git rev-parse --short HEAD)" \
+            --tag main
