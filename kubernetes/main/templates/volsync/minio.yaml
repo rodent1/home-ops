@@ -65,7 +65,6 @@ spec:
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
     accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
     capacity: "${VOLSYNC_CAPACITY}"
-    restoreAsOf: "2023-12-02T15:09:23+01:00"
     # moverSecurityContext:
     #   runAsUser: 568
     #   runAsGroup: 568
