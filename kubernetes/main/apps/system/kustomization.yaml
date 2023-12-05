@@ -9,7 +9,7 @@ resources:
   - ./atuin/ks.yaml
   - ./democratic-csi/ks.yaml
   - ./descheduler/ks.yaml
-  # - ./nvidia-gpu-operator/ks.yaml
+  - ./nvidia-gpu-operator/ks.yaml
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
   # - ./spegel/ks.yaml
