@@ -52,6 +52,12 @@ spec:
               repository: docker.io/timberio/vector
               tag: 0.34.1-debian
             args: ["--config", "/etc/vector/vector.yaml"]
+            resources:
+              requests:
+                cpu: 37m
+                memory: 399Mi
+              limits:
+                memory: 399Mi
         pod:
           topologySpreadConstraints:
             - maxSkew: 1
