@@ -36,6 +36,12 @@ spec:
     #       - secretRef:
     #           name: coder-secret
     coder:
+      resources:
+        limits:
+          memory: 382Mi
+        requests:
+          cpu: 22m
+          memory: 382Mi
       env:
       # DB
       - name: CODER_PG_CONNECTION_URL
