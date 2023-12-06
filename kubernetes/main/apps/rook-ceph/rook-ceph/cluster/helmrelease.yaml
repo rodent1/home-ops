@@ -78,22 +78,46 @@ spec:
       resources:
         mgr:
           requests:
-            cpu: 500m
-            memory: 512Mi
+            cpu: 250m
+            memory: 672Mi
           limits:
-            memory: 2Gi
+            memory: 1024Mi
         mon:
           requests:
-            cpu: 1000m
-            memory: 1Gi
+            cpu: 44m
+            memory: 550Mi
           limits:
-            memory: 4Gi
+            memory: 1024Mi
         osd:
           requests:
-            cpu: 1000m
-            memory: 4Gi
+            cpu: 684m
+            memory: 2157Mi
           limits:
-            memory: 8Gi
+            memory: 4096Mi
+        mgr-sidecar:
+          requests:
+            cpu: 46m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
+        crashcollector:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+          limits:
+            memory: 100Mi
+        logcollector:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+          limits:
+            memory: 1024Mi
+        cleanup:
+          requests:
+            cpu: 250m
+            memory: 100Mi
+          limits:
+            memory: 1Gi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
