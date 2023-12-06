@@ -43,6 +43,13 @@ spec:
               - *host
     toolbox:
       enabled: true
+      resources:
+        requests:
+          memory: 128Mi
+        limits:
+          cpu: 500m
+          memory: 100Mi
+
     configOverride: |
       [global]
       bdev_enable_discard = true
