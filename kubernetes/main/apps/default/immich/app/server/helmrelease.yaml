@@ -74,6 +74,12 @@ spec:
             args: ["start-server.sh"]
 
             envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 10m
+                memory: 253Mi
+              limits:
+                memory: 253Mi
 
     service:
       main:

@@ -55,18 +55,30 @@ spec:
               VIKUNJA_MAILER_AUTHTYPE: login
             resources:
               requests:
-                cpu: 5m
-                memory: 10Mi
+                cpu: 10m
+                memory: 100Mi
               limits:
                 memory: 100Mi
           frontend:
             image:
               repository: vikunja/frontend
               tag: 0.21.0
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 100Mi
           proxy:
             image:
               repository: caddy
               tag: 2.7.5-alpine
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 100Mi
     service:
       main:
         ports:

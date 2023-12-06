@@ -62,6 +62,12 @@ spec:
                   name: *configMap
               - secretRef:
                   name: *secret
+            resources:
+              requests:
+                cpu: 10m
+                memory: 226Mi
+              limits:
+                memory: 226Mi
 
             probes:
               liveness: &probes

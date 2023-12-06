@@ -65,6 +65,12 @@ spec:
                   name: *configMap
               - secretRef:
                   name: *secret
+            resources:
+              requests:
+                cpu: 10m
+                memory: 320Mi
+              limits:
+                memory: 320Mi
 
     service:
       main:
