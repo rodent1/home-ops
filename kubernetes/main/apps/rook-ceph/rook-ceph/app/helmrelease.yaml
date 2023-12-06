@@ -31,3 +31,9 @@ spec:
       cephFSKernelMountOptions: ms_mode=secure
     monitoring:
       enabled: true
+    resources:
+      requests:
+        cpu: 500m
+        memory: 333Mi
+      limits:
+        memory: 512Mi
