@@ -10,6 +10,7 @@ resources:
   - ./democratic-csi/ks.yaml
   - ./descheduler/ks.yaml
   # - ./nvidia-gpu-operator/ks.yaml
+  - ./kyverno/ks.yaml
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
