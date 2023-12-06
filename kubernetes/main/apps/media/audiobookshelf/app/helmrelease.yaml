@@ -65,6 +65,12 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
+            resources:
+              requests:
+                cpu: 11m
+                memory: 111Mi
+              limits:
+                memory: 111Mi
     service:
       main:
         ports:

@@ -37,6 +37,12 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: Europe/Oslo
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 100Mi
     service:
       main:
         ports:

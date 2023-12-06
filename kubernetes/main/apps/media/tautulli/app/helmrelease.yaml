@@ -53,10 +53,10 @@ spec:
                 enabled: false
             resources:
               requests:
-                cpu: 100m
-                memory: 128Mi
+                cpu: 24m
+                memory: 100Mi
               limits:
-                memory: 512Mi
+                memory: 100Mi
           jbops:
             image:
               repository: registry.k8s.io/git-sync/git-sync
@@ -69,9 +69,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 10M
+                memory: 100Mi
               limits:
-                memory: 128M
+                memory: 100Mi
         pod:
           securityContext:
             runAsUser: 568

@@ -58,11 +58,11 @@ spec:
             resources:
               requests:
                 # nvidia.com/gpu: 1
-                cpu: 200m
-                memory: 2Gi
+                cpu: 903m
+                memory: 588Mi
               limits:
                 # nvidia.com/gpu: 1
-                memory: 10Gi
+                memory: 2Gi
         pod:
           securityContext:
             runAsUser: 568
