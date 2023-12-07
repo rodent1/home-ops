@@ -4,21 +4,41 @@ kind: ClusterPolicy
 metadata:
   name: remove-cpu-limit
   annotations:
-    policies.kyverno.io/title: Remove CPU limits
-    policies.kyverno.io/category: Best Practices
-    policies.kyverno.io/severity: medium
+    policies.kyverno.io/title: Delete CPU limits
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
-      This policy removes CPU limits from all Pods.
+      This policy deletes CPU limits from all Pods.
     pod-policies.kyverno.io/autogen-controllers: none
 spec:
+  mutateExistingOnPolicyUpdate: true
   generateExistingOnPolicyUpdate: true
   rules:
-    - name: remove-containers-cpu-limits
+    - name: delete-containers-cpu-limits
       match:
         any:
           - resources:
-              kinds: ["Pod"]
+              kinds: [Pod]
+      exclude:
+        any:
+          - resources:
+              kinds: [Pod]
+              selector:
+                matchLabels:
+                  job-name: "*"
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  statefulset.kubernetes.io/pod-name: "*"
+          - resources:
+              namespaces:
+                - kube-system
+      preconditions:
+        any:
+          - key: "{{ request.object.spec.containers[0].resources.limits.cpu || '' }}"
+            operator: NotEquals
+            value: ""
       mutate:
         foreach:
           - list: "request.object.spec.containers"
@@ -29,7 +49,8 @@ spec:
       match:
         any:
           - resources:
-              kinds: ["Pod"]
+              kinds:
+                - Pod
       preconditions:
         all:
           - key: "{{ request.object.spec.initContainers[] || `[]` | length(@) }}"
