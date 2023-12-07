@@ -25,9 +25,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: snapshot-controller
-      namespace: system
   values:
     monitoring:
       enabled: true
@@ -78,56 +75,22 @@ spec:
       resources:
         mgr:
           requests:
-            cpu: "300m"
-            memory: "512Mi"
+            cpu: 125m
+            memory: 512Mi
           limits:
-            memory: "1Gi"
+            memory: 2Gi
         mon:
           requests:
-            cpu: "40m"
-            memory: "1Gi"
+            cpu: 50m
+            memory: 512Mi
           limits:
-            memory: "2Gi"
+            memory: 1Gi
         osd:
           requests:
-            cpu: "1000m"
-            memory: "3Gi"
+            cpu: 500m
+            memory: 2Gi
           limits:
-            memory: "4Gi"
-        prepareosd:
-          requests:
-            cpu: "500m"
-            memory: "50Mi"
-        mgr-sidecar:
-          requests:
-            cpu: "100m"
-            memory: "40Mi"
-          limits:
-            memory: "100Mi"
-        crashcollector:
-          requests:
-            cpu: "100m"
-            memory: "60Mi"
-          limits:
-            memory: "60Mi"
-        logcollector:
-          requests:
-            cpu: "100m"
-            memory: "100Mi"
-          limits:
-            memory: "1Gi"
-        cleanup:
-          requests:
-            cpu: "500m"
-            memory: "100Mi"
-          limits:
-            memory: "1Gi"
-        exporter:
-          requests:
-            cpu: "10m"
-            memory: "100Mi"
-          limits:
-            memory: "100Mi"
+            memory: 6Gi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
