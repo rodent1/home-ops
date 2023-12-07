@@ -64,10 +64,10 @@ spec:
                   name: *secret
             resources:
               requests:
-                cpu: 10m
-                memory: 226Mi
+                cpu: 5m
+                memory: 315M
               limits:
-                memory: 512Mi
+                memory: 1443M
 
             probes:
               liveness: &probes

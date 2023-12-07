@@ -76,10 +76,10 @@ spec:
             envFrom: *envFrom
             resources:
               requests:
-                cpu: 10m
-                memory: 253Mi
+                cpu: 5m
+                memory: 64M
               limits:
-                memory: 253Mi
+                memory: 256Mi
 
     service:
       main:
