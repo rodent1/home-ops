@@ -40,6 +40,9 @@ spec:
             operator: NotEquals
             value: ""
       mutate:
+        targets:
+          - kind: Pod
+          - name: "*"
         foreach:
           - list: "request.object.spec.containers"
             patchesJson6902: |-
@@ -57,6 +60,9 @@ spec:
             operator: GreaterThanOrEquals
             value: 1
       mutate:
+        targets:
+          - kind: Pod
+          - name: "*"
         foreach:
           - list: "request.object.spec.initContainers"
             patchesJson6902: |-
