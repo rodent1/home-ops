@@ -28,13 +28,21 @@ spec:
   values:
     crds:
       install: true
+
+    updateStrategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 1
+
     grafana:
       enabled: true
       annotations:
-        grafana_folder: System
+        grafana_folder: Kyverno
+
     backgroundController:
       serviceMonitor:
         enabled: true
+
       rbac:
         clusterRole:
           extraResources:
@@ -49,16 +57,18 @@ spec:
                 - delete
                 - get
                 - list
+
     cleanupController:
       serviceMonitor:
         enabled: true
+
     reportsController:
       serviceMonitor:
         enabled: true
+
     admissionController:
       replicas: 3
-      serviceMonitor:
-        enabled: true
+
       rbac:
         clusterRole:
           extraResources:
@@ -70,6 +80,7 @@ spec:
                 - create
                 - update
                 - delete
+
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -78,3 +89,6 @@ spec:
             matchLabels:
               app.kubernetes.io/instance: kyverno
               app.kubernetes.io/component: kyverno
+
+      serviceMonitor:
+        enabled: true

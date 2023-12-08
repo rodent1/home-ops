@@ -2,47 +2,21 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: remove-cpu-limit
+  name: delete-cpu-limits
   annotations:
     policies.kyverno.io/title: Delete CPU limits
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       This policy deletes CPU limits from all Pods.
-    pod-policies.kyverno.io/autogen-controllers: none
 spec:
-  mutateExistingOnPolicyUpdate: true
   generateExistingOnPolicyUpdate: true
   rules:
-    - name: delete-containers-cpu-limits
+    - name: remove-containers-cpu-limits
       match:
         any:
           - resources:
-              kinds: [Pod]
-      exclude:
-        any:
-          - resources:
-              kinds: [Pod]
-              selector:
-                matchLabels:
-                  job-name: "*"
-          - resources:
-              kinds:
-                - Pod
-              selector:
-                matchLabels:
-                  statefulset.kubernetes.io/pod-name: "*"
-          - resources:
-              namespaces:
-                - kube-system
-      preconditions:
-        any:
-          - key: "{{ request.object.spec.containers[0].resources.limits.cpu || '' }}"
-            operator: NotEquals
-            value: ""
+              kinds: ["Pod"]
       mutate:
-        targets:
-          - kind: Pod
-          - name: "*"
         foreach:
           - list: "request.object.spec.containers"
             patchesJson6902: |-
@@ -52,17 +26,13 @@ spec:
       match:
         any:
           - resources:
-              kinds:
-                - Pod
+              kinds: ["Pod"]
       preconditions:
         all:
           - key: "{{ request.object.spec.initContainers[] || `[]` | length(@) }}"
             operator: GreaterThanOrEquals
             value: 1
       mutate:
-        targets:
-          - kind: Pod
-          - name: "*"
         foreach:
           - list: "request.object.spec.initContainers"
             patchesJson6902: |-
