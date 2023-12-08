@@ -26,6 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    prometheus-operator-crds:
+      enabled: false
     cluster:
       name: home-ops
     externalServices:
