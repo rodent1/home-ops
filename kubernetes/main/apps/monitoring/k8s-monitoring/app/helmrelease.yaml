@@ -31,14 +31,14 @@ spec:
     externalServices:
       prometheus:
         secret:
-          name: grafana-k8s-monitoring-secret
+          name: k8s-monitoring-secret
           hostKey: K8S_PROM_HOST
         basicAuth:
           usernameKey: K8S_PROM_USER
           passwordKey: K8S_TOKEN
       loki:
         secret:
-          name: grafana-k8s-monitoring-secret
+          name: k8s-monitoring-secret
         hostKey: K8S_LOKI_HOST
         basicAuth:
           usernameKey: K8S_LOKI_USER

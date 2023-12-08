@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app grafana-agent
+  name: &app k8s-monitoring
   namespace: flux-system
 spec:
   targetNamespace: monitoring
@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/monitoring/grafana-agent/app
+  path: ./kubernetes/main/apps/monitoring/k8s-monitoring/app
   prune: true
   sourceRef:
     kind: GitRepository
