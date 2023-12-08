@@ -31,13 +31,15 @@ spec:
     externalServices:
       prometheus:
         secret:
+          create: false
           name: k8s-monitoring-secret
-          hostKey: K8S_PROM_HOST
+        hostKey: K8S_PROM_HOST
         basicAuth:
           usernameKey: K8S_PROM_USER
           passwordKey: K8S_TOKEN
       loki:
         secret:
+          create: false
           name: k8s-monitoring-secret
         hostKey: K8S_LOKI_HOST
         basicAuth:
