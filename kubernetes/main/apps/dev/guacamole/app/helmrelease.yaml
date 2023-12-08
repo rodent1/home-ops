@@ -77,7 +77,7 @@ spec:
             order: 1
             image:
               repository: docker.io/guacamole/guacd
-              tag: 1.5.3
+              tag: 1.5.4
               imagePullPolicy: IfNotPresent
             env:
               TZ: "${TIMEZONE}"
