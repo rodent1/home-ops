@@ -11,6 +11,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://unifi.${SECRET_DOMAIN}
+        - https://minio.${SECRET_DOMAIN}
         - https://tank.${SECRET_DOMAIN}
+        - https://unifi.${SECRET_DOMAIN}
         - https://xo.${SECRET_DOMAIN}

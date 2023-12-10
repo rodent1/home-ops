@@ -34,7 +34,7 @@ spec:
           main:
             image:
               repository: docker.io/filebrowser/filebrowser
-              tag: latest
+              tag: v2.26.0@sha256:0e0a4b700302457772b07c4efc47bc90143d7538d36731baabcf7d375360bcee
             resources:
               requests:
                 cpu: 10m
