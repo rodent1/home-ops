@@ -83,4 +83,4 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: home-assistant
+        existingClaim: config-home-assistant
