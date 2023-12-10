@@ -39,13 +39,13 @@
         "ghcr.io/immich-app/immich-machine-learning",
         "ghcr.io/immich-app/immich-proxy",
         "ghcr.io/immich-app/immich-server",
-        "ghcr.io/immich-app/immich-web",
+        "ghcr.io/immich-app/immich-web"
       ],
       "matchDatasources": ["docker"],
       "group": {
-        "commitMessageTopic": "{{{groupName}}} group",
+        "commitMessageTopic": "{{{groupName}}} group"
       },
-      "separateMinorPatch": true,
+      "separateMinorPatch": true
     },
     {
       "description": "System Upgrade Controller Group",
@@ -88,7 +88,7 @@
       "matchDatasources": ["docker", "github-releases", "helm"],
       "matchUpdateTypes": ["minor", "patch"],
       "group": {
-        "commitMessageTopic": "{{{groupName}}} group",
+        "commitMessageTopic": "{{{groupName}}} group"
       },
       "separateMinorPatch": false
     }
