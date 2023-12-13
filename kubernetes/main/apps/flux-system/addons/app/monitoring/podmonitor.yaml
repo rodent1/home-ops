@@ -1,7 +1,10 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/podmonitor_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: flux-system
+  namespace: flux-system
   labels:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/component: monitoring
