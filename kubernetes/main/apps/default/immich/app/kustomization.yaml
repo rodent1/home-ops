@@ -8,3 +8,4 @@ resources:
   - ./nfs.yaml
   # Templates
   - ../../../../templates/gatus/external
+  - ../../../../templates/volsync

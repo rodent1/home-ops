@@ -77,8 +77,8 @@ spec:
 
     persistence:
       library:
-        type: persistentVolumeClaim
-        existingClaim: immich-nfs
+        enabled: true
+        existingClaim: config-immich
         globalMounts:
           - path: /usr/src/app/upload
             subPath: Immich
