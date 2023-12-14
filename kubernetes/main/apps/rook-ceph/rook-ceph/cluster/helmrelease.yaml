@@ -74,6 +74,9 @@ spec:
           - name: node-3
             devices:
               - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA96F
+          - name: node-4
+            devices:
+              - name: /dev/disk/by-id/nvme-INTEL_SSDPEKNW010T8_BTNH916507DA1P0B
       resources:
         mgr:
           requests:
@@ -122,7 +125,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
-            size: 3
+            size: 4
         storageClass:
           enabled: true
           name: ceph-block
@@ -149,11 +152,11 @@ spec:
         spec:
           metadataPool:
             replicated:
-              size: 3
+              size: 4
           dataPools:
             - failureDomain: host
               replicated:
-                size: 3
+                size: 4
               name: data0
           metadataServer:
             activeCount: 1
@@ -190,11 +193,11 @@ spec:
           metadataPool:
             failureDomain: host
             replicated:
-              size: 3
+              size: 4
           dataPool:
             failureDomain: host
             replicated:
-              size: 3
+              size: 4
           preservePoolsOnDelete: true
           gateway:
             port: 80
