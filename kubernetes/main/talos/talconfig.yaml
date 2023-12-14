@@ -1,0 +1,230 @@
+---
+clusterName: ${clusterName}
+endpoint: "https://${clusterEndpointIP}:6443"
+
+talosVersion: v1.5.5
+kubernetesVersion: 1.28.4
+
+# Image URL rendered on https://factory.talos.dev
+# customization:
+#     extraKernelArgs:
+#         - net.ifnames=0
+#     systemExtensions:
+#         officialExtensions:
+#             - siderolabs/i915-ucode
+#             - siderolabs/intel-ucode
+talosImageURL: factory.talos.dev/installer/22b1d04da881ef7c57edb0f24d1f3ba2c78a8e22cbe3fa9af4f42d487b2863f7
+
+cniConfig:
+  name: none
+
+additionalApiServerCertSans:
+  - ${clusterEndpointIP}
+
+additionalMachineCertSans:
+  - ${clusterEndpointIP}
+  - ${clusterName}.${domainName}
+
+nodes:
+  - hostname: node-1.${domainName}
+    ipAddress: 10.1.1.31
+    controlPlane: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "c4:65:16:a5:6f:ea"
+        dhcp: true
+        vip:
+          ip: ${clusterEndpointIP}
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/sata
+                type: bind
+                source: /var/mnt/sata
+                options:
+                  - rbind
+                  - rshared
+                  - rw
+
+  - hostname: node-2.${domainName}
+    ipAddress: 10.1.1.32
+    controlPlane: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "c4:65:16:b4:cc:3a"
+        dhcp: true
+        vip:
+          ip: ${clusterEndpointIP}
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/sata
+                type: bind
+                source: /var/mnt/sata
+                options:
+                  - rbind
+                  - rshared
+                  - rw
+
+  - hostname: node-3.${domainName}
+    ipAddress: 10.1.1.33
+    controlPlane: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "c4:65:16:a7:ef:4a"
+        dhcp: true
+        vip:
+          ip: ${clusterEndpointIP}
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/sata
+                type: bind
+                source: /var/mnt/sata
+                options:
+                  - rbind
+                  - rshared
+                  - rw
+
+  - hostname: node-4.${domainName}
+    ipAddress: 10.1.1.34
+    controlPlane: false
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:0a.0/0000:08:00.0/ata6/host5/target5:0:0/5:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "04:d9:f5:81:cd:3e"
+        dhcp: true
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/sata
+                type: bind
+                source: /var/mnt/sata
+                options:
+                  - rbind
+                  - rshared
+                  - rw
+
+controlPlane:
+  patches:
+    # Disable search domain everywhere
+    - |-
+      machine:
+        network:
+          disableSearchDomain: true
+
+    # Force nameserver
+    - |-
+      machine:
+        network:
+          nameservers:
+            - 10.1.1.1
+
+    # Configure NTP
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
+
+    # Enable KubePrism
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+
+    # Configure cluster loopback
+    - |-
+      machine:
+        network:
+          extraHostEntries:
+            - ip: ${clusterEndpointIP}
+              aliases:
+                - ${clusterName}.${domainName}
+
+
+    # Cluster configuration
+    - |-
+      cluster:
+        allowSchedulingOnMasters: true
+        proxy:
+          disabled: true
+
+    # ETCD configuration
+    - |-
+      cluster:
+        etcd:
+          advertisedSubnets:
+            - 10.1.1.0/24
+
+    # Configure containerd
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+
+    # Configure nfs mount options
+    - |-
+      machine:
+        files:
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.2
+              hard=True
+              noatime=True
+              nodiratime=True
+              rsize=131072
+              wsize=131072
+              nconnect=8
+
+    # Disable default API server admission plugins.
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    # Kubelet configuration
+    - |-
+      machine:
+        kubelet:
+          extraArgs:
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 150
+          nodeIP:
+            validSubnets:
+                - 10.1.1.0/24
+
+    # Custom sysctls
+    - |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"

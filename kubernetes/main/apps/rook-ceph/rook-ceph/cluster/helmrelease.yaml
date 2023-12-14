@@ -44,8 +44,7 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
-      osd_class_update_on_start = false
-      osd_pool_default_size = 2
+
     cephClusterSpec:
       cephVersion:
         image: quay.io/ceph/ceph:v18.2.0
@@ -66,12 +65,15 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: kube-3
+          - name: node-1
             devices:
-              - name: /dev/xvdb
-          - name: kube-4
+              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA9D0
+          - name: node-2
             devices:
-              - name: /dev/xvdb
+              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CAA00
+          - name: node-3
+            devices:
+              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA96F
       resources:
         mgr:
           requests:
@@ -120,7 +122,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
-            size: 2
+            size: 3
         storageClass:
           enabled: true
           name: ceph-block
@@ -147,11 +149,11 @@ spec:
         spec:
           metadataPool:
             replicated:
-              size: 2
+              size: 3
           dataPools:
             - failureDomain: host
               replicated:
-                size: 2
+                size: 3
               name: data0
           metadataServer:
             activeCount: 1
@@ -188,11 +190,11 @@ spec:
           metadataPool:
             failureDomain: host
             replicated:
-              size: 2
+              size: 3
           dataPool:
             failureDomain: host
             replicated:
-              size: 2
+              size: 3
           preservePoolsOnDelete: true
           gateway:
             port: 80
