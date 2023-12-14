@@ -6,22 +6,19 @@ kubernetes:
   children:
     master:
       hosts:
-        kube-0:
+        node-1:
           ansible_user: stianrs
-          ansible_host: 10.1.1.40
-        kube-1:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.41
-        kube-2:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.42
-        kube-3:
-          ansible_user: stianrs
-          ansible_host: 10.1.1.43
+          ansible_host: 10.1.1.31
           ceph_drives:
-            - /dev/xvdb
-        kube-4:
+            - /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA96F
+        node-2:
           ansible_user: stianrs
-          ansible_host: 10.1.1.44
+          ansible_host: 10.1.1.32
           ceph_drives:
-            - /dev/xvdb
+            - /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CAA00
+        node-3:
+          ansible_user: stianrs
+          ansible_host: 10.1.1.33
+          ceph_drives:
+            -
+              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA9D0
