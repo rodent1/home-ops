@@ -15,7 +15,6 @@ spec:
     - name: external-secrets-stores
     - name: rook-ceph-cluster
     - name: redis
-    - name: democratic-csi-nfs
   path: ./kubernetes/main/apps/default/immich/app
   prune: true
   sourceRef:
