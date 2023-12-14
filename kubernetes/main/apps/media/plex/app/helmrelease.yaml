@@ -58,7 +58,7 @@ spec:
             resources:
               requests:
                 gpu.intel.com/device-id.0300-3e92.present: true
-                cpu: 903m
+                cpu: 50m
                 memory: 588Mi
               limits:
                 gpu.intel.com/device-id.0300-3e92.present: true
