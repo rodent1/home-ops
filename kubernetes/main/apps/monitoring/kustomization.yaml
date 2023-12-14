@@ -12,5 +12,5 @@ resources:
   - ./unpoller/ks.yaml
   # - ./vector/ks.yaml
   # Exporters
-  - ./exporters
+  # - ./exporters
 
