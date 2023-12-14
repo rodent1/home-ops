@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./configmap.yaml
-  - ./nfs.yaml
   # Templates
   - ../../../../templates/gatus/external
   - ../../../../templates/volsync
