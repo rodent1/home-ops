@@ -10,6 +10,7 @@ resources:
   - ./democratic-csi/ks.yaml
   - ./descheduler/ks.yaml
   - ./kyverno/ks.yaml
+  - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
   # - ./spegel/ks.yaml
   - ./tf-controller/ks.yaml
