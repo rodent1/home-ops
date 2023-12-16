@@ -31,6 +31,7 @@ spec:
     crds:
       enabled: true
     cleanPrometheusOperatorObjectNames: true
+
     alertmanager:
       ingress:
         enabled: true
@@ -40,7 +41,6 @@ spec:
         tls:
           - hosts:
               - *host
-
       alertmanagerSpec:
         replicas: 2
         useExistingSecret: true
@@ -160,11 +160,6 @@ spec:
               - *host_prometheus
 
       prometheusSpec:
-        alertingEndpoints:
-          - namespace: monitoring
-            name: alertmanager
-            port: 9093
-            apiVersion: v2
         enableAdminAPI: true
         enableFeatures:
           - auto-gomaxprocs
