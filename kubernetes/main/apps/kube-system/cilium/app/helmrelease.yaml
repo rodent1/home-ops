@@ -1,57 +1,153 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: cilium
 spec:
+  interval: 30m
   chart:
     spec:
       chart: cilium
-      interval: 30m
+      version: 1.14.5
       sourceRef:
         kind: HelmRepository
-        name: cilium
+        name: cilium-charts
         namespace: flux-system
-      version: 1.14.5
-  interval: 30m
-
-  valuesFrom:
-    - kind: ConfigMap
-      name: cilium-values
-
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    apiRateLimit: |
+      endpoint-create=auto-adjust:true,mean-over:15
+    autoDirectNodeRoutes: true
+    bandwidthManager:
+      enabled: true
+      bbr: true
+    bpf:
+      hostRouting: true
+      lbBypassFIBLookup: true
+      masquerade: true
+      tproxy: true
+    bgpControlPlane:
+      enabled: true
+    cni:
+      exclusive: false
+    cgroup:
+      autoMount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
+    cluster:
+      name: k8s
+      id: 1
+    containerRuntime:
+      integration: containerd
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: Cilium
+    endpointRoutes:
+      enabled: true
     hubble:
-      serviceMonitor:
-        enabled: true
-
-      dashboards:
-        enabled: true
-        label: grafana_dashboard
-        namespace: monitoring
-        labelValue: "1"
-        annotations: {}
-
+      enabled: true
+      metrics:
+        enabled:
+          - dns:query
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+        serviceMonitor:
+          enabled: true
+        dashboards:
+          enabled: true
+          annotations:
+            grafana_folder: Cilium
       relay:
+        enabled: true
+        rollOutPods: true
         prometheus:
           serviceMonitor:
             enabled: true
-
       ui:
+        enabled: true
+        rollOutPods: true
         ingress:
           enabled: true
           className: internal
+          annotations:
+            hajimari.io/icon: mdi:router
           hosts:
             - &host hubble.${SECRET_DOMAIN}
           tls:
             - hosts:
                 - *host
-
-    prometheus:
-      serviceMonitor:
-        enabled: true
-
+    ipam:
+      mode: kubernetes
+    ipv4NativeRoutingCIDR: 10.244.0.0/16
+    k8sServiceHost: localhost
+    k8sServicePort: 7445
+    kubeProxyReplacement: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    l2announcements:
+      enabled: true
+      leaseDuration: 120s
+      leaseRenewDeadline: 60s
+      leaseRetryPeriod: 1s
+    loadBalancer:
+      algorithm: maglev
+      mode: dsr
+    localRedirectPolicy: true
     operator:
+      enabled: true
+      rollOutPods: true
       prometheus:
+        enabled: true
         serviceMonitor:
           enabled: true
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: Cilium
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
+    rollOutCiliumPods: true
+    securityContext:
+      privileged: false
+      capabilities:
+        ciliumAgent:
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUID
+        mountCgroup:
+          - SYS_ADMIN
+          - SYS_CHROOT
+          - SYS_PTRACE
+        applySysctlOverwrites:
+          - SYS_ADMIN
+          - SYS_CHROOT
+          - SYS_PTRACE
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE
+    tunnel: disabled
