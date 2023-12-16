@@ -84,11 +84,9 @@ spec:
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
             action: drop
 
-    kubeStateMetrics:
+    nodeExporter:
       enabled: true
-    kube-state-metrics:
-      metricLabelsAllowlist:
-        - "persistentvolumeclaims=[*]"
+    prometheus-node-exporter:
       prometheus:
         monitor:
           enabled: true
@@ -96,14 +94,27 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
-      resources:
-        requests:
-          cpu: 15m
-          memory: 127M
-        limits:
-          memory: 153M
+
+    kubeStateMetrics:
+      enabled: true
+    kube-state-metrics:
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
 
     kubeControllerManager:
       enabled: false
@@ -112,8 +123,6 @@ spec:
     kubeProxy:
       enabled: false
     kubeScheduler:
-      enabled: false
-    nodeExporter:
       enabled: false
 
     grafana:
