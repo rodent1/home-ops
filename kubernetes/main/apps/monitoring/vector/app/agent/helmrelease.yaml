@@ -63,12 +63,6 @@ spec:
                     fieldPath: metadata.namespace
             securityContext:
               privileged: true
-            resources:
-              requests:
-                cpu: 37m
-                memory: 577Mi
-              limits:
-                memory: 768Mi
     persistence:
       config:
         enabled: true
