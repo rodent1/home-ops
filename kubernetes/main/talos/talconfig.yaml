@@ -242,7 +242,6 @@ controlPlane:
 
 worker:
   patches:
-    - *customTalosPatch
     - *disableSearchDomainPatch
     - *nameserverPatch
     - *ntpPatch
