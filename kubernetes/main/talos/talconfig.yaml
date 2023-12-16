@@ -213,8 +213,6 @@ controlPlane:
         allowSchedulingOnMasters: true
         proxy:
           disabled: true
-        coreDNS:
-          disabled: true
 
     # ETCD configuration
     - |-
