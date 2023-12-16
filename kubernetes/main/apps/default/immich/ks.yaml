@@ -65,8 +65,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: immich-typesense
   path: ./kubernetes/main/apps/default/immich/app/microservices
   prune: true
   sourceRef:
@@ -87,8 +85,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: immich-typesense
   path: ./kubernetes/main/apps/default/immich/app/server
   prune: true
   sourceRef:
