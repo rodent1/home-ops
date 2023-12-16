@@ -269,17 +269,19 @@ spec:
     sidecar:
       dashboards:
         enabled: true
-        searchNamespace: ALL
         labelValue: ""
         label: grafana_dashboard
         folderAnnotation: grafana_folder
+        searchNamespace: ALL
         provider:
-          disableDelete: false
+          disableDelete: true
           foldersFromFilesStructure: true
       datasources:
         enabled: true
-        searchNamespace: ALL
         labelValue: ""
+        searchNamespace: ALL
+      logLevel: INFO
+
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel
