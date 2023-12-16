@@ -38,26 +38,21 @@ spec:
             image:
               repository: ghcr.io/maxmind/geoipupdate
               tag: v6.0.0@sha256:e0d5c1dee7379d360e0f355557542d9672c616215dfdd5aaf917382de84cb84c
-              pullPolicy: IfNotPresent
             env:
               GEOIPUPDATE_EDITION_IDS: GeoLite2-City
-              GEOIPUPDATE_FREQUENCY: "0"
-              GEOIPUPDATE_VERBOSE: "true"
+              GEOIPUPDATE_FREQUENCY: 0
+              GEOIPUPDATE_VERBOSE: true
             envFrom:
               - secretRef:
                   name: vector-aggregator-secret
         containers:
           main:
             image:
-              repository: docker.io/timberio/vector
-              tag: 0.34.1-debian@sha256:a2e406c8917ed62d24381e600ad8bd96fe82fcdb406ecfb4ab4a6fad21b19047
-            args: ["--config", "/etc/vector/vector.yaml"]
-            resources:
-              requests:
-                cpu: 37m
-                memory: 399Mi
-              limits:
-                memory: 399Mi
+              repository: ghcr.io/onedr0p/vector
+              tag: 0.34.1-debian@sha256:329ceb648d40a26fca9f72c851e9abbacef74cc50b7956d9cf7eb1929d57f35c
+            args:
+              - --config
+              - /etc/vector/vector.yaml
         pod:
           topologySpreadConstraints:
             - maxSkew: 1
@@ -90,11 +85,12 @@ spec:
             enabled: true
             port: 6003
             protocol: UDP
+
     persistence:
       config:
         enabled: true
         type: configMap
-        name: vector-aggregator-configmap # overriden by kustomizeconfig
+        name: vector-aggregator-configmap
         globalMounts:
           - path: /etc/vector/vector.yaml
             subPath: vector.yaml

@@ -38,8 +38,11 @@ spec:
         containers:
           main:
             image:
-              repository: docker.io/timberio/vector
-              tag: 0.34.1-debian@sha256:a2e406c8917ed62d24381e600ad8bd96fe82fcdb406ecfb4ab4a6fad21b19047
+              repository: ghcr.io/onedr0p/vector
+              tag: 0.34.1-debian@sha256:329ceb648d40a26fca9f72c851e9abbacef74cc50b7956d9cf7eb1929d57f35c
+            args:
+              - --config
+              - /etc/vector/vector.yaml
             env:
               PROCFS_ROOT: /host/proc
               SYSFS_ROOT: /host/sys
@@ -58,7 +61,6 @@ spec:
                   fieldRef:
                     apiVersion: v1
                     fieldPath: metadata.namespace
-            args: ["--config", "/etc/vector/vector.yaml"]
             securityContext:
               privileged: true
             resources:
@@ -67,17 +69,11 @@ spec:
                 memory: 577Mi
               limits:
                 memory: 768Mi
-    service:
-      main:
-        enabled: false
-    serviceAccount:
-      create: true
-      name: vector-agent
     persistence:
       config:
         enabled: true
         type: configMap
-        name: vector-agent-configmap # overriden by kustomizeconfig
+        name: vector-agent-configmap
         globalMounts:
           - path: /etc/vector/vector.yaml
             subPath: vector.yaml
@@ -86,20 +82,6 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /vector-data-dir
-      var-log:
-        type: hostPath
-        hostPath: /var/log
-        hostPathType: Directory
-        globalMounts:
-          - path: /var/log
-            readOnly: true
-      var-lib:
-        type: hostPath
-        hostPath: /var/lib
-        hostPathType: Directory
-        globalMounts:
-          - path: /var/lib
-            readOnly: true
       procfs:
         type: hostPath
         hostPath: /proc
@@ -114,3 +96,23 @@ spec:
         globalMounts:
           - path: /host/sys
             readOnly: true
+      var-log:
+        type: hostPath
+        hostPath: /var/log
+        hostPathType: Directory
+        globalMounts:
+          - path: /var/log
+            readOnly: true
+      var-lib:
+        type: hostPath
+        hostPath: /var/lib
+        hostPathType: Directory
+        globalMounts:
+          - path: /var/lib
+            readOnly: true
+    service:
+      main:
+        enabled: false
+    serviceAccount:
+      create: true
+      name: vector-agent
