@@ -15,7 +15,7 @@ enrichment_tables:
 
 sources:
 
-  kubernetes_source:
+  kubernetes_logs:
     type: vector
     version: "2"
     address: 0.0.0.0:6010
