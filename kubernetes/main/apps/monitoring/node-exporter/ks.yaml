@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: kube-prometheus-stack
-  path: "./kubernetes/main/apps/monitoring/node-exporter/app"
+  path: ./kubernetes/main/apps/monitoring/node-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository
