@@ -20,6 +20,24 @@ sources:
     version: "2"
     address: 0.0.0.0:6010
 
+  talos_kernel_logs:
+    address: 0.0.0.0:6001
+    type: socket
+    mode: udp
+    max_length: 102400
+    decoding:
+      codec: json
+    host_key: __host
+
+  talos_service_logs:
+    address: 0.0.0.0:6002
+    type: socket
+    mode: udp
+    max_length: 102400
+    decoding:
+      codec: json
+    host_key: __host
+
   unifi_kernel_logs:
     address: 0.0.0.0:6003
     type: syslog
@@ -31,11 +49,37 @@ sources:
 #
 
 transforms:
-  kubernetes_remap:
+  kubernetes_transform:
     type: remap
-    inputs: ["kubernetes_source"]
+    inputs:
+      - kubernetes_logs
     source: |-
       .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
+
+  talos_kernel_transform:
+    type: remap
+    inputs:
+      - talos_kernel_logs
+    source: |-
+      r1 = replace!(.__host, "10.1.1.31", "node-1")
+      r2 = replace(r1, "10.1.1.32", "node-2")
+      r3 = replace(r2, "10.1.1.33", "node-3")
+      r4 = replace(r3, "10.1.1.34", "node-4")
+      r5 = replace(r4, "10.1.1.35", "node-5")
+      .node = r5
+
+  talos_service_transform:
+    type: remap
+    inputs:
+      - talos_service_logs
+    source: |-
+      r1 = replace!(.__host, "10.1.1.31", "node-1")
+      r2 = replace(r1, "10.1.1.32", "node-2")
+      r3 = replace(r2, "10.1.1.33", "node-3")
+      r4 = replace(r3, "10.1.1.34", "node-4")
+      r5 = replace(r4, "10.1.1.35", "node-5")
+      r6 = replace(r6, r'10.*', "talos")
+      .node = r6
 
   unifi_kernel_transform:
     type: remap
@@ -67,6 +111,40 @@ sinks:
       container: "{{ container_name }}"
       namespace: "{{ kubernetes.pod_namespace }}"
       node: "{{ kubernetes.pod_node_name }}"
+
+  talos_kernel:
+    type: loki
+    inputs:
+      - talos_kernel_transform
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    encoding:
+      codec: json
+      except_fields:
+        - __host
+    batch:
+      max_bytes: 524288
+    out_of_order_action: rewrite_timestamp
+    labels:
+      node: "{{ node }}"
+      facility: "{{ facility }}"
+      namespace: "talos:kernel"
+
+  talos_service:
+    type: loki
+    inputs:
+      - talos_service_transform
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    encoding:
+      codec: json
+      except_fields:
+        - __host
+    batch:
+      max_bytes: 524288
+    out_of_order_action: rewrite_timestamp
+    labels:
+      node: "{{ node }}"
+      talos_service: '{{ "talos-service" }}'
+      namespace: "talos:service"
 
   unifi_kernel:
     type: loki
