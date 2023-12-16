@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -11,7 +12,7 @@ spec:
       version: 1.14.5
       sourceRef:
         kind: HelmRepository
-        name: cilium-charts
+        name: cilium
         namespace: flux-system
   maxHistory: 2
   install:
@@ -24,8 +25,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    apiRateLimit: |
-      endpoint-create=auto-adjust:true,mean-over:15
     autoDirectNodeRoutes: true
     bandwidthManager:
       enabled: true
@@ -34,21 +33,11 @@ spec:
       masquerade: true
     bgp:
       enabled: false
-    cni:
-      exclusive: false
-    cgroup:
-      autoMount:
-        enabled: false
-      hostRoot: /sys/fs/cgroup
     cluster:
       name: kubernetes
       id: 1
     containerRuntime:
       integration: containerd
-    dashboards:
-      enabled: true
-      annotations:
-        grafana_folder: Cilium
     endpointRoutes:
       enabled: true
     hubble:
@@ -102,7 +91,6 @@ spec:
       mode: dsr
     localRedirectPolicy: true
     operator:
-      enabled: true
       rollOutPods: true
       prometheus:
         enabled: true
@@ -117,32 +105,11 @@ spec:
       serviceMonitor:
         enabled: true
         trustCRDsExist: true
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: Cilium
     rollOutCiliumPods: true
     securityContext:
-      privileged: false
-      capabilities:
-        ciliumAgent:
-          - CHOWN
-          - KILL
-          - NET_ADMIN
-          - NET_RAW
-          - IPC_LOCK
-          - SYS_ADMIN
-          - SYS_RESOURCE
-          - DAC_OVERRIDE
-          - FOWNER
-          - SETGID
-          - SETUID
-        mountCgroup:
-          - SYS_ADMIN
-          - SYS_CHROOT
-          - SYS_PTRACE
-        applySysctlOverwrites:
-          - SYS_ADMIN
-          - SYS_CHROOT
-          - SYS_PTRACE
-        cleanCiliumState:
-          - NET_ADMIN
-          - SYS_ADMIN
-          - SYS_RESOURCE
+      privileged: true
     tunnel: disabled
