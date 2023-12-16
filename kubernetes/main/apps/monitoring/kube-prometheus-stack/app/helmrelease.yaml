@@ -90,9 +90,9 @@ spec:
     kubeControllerManager:
       enabled: true
       endpoints: &cp
-        - 10.1.1.40
-        - 10.1.1.41
-        - 10.1.1.42
+        - 10.1.1.31
+        - 10.1.1.32
+        - 10.1.1.33
       serviceMonitor:
         metricRelabelings:
           # Remove duplicate labels provided by k3s
