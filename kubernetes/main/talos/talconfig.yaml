@@ -2,7 +2,7 @@
 clusterName: ${clusterName}
 endpoint: "https://${clusterEndpointIP}:6443"
 
-talosVersion: v1.5.5
+talosVersion: v1.6.0
 kubernetesVersion: 1.28.4
 
 # Image URL rendered on https://factory.talos.dev
@@ -123,20 +123,20 @@ nodes:
 controlPlane:
   patches:
     # Disable search domain everywhere
-    - |-
+    - &disableSearchDomainPatch |-
       machine:
         network:
           disableSearchDomain: true
 
     # Force nameserver
-    - |-
+    - &nameserverPatch |-
       machine:
         network:
           nameservers:
             - 10.1.1.1
 
     # Configure NTP
-    - |-
+    - &ntpPatch |-
       machine:
         time:
           disabled: false
@@ -144,7 +144,7 @@ controlPlane:
             - time.cloudflare.com
 
     # Enable KubePrism
-    - |-
+    - &kubePrismPatch |-
       machine:
         features:
           kubePrism:
@@ -152,7 +152,7 @@ controlPlane:
             port: 7445
 
     # Configure cluster loopback
-    - |-
+    - &staticHostEntriesPatch |-
       machine:
         network:
           extraHostEntries:
@@ -160,23 +160,26 @@ controlPlane:
               aliases:
                 - ${clusterName}.${domainName}
 
+    # Configure kubelet
+    - &kubeletPatch |-
+      machine:
+        kubelet:
+          extraArgs:
+            feature-gates: GracefulNodeShutdown=true
+            rotate-server-certificates: true
+          nodeIP:
+            validSubnets:
+              - 10.1.1.0/24
 
-    # Cluster configuration
-    - |-
-      cluster:
-        allowSchedulingOnMasters: true
-        proxy:
-          disabled: true
-
-    # ETCD configuration
-    - |-
-      cluster:
-        etcd:
-          advertisedSubnets:
-            - 10.1.1.0/24
+    # Custom sysctls
+    - &sysctlPatch |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
 
     # Configure containerd
-    - |-
+    - &containerdPatch |-
       machine:
         files:
           - op: create
@@ -188,7 +191,7 @@ controlPlane:
                   enable_unprivileged_icmp = true
 
     # Configure nfs mount options
-    - |-
+    - &nfsPatch |-
       machine:
         files:
           - op: overwrite
@@ -204,27 +207,48 @@ controlPlane:
               wsize=131072
               nconnect=8
 
+    # Cluster configuration
+    - |-
+      cluster:
+        allowSchedulingOnMasters: true
+        proxy:
+          disabled: true
+        coreDNS:
+          disabled: true
+
+    # ETCD configuration
+    - |-
+      cluster:
+        etcd:
+          advertisedSubnets:
+            - 10.1.1.0/24
+
     # Disable default API server admission plugins.
     - |-
       - op: remove
         path: /cluster/apiServer/admissionControl
 
-    # Kubelet configuration
+    # Enable K8s Talos API Access
     - |-
       machine:
-        kubelet:
-          extraArgs:
-            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
-            rotate-server-certificates: "true"
-          extraConfig:
-            maxPods: 150
-          nodeIP:
-            validSubnets:
-                - 10.1.1.0/24
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - kube-system
 
-    # Custom sysctls
-    - |-
-      machine:
-        sysctls:
-          fs.inotify.max_user_watches: "1048576"
-          fs.inotify.max_user_instances: "8192"
+
+worker:
+  patches:
+    - *customTalosPatch
+    - *disableSearchDomainPatch
+    - *nameserverPatch
+    - *ntpPatch
+    - *kubePrismPatch
+    - *nfsPatch
+    - *kubeletPatch
+    - *containerdPatch
+    - *sysctlPatch
+    - *staticHostEntriesPatch
