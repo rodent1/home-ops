@@ -160,10 +160,10 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        ingressClassName: internal-nginx
+        ingressClassName: internal
         pathType: Prefix
         hosts:
-          - &host_prometheus prometheus.bjw-s.dev
+          - &host_prometheus prometheus.${SECRET_DOMAIN}
         tls:
           - hosts:
               - *host_prometheus
