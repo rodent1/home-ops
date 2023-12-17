@@ -10,7 +10,9 @@ resources:
   # Templates
   - ../../../../templates/gatus/guarded
   - ../../../../templates/volsync
+configMapGenerator:
+  - name: pgadmin-local-config-configmap
+    files:
+      - ./config_local.py
 generatorOptions:
   disableNameSuffixHash: true
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled

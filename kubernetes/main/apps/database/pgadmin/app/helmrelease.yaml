@@ -44,17 +44,6 @@ spec:
               repository: docker.io/dpage/pgadmin4
               tag: 8.1@sha256:c7e6ec8f91a9c1800ceeba628ac29f520f20e6bb3c6c7c71889c72f8e2041b46
             env:
-              AUTHENTICATION_SOURCES: [ "oauth2" , "internal" ]
-              OAUTH2_NAME: "authentik"
-              OAUTH2_DISPLAY_NAME: "Authentik"
-              OAUTH2_TOKEN_URL: "https://authentik.${SECRET_DOMAIN}/application/o/token/"
-              OAUTH2_AUTHORIZATION_URL: "https://authentik.${SECRET_DOMAIN}/application/o/authorize/"
-              OAUTH2_USERINFO_ENDPOINT: "https://authentik.${SECRET_DOMAIN}/application/o/userinfo/"
-              OAUTH2_SERVER_METADATA_URL: "https://authentik.${SECRET_DOMAIN}/application/o/pgadmin/.well-known/openid-configuration"
-              OAUTH_API_BASE_URL: "https://authentik.${SECRET_DOMAIN}/"
-              OAUTH_SCOPE: "openid email profile"
-              OAUTH2_AUTO_CREATE_USER: true
-              MASTER_PASSWORD_REQUIRED: false
             envFrom:
               - secretRef:
                   name: pgadmin-secret
@@ -93,3 +82,12 @@ spec:
           main:
             main:
               - path: /var/lib/pgadmin
+      local-config:
+        enabled: true
+        type: configMap
+        name: pgadmin-local-config-configmap
+        globalMounts:
+          - path: /pgadmin4/config_local.py
+            subPath: config_local.py
+            readOnly: true
+
