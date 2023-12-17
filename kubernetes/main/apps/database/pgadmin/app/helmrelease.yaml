@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: audiobookshelf
+  name: pgadmin
 spec:
   interval: 15m
   chart:
@@ -41,35 +41,30 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/advplyr/audiobookshelf
-              tag: 2.6.0@sha256:73356ac9ffbb85f0b9dd265b8b7c966d9adcb152c8713cadca961d576af13700
+              repository: docker.io/dpage/pgadmin4
+              tag: 8.1@sha256:c7e6ec8f91a9c1800ceeba628ac29f520f20e6bb3c6c7c71889c72f8e2041b46
             env:
-              TZ: Europe/Oslo
-              AUDIOBOOKSHELF_UID: 568
-              AUDIOBOOKSHELF_GID: 568
-              CONFIG_PATH: /config
-              METADATA_PATH: /config/metadata
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /ping
-                    port: &port 80
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: false
+              AUTHENTICATION_SOURCES: [ "oauth2" , "internal" ]
+              OAUTH2_NAME: "authentik"
+              OAUTH2_DISPLAY_NAME: "Authentik"
+              OAUTH2_TOKEN_URL: "https://authentik.${SECRET_DOMAIN}/application/o/token/"
+              OAUTH2_AUTHORIZATION_URL: "https://authentik.${SECRET_DOMAIN}/application/o/authorize/"
+              OAUTH2_USERINFO_ENDPOINT: "https://authentik.${SECRET_DOMAIN}/application/o/userinfo/"
+              OAUTH2_SERVER_METADATA_URL: "https://authentik.${SECRET_DOMAIN}/application/o/pgadmin/.well-known/openid-configuration"
+              OAUTH_API_BASE_URL: "https://authentik.${SECRET_DOMAIN}/"
+              OAUTH_SCOPE: "openid email profile"
+              OAUTH2_AUTO_CREATE_USER: true
+              MASTER_PASSWORD_REQUIRED: false
+            envFrom:
+              - secretRef:
+                  name: pgadmin-secret
             resources:
               requests:
-                cpu: 11m
-                memory: 111Mi
+                cpu: 15m
+                memory: 164M
               limits:
-                memory: 512Mi
+                memory: 236M
+
     service:
       main:
         ports:
@@ -78,9 +73,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        className: internal
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
@@ -95,18 +88,8 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-audiobookshelf
+        existingClaim: config-pgadmin
         advancedMounts:
           main:
             main:
-              - path: /config
-      media:
-        type: nfs
-        server: ${TRUENAS_IP}
-        path: /mnt/tank/Media
-        globalMounts:
-          - path: /media
-      cache:
-        globalMounts:
-          - path: /.npm
-        type: emptyDir
+              - path: /var/lib/pgadmin
