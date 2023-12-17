@@ -41,8 +41,8 @@ spec:
         containers:
           main:
             image:
-              repository: docker.io/dpage/pgadmin4
-              tag: 8.1@sha256:c7e6ec8f91a9c1800ceeba628ac29f520f20e6bb3c6c7c71889c72f8e2041b46
+              repository: dpage/pgadmin4
+              tag: "8.1@sha256:79388691706e7b4c3f1e4d567a594ade467d4cab4ecf1a97aaa0beb5b19b5b53"
             env:
             envFrom:
               - secretRef:
