@@ -5,8 +5,6 @@ MASTER_PASSWORD_REQUIRED = False
 OAUTH2_CONFIG = [{
   'OAUTH2_NAME': 'authentik',
   'OAUTH2_DISPLAY_NAME': 'Authentik',
-  'OAUTH2_CLIENT_ID' : '${OAUTH2_CLIENT_ID}',
-  'OAUTH2_CLIENT_SECRET' : '${OAUTH2_CLIENT_SECRET}',
   'OAUTH2_TOKEN_URL': 'https://authentik.${SECRET_DOMAIN}/application/o/token/',
   'OAUTH2_AUTHORIZATION_URL': 'https://authentik.${SECRET_DOMAIN}/application/o/authorize/',
   'OAUTH2_USERINFO_ENDPOINT': 'https://authentik.${SECRET_DOMAIN}/application/o/userinfo/',
