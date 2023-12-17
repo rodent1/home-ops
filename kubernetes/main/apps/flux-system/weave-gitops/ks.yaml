@@ -10,6 +10,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: nginx-internal
+    - name: authentik
   path: ./kubernetes/main/apps/flux-system/weave-gitops/app
   prune: true
   sourceRef:
