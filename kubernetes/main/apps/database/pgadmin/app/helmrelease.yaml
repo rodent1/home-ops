@@ -34,7 +34,7 @@ spec:
           main:
             image:
               repository: docker.io/dpage/pgadmin4
-              tag: 8.1@sha256:c7e6ec8f91a9c1800ceeba628ac29f520f20e6bb3c6c7c71889c72f8e2041b46
+              tag: "8.0"
             envFrom:
               - secretRef:
                   name: pgadmin-secret
@@ -44,12 +44,13 @@ spec:
                 memory: 164M
               limits:
                 memory: 236M
-      pod:
-        securityContext:
-          runAsUser: 5050
-          runAsGroup: 5050
-          fsGroup: 5050
-          fsGroupChangePolicy: OnRootMismatch
+        pod:
+          securityContext:
+            runAsUser: 5050
+            runAsGroup: 5050
+            fsGroup: 5050
+            fsGroupChangePolicy: OnRootMismatch
+
     service:
       main:
         ports:
@@ -70,28 +71,20 @@ spec:
         tls:
           - hosts:
               - *host
+
     persistence:
       config:
         enabled: true
         existingClaim: config-pgadmin
         globalMounts:
           - path: /var/lib/pgadmin
-
-      local-config:
-        enabled: true
-        type: configMap
-        name: pgadmin-local-config-configmap
-        globalMounts:
-          - path: /pgadmin4/config_local.py
-            subPath: config_local.py
-            readOnly: true
+        accessMode: ReadWriteOnce
 
       server-json:
         enabled: true
         type: configMap
-        name: servers-json-configmap
+        name: servers-json
         globalMounts:
           - path: /pgadmin4/servers.json
             subPath: servers.json
-            readOnly: true
 
