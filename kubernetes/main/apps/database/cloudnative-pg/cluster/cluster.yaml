@@ -7,7 +7,7 @@ metadata:
   namespace: database
 spec:
   instances: 2
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.1-8
+  imageName: ghcr.io/bo0tzz/cnpgvecto.rs:16.1
   inheritedMetadata:
     labels:
       kube-image-keeper.enix.io/image-caching-policy: ignore
