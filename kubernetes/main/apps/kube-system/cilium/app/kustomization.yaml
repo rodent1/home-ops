@@ -4,3 +4,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./helmrelease.yaml
+  - ./config/loadbalancerippool.yaml
+  - ./config/l2announcementpolicy.yaml
+configMapGenerator:
+  - name: cilium-values
+    files:
+      - values.yaml=./values.yaml
+
+configurations:
+  - kustomizeconfig.yaml

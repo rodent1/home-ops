@@ -25,60 +25,23 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    autoDirectNodeRoutes: true
-    bandwidthManager:
-      enabled: true
-      bbr: true
-    bpf:
-      hostRouting: true
-      lbBypassFIBLookup: true
-      masquerade: true
-      tproxy: true
-    bgpControlPlane:
-      enabled: false
-    cni:
-      exclusive: false
-    cgroup:
-      autoMount:
-        enabled: false
-      hostRoot: /sys/fs/cgroup
-    cluster:
-      name: kubernetes
-      id: 1
-    containerRuntime:
-      integration: containerd
-    dashboards:
-      enabled: true
-      annotations:
-        grafana_folder: Cilium
-    endpointRoutes:
-      enabled: true
     hubble:
-      enabled: true
-      metrics:
-        enabled:
-          - dns:query
-          - drop
-          - tcp
-          - flow
-          - port-distribution
-          - icmp
-          - http
-        serviceMonitor:
-          enabled: true
-        dashboards:
-          enabled: true
-          annotations:
-            grafana_folder: Cilium
-      relay:
+      serviceMonitor:
         enabled: true
-        rollOutPods: true
+
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        namespace: monitoring
+        labelValue: "1"
+        annotations: {}
+
+      relay:
         prometheus:
           serviceMonitor:
             enabled: true
+
       ui:
-        enabled: true
-        rollOutPods: true
         ingress:
           enabled: true
           className: internal
@@ -87,67 +50,12 @@ spec:
           tls:
             - hosts:
                 - *host
-    ipam:
-      mode: kubernetes
-    ipv4NativeRoutingCIDR: 10.244.0.0/16
-    k8sClientRateLimit:
-      qps: 15
-      burst: 30
-    k8sServiceHost: localhost
-    k8sServicePort: 7445
-    kubeProxyReplacement: true
-    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    l2announcements:
-      enabled: true
-      leaseDuration: 120s
-      leaseRenewDeadline: 60s
-      leaseRetryPeriod: 1s
-    loadBalancer:
-      algorithm: maglev
-      mode: dsr
-    localRedirectPolicy: true
-    operator:
-      enabled: true
-      rollOutPods: true
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: true
-      dashboards:
-        enabled: true
-        annotations:
-          grafana_folder: Cilium
+
     prometheus:
-      enabled: true
       serviceMonitor:
         enabled: true
-        trustCRDsExist: true
-    rollOutCiliumPods: true
-    securityContext:
-      privileged: false
-      capabilities:
-        ciliumAgent:
-          - CHOWN
-          - KILL
-          - NET_ADMIN
-          - NET_RAW
-          - IPC_LOCK
-          - SYS_ADMIN
-          - SYS_RESOURCE
-          - DAC_OVERRIDE
-          - FOWNER
-          - SETGID
-          - SETUID
-        mountCgroup:
-          - SYS_ADMIN
-          - SYS_CHROOT
-          - SYS_PTRACE
-        applySysctlOverwrites:
-          - SYS_ADMIN
-          - SYS_CHROOT
-          - SYS_PTRACE
-        cleanCiliumState:
-          - NET_ADMIN
-          - SYS_ADMIN
-          - SYS_RESOURCE
-    tunnel: disabled
+
+    operator:
+      prometheus:
+        serviceMonitor:
+          enabled: true

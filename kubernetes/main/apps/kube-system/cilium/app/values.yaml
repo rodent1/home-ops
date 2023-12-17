@@ -1,34 +1,57 @@
 ---
+cluster:
+  name: main
+  id: 1
+
 autoDirectNodeRoutes: true
+
 bandwidthManager:
   enabled: true
   bbr: true
+
 bpf:
   hostRouting: true
   lbBypassFIBLookup: true
   masquerade: true
   tproxy: true
+
 bgpControlPlane:
   enabled: false
+
 cni:
   exclusive: false
-cgroup:
-  autoMount:
-    enabled: false
-  hostRoot: /sys/fs/cgroup
-cluster:
-  name: kubernetes
-  id: 1
+
 containerRuntime:
   integration: containerd
-dashboards:
-  enabled: true
-  annotations:
-    grafana_folder: Cilium
+
 endpointRoutes:
   enabled: true
+
 hubble:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+
+  metrics:
+    enabled:
+      - dns:query;ignoreAAAA
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+
+  relay:
+    enabled: true
+    rollOutPods: true
+
+  ui:
+    enabled: true
+    ingress:
+      enabled: false
+    rollOutPods: true
+
 ipam:
   mode: kubernetes
 ipv4NativeRoutingCIDR: 10.244.0.0/16
@@ -49,10 +72,24 @@ loadBalancer:
   mode: dsr
 localRedirectPolicy: true
 operator:
+  enabled: true
   rollOutPods: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  dashboards:
+    enabled: true
+    annotations:
+      grafana_folder: Cilium
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
 rollOutCiliumPods: true
+
 securityContext:
-  privileged: false
   capabilities:
     ciliumAgent:
       - CHOWN
@@ -66,16 +103,12 @@ securityContext:
       - FOWNER
       - SETGID
       - SETUID
-    mountCgroup:
-      - SYS_ADMIN
-      - SYS_CHROOT
-      - SYS_PTRACE
-    applySysctlOverwrites:
-      - SYS_ADMIN
-      - SYS_CHROOT
-      - SYS_PTRACE
     cleanCiliumState:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
-tunnel: disabled
+
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
