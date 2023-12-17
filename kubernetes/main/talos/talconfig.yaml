@@ -2,6 +2,11 @@
 clusterName: ${clusterName}
 endpoint: "https://${clusterEndpointIP}:6443"
 
+clusterPodNets:
+  - 10.244.0.0/16
+clusterSvcNets:
+  - 10.245.0.0/16
+
 talosVersion: v1.6.0
 kubernetesVersion: 1.28.4
 
