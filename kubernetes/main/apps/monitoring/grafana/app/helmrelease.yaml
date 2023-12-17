@@ -127,6 +127,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/nginx
+          - name: thanos
+            orgId: 1
+            folder: Thanos
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/thanos
           - name: unifi
             orgId: 1
             folder: Unifi
@@ -148,8 +156,9 @@ spec:
             uid: prometheus
             access: proxy
             url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+            # url: http://vmselect-victoria-metrics.monitoring.svc.cluster.local:8481/select/0/prometheus
             jsonData:
-              prometheusType: Thanos
+              prometheusType: Thanos # Prometheus for victoria-metrics
             isDefault: true
           - name: Loki
             type: loki
@@ -163,15 +172,12 @@ spec:
             uid: alertmanager
             access: proxy
             url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+            # url: http://vmalertmanager-victoria-metrics.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
+
     dashboards:
       default:
-        blackbox-exporter:
-          # renovate: depName="Prometheus Blackbox Exporter"
-          gnetId: 7587
-          revision: 3
-          datasource: Prometheus
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
           gnetId: 17457
@@ -183,10 +189,21 @@ spec:
           gnetId: 15038
           revision: 3
           datasource: Prometheus
+        minio:
+          # renovate: depName="MinIO Dashboard"
+          gnetId: 13502
+          revision: 24
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
           revision: 33
+          datasource: Prometheus
+        redis:
+          # renovate: depName="Redis Dashboard for Prometheus Redis Exporter 1.x"
+          gnetId: 763
+          revision: 5
           datasource: Prometheus
         spegel:
           # renovate: depName="Spegel"
@@ -197,11 +214,12 @@ spec:
               value: Prometheus
         cloudnative-pg:
           url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
+          datasource: Prometheus
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+          datasource: Prometheus
+        external-secrets:
+          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
           datasource: Prometheus
       ceph:
         ceph-cluster:
@@ -257,8 +275,8 @@ spec:
           datasource: Prometheus
         kubernetes-pods:
           # renovate: depName="Kubernetes / Views / Pods"
-          gnetId: 15760
-          revision: 22
+          gNetId: 15760
+          revision: 21
           datasource: Prometheus
         kubernetes-volumes:
           # renovate: depName="K8s / Storage / Volumes / Cluster"
@@ -287,6 +305,34 @@ spec:
           datasource: Prometheus
         nginx-request-handling-performance:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
+          datasource: Prometheus
+      thanos:
+        thanos-bucket-replicate:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/bucket-replicate.json
+          datasource: Prometheus
+        thanos-compact:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/compact.json
+          datasource: Prometheus
+        thanos-overview:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/overview.json
+          datasource: Prometheus
+        thanos-query:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/query.json
+          datasource: Prometheus
+        thanos-query-frontend:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/query-frontend.json
+          datasource: Prometheus
+        thanos-receieve:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/receive.json
+          datasource: Prometheus
+        thanos-rule:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/rule.json
+          datasource: Prometheus
+        thanos-sidecar:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/sidecar.json
+          datasource: Prometheus
+        thanos-store:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/store.json
           datasource: Prometheus
       unifi:
         unifi-insights:
@@ -325,7 +371,6 @@ spec:
         enabled: true
         searchNamespace: ALL
         labelValue: ""
-        label: grafana_datasource
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel
@@ -333,19 +378,18 @@ spec:
       - natel-discrete-panel
       - pr0ps-trackmap-panel
       - vonage-status-panel
-
     serviceMonitor:
       enabled: true
+
     ingress:
       enabled: true
-      ingressClassName: external
-      annotations:
-        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+      ingressClassName: internal
       hosts:
-        - &host grafana.${SECRET_DOMAIN}
+        - &host internal.${SECRET_DOMAIN}
       tls:
         - hosts:
             - *host
+
     persistence:
       enabled: false
     testFramework:
