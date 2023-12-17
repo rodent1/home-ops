@@ -44,14 +44,12 @@ spec:
                 memory: 164M
               limits:
                 memory: 236M
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [44, 105, 10000]
+      pod:
+        securityContext:
+          runAsUser: 5050
+          runAsGroup: 5050
+          fsGroup: 5050
+          fsGroupChangePolicy: OnRootMismatch
     service:
       main:
         ports:
