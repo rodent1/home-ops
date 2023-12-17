@@ -13,6 +13,9 @@ resources:
 configMapGenerator:
   - name: pgadmin-local-config-configmap
     files:
-      - ./config_local.py
+      - ./config/config_local.py
+  - name: servers-json-configmap
+    files:
+      - config/servers.json
 generatorOptions:
   disableNameSuffixHash: true
