@@ -68,7 +68,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.91.2@sha256:abea8ea524fb96499bdc40e2e7b149e1e2b33e00514e6df73d0987bb81252a27
+              tag: v1.90.2@sha256:3e68be128c705f4e1c565a38f0a70c7008504f0acaaf122dc13cc6716a69a067
               imagePullPolicy: IfNotPresent
 
             args: ["start-server.sh"]
