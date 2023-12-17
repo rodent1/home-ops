@@ -7,4 +7,3 @@ resources:
   - ./internal-s3.yaml
   - ./internal-tank.yaml
   - ./internal-unifi.yaml
-  - ./internal-xo.yaml
