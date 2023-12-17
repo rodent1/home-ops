@@ -26,13 +26,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    extraInitContainers:
-      - name: 01-init-db
-        image: ghcr.io/onedr0p/postgres-init:16
-        imagePullPolicy: IfNotPresent
-        envFrom:
-          - secretRef:
-              name: &secret grafana-secret
     replicas: 2
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
