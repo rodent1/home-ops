@@ -1,5 +1,5 @@
 ---
 providerRegex: |
-  ^(delta|enigma|felix)$
+  ^(node-1|node-2|node-3)$
 
 bypassDnsResolution: true
