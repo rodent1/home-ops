@@ -378,7 +378,7 @@ spec:
       enabled: true
       ingressClassName: internal
       hosts:
-        - &host internal.${SECRET_DOMAIN}
+        - &host grafana.${SECRET_DOMAIN}
       tls:
         - hosts:
             - *host
