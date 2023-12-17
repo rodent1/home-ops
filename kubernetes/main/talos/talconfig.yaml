@@ -120,6 +120,28 @@ nodes:
                   - rshared
                   - rw
 
+  - hostname: node-5.${domainName}
+    ipAddress: 10.1.1.35
+    controlPlane: false
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:01.2/0000:12:00.1/ata1/host0/target0:0:0/0:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "2c:f0:5d:74:06:6b"
+        dhcp: true
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/sata
+                type: bind
+                source: /var/mnt/sata
+                options:
+                  - rbind
+                  - rshared
+                  - rw
+
 controlPlane:
   patches:
     # Disable search domain everywhere

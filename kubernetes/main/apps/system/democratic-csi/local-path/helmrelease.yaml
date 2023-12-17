@@ -64,7 +64,7 @@ spec:
       driver:
         extraVolumeMounts:
           - name: local-hostpath
-            mountPath: &path /var/lib/democratic-csi-local-hostpath
+            mountPath: &path /var/mnt/sata/demo-csi-local-path
             mountPropagation: Bidirectional
 
       driverRegistrar:
