@@ -25,6 +25,12 @@ tunnel: "disabled"
 containerRuntime:
   integration: containerd
 
+l2announcements:
+  enabled: true
+  leaseDuration: 120s
+  leaseRenewDeadline: 60s
+  leaseRetryPeriod: 1s
+
 endpointRoutes:
   enabled: true
 
