@@ -11,9 +11,6 @@ resources:
   - ../../../../templates/gatus/guarded
   - ../../../../templates/volsync
 configMapGenerator:
-  - name: pgadmin-local-config
-    files:
-      - ./config/config_local.py
   - name: servers-json
     files:
       - ./config/servers.json
