@@ -88,3 +88,10 @@ spec:
           - path: /pgadmin4/servers.json
             subPath: servers.json
 
+      local-config:
+        enabled: true
+        type: configMap
+        name: pgadmin-local-config
+        globalMounts:
+          - path: /pgadmin4/config_local.py
+            subPath: config_local.py
