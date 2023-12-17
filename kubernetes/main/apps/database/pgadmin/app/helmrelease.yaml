@@ -76,10 +76,9 @@ spec:
       config:
         enabled: true
         existingClaim: config-pgadmin
-        advancedMounts:
-          main:
-            main:
-              - path: /var/lib/pgadmin
+        globalMounts:
+          - path: /var/lib/pgadmin
+
       local-config:
         enabled: true
         type: configMap
@@ -88,6 +87,7 @@ spec:
           - path: /pgadmin4/config_local.py
             subPath: config_local.py
             readOnly: true
+
       server-json:
         enabled: true
         type: configMap
