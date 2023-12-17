@@ -3,8 +3,6 @@ cluster:
   name: main
   id: 1
 
-autoDirectNodeRoutes: true
-
 bandwidthManager:
   enabled: true
   bbr: true
@@ -21,6 +19,9 @@ bgpControlPlane:
 cni:
   exclusive: false
 
+ipv4NativeRoutingCIDR: 10.244.0.0/16
+autoDirectNodeRoutes: true
+tunnel: "disabled"
 containerRuntime:
   integration: containerd
 
@@ -54,40 +55,22 @@ hubble:
 
 ipam:
   mode: kubernetes
-ipv4NativeRoutingCIDR: 10.244.0.0/16
-k8sClientRateLimit:
-  qps: 15
-  burst: 30
+
 k8sServiceHost: localhost
 k8sServicePort: 7445
+
+rollOutCiliumPods: true
+localRedirectPolicy: true
+
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-l2announcements:
-  enabled: true
-  leaseDuration: 120s
-  leaseRenewDeadline: 60s
-  leaseRetryPeriod: 1s
+
 loadBalancer:
   algorithm: maglev
   mode: dsr
-localRedirectPolicy: true
+
 operator:
-  enabled: true
   rollOutPods: true
-  prometheus:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-  dashboards:
-    enabled: true
-    annotations:
-      grafana_folder: Cilium
-prometheus:
-  enabled: true
-  serviceMonitor:
-    enabled: true
-    trustCRDsExist: true
-rollOutCiliumPods: true
 
 securityContext:
   capabilities:
