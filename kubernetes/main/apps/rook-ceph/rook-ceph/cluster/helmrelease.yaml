@@ -74,9 +74,12 @@ spec:
           - name: node-3
             devices:
               - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA96F
-          - name: node-4
+          - name: worker-1
             devices:
               - name: /dev/disk/by-id/nvme-INTEL_SSDPEKNW010T8_BTNH916507DA1P0B
+          - name: worker-2
+            devices:
+              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B728308EA85
       resources:
         mgr:
           requests:

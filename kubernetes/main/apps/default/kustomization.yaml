@@ -6,6 +6,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   # - ./filebrowser/ks.yaml
-  - ./home-assistant/ks.yaml
-  - ./immich/ks.yaml
-  - ./vikunja/ks.yaml
+  # - ./home-assistant/ks.yaml
+  # - ./immich/ks.yaml
+  # - ./vikunja/ks.yaml
