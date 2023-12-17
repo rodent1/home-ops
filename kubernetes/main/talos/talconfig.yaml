@@ -182,16 +182,19 @@ controlPlane:
               aliases:
                 - ${clusterName}.${domainName}
 
-    # Configure kubelet
+    # Kubelet configuration
     - &kubeletPatch |-
       machine:
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true
-            rotate-server-certificates: true
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 150
           nodeIP:
             validSubnets:
-              - 10.1.1.0/24
+                - 10.1.1.0/24
+
 
     # Custom sysctls
     - &sysctlPatch |-
