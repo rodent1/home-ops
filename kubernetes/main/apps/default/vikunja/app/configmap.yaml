@@ -34,7 +34,7 @@ data:
             # The client ID used to authenticate Vikunja at the OpenID Connect provider.
             clientid: vikunja
             # The client secret used to authenticate Vikunja at the OpenID Connect provider.
-            clientsecret: ${VIKUNJA_OPENID_CLIENT_SECRET}
+            clientsecret: {{ .VIKUNJA_OAUTH_CLIENT_SECRET }}
 
   Caddyfile: |-
     {

@@ -113,8 +113,8 @@ spec:
           - path: /etc/caddy/Caddyfile
             subPath: Caddyfile
       vikunja-config:
-        type: configMap
-        name: vikunja-configmap
+        type: secret
+        name: vikunja-configmap-secret
         globalMounts:
           - path: /etc/vikunja/config.yml
             subPath: config.yml
