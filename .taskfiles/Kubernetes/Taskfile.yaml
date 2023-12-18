@@ -67,3 +67,23 @@ tasks:
     preconditions:
       - { msg: "Argument (cluster) is required", sh: "test -n {{.cluster}}" }
       - { msg: "PVC not found",                  sh: "kubectl --context {{.cluster}} -n {{.ns}} get persistentvolumeclaim {{.claim}}" }
+
+  delete-failed-pods:
+    desc: Deletes pods with Failed phase
+    summary: |
+      Args:
+        cluster: Cluster to run command against (required)
+    vars:
+      cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
+    cmds:
+      - kubectl --context {{.cluster}} delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
+
+  delete-succeeded-pods:
+    desc: Deletes pods with Succeeded phase
+    summary: |
+      Args:
+        cluster: Cluster to run command against (required)
+    vars:
+      cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
+    cmds:
+      - kubectl --context {{.cluster}} delete pods --field-selector status.phase=Succeeded -A --ignore-not-found=true
