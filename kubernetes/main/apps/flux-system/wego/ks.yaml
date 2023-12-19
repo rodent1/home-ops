@@ -1,9 +1,9 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app weave-gitops
+  name: &app wego
   namespace: flux-system
 spec:
   targetNamespace: flux-system
@@ -11,9 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: nginx-internal
-    - name: authentik
-  path: ./kubernetes/main/apps/flux-system/weave-gitops/app
+    - name: external-secrets-stores
+  path: ./kubernetes/main/apps/flux-system/wego/app
   prune: true
   sourceRef:
     kind: GitRepository

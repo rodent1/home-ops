@@ -1,9 +1,9 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: weave-gitops
+  name: wego
 spec:
   interval: 30m
   chart:
@@ -12,9 +12,8 @@ spec:
       version: 4.0.36
       sourceRef:
         kind: HelmRepository
-        name: weave-gitops
+        name: weaveworks
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -25,42 +24,32 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    podAnnotations:
-      secret.reloader.stakater.com/reload: oidc-auth,cluster-user-auth
-
+    fullnameOverride: wego
     adminUser:
       create: true
       createSecret: false
-      username: &admin_user admin
-
-    rbac:
-      create: true
-      additionalRules:
-        - apiGroups:
-            - "infra.contrib.fluxcd.io"
-          resources:
-            - "terraforms"
-          verbs:
-            - "get"
-            - "list"
-            - "patch"
-
+      username: admin
     ingress:
       enabled: true
       className: internal
-      annotations:
-        hajimari.io/icon: sawtooth-wave
       hosts:
-        - host: &host "gitops.${SECRET_DOMAIN}"
+        - host: &host wego.${SECRET_DOMAIN}
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
             - *host
-
     networkPolicy:
       create: false
-
     metrics:
       enabled: true
+    rbac:
+      create: true
+      impersonationResourceNames: ["admin"]
+      additionalRules:
+        - apiGroups: ["infra.contrib.fluxcd.io"]
+          resources: ["terraforms"]
+          verbs: ["get", "list", "patch"]
+    podAnnotations:
+      secret.reloader.stakater.com/reload: cluster-user-auth,oidc-auth
