@@ -43,7 +43,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://immich-db/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster immich-v1
+      serverName: &currentCluster immich-v2
       s3Credentials:
         accessKeyId:
           name: immich-db-secret
