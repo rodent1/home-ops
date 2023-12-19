@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich
+spec:
+  instances: 2
+  imageName: ghcr.io/bo0tzz/cnpgvecto.rs:16.1-v0.1.11
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+    storageClass: local-hostpath
+  superuserSecret:
+    name: immich-secret
+  enableSuperuserAccess: true
+  # Note: Bootstrap is needed when recovering from an existing cnpg cluster
+  # bootstrap:
+  #   recovery:
+  #     source: &previousCluster immich-v1
+  postgresql:
+    parameters:
+      max_connections: "600"
+      max_slot_wal_keep_size: 10GB
+      shared_buffers: 512MB
+    shared_preload_libraries:
+      - "vectors.so"
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "100m"
+    limits:
+      memory: "2Gi"
+  monitoring:
+    enablePodMonitor: true
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://immich-db/
+      endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+      serverName: &currentCluster immich-v1
+      s3Credentials:
+        accessKeyId:
+          name: immich-secret
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKey:
+          name: immich-secret
+          key: AWS_SECRET_ACCESS_KEY
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # externalClusters:
+  #   - name: *previousCluster
+  #     barmanObjectStore:
+  #       wal:
+  #         compression: bzip2
+  #         maxParallel: 8
+  #       destinationPath: s3://cnpg/
+  #       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+  #       s3Credentials:
+  #         accessKeyId:
+  #           name: immich-secret
+  #           key: AWS_ACCESS_KEY_ID
+  #         secretAccessKey:
+  #           name: immich-secret
+  #           key: AWS_SECRET_ACCESS_KEY
