@@ -22,6 +22,8 @@ includes:
     taskfile: .taskfiles/Flux/Taskfile.yaml
   kubernetes:
     taskfile: .taskfiles/Kubernetes/Taskfile.yaml
+  postgres:
+    taskfile: .taskfiles/Postgres/Taskfile.yaml
   rook:
     taskfile: .taskfiles/Rook/Taskfile.yaml
   volsync:
