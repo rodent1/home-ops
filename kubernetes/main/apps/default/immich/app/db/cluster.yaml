@@ -12,7 +12,7 @@ spec:
     size: 20Gi
     storageClass: local-hostpath
   superuserSecret:
-    name: immich-secret
+    name: immich-db-secret
   enableSuperuserAccess: true
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
   # bootstrap:
@@ -46,10 +46,10 @@ spec:
       serverName: &currentCluster immich-v1
       s3Credentials:
         accessKeyId:
-          name: immich-secret
+          name: immich-db-secret
           key: AWS_ACCESS_KEY_ID
         secretAccessKey:
-          name: immich-secret
+          name: immich-db-secret
           key: AWS_SECRET_ACCESS_KEY
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   # externalClusters:
@@ -62,8 +62,8 @@ spec:
   #       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
   #       s3Credentials:
   #         accessKeyId:
-  #           name: immich-secret
+  #           name: immich-db-secret
   #           key: AWS_ACCESS_KEY_ID
   #         secretAccessKey:
-  #           name: immich-secret
+  #           name: immich-db-secret
   #           key: AWS_SECRET_ACCESS_KEY
