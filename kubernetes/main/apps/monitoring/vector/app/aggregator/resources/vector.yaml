@@ -121,7 +121,7 @@ sinks:
       node: '{{ kubernetes.pod_node_name }}'
 
   unifi:
-    inputs: ["unifi_remap"]
+    inputs: ["unifi_source", "unifi_firewall_geoip_remap"]
     type: loki
     endpoint: http://loki-gateway.monitoring.svc.cluster.local
     encoding: { codec: json }
