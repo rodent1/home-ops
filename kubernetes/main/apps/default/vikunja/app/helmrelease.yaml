@@ -43,7 +43,7 @@ spec:
           main:
             image:
               repository: vikunja/api
-              tag: 0.21.0@sha256:1266048efc716556602df482ecc353a45dfc9eae30e72c561e384eae1187b515
+              tag: 0.22.0@sha256:001c8b4d36a459b7464fd2bd8b9ffd25c5e67a52900d0e5414c24481bdd4e57c
             envFrom: *envFrom
             env:
               VIKUNJA_SERVICE_TIMEZONE: ${TZ}
