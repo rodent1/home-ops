@@ -18,14 +18,6 @@ spec:
   # bootstrap:
     # recovery:
     #   source: &previousCluster immich-v1
-  bootstrap:
-    initdb:
-      import:
-        type: microservice
-        databases:
-          - immich
-        source:
-          externalCluster: postgres16
   postgresql:
     parameters:
       max_connections: "600"
@@ -75,13 +67,3 @@ spec:
   #         secretAccessKey:
   #           name: immich-db-secret
   #           key: AWS_SECRET_ACCESS_KEY
-  externalClusters:
-    - name: postgres16
-      connectionParameters:
-        # Use the correct IP or host name for the source database
-        host: ${POSTGRES_URL}
-        user: immich
-        dbname: immich
-      password:
-        name: immich-secret
-        key: DB_PASSWORD
