@@ -1,10 +1,9 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: vector-agent
-  namespace: monitoring
 spec:
   interval: 30m
   timeout: 15m
@@ -16,7 +15,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -38,11 +36,8 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/onedr0p/vector
-              tag: 0.34.1-debian@sha256:329ceb648d40a26fca9f72c851e9abbacef74cc50b7956d9cf7eb1929d57f35c
-            args:
-              - --config
-              - /etc/vector/vector.yaml
+              repository: docker.io/timberio/vector
+              tag: 0.34.1-debian@sha256:a2e406c8917ed62d24381e600ad8bd96fe82fcdb406ecfb4ab4a6fad21b19047
             env:
               PROCFS_ROOT: /host/proc
               SYSFS_ROOT: /host/sys
@@ -61,8 +56,15 @@ spec:
                   fieldRef:
                     apiVersion: v1
                     fieldPath: metadata.namespace
+            args: ["--config", "/etc/vector/vector.yaml"]
             securityContext:
               privileged: true
+    service:
+      main:
+        enabled: false
+    serviceAccount:
+      create: true
+      name: vector-agent
     persistence:
       config:
         enabled: true
@@ -76,20 +78,6 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /vector-data-dir
-      procfs:
-        type: hostPath
-        hostPath: /proc
-        hostPathType: Directory
-        globalMounts:
-          - path: /host/proc
-            readOnly: true
-      sysfs:
-        type: hostPath
-        hostPath: /sys
-        hostPathType: Directory
-        globalMounts:
-          - path: /host/sys
-            readOnly: true
       var-log:
         type: hostPath
         hostPath: /var/log
@@ -104,9 +92,17 @@ spec:
         globalMounts:
           - path: /var/lib
             readOnly: true
-    service:
-      main:
-        enabled: false
-    serviceAccount:
-      create: true
-      name: vector-agent
+      procfs:
+        type: hostPath
+        hostPath: /proc
+        hostPathType: Directory
+        globalMounts:
+          - path: /host/proc
+            readOnly: true
+      sysfs:
+        type: hostPath
+        hostPath: /sys
+        hostPathType: Directory
+        globalMounts:
+          - path: /host/sys
+            readOnly: true

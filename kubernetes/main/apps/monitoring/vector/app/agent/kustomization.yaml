@@ -8,6 +8,8 @@ resources:
 configMapGenerator:
   - name: vector-agent-configmap
     files:
-      - ./config/vector.yaml
+      - vector.yaml=./resources/vector.yaml
 generatorOptions:
   disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
