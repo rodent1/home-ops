@@ -1,6 +1,6 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: rook-ceph-cluster
@@ -44,15 +44,12 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
-
+      osd_class_update_on_start = false
     cephClusterSpec:
-      cephVersion:
-        image: quay.io/ceph/ceph:v18.2.1
       network:
         provider: host
         connections:
-          compression:
-            enabled: true
+          requireMsgr2: true
       crashCollector:
         disable: false
       dashboard:
@@ -80,49 +77,37 @@ spec:
           - name: worker-2
             devices:
               - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B728308EA85
+      placement:
+        mgr: &placement
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/control-plane
+                      operator: Exists
+        mon: *placement
       resources:
         mgr:
           requests:
-            cpu: 125m
+            cpu: 500m
             memory: 512Mi
           limits:
+            cpu: 2000m
             memory: 2Gi
         mon:
           requests:
-            cpu: 50m
-            memory: 512Mi
-          limits:
+            cpu: 1000m
             memory: 1Gi
+          limits:
+            cpu: 4000m
+            memory: 4Gi
         osd:
           requests:
-            cpu: 500m
-            memory: 2Gi
+            cpu: 1000m
+            memory: 4Gi
           limits:
-            memory: 6Gi
-        mgr-sidecar:
-          requests:
-            cpu: 49m
-            memory: 128Mi
-          limits:
-            memory: 256Mi
-        crashcollector:
-          requests:
-            cpu: 15m
-            memory: 75Mi
-          limits:
-            memory: 75Mi
-        logcollector:
-          requests:
-            cpu: 100m
-            memory: 100Mi
-          limits:
-            memory: 1Gi
-        cleanup:
-          requests:
-            cpu: 250m
-            memory: 100Mi
-          limits:
-            memory: 1Gi
+            cpu: 4000m
+            memory: 8Gi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -166,10 +151,10 @@ spec:
             activeStandby: true
             resources:
               requests:
-                cpu: 35m
-                memory: 1Gi
+                cpu: 1000m
+                memory: 4Gi
               limits:
-                memory: 3Gi
+                memory: 4Gi
         storageClass:
           enabled: true
           isDefault: false
@@ -206,11 +191,11 @@ spec:
             port: 80
             resources:
               requests:
-                cpu: 100m
-                memory: 256Mi
+                cpu: 1000m
+                memory: 1Gi
               limits:
                 memory: 2Gi
-            instances: 1
+            instances: 2
           healthCheck:
             bucket:
               interval: 60s
