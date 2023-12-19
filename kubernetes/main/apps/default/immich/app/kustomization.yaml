@@ -7,4 +7,4 @@ resources:
   - ./configmap.yaml
   # Templates
   - ../../../../templates/gatus/external
-  - ../../../../templates/volsync
+  # - ../../../../templates/volsync
