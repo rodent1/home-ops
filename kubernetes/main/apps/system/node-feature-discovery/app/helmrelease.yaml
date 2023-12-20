@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: node-feature-discovery
         namespace: flux-system
-  maxHistory: 2
   install:
     crds: CreateReplace
     remediation:
@@ -27,18 +26,13 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    master:
-      resources:
-        requests:
-          cpu: 21m
-          memory: 51Mi
-        limits:
-          memory: 51Mi
-
     worker:
-      resources:
-        requests:
-          cpu: 5m
-          memory: 48Mi
-        limits:
-          memory: 48Mi
+      config:
+        core:
+          sources: ["custom", "pci", "usb"]
+        sources:
+          usb:
+            deviceClassWhitelist: ["02", "03", "0e", "ef", "fe", "ff"]
+            deviceLabelFields: ["class", "vendor", "device"]
+    prometheus:
+      enable: true
