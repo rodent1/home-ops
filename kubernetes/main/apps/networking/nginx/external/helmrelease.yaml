@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: nginx-external
-  namespace: &namespace networking
 spec:
   interval: 30m
   chart:
@@ -15,7 +14,6 @@ spec:
         kind: HelmRepository
         name: ingress-nginx
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -25,6 +23,11 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  valuesFrom:
+    - targetPath: controller.maxmindLicenseKey
+      kind: Secret
+      name: nginx-external-maxmind-secret
+      valuesKey: MAXMIND_LICENSE_KEY
   values:
     fullnameOverride: nginx-external
     controller:
@@ -72,7 +75,6 @@ spec:
         enabled: true
         serviceMonitor:
           enabled: true
-          namespace: *namespace
           namespaceSelector:
             any: true
       extraArgs:
@@ -94,8 +96,3 @@ spec:
           memory: 500Mi
     defaultBackend:
       enabled: false
-  valuesFrom:
-    - targetPath: controller.maxmindLicenseKey
-      kind: Secret
-      name: nginx-external-maxmind-secret
-      valuesKey: MAXMIND_LICENSE_KEY
