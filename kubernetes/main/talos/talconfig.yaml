@@ -8,7 +8,7 @@ clusterSvcNets:
   - 10.245.0.0/16
 
 talosVersion: v1.6.0
-kubernetesVersion: 1.28.4
+kubernetesVersion: 1.29.0
 
 # Image URL rendered on https://factory.talos.dev
 # customization:
@@ -192,7 +192,7 @@ controlPlane:
       machine:
         kubelet:
           extraArgs:
-            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
