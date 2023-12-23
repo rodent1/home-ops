@@ -44,20 +44,16 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
-      osd_class_update_on_start = false
     cephClusterSpec:
       cephVersion:
         image: quay.io/ceph/ceph:v18.2.1
       network:
         provider: host
-        connections:
-          requireMsgr2: true
       crashCollector:
         disable: false
       dashboard:
         enabled: true
         urlPrefix: /
-        ssl: false
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -122,6 +118,7 @@ spec:
             memory: 100Mi
           limits:
             memory: 1Gi
+
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -144,11 +141,13 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
+
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-blockpool
       isDefault: false
       deletionPolicy: Delete
+
     cephFileSystems:
       - name: ceph-filesystem
         spec:
@@ -169,6 +168,7 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 3Gi
+
         storageClass:
           enabled: true
           isDefault: false
@@ -184,11 +184,13 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
+
     cephFileSystemVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-filesystem
       isDefault: false
       deletionPolicy: Delete
+
     cephObjectStores:
       - name: ceph-objectstore
         spec:
@@ -213,6 +215,7 @@ spec:
           healthCheck:
             bucket:
               interval: 60s
+
         storageClass:
           enabled: true
           name: ceph-bucket
