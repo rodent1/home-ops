@@ -44,11 +44,14 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
+      osd_class_update_on_start = false
     cephClusterSpec:
       cephVersion:
         image: quay.io/ceph/ceph:v18.2.1
       network:
         provider: host
+        connections:
+          requireMsgr2: true
       crashCollector:
         disable: false
       dashboard:
@@ -76,6 +79,15 @@ spec:
           - name: worker-2
             devices:
               - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B728308EA85
+      placement:
+        mgr: &placement
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/control-plane
+                      operator: Exists
+        mon: *placement
       resources:
         mgr:
           requests:
