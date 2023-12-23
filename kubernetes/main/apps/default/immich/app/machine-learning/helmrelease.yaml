@@ -64,10 +64,10 @@ spec:
                   name: *secret
             resources:
               requests:
-                cpu: 100m
-                memory: 274M
+                cpu: 10m
+                memory: 250M
               limits:
-                memory: 3949M
+                memory: 4000M
 
     service:
       main:
