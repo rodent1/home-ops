@@ -79,15 +79,6 @@ spec:
           - name: worker-2
             devices:
               - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B728308EA85
-      placement:
-        mgr: &placement
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
-        mon: *placement
       resources:
         mgr:
           requests:
