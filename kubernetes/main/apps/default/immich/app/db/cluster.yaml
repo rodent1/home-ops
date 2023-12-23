@@ -17,7 +17,7 @@ spec:
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
   bootstrap:
     recovery:
-      source: &previousCluster immich-v2
+      source: &previousCluster immich-v1
   postgresql:
     parameters:
       max_connections: "600"
@@ -43,7 +43,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://immich-db/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster immich-v3
+      serverName: &currentCluster immich-v2
       s3Credentials:
         accessKeyId:
           name: immich-db-secret
