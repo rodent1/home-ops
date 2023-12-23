@@ -58,17 +58,17 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 128Mi
+                memory: 319Mi
               limits:
                 memory: 1Gi
         pod:
-          # annotations:
-          #   k8s.v1.cni.cncf.io/networks: |
-          #     [{
-          #       "name":"multus-iot",
-          #       "namespace": "networking",
-          #       "ips": ["10.1.5.151/24"]
-          #     }]
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["10.1.4.151/24"]
+              }]
           securityContext:
             runAsUser: 568
             runAsGroup: 568
