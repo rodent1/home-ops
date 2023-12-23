@@ -25,19 +25,11 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    crds:
-      enabled: true
     csi:
-      csiAddons:
+      cephFSKernelMountOptions: ms_mode=prefer-crc
+      enableLiveness: true
+      serviceMonitor:
         enabled: true
-
-      kubeletDirPath: /var/lib/kubelet
-      enableCSIHostNetwork: true
-      pluginTolerations:
-        - effect: "NoExecute"
-          operator: "Exists"
-        - effect: "NoSchedule"
-          operator: "Exists"
 
       csiRBDProvisionerResource: |
         - name : csi-provisioner
