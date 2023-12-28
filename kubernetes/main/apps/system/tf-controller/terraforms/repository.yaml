@@ -6,6 +6,6 @@ metadata:
   name: oci-terraform-cloudflare
 spec:
   interval: 1m
-  url: oci://ghcr.io/rodent1/terraform
+  url: oci://ghcr.io/rodent1/manifests/terraform
   ref:
     tag: main
