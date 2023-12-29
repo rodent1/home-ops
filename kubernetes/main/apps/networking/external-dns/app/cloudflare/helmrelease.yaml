@@ -50,7 +50,7 @@ spec:
     sources: ["crd", "ingress"]
     txtOwnerId: default
     txtPrefix: k8s.
-    domainFilters: ["${SECRET_DOMAIN}"]
+    domainFilters: ["rodent.cc", "rodent.casa"]
     serviceMonitor:
       enabled: true
     podAnnotations:
