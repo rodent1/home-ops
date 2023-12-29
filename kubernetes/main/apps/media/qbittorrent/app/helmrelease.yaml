@@ -128,7 +128,7 @@ spec:
             readOnly: true
       media:
         type: nfs
-        server: ${TRUENAS_IP}
+        server: 10.1.1.15
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
