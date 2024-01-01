@@ -41,7 +41,7 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: &host tank.rodent.casa
+    - host: &host tank.rodent.cc
       http:
         paths:
           - path: /
