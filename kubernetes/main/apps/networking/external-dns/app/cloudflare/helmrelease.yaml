@@ -41,7 +41,6 @@ spec:
               - --cloudflare-proxied
               - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
               - --crd-source-kind=DNSEndpoint
-              - --domain-filter=rodent.cc rodent.casa
               - --ingress-class=external
               - --interval=1m
               - --log-format=text
@@ -54,6 +53,11 @@ spec:
               - --source=ingress
               - --txt-owner-id=default
               - --txt-prefix=k8s.
+            env:
+            - name: EXTERNAL_DNS_DOMAIN_FILTER
+              value: |-
+                rodent.cc
+                rodent.casa
             probes:
               liveness: &probes
                 enabled: true
