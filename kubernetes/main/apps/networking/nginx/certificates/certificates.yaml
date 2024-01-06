@@ -3,13 +3,28 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: ${SECRET_DOMAIN/./-}
+  name: rodent-cc
 spec:
-  secretName: ${SECRET_DOMAIN/./-}-tls
+  secretName: rodent-cc-tls
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "${SECRET_DOMAIN}"
+  commonName: "rodent.cc"
   dnsNames:
-    - ${SECRET_DOMAIN}
-    - "*.${SECRET_DOMAIN}"
+    - rodent.cc
+    - "*.rodent.cc"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: rodent-casa
+spec:
+  secretName: rodent-casa-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "rodent.casa"
+  dnsNames:
+    - rodent.casa
+    - "*.rodent.casa"
