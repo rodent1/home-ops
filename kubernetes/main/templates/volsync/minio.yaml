@@ -28,7 +28,7 @@ metadata:
 spec:
   sourcePVC: "config-${APP}"
   trigger:
-    schedule: "0 * * * *"
+    schedule: "${VOLSYNC_MINIO_SCHEDULE:-0 * * * *}"
   restic:
     copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
     pruneIntervalDays: 7
@@ -44,9 +44,9 @@ spec:
       runAsGroup: 568
       fsGroup: 568
     retain:
-      hourly: 24
-      daily: 7
-      weekly: 5
+      hourly: "${VOLSYNC_MINIO_RETAIN_HOURLY:-24}"
+      daily: "${VOLSYNC_MINIO_RETAIN_DAILY:-7}"
+      weekly: "${VOLSYNC_MINIO_RETAIN_WEEKLY:-5}"
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
