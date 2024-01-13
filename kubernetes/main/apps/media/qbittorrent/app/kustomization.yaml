@@ -12,3 +12,5 @@ configMapGenerator:
   - name: qbittorrent-scripts
     files:
       - completed.sh=./resources/completed.sh
+generatorOptions:
+  disableNameSuffixHash: true
