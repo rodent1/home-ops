@@ -3,7 +3,7 @@
 # /scripts/completed.sh "%F"
 /bin/chmod -R 750 "$1"
 
-printf "Searching cross-seed for '%s' with tags '%s'\n" "$1" "$2"
+printf "Searching cross-seed for '%s' with tags '%s'\n" "$1"
 /usr/bin/curl \
     --silent \
     --connect-timeout 5 \
