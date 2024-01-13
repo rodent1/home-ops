@@ -5,13 +5,10 @@ kind: Kustomization
 resources:
   # App
   - ./helmrelease.yaml
-  - ./qbittools-tagging
   # Templates
   - ../../../../templates/gatus/guarded
   - ../../../../templates/volsync
 configMapGenerator:
   - name: qbittorrent-scripts
     files:
-      - ./config/completed.sh
-generatorOptions:
-  disableNameSuffixHash: true
+      - completed.sh=./resources/completed.sh
