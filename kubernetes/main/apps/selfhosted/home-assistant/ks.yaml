@@ -6,7 +6,7 @@ metadata:
   name: &app home-assistant
   namespace: flux-system
 spec:
-  targetNamespace: default
+  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -16,7 +16,7 @@ spec:
     - name: multus-config
     - name: rook-ceph-cluster
     - name: volsync
-  path: ./kubernetes/main/apps/default/home-assistant/app
+  path: ./kubernetes/main/apps/selfhosted/home-assistant/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -41,11 +41,11 @@ metadata:
   name: &app home-assistant-code
   namespace: flux-system
 spec:
-  targetNamespace: default
+  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/default/home-assistant/code
+  path: ./kubernetes/main/apps/selfhosted/home-assistant/code
   prune: true
   sourceRef:
     kind: GitRepository
