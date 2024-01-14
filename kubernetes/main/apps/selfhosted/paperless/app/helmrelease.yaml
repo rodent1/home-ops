@@ -70,14 +70,6 @@ spec:
                 memory: 1000Mi
               limits:
                 memory: 2000Mi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [44, 105, 10000]
 
     service:
       main:
