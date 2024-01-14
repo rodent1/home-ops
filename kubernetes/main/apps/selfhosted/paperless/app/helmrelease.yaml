@@ -80,7 +80,9 @@ spec:
     ingress:
       main:
         enabled: true
-        className: internal
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.rodent.cc
         hosts:
           - host: &host paperless.rodent.cc
             paths:
