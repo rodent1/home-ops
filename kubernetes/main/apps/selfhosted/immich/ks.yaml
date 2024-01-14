@@ -6,12 +6,12 @@ metadata:
   name: &appname immich-redis
   namespace: flux-system
 spec:
-  targetNamespace: default
+  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: ./kubernetes/main/apps/default/immich/redis
+  path: ./kubernetes/main/apps/selfhosted/immich/redis
   prune: true
   sourceRef:
     kind: GitRepository
@@ -25,15 +25,14 @@ metadata:
   name: &app immich
   namespace: flux-system
 spec:
-  targetNamespace: default
+  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg
     - name: external-secrets-stores
     - name: rook-ceph-cluster
-  path: ./kubernetes/main/apps/default/immich/app
+  path: ./kubernetes/main/apps/selfhosted/immich/app
   prune: true
   sourceRef:
     kind: GitRepository

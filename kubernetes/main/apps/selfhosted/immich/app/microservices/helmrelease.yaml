@@ -27,6 +27,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: immich-server
+      namespace: selfhosted
   values:
     defaultPodOptions:
       securityContext:
