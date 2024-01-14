@@ -34,7 +34,7 @@ spec:
                   secretKeyRef:
                     name: paperless-secret
                     key: PAPERLESS_SECRET_KEY
-              PAPERLESS_URL: &host https://paperless.rodent.cc
+              PAPERLESS_URL: https://paperless.rodent.cc
               PAPERLESS_PORT: 8000
               PAPERLESS_TIME_ZONE: Europe/Oslo
               PAPERLESS_WEBSERVER_WORKERS: 2
@@ -82,7 +82,7 @@ spec:
         enabled: true
         className: internal
         hosts:
-          - host: *host
+          - host: &host paperless.rodent.cc
             paths:
               - path: /
                 service:
