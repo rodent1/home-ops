@@ -66,10 +66,10 @@ spec:
                     key: PAPERLESS_ADMIN_PASSWORD
             resources:
               requests:
-                cpu: 11m
-                memory: 1500Mi
+                cpu: 15m
+                memory: 2Gi
               limits:
-                memory: 4000Mi
+                memory: 6Gi
 
     service:
       main:
