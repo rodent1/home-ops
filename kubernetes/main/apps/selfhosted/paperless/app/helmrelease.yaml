@@ -64,10 +64,6 @@ spec:
                   secretKeyRef:
                     name: paperless-secret
                     key: PAPERLESS_ADMIN_PASSWORD
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 11m
