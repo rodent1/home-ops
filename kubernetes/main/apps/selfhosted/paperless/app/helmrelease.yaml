@@ -49,8 +49,8 @@ spec:
               PAPERLESS_CONSUMER_RECURSIVE: true
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: true
               # Configure OCR
-              PAPERLESS_OCR_LANGUAGES: nor+eng
-              PAPERLESS_OCR_LANGUAGE: nor+eng
+              PAPERLESS_OCR_LANGUAGES: nor
+              PAPERLESS_OCR_LANGUAGE: nor
               # Configure redis integration
               PAPERLESS_REDIS: redis://paperless-redis.selfhosted.svc.cluster.local:6379
               # Configure admin user
