@@ -48,22 +48,11 @@ spec:
               HOME: /data/config
             envFrom: *envFrom
 
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 memory: 512Mi
               limits:
                 memory: 1Gi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [44, 105, 10000]
     service:
       main:
         ports:
