@@ -7,7 +7,6 @@ resources:
   - ./externalsecret.yaml
   - ./configmap.yaml
   # App components
-  - ./db
   - ./machine-learning
   - ./microservices
   - ./server
