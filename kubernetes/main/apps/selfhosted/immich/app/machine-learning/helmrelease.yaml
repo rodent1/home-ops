@@ -57,7 +57,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v1.92.1@sha256:d150a0de5d30861aa309c2b23f487781bf9dc9502bf9e2587d098acd074aae2e
+              tag: v1.93.2@sha256:de5a538f618091986c2c44c00d6f7c92e523d098a3dd8b5acd91958a821b4ef4
               imagePullPolicy: IfNotPresent
 
             envFrom:
