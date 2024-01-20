@@ -19,4 +19,5 @@ resources:
   - ./tautulli/ks.yaml
   - ./theme-park/ks.yaml
   - ./unpackerr/ks.yaml
+  - ./wallos/ks.yaml
   - ./xteve/ks.yaml
