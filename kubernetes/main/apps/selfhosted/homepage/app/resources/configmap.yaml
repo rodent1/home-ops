@@ -18,6 +18,40 @@ data:
   kubernetes.yaml: |
     mode: cluster
   services.yaml: |
+    - Media:
+        - Plex:
+            icon: plex.png
+            href: https://plex.${SECRET_DOMAIN_0}
+            description: Media Server
+            widget:
+              type: plex
+              url: http://plex.media.svc.cluster.local:32400
+              key: {{HOMEPAGE_VAR_PLEX_TOKEN}} # see https://www.plexopedia.com/plex-media-server/general/plex-token/
+        - qBittorrent:
+            icon: qbittorrent.png
+            href: https://qbit.${SECRET_DOMAIN_0}
+            description: Torrent Management
+            widget:
+              type: qbittorrent
+              url: http://qbittorrent.media.svc.cluster.local
+              username: {{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}
+              password: {{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}
+        - Radarr:
+            icon: radarr.png
+            href: https://movie.${SECRET_DOMAIN_0}
+            description: Movies Management
+            widget:
+              type: radarr
+              url: http://radarr.media.svc.cluster.local
+              key: {{HOMEPAGE_VAR_RADARR_KEY}}
+        - Sonarr:
+            icon: sonarr.png
+            href: https://tv.${SECRET_DOMAIN_0}
+            description: TV Shows Management
+            widget:
+              type: sonarr
+              url: http://sonarr.media.svc.cluster.local
+              key: {{HOMEPAGE_VAR_SONARR_KEY}}
     - Calendar:
         - Agenda:
             widget:
