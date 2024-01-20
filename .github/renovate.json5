@@ -13,8 +13,7 @@
     "github>rodent1/home-ops//.github/renovate/groups.json5",
     "github>rodent1/home-ops//.github/renovate/packageRules.json5"
   ],
-  "assigneesFromCodeOwners": true,
-  "reviewersFromCodeOwners": true,
+
   "ignorePaths": [
     "**/*.sops.*",
     "**/.archive/**",
