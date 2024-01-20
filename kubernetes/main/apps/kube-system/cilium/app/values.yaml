@@ -21,7 +21,7 @@ cni:
 
 ipv4NativeRoutingCIDR: 10.244.0.0/16
 autoDirectNodeRoutes: true
-tunnel: "disabled"
+routingMode: native
 containerRuntime:
   integration: containerd
 
