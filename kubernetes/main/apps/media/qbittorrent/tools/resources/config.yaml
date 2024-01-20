@@ -5,10 +5,16 @@ trackers:
     - tleechreload.org
     - torrentleech.org
     required_seed_ratio: 1.05
-    required_seed_days: 10.5
+    required_seed_days: 14
+
+  - name: myanonamouse
+    urls:
+    - myanonamouse.net
+    required_seed_ratio: 1.05
+    required_seed_days: 14
 
   - name: hdbits
     urls:
     - hdbits.org
     required_seed_ratio: 1.05
-    required_seed_days: 10.5
+    required_seed_days: 14
