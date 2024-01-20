@@ -11,6 +11,6 @@ data:
         - kubesearch:
             - icon: kubernetes-dashboard.png
               href: 'https://kubesearch.dev/'
-        - k3s-home-cluster:
+        - Home-Ops:
             - icon: github.png
-              href: 'https://github.com/LilDrunkenSmurf/k3s-home-cluster'
+              href: 'https://github.com/rodent1/home-ops'
