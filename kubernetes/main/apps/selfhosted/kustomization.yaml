@@ -12,3 +12,4 @@ resources:
   - ./linkwarden/ks.yaml
   - ./paperless/ks.yaml
   - ./vikunja/ks.yaml
+  - ./wallabag/ks.yaml
