@@ -21,7 +21,7 @@ data:
     - Media:
         - Plex:
             icon: plex.png
-            href: https://plex.${SECRET_DOMAIN_0}
+            href: https://plex.${SECRET_DOMAIN}
             description: Media Server
             widget:
               type: plex
@@ -29,7 +29,7 @@ data:
               key: {{HOMEPAGE_VAR_PLEX_TOKEN}} # see https://www.plexopedia.com/plex-media-server/general/plex-token/
         - qBittorrent:
             icon: qbittorrent.png
-            href: https://qbit.${SECRET_DOMAIN_0}
+            href: https://qbit.${SECRET_DOMAIN}
             description: Torrent Management
             widget:
               type: qbittorrent
@@ -38,7 +38,7 @@ data:
               password: {{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}
         - Radarr:
             icon: radarr.png
-            href: https://movie.${SECRET_DOMAIN_0}
+            href: https://movie.${SECRET_DOMAIN}
             description: Movies Management
             widget:
               type: radarr
