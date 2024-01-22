@@ -36,7 +36,7 @@ spec:
           main:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.20.0
+              tag: 4.20.1
             env:
               TZ: Europe/Oslo
             args:
