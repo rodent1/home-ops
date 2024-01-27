@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: ${clusterName}
 endpoint: "https://${clusterEndpointIP}:6443"
 
@@ -7,8 +8,10 @@ clusterPodNets:
 clusterSvcNets:
   - 10.245.0.0/16
 
-talosVersion: v1.6.0
-kubernetesVersion: 1.29.0
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
+talosVersion: v1.6.3
+# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
+kubernetesVersion: 1.29.1
 
 # Image URL rendered on https://factory.talos.dev
 # customization:
@@ -18,7 +21,6 @@ kubernetesVersion: 1.29.0
 #         officialExtensions:
 #             - siderolabs/i915-ucode
 #             - siderolabs/intel-ucode
-talosImageURL: factory.talos.dev/installer/22b1d04da881ef7c57edb0f24d1f3ba2c78a8e22cbe3fa9af4f42d487b2863f7
 
 cniConfig:
   name: none
@@ -148,6 +150,15 @@ nodes:
                   - rw
 
 controlPlane:
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/intel-ucode
+          - siderolabs/i915-ucode
+
   patches:
     # Disable search domain everywhere
     - &disableSearchDomainPatch |-
