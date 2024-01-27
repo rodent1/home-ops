@@ -73,7 +73,7 @@ tasks:
         vars:
           node: "{{.node}}"
     vars:
-      node: worker-1
+      node: node-4
 
   wipe-worker-2:
     desc: Trigger a wipe of Rook-Ceph data on node "worker-2"
@@ -86,7 +86,7 @@ tasks:
         vars:
           node: "{{.node}}"
     vars:
-      node: worker-2
+      node: node-5
 
   wipe-disk:
     desc: Wipe all remnants of rook-ceph from a given disk (ex. task rook:wipe-disk node=delta ceph_disk="/dev/nvme0n1")

@@ -23,6 +23,9 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: authentik
+      namespace: security
   values:
     fullnameOverride: wego
     adminUser:
