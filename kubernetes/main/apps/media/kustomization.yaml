@@ -6,17 +6,17 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  # - ./audiobookshelf/ks.yaml
-  # - ./cross-seed/ks.yaml
-  # - ./overseerr/ks.yaml
-  # - ./plex/ks.yaml
-  # - ./prowlarr/ks.yaml
-  # - ./qbittorrent/ks.yaml
-  # - ./radarr/ks.yaml
-  # - ./readarr/ks.yaml
-  # - ./recyclarr/ks.yaml
-  # - ./sonarr/ks.yaml
-  # - ./tautulli/ks.yaml
-  # - ./theme-park/ks.yaml
-  # - ./unpackerr/ks.yaml
-  # - ./xteve/ks.yaml
+  - ./audiobookshelf/ks.yaml
+  - ./cross-seed/ks.yaml
+  - ./overseerr/ks.yaml
+  - ./plex/ks.yaml
+  - ./prowlarr/ks.yaml
+  - ./qbittorrent/ks.yaml
+  - ./radarr/ks.yaml
+  - ./readarr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./sonarr/ks.yaml
+  - ./tautulli/ks.yaml
+  - ./theme-park/ks.yaml
+  - ./unpackerr/ks.yaml
+  - ./xteve/ks.yaml
