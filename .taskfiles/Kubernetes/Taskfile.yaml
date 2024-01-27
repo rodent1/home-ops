@@ -1,25 +1,8 @@
 ---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
 tasks:
-
-  kubeconfig:
-    desc: Download kubeconfig from a remote k3s master node
-    vars:
-      MASTER_USERNAME: '{{.MASTER_USERNAME | default "stianrs"}}'
-      MASTER_HOST: '{{.MASTER_HOST | default "10.1.1.40"}}'
-      KUBERNETES_API: '{{.KUBERNETES_API | default "10.1.1.254"}}'
-    cmds:
-      - rsync --verbose --progress --partial --rsync-path="rsync" {{.MASTER_USERNAME}}@{{.MASTER_HOST}}:/etc/rancher/k3s/k3s.yaml "${KUBECONFIG}"
-      - sed -i 's/127.0.0.1/{{.KUBERNETES_API}}/g' "${KUBECONFIG}"
-      - chmod go-r "${KUBECONFIG}"
-
-  schemas:
-    desc: Pull the latest CRD schemas for this cluster
-    cmds:
-      - mkdir -p {{.CLUSTER_DIR}}/schemas
-      - flux pull artifact oci://ghcr.io/rodent1/kubernetes-schemas-oci:latest \
-          --output={{.CLUSTER_DIR}}/schemas
 
   mount:
     desc: Mount a PersistentVolumeClaim to a temporary pod for a cluster
@@ -61,29 +44,9 @@ tasks:
             "restartPolicy": "Never"
           }
         }'
+    requires:
+      vars: ["cluster", "claim"]
     vars:
       ns: '{{.ns | default "default"}}'
-      claim: '{{ or .claim (fail "Argument (claim) is required") }}'
     preconditions:
-      - { msg: "Argument (cluster) is required", sh: "test -n {{.cluster}}" }
-      - { msg: "PVC not found",                  sh: "kubectl --context {{.cluster}} -n {{.ns}} get persistentvolumeclaim {{.claim}}" }
-
-  delete-failed-pods:
-    desc: Deletes pods with Failed phase
-    summary: |
-      Args:
-        cluster: Cluster to run command against (required)
-    vars:
-      cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
-    cmds:
-      - kubectl --context {{.cluster}} delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
-
-  delete-succeeded-pods:
-    desc: Deletes pods with Succeeded phase
-    summary: |
-      Args:
-        cluster: Cluster to run command against (required)
-    vars:
-      cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
-    cmds:
-      - kubectl --context {{.cluster}} delete pods --field-selector status.phase=Succeeded -A --ignore-not-found=true
+      - { msg: "PVC not found", sh: "kubectl --context {{.cluster}} -n {{.ns}} get persistentvolumeclaim {{.claim}}" }
