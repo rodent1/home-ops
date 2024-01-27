@@ -25,7 +25,7 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "c4:65:16:a5:6f:ea"
+          driver: e1000e
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
@@ -49,7 +49,7 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "c4:65:16:b4:cc:3a"
+          driver: e1000e
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
@@ -77,13 +77,7 @@ nodes:
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
-        vlans:
-          - &vlan40
-            vlanId: 40
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+
     patches:
       - |-
         machine:
@@ -104,7 +98,7 @@ nodes:
       busPath: /pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:0a.0/0000:07:00.0/ata7/host6/target6:0:0/6:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "04:d9:f5:81:cd:3e"
+          driver: r8169
         dhcp: true
     patches:
       - |-
@@ -126,7 +120,7 @@ nodes:
       busPath: /pci0000:00/0000:00:01.2/0000:12:00.1/ata1/host0/target0:0:0/0:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "2c:f0:5d:74:06:6b"
+          driver: r8169
         dhcp: true
     patches:
       - |-

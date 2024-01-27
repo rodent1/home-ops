@@ -11,6 +11,8 @@ bpf:
   masquerade: true
   tproxy: true
 
+l7Proxy: true
+
 bgpControlPlane:
   enabled: false
 
