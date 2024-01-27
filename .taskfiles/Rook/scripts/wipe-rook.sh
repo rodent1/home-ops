@@ -1,5 +1,5 @@
 #!/bin/bash
-ROOK_WORKERS="node-1 node-2 node-3 worker-1 worker-2"
+ROOK_WORKERS="node-1 node-2 node-3 node-4 node-5"
 
 for i in $ROOK_WORKERS; do
   echo "Wiping $i"
