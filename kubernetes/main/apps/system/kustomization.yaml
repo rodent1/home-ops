@@ -12,6 +12,6 @@ resources:
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
   - ./spegel/ks.yaml
-  - ./tf-controller/ks.yaml
+  # - ./tf-controller/ks.yaml
   - ./volsync/ks.yaml
 
