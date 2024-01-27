@@ -3,34 +3,19 @@
 clusterName: ${clusterName}
 endpoint: "https://${clusterEndpointIP}:6443"
 
-clusterPodNets:
-  - 10.244.0.0/16
-clusterSvcNets:
-  - 10.245.0.0/16
-
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
 talosVersion: v1.6.3
 # renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
 kubernetesVersion: 1.29.1
 
-# Image URL rendered on https://factory.talos.dev
-# customization:
-#     extraKernelArgs:
-#         - net.ifnames=0
-#     systemExtensions:
-#         officialExtensions:
-#             - siderolabs/i915-ucode
-#             - siderolabs/intel-ucode
-
 cniConfig:
   name: none
 
-additionalApiServerCertSans:
-  - ${clusterEndpointIP}
-
-additionalMachineCertSans:
+additionalApiServerCertSans: &san
   - ${clusterEndpointIP}
   - ${clusterName}.${domainName}
+  - "127.0.0.1" # KubePrism
+additionalMachineCertSans: *san
 
 nodes:
   - hostname: node-1.${domainName}

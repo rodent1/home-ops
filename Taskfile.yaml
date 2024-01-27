@@ -7,11 +7,12 @@ version: "3"
 
 env:
   SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
-  KUBECONFIG: "{{.KUBERNETES_DIR}}/kubernetes/main/kubeconfig"
+  KUBECONFIG: "{{.KUBERNETES_DIR}}/main/kubeconfig"
 
 vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
   ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
+  TALOS_DIR: "{{.ROOT_DIR}}/kubernetes/main/talos"
   TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
 
 includes:
@@ -27,6 +28,8 @@ includes:
     taskfile: .taskfiles/Postgres/Taskfile.yaml
   rook:
     taskfile: .taskfiles/Rook/Taskfile.yaml
+  talos:
+    taskfile: .taskfiles/Talos/Taskfile.yaml
   volsync:
     taskfile: .taskfiles/VolSync/Taskfile.yaml
 
