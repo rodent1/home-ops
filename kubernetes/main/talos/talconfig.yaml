@@ -73,10 +73,17 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "c4:65:16:a7:ef:4a"
+          driver: e1000e
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
+        vlans:
+          - &vlan40
+            vlanId: 40
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
     patches:
       - |-
         machine:
