@@ -62,7 +62,7 @@ spec:
           frontend:
             image:
               repository: vikunja/frontend
-              tag: 0.22.0@sha256:492122065219c69c6c73233c9e1047882a9c3c965e51e0a4609e1d2d1a85b6b8
+              tag: 0.22.1@sha256:6342414b764aca75742111440684a48c9174329979f7dd3c30d723726d3766e3
             resources:
               requests:
                 cpu: 10m
