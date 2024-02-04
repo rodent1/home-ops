@@ -230,7 +230,7 @@ controlPlane:
             allowedRoles:
               - os:admin
             allowedKubernetesNamespaces:
-              - kube-system
+              - system-controllers
 
 
 worker:
