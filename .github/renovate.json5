@@ -13,12 +13,7 @@
     "github>rodent1/home-ops//.github/renovate/groups.json5",
     "github>rodent1/home-ops//.github/renovate/packageRules.json5"
   ],
-
-  "ignorePaths": [
-    "**/*.sops.*",
-    "**/.archive/**",
-    "**/resources/**"
-  ],
+  "ignorePaths": ["**/*.sops.*", "**/.archive/**"],
   "flux": {
     "fileMatch": [
       "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
@@ -32,7 +27,6 @@
   "kubernetes": {
     "fileMatch": [
       "(^|/)\\.taskfiles/.+\\.ya?ml(\\.j2)?$",
-      "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
       "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
     ]
   }
