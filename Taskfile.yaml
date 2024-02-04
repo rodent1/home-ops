@@ -3,33 +3,23 @@
 version: "3"
 
 # TODO: Clean up `--context` usage
-# https://github.com/go-task/task/issues/1038
-
-env:
-  KUBECONFIG: "{{.KUBECONFIG_FILE}}"
-  SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
+# Ref: https://github.com/go-task/task/issues/1038
 
 vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
   TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
 
+env:
+  KUBECONFIG: "{{.KUBERNETES_DIR}}/kubernetes/main/kubeconfig:{{.KUBERNETES_DIR}}/kubernetes/storage/kubeconfigs"
+  SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
+
 includes:
-  brew:
-    taskfile: .taskfiles/Brew/Taskfile.yaml
-  external-secrets:
-    taskfile: .taskfiles/ExternalSecrets/Taskfile.yaml
-  flux:
-    taskfile: .taskfiles/Flux/Taskfile.yaml
-  kubernetes:
-    taskfile: .taskfiles/Kubernetes/Taskfile.yaml
-  postgres:
-    taskfile: .taskfiles/Postgres/Taskfile.yaml
-  rook:
-    taskfile: .taskfiles/Rook/Taskfile.yaml
-  talos:
-    taskfile: .taskfiles/Talos/Taskfile.yaml
-  volsync:
-    taskfile: .taskfiles/VolSync/Taskfile.yaml
+  external-secrets: .taskfiles/ExternalSecrets/Taskfile.yaml
+  flux: .taskfiles/Flux/Taskfile.yaml
+  kubernetes: .taskfiles/Kubernetes/Taskfile.yaml
+  rook: .taskfiles/Rook/Taskfile.yaml
+  talos: .taskfiles/Talos/Taskfile.yaml
+  volsync: .taskfiles/VolSync/Taskfile.yaml
 
 tasks:
 
