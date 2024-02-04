@@ -6,13 +6,11 @@ version: "3"
 # https://github.com/go-task/task/issues/1038
 
 env:
+  KUBECONFIG: "{{.KUBECONFIG_FILE}}"
   SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
-  KUBECONFIG: "{{.KUBERNETES_DIR}}/main/kubeconfig"
 
 vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
-  ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
-  TALOS_DIR: "{{.ROOT_DIR}}/kubernetes/main/talos"
   TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
 
 includes:
