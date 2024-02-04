@@ -34,7 +34,7 @@ tasks:
   apply:
     desc: Apply talos config on a node
     dir: "{{.TALOS_DIR}}"
-    cmd: talhelper gencommand apply --extra-flags=--insecure | bash
+    cmd: talhelper gencommand apply | bash
     preconditions:
       - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
 
