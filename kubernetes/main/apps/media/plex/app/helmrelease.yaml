@@ -59,9 +59,10 @@ spec:
               requests:
                 gpu.intel.com/i915: 1
                 cpu: 100m
+                memory: 2Gi
               limits:
                 gpu.intel.com/i915: 1
-                memory: 5Gi
+                memory: 10Gi
         pod:
           securityContext:
             runAsUser: 568
