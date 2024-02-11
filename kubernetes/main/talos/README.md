@@ -3,29 +3,21 @@
 ## Talos
 
 ### Create Talos Secrets
+```
+task talos:gensecret
 
 ```
-talhelper gensecret > talsecret.sops.yaml
-sops -e -i talsecret.sops.yaml
-talhelper genconfig
-export TALOSCONFIG=~/home-ops/kubernetes/main/talos/clusterconfig/talosconfig
+### Create Talos Config
 ```
+task talos:genconfig
 
 ```
-./apply-clusterconfig.sh
+### Apply Talos configuration
+```
+task talos:apply
 
 ```
-
 ### Bootstrap
-
-```
-talosctl -n 10.1.1.31 bootstrap
-talosctl -n 10.1.1.31 kubeconfig -f
-kubectl get no -o wide
-```
-
-### Post Talos Setup
-
 ```
 task talos:bootstrap cluster=main controller=10.1.1.31
 

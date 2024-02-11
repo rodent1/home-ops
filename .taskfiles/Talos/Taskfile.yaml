@@ -12,6 +12,16 @@ env:
 
 tasks:
 
+  gensecret:
+    desc: Generate Talos secret
+    prompt: This will overwrite the existing secret... continue?
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
+      - sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
+    preconditions:
+      - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
+
   genconfig:
     desc: Generate talos config
     dir: "{{.TALOS_DIR}}"
