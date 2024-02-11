@@ -12,18 +12,6 @@ env:
 
 tasks:
 
-  gensecret:
-    desc: Generate talos secret
-    prompt: This will overwrite the existing secret... continue?
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
-      - task: :sops:.encrypt-file
-        vars:
-          file: "{{.TALHELPER_SECRET_FILE}}"
-    preconditions:
-      - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
-
   genconfig:
     desc: Generate talos config
     dir: "{{.TALOS_DIR}}"
@@ -45,30 +33,26 @@ tasks:
     preconditions:
       - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
 
-  kubeconfig:
-    desc: Generate talos kubeconfig
-    prompt: This will overwrite the existing kubeconfig... continue?
-    dir: "{{.TALOS_DIR}}"
-    cmd: talosctl --nodes {{.node}} kubeconfig {{.ROOT_DIR}} --force
+  fetch-kubeconfig:
+    desc: Fetch kubeconfig from Talos controllers
+    cmd: |
+      talosctl --context {{.cluster}} kubeconfig --nodes {{.controller}} \
+          --force --force-context-name {{.cluster}} {{.KUBERNETES_DIR}}/{{.cluster}}
     requires:
-      vars: ["node"]
+      vars: ["cluster"]
 
   upgrade-talos:
-    desc: Upgrade talos on a node
-    cmd: talosctl --nodes {{.node}} upgrade --image {{.image}} --preserve=true --reboot-mode=default
+    desc: Upgrade Talos on a node
+    cmd: talosctl --context {{.cluster}} --nodes {{.node}} upgrade --image {{.image}} --preserve=true
     requires:
       vars: ["node", "image"]
     preconditions:
-      - { msg: "Node not found", sh: "talosctl --nodes {{.node}} get machineconfig" }
+      - talosctl --nodes {{.node}} get machineconfig
 
   upgrade-k8s:
     desc: Upgrade k8s on a node
-    cmd: talosctl --nodes {{.node}} upgrade-k8s --to {{.to}}
+    cmd: talosctl --context {{.cluster}} --nodes {{.node}} upgrade-k8s --to {{.to}}
     requires:
       vars: ["node", "to"]
     preconditions:
-      - { msg: "Node not found", sh: "talosctl --nodes {{.node}} get machineconfig" }
-
-  .reset:
-    internal: true
-    cmd: rm -rf {{.TALOS_DIR}}
+      - talosctl --nodes {{.node}} get machineconfig
