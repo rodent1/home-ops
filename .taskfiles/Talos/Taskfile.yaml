@@ -27,19 +27,53 @@ tasks:
       - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
 
   bootstrap:
-    desc: Bootstrap the talos cluster
-    dir: "{{.TALOS_DIR}}"
-    cmd: talhelper gencommand bootstrap | bash
-    preconditions:
-      - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
+    desc: Bootstrap Talos
+    cmds:
+      - task: bootstrap-etcd
+        vars:
+          cluster: "{{.cluster}}"
+          controller: "{{.controller}}"
+      - task: fetch-kubeconfig
+        vars:
+          cluster: "{{.cluster}}"
+      - task: bootstrap-helm
+        vars:
+          cluster: "{{.cluster}}"
+    requires:
+      vars: ["cluster", "controller"]
+
+  bootstrap-etcd:
+    desc: Bootstrap Etcd
+    cmd: talosctl --context {{.cluster}} --node {{.controller}} bootstrap
+    requires:
+      vars: ["cluster", "controller"]
 
   fetch-kubeconfig:
     desc: Fetch kubeconfig from Talos controllers
     cmd: |
-      talosctl --context {{.cluster}} kubeconfig --nodes {{.controller}} \
+      talosctl --context {{.cluster}} kubeconfig \
           --force --force-context-name {{.cluster}} {{.KUBERNETES_DIR}}/{{.cluster}}
     requires:
       vars: ["cluster"]
+
+  bootstrap-helm:
+    desc: Bootstrap Helm apps
+    cmds:
+      - for: ["cilium", "kubelet-csr-approver"]
+        task: bootstrap-helm-app
+        vars:
+          app: '{{.ITEM}}'
+    requires:
+      vars: ["cluster"]
+
+  bootstrap-helm-app:
+    internal: true
+    dir: "{{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/helm/{{.app}}"
+    cmds:
+      - kubectl kustomize --enable-helm . | kubectl --context {{.cluster}} apply --server-side --filename -
+      - defer: rm -rf ./charts
+    requires:
+      vars: ["app"]
 
   upgrade-talos:
     desc: Upgrade Talos on a node
