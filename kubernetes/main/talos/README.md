@@ -27,5 +27,6 @@ kubectl get no -o wide
 ### Post Talos Setup
 
 ```
-./deploy-integrations.sh
+task talos:bootstrap cluster=main controller=10.1.1.31
+
 ```
