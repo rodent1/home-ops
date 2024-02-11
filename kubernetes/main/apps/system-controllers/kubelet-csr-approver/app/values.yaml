@@ -1,5 +1,6 @@
 ---
-providerRegex: |
-  ^(node-1|node-2|node-3)$
-
-bypassDnsResolution: true
+providerRegex: ^(node-1|node-2|node-3|node-4|node-5)$
+metrics:
+  enable: true
+  serviceMonitor:
+    enabled: true
