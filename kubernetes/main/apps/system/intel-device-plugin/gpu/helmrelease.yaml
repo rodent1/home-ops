@@ -27,6 +27,6 @@ spec:
     - name: intel-device-plugin-operator
       namespace: system
   values:
-    name: intel-device-plugin-gpu
+    name: intel-gpu-plugin
     sharedDevNum: 3
-    nodeFeatureRule: true
+    nodeFeatureRule: false
