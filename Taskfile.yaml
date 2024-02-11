@@ -7,10 +7,9 @@ version: "3"
 
 vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
-  TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
 
 env:
-  KUBECONFIG: "{{.KUBERNETES_DIR}}/kubernetes/main/kubeconfig:{{.KUBERNETES_DIR}}/kubernetes/storage/kubeconfigs"
+  KUBECONFIG: "{{.KUBERNETES_DIR}}/kubernetes/main/kubeconfig:{{.KUBERNETES_DIR}}/kubernetes/storage/kubeconfig"
   SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
 
 includes:
