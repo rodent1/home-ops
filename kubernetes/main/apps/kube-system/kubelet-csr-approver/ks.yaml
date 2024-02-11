@@ -6,12 +6,12 @@ metadata:
   name: &app kubelet-csr-approver
   namespace: flux-system
 spec:
-  targetNamespace: system-controllers
+  targetNamespace: kube-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/system-controllers/kubelet-csr-approver/app
-  prune: true
+  path: ./kubernetes/main/apps/kube-system/kubelet-csr-approver/app
+  prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
