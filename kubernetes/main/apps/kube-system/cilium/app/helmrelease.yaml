@@ -5,39 +5,69 @@ kind: HelmRelease
 metadata:
   name: cilium
 spec:
+  interval: 30m
   chart:
     spec:
       chart: cilium
-      interval: 30m
+      version: 1.15.0
       sourceRef:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
-      version: 1.15.0
-  interval: 30m
-
-  valuesFrom:
-    - kind: ConfigMap
-      name: cilium-values
-
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    autoDirectNodeRoutes: true
+    bandwidthManager:
+      enabled: true
+      bbr: true
+    bpf:
+      masquerade: true
+    cgroup:
+      automount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
+    cluster:
+      id: 1
+      name: main
+    containerRuntime:
+      integration: containerd
+    enableRuntimeDeviceDetection: true
+    endpointRoutes:
+      enabled: true
     hubble:
-      serviceMonitor:
-        enabled: true
-
-      dashboards:
-        enabled: true
-        label: grafana_dashboard
-        namespace: monitoring
-        labelValue: "1"
-        annotations: {}
-
+      enabled: true
+      metrics:
+        enabled:
+          - dns:query
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+        serviceMonitor:
+          enabled: true
+        dashboards:
+          enabled: true
+          annotations:
+            grafana_folder: Cilium
       relay:
+        enabled: true
+        rollOutPods: true
         prometheus:
           serviceMonitor:
             enabled: true
-
       ui:
+        enabled: true
+        rollOutPods: true
         ingress:
           enabled: true
           className: internal
@@ -46,12 +76,55 @@ spec:
           tls:
             - hosts:
                 - *host
-
-    prometheus:
-      serviceMonitor:
-        enabled: true
-
+    ipam:
+      mode: kubernetes
+    ipv4NativeRoutingCIDR: 10.244.0.0/16
+    k8sServiceHost: 127.0.0.1
+    k8sServicePort: 7445
+    kubeProxyReplacement: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    l2announcements:
+      enabled: true
+    loadBalancer:
+      algorithm: maglev
+      mode: dsr
+    localRedirectPolicy: true
     operator:
+      rollOutPods: true
       prometheus:
+        enabled: true
         serviceMonitor:
           enabled: true
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: Cilium
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: Cilium
+    rollOutCiliumPods: true
+    routingMode: native
+    securityContext:
+      capabilities:
+        ciliumAgent:
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUID
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE

@@ -14,7 +14,18 @@ spec:
         kind: HelmRepository
         name: postfinance
         namespace: flux-system
-      interval: 30m
-  valuesFrom:
-    - kind: ConfigMap
-      name: kubelet-csr-approver-values
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    providerRegex: ^node-\d$
+    metrics:
+      enable: true
+      serviceMonitor:
+        enabled: true

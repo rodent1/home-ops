@@ -5,10 +5,3 @@ kind: Kustomization
 resources:
   - ./cilium-l2.yaml
   - ./helmrelease.yaml
-configMapGenerator:
-  - name: cilium-values
-    files:
-      - values.yaml=./values.yaml
-
-configurations:
-  - kustomizeconfig.yaml
