@@ -2,39 +2,7 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-vars:
-  TALOS_DIR: "{{.KUBERNETES_DIR}}/main/talos"
-  TALHELPER_SECRET_FILE: "{{.TALOS_DIR}}/talsecret.sops.yaml"
-  TALHELPER_CONFIG_FILE: "{{.TALOS_DIR}}/talconfig.yaml"
-
-env:
-  TALOSCONFIG: "{{.TALOS_DIR}}/clusterconfig/talosconfig"
-
 tasks:
-
-  gensecret:
-    desc: Generate Talos secret
-    prompt: This will overwrite the existing secret... continue?
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
-      - sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
-    preconditions:
-      - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
-
-  genconfig:
-    desc: Generate talos config
-    dir: "{{.TALOS_DIR}}"
-    cmd: talhelper genconfig
-    preconditions:
-      - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
-
-  apply:
-    desc: Apply talos config on a node
-    dir: "{{.TALOS_DIR}}"
-    cmd: talhelper gencommand apply | bash
-    preconditions:
-      - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
 
   bootstrap:
     desc: Bootstrap Talos
@@ -54,14 +22,16 @@ tasks:
 
   bootstrap-etcd:
     desc: Bootstrap Etcd
-    cmd: talosctl --context {{.cluster}} --node {{.controller}} bootstrap
+    cmds:
+      - talosctl --context {{.cluster}} --nodes {{.controller}} bootstrap
+      - talosctl --context {{.cluster}} --nodes {{.controller}} health --server=false
     requires:
       vars: ["cluster", "controller"]
 
   fetch-kubeconfig:
     desc: Fetch kubeconfig from Talos controllers
     cmd: |
-      talosctl --context {{.cluster}} kubeconfig \
+      talosctl --context {{.cluster}} kubeconfig --nodes {{.controller}} \
           --force --force-context-name {{.cluster}} {{.KUBERNETES_DIR}}/{{.cluster}}
     requires:
       vars: ["cluster"]
@@ -70,13 +40,13 @@ tasks:
     desc: Bootstrap Helm apps
     cmds:
       - for: ["cilium", "kubelet-csr-approver"]
-        task: bootstrap-helm-app
+        task: .bootstrap-helm-app
         vars:
           app: '{{.ITEM}}'
     requires:
       vars: ["cluster"]
 
-  bootstrap-helm-app:
+  .bootstrap-helm-app:
     internal: true
     dir: "{{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/helm/{{.app}}"
     cmds:

@@ -18,16 +18,16 @@ tasks:
     prompt: Reset rook-ceph on '{{.cluster}}' cluster... continue?
     cmds:
       - for: { var: nodes }
+        task: .reset-data
+        vars:
+          cluster: '{{.cluster}}'
+          node: '{{.ITEM}}'
+      - for: { var: nodes }
         task: .reset-disk
         vars:
           cluster: '{{.cluster}}'
           node: '{{.ITEM}}'
           disk: '{{.disk}}'
-      - for: { var: nodes }
-        task: .reset-data
-        vars:
-          cluster: '{{.cluster}}'
-          node: '{{.ITEM}}'
     vars:
       cluster: main
       disk: /dev/nvme0n1
@@ -75,12 +75,3 @@ tasks:
     preconditions:
       - test -f {{.ROOK_SCRIPTS_DIR}}/wait-for-job.sh
       - test -f {{.ROOK_TEMPLATES_DIR}}/WipeDataJob.tmpl.yaml
-
-  toolbox:
-    desc: Exec into the rook-ceph toolbox
-    interactive: true
-    cmd: kubectl -n rook-ceph exec -it $(kubectl -n rook-ceph get pod -l "app=rook-ceph-tools" -o jsonpath='{.items[0].metadata.name}') -- bash
-
-  password:
-    desc: Retrieve the rook-ceph password
-    cmd: kubectl -n rook-ceph get secret rook-ceph-dashboard-password -o jsonpath="{['data']['password']}" | base64 --decode | pbcopy && echo "Copied to clipboard"
