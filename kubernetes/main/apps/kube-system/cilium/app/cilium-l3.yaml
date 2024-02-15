@@ -25,4 +25,4 @@ metadata:
   name: l3-pool
 spec:
   cidrs:
-    - cidr: 10.1.2.0/24
+    - cidr: 10.1.1.0/24
