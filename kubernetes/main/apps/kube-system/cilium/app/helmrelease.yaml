@@ -24,13 +24,13 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    bgp:
-      enabled: false
-      announce:
-        loadbalancerIP: true
-        podCIDR: false
-    bgpControlPlane:
-      enabled: true
+    # bgp:
+    #   enabled: false
+    #   announce:
+    #     loadbalancerIP: true
+    #     podCIDR: false
+    # bgpControlPlane:
+    #   enabled: true
     autoDirectNodeRoutes: true
     bandwidthManager:
       enabled: true
@@ -91,7 +91,7 @@ spec:
     kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     l2announcements:
-      enabled: false
+      enabled: true
     loadBalancer:
       algorithm: maglev
       mode: dsr
