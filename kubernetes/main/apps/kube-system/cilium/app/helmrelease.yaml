@@ -24,15 +24,15 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # bgp:
-    #   enabled: false
-    #   announce:
-    #     loadbalancerIP: true
-    #     podCIDR: false
-    # bgpControlPlane:
-    #   enabled: true
-    l2announcements:
+    bgp:
+      enabled: false
+      announce:
+        loadbalancerIP: true
+        podCIDR: false
+    bgpControlPlane:
       enabled: true
+    # l2announcements:
+    #   enabled: true
     autoDirectNodeRoutes: true
     bandwidthManager:
       enabled: true
