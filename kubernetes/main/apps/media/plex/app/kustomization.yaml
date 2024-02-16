@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   # App
   - ./helmrelease.yaml
+  - ./pvc.yaml
   # Templates
   - ../../../../templates/gatus/external
   - ../../../../templates/volsync
