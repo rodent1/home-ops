@@ -41,22 +41,22 @@ spec:
         compress-type: lz4
         compress-level: "9"
         delta: "y"
-        repo1-bundle: "y"
-        repo1-block: "y"
-        repo1-path: /pgdata/crunchy-pgo/repo1
-        repo1-s3-uri-style: path
-        repo1-retention-full-type: time
-        repo1-retention-full: "14"
-        repo1-retention-diff: "30"
-        repo1-storage-verify-tls: "n"
-        repo1-storage-port: "9000"
+        # repo1-bundle: "y"
+        # repo1-block: "y"
+        # repo1-path: /pgdata/crunchy-pgo/repo1
+        # repo1-s3-uri-style: path
+        # repo1-retention-full-type: time
+        # repo1-retention-full: "14"
+        # repo1-retention-diff: "30"
         repo2-bundle: "y"
         repo2-block: "y"
         repo2-path: /pgdata/crunchy-pgo/repo2
         repo2-s3-uri-style: path
         repo2-retention-full-type: time
-        repo2-retention-full: "2"
-        repo2-retention-diff: "7"
+        repo2-retention-full: "14"
+        repo2-retention-diff: "30"
+        # repo2-retention-full: "2"
+        # repo2-retention-diff: "7"
       manual:
         repoName: repo1
         options: ["--type=full"]
@@ -64,16 +64,16 @@ spec:
         labels:
           app.kubernetes.io/name: crunchy-postgres-backup
       repos:
-        - # Minio
-          name: repo1
-          s3: &minio
-            bucket: crunchy-pgo
-            endpoint: 10.1.1.15
-            region: us-east-1
-          schedules:
-            full: "0 1 * * 0"           # Sunday at 1am
-            differential: "0 1 * * 1-6" # Mon-Sat at 1am
-            incremental: "0 2-23 * * *" # Every hour except 1am
+        # - # Minio
+        #   name: repo1
+        #   s3: &minio
+        #     bucket: crunchy-pgo
+        #     endpoint: s3.${SECRET_DOMAIN}
+        #     region: us-east-1
+        #   schedules:
+        #     full: "0 1 * * 0"           # Sunday at 1am
+        #     differential: "0 1 * * 1-6" # Mon-Sat at 1am
+        #     incremental: "0 2-23 * * *" # Every hour except 1am
         - # Cloudflare R2
           name: repo2
           s3: &r2
@@ -81,8 +81,12 @@ spec:
             endpoint: ${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
             region: us-east-1
           schedules:
-            full: "0 2 * * 0"           # Sunday at 2am
-            differential: "0 2 * * 1-6" # Mon-Sat at 2am
+            full: "0 1 * * 0"           # Sunday at 1am
+            differential: "0 1 * * 1-6" # Mon-Sat at 1am
+            incremental: "0 2-23 * * *" # Every hour except 1am
+          # schedules:
+          #   full: "0 2 * * 0"           # Sunday at 2am
+          #   differential: "0 2 * * 1-6" # Mon-Sat at 2am
   # dataSource:
   #   pgbackrest:
   #     stanza: db
