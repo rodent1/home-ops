@@ -49,6 +49,7 @@ spec:
         repo1-retention-full: "14"
         repo1-retention-diff: "30"
         repo1-storage-verify-tls: "n"
+        repo1-storage-port: "9000"
         repo2-bundle: "y"
         repo2-block: "y"
         repo2-path: /pgdata/crunchy-pgo/repo2
@@ -67,7 +68,7 @@ spec:
           name: repo1
           s3: &minio
             bucket: crunchy-pgo
-            endpoint: 10.1.1.15:9000
+            endpoint: 10.1.1.15
             region: us-east-1
           schedules:
             full: "0 1 * * 0"           # Sunday at 1am
