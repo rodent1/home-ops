@@ -4,7 +4,7 @@ kind: Plan
 metadata:
   name: kubernetes
 spec:
-  # renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
   version: 1.29.1
   serviceAccountName: system-upgrade
   secrets:
