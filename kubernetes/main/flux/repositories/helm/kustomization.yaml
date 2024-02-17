@@ -12,6 +12,7 @@ resources:
   - ./cloudnative-pg.yaml
   - ./coder.yaml
   - ./coredns.yaml
+  - ./crunchydata.yaml
   - ./csi-driver-nfs.yaml
   - ./democratic-csi.yaml
   - ./descheduler.yaml
@@ -25,6 +26,7 @@ resources:
   - ./kyverno.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
+  - ./openebs.yaml
   - ./piraeus.yaml
   - ./postfinance.yaml
   - ./prometheus-community.yaml
