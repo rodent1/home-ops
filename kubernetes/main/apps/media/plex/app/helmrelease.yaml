@@ -76,6 +76,8 @@ spec:
     service:
       main:
         type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam: "test-pool"
         ports:
           http:
             port: 32400

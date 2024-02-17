@@ -19,13 +19,13 @@ spec:
     - cidr: 10.1.2.0/24
   serviceSelector:
     matchLabels:
-      "io.cilium/lb-ipam": "test"
+      "io.cilium/lb-ipam": "test-pool"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumloadbalancerippool_v2alpha1.json
 apiVersion: cilium.io/v2alpha1
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: core-pool
+  name: networking-pool
 spec:
   allowFirstLastIPs: "Yes"
   blocks:
@@ -33,4 +33,4 @@ spec:
       stop: 10.1.1.160
   serviceSelector:
     matchLabels:
-      "io.cilium/lb-ipam": "core-system"
+      "io.kubernetes.service.namespace": "networking"
