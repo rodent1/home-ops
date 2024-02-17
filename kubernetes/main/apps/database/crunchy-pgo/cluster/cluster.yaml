@@ -66,7 +66,7 @@ spec:
           name: repo1
           s3: &minio
             bucket: crunchy-pgo
-            endpoint: s3.${SECRET_DOMAIN}
+            endpoint: 10.1.1.15:9000
             region: us-east-1
           schedules:
             full: "0 1 * * 0"           # Sunday at 1am
