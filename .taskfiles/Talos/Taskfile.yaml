@@ -2,58 +2,53 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+  TALOS_VERSION: v1.6.4
+  TALOS_SCHEMATIC_ID: d715f723f882b1e1e8063f1b89f237dcc0e3bd000f9f970243af59c8baae0100
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+  KUBERNETES_VERSION: v1.29.2
+
 tasks:
 
   bootstrap:
     desc: Bootstrap Talos
+    summary: |
+      Args:
+        cluster: Cluster to run command against (required)
+        controller: Controller node to run command against (required)
+    prompt: Bootstrap Talos on the '{{.cluster}}' cluster... continue?
     cmds:
       - task: bootstrap-etcd
-        vars:
+        vars: &vars
           cluster: "{{.cluster}}"
           controller: "{{.controller}}"
       - task: fetch-kubeconfig
-        vars:
-          cluster: "{{.cluster}}"
-      - task: bootstrap-helm
-        vars:
-          cluster: "{{.cluster}}"
+        vars: *vars
+      - task: bootstrap-apps
+        vars: *vars
     requires:
       vars: ["cluster", "controller"]
 
   bootstrap-etcd:
     desc: Bootstrap Etcd
-    cmds:
-      - talosctl --context {{.cluster}} --nodes {{.controller}} bootstrap
-      - talosctl --context {{.cluster}} --nodes {{.controller}} health --server=false
+    cmd: until talosctl --context {{.cluster}} --nodes {{.controller}} bootstrap; do sleep 10; done
     requires:
       vars: ["cluster", "controller"]
+    preconditions:
+      - talosctl config get-contexts | grep {{.cluster}}
 
-  fetch-kubeconfig:
-    desc: Fetch kubeconfig from Talos controllers
-    cmd: |
-      talosctl --context {{.cluster}} kubeconfig --nodes {{.controller}} \
-          --force --force-context-name {{.cluster}} {{.KUBERNETES_DIR}}/{{.cluster}}
+  bootstrap-apps:
+    desc: Bootstrap core apps needed for Talos
+    cmds:
+      - until kubectl --context {{.cluster}} wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
+      - helmfile --kube-context {{.cluster}} --file {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/apps/helmfile.yaml apply
+      - until kubectl --context {{.cluster}} wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
     requires:
       vars: ["cluster"]
-
-  bootstrap-helm:
-    desc: Bootstrap Helm apps
-    cmds:
-      - for: ["cilium", "kubelet-csr-approver"]
-        task: .bootstrap-helm-app
-        vars:
-          app: '{{.ITEM}}'
-    requires:
-      vars: ["cluster"]
-
-  .bootstrap-helm-app:
-    internal: true
-    dir: "{{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/helm/{{.app}}"
-    cmds:
-      - kubectl kustomize --enable-helm . | kubectl --context {{.cluster}} apply --server-side --filename -
-      - defer: rm -rf ./charts
-    requires:
-      vars: ["app"]
+    preconditions:
+      - kubectl config get-contexts {{.cluster}}
+      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/apps/helmfile.yaml
 
   upgrade-talos:
     desc: Upgrade Talos on a node
@@ -61,6 +56,7 @@ tasks:
     requires:
       vars: ["node", "image"]
     preconditions:
+      - talosctl config get-contexts | grep {{.cluster}}
       - talosctl --nodes {{.node}} get machineconfig
 
   upgrade-k8s:
@@ -69,4 +65,15 @@ tasks:
     requires:
       vars: ["node", "to"]
     preconditions:
+      - talosctl config get-contexts | grep {{.cluster}}
       - talosctl --nodes {{.node}} get machineconfig
+
+  fetch-kubeconfig:
+    desc: Fetch kubeconfig from Talos controllers
+    cmd: |
+      talosctl --context {{.cluster}} kubeconfig --nodes {{.controller}} \
+          --force --force-context-name {{.cluster}} {{.KUBERNETES_DIR}}/{{.cluster}}
+    requires:
+      vars: ["cluster"]
+    preconditions:
+      - talosctl config get-contexts | grep {{.cluster}}
