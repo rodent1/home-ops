@@ -37,7 +37,7 @@ spec:
           main:
             image:
               repository: docker.io/timberio/vector
-              tag: 0.36.0-debian@sha256:3034a2226b64bc828299aed748473fdb1c0b77caa04c0f43fd27de8704f2a836
+              tag: 0.36.0-alpine@sha256:d481b891ca5b36e2ae2a66917cc252ba8aaf30a7904f84b4c7d74206bd3de2e9
             env:
               PROCFS_ROOT: /host/proc
               SYSFS_ROOT: /host/sys
@@ -78,20 +78,6 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /vector-data-dir
-      var-log:
-        type: hostPath
-        hostPath: /var/log
-        hostPathType: Directory
-        globalMounts:
-          - path: /var/log
-            readOnly: true
-      var-lib:
-        type: hostPath
-        hostPath: /var/lib
-        hostPathType: Directory
-        globalMounts:
-          - path: /var/lib
-            readOnly: true
       procfs:
         type: hostPath
         hostPath: /proc
@@ -106,3 +92,15 @@ spec:
         globalMounts:
           - path: /host/sys
             readOnly: true
+      var-lib:
+        type: hostPath
+        hostPath: /var/lib
+        hostPathType: Directory
+        globalMounts:
+          - readOnly: true
+      var-log:
+        type: hostPath
+        hostPath: /var/log
+        hostPathType: Directory
+        globalMounts:
+          - readOnly: true

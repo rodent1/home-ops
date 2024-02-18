@@ -6,13 +6,13 @@ metadata:
   name: &app network-ups-tools
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
+  targetNamespace: observability
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/monitoring/network-ups-tools/app
+  path: ./kubernetes/main/apps/observability/network-ups-tools/app
   prune: true
   sourceRef:
     kind: GitRepository

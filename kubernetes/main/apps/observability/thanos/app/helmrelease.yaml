@@ -6,6 +6,7 @@ metadata:
   name: thanos
 spec:
   interval: 30m
+  timeout: 15m
   chart:
     spec:
       chart: thanos
@@ -14,123 +15,130 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
-      interval: 30m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: openebs
+      namespace: openebs-system
+    - name: redis
+      namespace: database
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  valuesFrom:
+    - targetPath: objstoreConfig.config.bucket
+      kind: ConfigMap
+      name: thanos-bucket-v2
+      valuesKey: BUCKET_NAME
+    - targetPath: objstoreConfig.config.endpoint
+      kind: ConfigMap
+      name: thanos-bucket-v2
+      valuesKey: BUCKET_HOST
+    - targetPath: objstoreConfig.config.region
+      kind: ConfigMap
+      name: thanos-bucket-v2
+      valuesKey: BUCKET_REGION
+    - targetPath: objstoreConfig.config.access_key
+      kind: Secret
+      name: thanos-bucket-v2
+      valuesKey: AWS_ACCESS_KEY_ID
+    - targetPath: objstoreConfig.config.secret_key
+      kind: Secret
+      name: thanos-bucket-v2
+      valuesKey: AWS_SECRET_ACCESS_KEY
   values:
+    image:
+      registry: quay.io
+      repository: thanos/thanos
+      tag: v0.34.0
     objstoreConfig:
       type: s3
       config:
         insecure: true
-
-    query:
-      enabled: true
-      dnsDiscovery:
-        sidecarsService: kube-prometheus-stack-thanos-discovery
-        sidecarsNamespace: monitoring
-      replicaLabels:
-        - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
-      resources:
-        requests:
-          cpu: 15m
-          memory: 64M
-        # limits:
-        #   memory: 99M
-
+    receive:
+      enabled: false
+      networkPolicy:
+        enabled: false
     queryFrontend:
       enabled: true
+      replicaCount: 2
       ingress:
         enabled: true
-        hostname: thanos.${SECRET_DOMAIN}
         ingressClassName: internal
+        hostname: &host thanos-query-frontend.${SECRET_DOMAIN}
         tls: true
-
+        extraTls:
+          - hosts:
+              - *host
+      networkPolicy:
+        enabled: false
+    query:
+      enabled: true
+      replicaCount: 2
+      replicaLabel: ["__replica__"]
+      dnsDiscovery:
+        sidecarsService: kube-prometheus-stack-thanos-discovery
+        sidecarsNamespace: observability
+      networkPolicy:
+        enabled: false
     bucketweb:
       enabled: true
-      resources:
-        requests:
-          cpu: 15m
-          memory: 64M
-        # limits:
-        #   memory: 64M
-
+      replicaCount: 2
+      networkPolicy:
+        enabled: false
     compactor:
       enabled: true
       extraFlags:
-        - "--compact.concurrency=4"
+        - --compact.concurrency=4
         - --delete-delay=30m
-      retentionResolutionRaw: 30d
-      retentionResolution5m: 60d
-      retentionResolution1h: 90d
-      resources:
-        requests:
-          cpu: 15m
-          memory: 204M
-        # limits:
-        #   memory: 270M
+      retentionResolutionRaw: 14d
+      retentionResolution5m: 30d
+      retentionResolution1h: 60d
       persistence:
         enabled: true
-        storageClass: "local-hostpath"
-        size: 15Gi
-
+        storageClass: openebs-hostpath
+        size: 10Gi
+      networkPolicy:
+        enabled: false
     storegateway:
       enabled: true
-      resources:
-        requests:
-          cpu: 23m
-          memory: 204M
-        # limits:
-        #   memory: 226M
+      replicaCount: 2
       persistence:
         enabled: true
-        storageClass: "local-hostpath"
-        size: 1Gi
-
+        storageClass: openebs-hostpath
+        size: 10Gi
+      networkPolicy:
+        enabled: false
     ruler:
       enabled: true
-      alertmanagers:
-        - http://alertmanager-operated.monitoring.svc.cluster.local:9093
-      clusterName: main # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.externalLabels.cluster`
+      replicaCount: 2
+      replicaLabel: __replica__
+      alertmanagers: ["http://alertmanager-operated.observability.svc.cluster.local:9093"]
+      extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
       config: |-
         groups:
-          - name: "PrometheusWatcher"
+          - name: PrometheusWatcher
             rules:
-              - alert: "PrometheusDown"
+              - alert: PrometheusDown
+                annotations:
+                  summary: A Prometheus has disappeared from Prometheus target discovery
                 expr: absent(up{job="kube-prometheus-stack-prometheus"})
-      dnsDiscovery:
-        enabled: true
+                for: 5m
+                labels:
+                  severity: critical
       persistence:
         enabled: true
-        storageClass: "local-hostpath"
-        size: 512Mi
-      resources:
-        requests:
-          cpu: 23m
-          memory: 128M
-        limits:
-          memory: 256M
-
+        storageClass: openebs-hostpath
+        size: 10Gi
+      networkPolicy:
+        enabled: false
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
-
-  valuesFrom:
-    - targetPath: objstoreConfig.config.bucket
-      kind: ConfigMap
-      name: thanos-bucket
-      valuesKey: BUCKET_NAME
-    - targetPath: objstoreConfig.config.endpoint
-      kind: ConfigMap
-      name: thanos-bucket
-      valuesKey: BUCKET_HOST
-    - targetPath: objstoreConfig.config.region
-      kind: ConfigMap
-      name: thanos-bucket
-      valuesKey: BUCKET_REGION
-    - targetPath: objstoreConfig.config.access_key
-      kind: Secret
-      name: thanos-bucket
-      valuesKey: AWS_ACCESS_KEY_ID
-    - targetPath: objstoreConfig.config.secret_key
-      kind: Secret
-      name: thanos-bucket
-      valuesKey: AWS_SECRET_ACCESS_KEY

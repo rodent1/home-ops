@@ -6,11 +6,11 @@ metadata:
   name: &app unpoller
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
+  targetNamespace: observability
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/monitoring/unpoller/app
+  path: ./kubernetes/main/apps/observability/unpoller/app
   prune: true
   sourceRef:
     kind: GitRepository

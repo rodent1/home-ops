@@ -7,7 +7,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./atuin/ks.yaml
-  - ./democratic-csi/ks.yaml
   - ./descheduler/ks.yaml
   - ./fstrim/ks.yaml
   - ./intel-device-plugin/ks.yaml

@@ -14,7 +14,6 @@ resources:
   - ./coredns.yaml
   - ./crunchydata.yaml
   - ./csi-driver-nfs.yaml
-  - ./democratic-csi.yaml
   - ./descheduler.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml

@@ -6,15 +6,13 @@ metadata:
   name: &app kube-prometheus-stack
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
+  targetNamespace: observability
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-    - name: democratic-csi-localpath
-    - name: rook-ceph-cluster
-  path: ./kubernetes/main/apps/monitoring/kube-prometheus-stack/app
+  path: ./kubernetes/main/apps/observability/kube-prometheus-stack/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -23,3 +21,7 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 15m
+  postBuild:
+    substitute:
+      # renovate: datasource=docker depName=quay.io/thanos/thanos
+      THANOS_VERSION: v0.34.0

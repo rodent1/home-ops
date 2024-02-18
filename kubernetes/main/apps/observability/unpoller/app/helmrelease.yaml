@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -33,23 +32,27 @@ spec:
               repository: ghcr.io/unpoller/unpoller
               tag: v2.9.5@sha256:486a63339969fd5207697502e29e4875f4bf7d7ef5c558188b192f2f88fdd3d6
             env:
-              TZ: Europe/Oslo
+              TZ: America/New_York
               UP_UNIFI_DEFAULT_ROLE: home-ops
-              UP_UNIFI_DEFAULT_URL: https://10.1.1.1
+              UP_UNIFI_DEFAULT_URL: https://unifi.${SECRET_DOMAIN}
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_UNIFI_DEFAULT_USER: unifipoller
               UP_UNIFI_DEFAULT_PASS: 1nternalUseOnly
               UP_INFLUXDB_DISABLE: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 5m
-                memory: 36M
+                cpu: 10m
               limits:
-                memory: 128M
+                memory: 128Mi
         pod:
           securityContext:
             runAsUser: 568
             runAsGroup: 568
+            runAsNonRoot: true
     service:
       main:
         ports:

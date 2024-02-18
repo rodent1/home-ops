@@ -47,7 +47,7 @@ spec:
           main:
             image:
               repository: docker.io/timberio/vector
-              tag: 0.36.0-debian@sha256:3034a2226b64bc828299aed748473fdb1c0b77caa04c0f43fd27de8704f2a836
+              tag: 0.36.0-alpine@sha256:d481b891ca5b36e2ae2a66917cc252ba8aaf30a7904f84b4c7d74206bd3de2e9
             args: ["--config", "/etc/vector/vector.yaml"]
         pod:
           topologySpreadConstraints:
@@ -62,15 +62,12 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: vector.${SECRET_DOMAIN}
-          io.cilium/lb-ipam-ips: 10.1.1.153
+          io.cilium/lb-ipam-ips: 10.1.2.13
         ports:
           http:
             port: 8686
           journald:
             port: 6000
-          unifi:
-            port: 6003
-            protocol: UDP
           kubernetes:
             port: 6010
     persistence:

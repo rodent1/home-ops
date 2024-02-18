@@ -6,13 +6,13 @@ metadata:
   name: &app vector
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
+  targetNamespace: observability
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/monitoring/vector/app
+  path: ./kubernetes/main/apps/observability/vector/app
   prune: true
   sourceRef:
     kind: GitRepository
