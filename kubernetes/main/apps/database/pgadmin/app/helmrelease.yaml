@@ -34,7 +34,7 @@ spec:
           main:
             image:
               repository: docker.io/dpage/pgadmin4
-              tag: "8.1"
+              tag: "8.3"
             envFrom:
               - secretRef:
                   name: pgadmin-secret
