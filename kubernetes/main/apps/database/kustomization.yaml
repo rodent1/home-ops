@@ -8,5 +8,5 @@ resources:
   # Flux-Kustomizations
   - ./cloudnative-pg/ks.yaml
   # - ./crunchy-pgo/ks.yaml
-  # - ./pgadmin/ks.yaml
+  - ./pgadmin/ks.yaml
   - ./redis/ks.yaml
