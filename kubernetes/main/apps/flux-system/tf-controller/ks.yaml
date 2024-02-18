@@ -6,13 +6,13 @@ metadata:
   name: &app tf-controller
   namespace: flux-system
 spec:
-  targetNamespace: system
+  targetNamespace: flux-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/system/tf-controller/app
+  path: ./kubernetes/main/apps/flux-system/tf-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -29,14 +29,14 @@ metadata:
   name: &app tf-controller-terraforms
   namespace: flux-system
 spec:
-  targetNamespace: system
+  targetNamespace: flux-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
     - name: tf-controller
-  path: ./kubernetes/main/apps/system/tf-controller/terraforms
+  path: ./kubernetes/main/apps/flux-system/tf-controller/terraforms
   prune: true
   sourceRef:
     kind: GitRepository
