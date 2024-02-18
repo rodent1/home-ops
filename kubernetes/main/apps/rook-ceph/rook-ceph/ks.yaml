@@ -10,14 +10,12 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: snapshot-controller
   path: ./kubernetes/main/apps/rook-ceph/rook-ceph/app
-  prune: false
+  prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+  wait: false
   interval: 30m
   retryInterval: 1m
   timeout: 5m
@@ -33,10 +31,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: rook-ceph
   path: ./kubernetes/main/apps/rook-ceph/rook-ceph/cluster
-  prune: false
+  prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

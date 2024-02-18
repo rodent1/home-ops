@@ -51,9 +51,33 @@ spec:
       bluefs_buffered_io = false
     cephClusterSpec:
       network:
-        provider: host
         connections:
           requireMsgr2: true
+      resources:
+        mgr:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            memory: 2Gi
+        mon:
+          requests:
+            cpu: 50m
+            memory: 512Mi
+          limits:
+            memory: 1Gi
+        osd:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            memory: 6Gi
+        mgr-sidecar:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
       crashCollector:
         disable: false
       dashboard:
@@ -61,62 +85,33 @@ spec:
         urlPrefix: /
         ssl: false
       storage:
-        useAllNodes: false
-        useAllDevices: false
+        useAllNodes: true
+        useAllDevices: true
+        deviceFilter: nvme0n1
         config:
           osdsPerDevice: "1"
-        nodes:
-          - name: node-1
-            devices:
-              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA9D0
-          - name: node-2
-            devices:
-              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CAA00
-          - name: node-3
-            devices:
-              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA96F
-          - name: node-4
-            devices:
-              - name: /dev/disk/by-id/nvme-INTEL_SSDPEKNW010T8_BTNH916507DA1P0B
-          - name: node-5
-            devices:
-              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B728308EA85
-
-      resources:
-        mgr:
-          requests:
-            cpu: 500m
-            memory: 512Mi
-          limits:
-            cpu: 2000m
-            memory: 2Gi
-        mon:
-          requests:
-            cpu: 1000m
-            memory: 1Gi
-          limits:
-            cpu: 4000m
-            memory: 4Gi
-        osd:
-          requests:
-            cpu: 1000m
-            memory: 4Gi
-          limits:
-            cpu: 4000m
-            memory: 8Gi
-
+      placement:
+        mgr: &placement
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/control-plane
+                      operator: Exists
+        mon: *placement
     cephBlockPools:
       - name: ceph-blockpool
         spec:
           failureDomain: host
           replicated:
-            size: 5
+            size: 3
         storageClass:
           enabled: true
           name: ceph-block
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
+          volumeBindingMode: Immediate
           parameters:
             imageFormat: "2"
             imageFeatures: layering
@@ -127,23 +122,21 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
-
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-blockpool
       isDefault: false
       deletionPolicy: Delete
-
     cephFileSystems:
       - name: ceph-filesystem
         spec:
           metadataPool:
             replicated:
-              size: 5
+              size: 3
           dataPools:
             - failureDomain: host
               replicated:
-                size: 5
+                size: 3
               name: data0
           metadataServer:
             activeCount: 1
@@ -151,10 +144,10 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 2Gi
+                memory: 1Gi
               limits:
-                memory: 3Gi
-
+                memory: 4Gi
+            priorityClassName: system-cluster-critical
         storageClass:
           enabled: true
           isDefault: false
@@ -162,6 +155,7 @@ spec:
           pool: data0
           reclaimPolicy: Delete
           allowVolumeExpansion: true
+          volumeBindingMode: Immediate
           parameters:
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
@@ -170,24 +164,23 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
-
     cephFileSystemVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-filesystem
       isDefault: false
       deletionPolicy: Delete
-
     cephObjectStores:
       - name: ceph-objectstore
         spec:
           metadataPool:
             failureDomain: host
             replicated:
-              size: 5
+              size: 3
           dataPool:
             failureDomain: host
-            replicated:
-              size: 5
+            erasureCoded:
+              dataChunks: 2
+              codingChunks: 1
           preservePoolsOnDelete: true
           gateway:
             port: 80
@@ -198,13 +191,23 @@ spec:
               limits:
                 memory: 2Gi
             instances: 2
+            priorityClassName: system-cluster-critical
           healthCheck:
             bucket:
               interval: 60s
-
         storageClass:
           enabled: true
           name: ceph-bucket
           reclaimPolicy: Delete
+          volumeBindingMode: Immediate
           parameters:
-            region: eu-north-1
+            region: us-east-1
+        ingress:
+          enabled: true
+          ingressClassName: internal
+          host:
+            name: &host rgw.${SECRET_DOMAIN}
+            path: /
+          tls:
+            - hosts:
+                - *host

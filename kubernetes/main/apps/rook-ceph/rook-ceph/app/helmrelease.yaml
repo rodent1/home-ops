@@ -24,6 +24,9 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: snapshot-controller
+      namespace: system-controllers
   values:
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
