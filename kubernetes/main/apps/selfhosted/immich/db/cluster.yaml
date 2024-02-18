@@ -47,10 +47,10 @@ spec:
       s3Credentials:
         accessKeyId:
           name: immich-db-secret
-          key: aws-access-key-id
+          key: AWS_ACCESS_KEY_ID
         secretAccessKey:
           name: immich-db-secret
-          key: aws-secret-access-key
+          key: AWS_SECRET_ACCESS_KEY
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
