@@ -26,6 +26,11 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: openebs
+      namespace: openebs-system
+    - name: thanos
+      namespace: observability
   valuesFrom:
     - kind: ConfigMap
       name: kube-state-metrics-configmap
@@ -51,7 +56,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: local-hostpath
+              storageClassName: openebs-hostpath
               resources:
                 requests:
                   storage: 1Gi
@@ -156,7 +161,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: local-hostpath
+              storageClassName: openebs-hostpath
               resources:
                 requests:
                   storage: 20Gi
