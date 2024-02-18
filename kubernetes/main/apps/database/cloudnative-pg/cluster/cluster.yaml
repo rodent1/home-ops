@@ -5,7 +5,7 @@ kind: Cluster
 metadata:
   name: postgres16
 spec:
-  instances: 2
+  instances: 6 # Set to my total number of nodes
   imageName: ghcr.io/cloudnative-pg/postgresql:16.2-3
   primaryUpdateStrategy: unsupervised
   storage:
@@ -14,21 +14,15 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
-  # Note: Bootstrap is needed when recovering from an existing cnpg cluster
-  bootstrap:
-    recovery:
-      source: &previousCluster cnpg16-v8
   postgresql:
     parameters:
-      max_connections: "600"
-      max_slot_wal_keep_size: 10GB
-      shared_buffers: 512MB
+      max_connections: "400"
+      shared_buffers: 256MB
   resources:
     requests:
-      memory: "2Gi"
-      cpu: "500m"
+      cpu: 500m
     limits:
-      memory: "4Gi"
+      memory: 4Gi
   monitoring:
     enablePodMonitor: true
     # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
@@ -37,7 +31,7 @@ spec:
       - { regex: cluster, action: labeldrop }
   backup:
     retentionPolicy: 30d
-    barmanObjectStore:
+    barmanObjectStore: &barmanObjectStore
       data:
         compression: bzip2
       wal:
@@ -45,6 +39,8 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+      # Note: serverName version needs to be inclemented
+      # when recovering from an existing cnpg cluster
       serverName: &currentCluster cnpg16-v9
       s3Credentials:
         accessKeyId:
@@ -53,19 +49,14 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: &previousCluster cnpg16-v8
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *previousCluster
       barmanObjectStore:
-        wal:
-          compression: bzip2
-          maxParallel: 8
-        destinationPath: s3://cnpg/
-        endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-        s3Credentials:
-          accessKeyId:
-            name: cloudnative-pg-secret
-            key: aws-access-key-id
-          secretAccessKey:
-            name: cloudnative-pg-secret
-            key: aws-secret-access-key
+        <<: *barmanObjectStore
+        serverName: *previousCluster
