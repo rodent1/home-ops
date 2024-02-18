@@ -8,7 +8,7 @@ resources:
   # Flux-Kustomizations
   - ./audiobookshelf/ks.yaml
   - ./cross-seed/ks.yaml
-  # - ./overseerr/ks.yaml
+  - ./overseerr/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
@@ -16,7 +16,7 @@ resources:
   - ./readarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
-  # - ./tautulli/ks.yaml
+  - ./tautulli/ks.yaml
   - ./theme-park/ks.yaml
   - ./unpackerr/ks.yaml
-  # - ./xteve/ks.yaml
+  - ./xteve/ks.yaml
