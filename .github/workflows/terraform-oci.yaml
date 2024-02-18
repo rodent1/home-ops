@@ -1,16 +1,16 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: "Publish Terraform"
+name: "Terraform OCI"
 
 on:
   workflow_dispatch:
   push:
     branches: ["main"]
-    paths: ["infrastructure/terraform/**"]
+    paths: ["terraform/**"]
 
 jobs:
-  publish-terraform:
-    name: Publish Terraform
+  publish:
+    name: Terraform OCI
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -51,7 +51,7 @@ jobs:
         shell: bash
         run: |
           flux push artifact oci://${{ steps.generate-tag.outputs.tag }} \
-              --path="./infrastructure/terraform" \
+              --path="./terraform" \
               --source="$(git config --get remote.origin.url)" \
               --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
 
