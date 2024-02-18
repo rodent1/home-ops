@@ -27,7 +27,6 @@ spec:
     extraInitContainers:
       - name: 01-init-db
         image: ghcr.io/onedr0p/postgres-init:16
-        imagePullPolicy: IfNotPresent
         envFrom:
           - secretRef:
               name: &secret grafana-secret
@@ -118,14 +117,6 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/kubernetes
-          - name: media
-            orgId: 1
-            folder: Media
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/media
           - name: nginx
             orgId: 1
             folder: Nginx
@@ -134,6 +125,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/nginx
+          - name: prometheus
+            orgId: 1
+            folder: Prometheus
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/prometheus
           - name: thanos
             orgId: 1
             folder: Thanos
@@ -162,24 +161,22 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
-            # url: http://vmselect-victoria-metrics.monitoring.svc.cluster.local:8481/select/0/prometheus
+            url: http://thanos-query-frontend.observability.svc.cluster.local:9090
             jsonData:
-              prometheusType: Thanos # Prometheus for victoria-metrics
+              prometheusType: Thanos
             isDefault: true
           - name: Loki
             type: loki
             uid: loki
             access: proxy
-            url: http://loki-gateway.monitoring.svc.cluster.local
+            url: http://loki-gateway.observability.svc.cluster.local
             jsonData:
               maxLines: 250
           - name: Alertmanager
             type: alertmanager
             uid: alertmanager
             access: proxy
-            url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
-            # url: http://vmalertmanager-victoria-metrics.monitoring.svc.cluster.local:9093
+            url: http://alertmanager-operated.observability.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
 
@@ -219,6 +216,12 @@ spec:
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
+        unpackerr:
+          # renovate: depName="Unpackerr"
+          gnetId: 18817
+          revision: 1
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         cloudnative-pg:
           url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
           datasource: Prometheus
@@ -227,6 +230,9 @@ spec:
           datasource: Prometheus
         external-secrets:
           url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
+          datasource: Prometheus
+        node-feature-discovery:
+          url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
           datasource: Prometheus
       ceph:
         ceph-cluster:
@@ -251,13 +257,10 @@ spec:
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
           datasource: Prometheus
-        flux-logs:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
-          datasource: Prometheus
       kubernetes:
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
-          gnetId: 16761
+          gnetId: 15761
           revision: 16
           datasource: Prometheus
         kubernetes-coredns:
@@ -290,28 +293,18 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
-      media:
-        qbittorrent-exporter:
-          url: https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json
-          datasource: Prometheus
-        exportarr:
-          url: https://raw.githubusercontent.com/onedr0p/exportarr/master/examples/grafana/dashboard2.json
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
-        unpackerr:
-          # renovate: depName="Unpackerr"
-          gnetId: 18817
-          revision: 1
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
       nginx:
         nginx:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
           datasource: Prometheus
         nginx-request-handling-performance:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
+          datasource: Prometheus
+      prometheus:
+        prometheus:
+          # renovate: depName="Prometheus"
+          gnetId: 19105
+          revision: 3
           datasource: Prometheus
       thanos:
         thanos-bucket-replicate:
@@ -363,7 +356,6 @@ spec:
           revision: 9
           datasource: Prometheus
 
-
     sidecar:
       dashboards:
         enabled: true
@@ -387,18 +379,14 @@ spec:
       - vonage-status-panel
     serviceMonitor:
       enabled: true
-
     ingress:
       enabled: true
-      ingressClassName: external
-      annotations:
-        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+      ingressClassName: internal
       hosts:
         - &host grafana.${SECRET_DOMAIN}
       tls:
         - hosts:
             - *host
-
     persistence:
       enabled: false
     testFramework:
