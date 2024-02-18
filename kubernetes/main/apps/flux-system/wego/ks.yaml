@@ -12,6 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
+    - name: authentik
   path: ./kubernetes/main/apps/flux-system/wego/app
   prune: true
   sourceRef:
