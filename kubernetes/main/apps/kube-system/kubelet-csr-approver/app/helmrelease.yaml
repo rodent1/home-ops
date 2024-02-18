@@ -24,7 +24,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    providerRegex: ^node-\d$
     metrics:
       enable: true
       serviceMonitor:

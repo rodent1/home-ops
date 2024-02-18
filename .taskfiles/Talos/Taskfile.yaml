@@ -3,6 +3,8 @@
 version: "3"
 
 vars:
+  TALHELPER_SECRET_FILE: "{{.KUBERNETES_DIR}}/main/bootstrap/talos/talsecret.sops.yaml"
+  TALHELPER_CONFIG_FILE: "{{.KUBERNETES_DIR}}/main/bootstrap/talos/talconfig.yaml"
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
   TALOS_VERSION: v1.6.4
   TALOS_SCHEMATIC_ID: d715f723f882b1e1e8063f1b89f237dcc0e3bd000f9f970243af59c8baae0100
@@ -42,8 +44,10 @@ tasks:
     desc: Bootstrap core apps needed for Talos
     cmds:
       - until kubectl --context {{.cluster}} wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - helmfile --kube-context {{.cluster}} --file {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/apps/helmfile.yaml apply
+      - helmfile --quiet --kube-context {{.cluster}} --file {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
       - until kubectl --context {{.cluster}} wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
+    env:
+      CLUSTER_DIR: "{{.KUBERNETES_DIR}}/{{.cluster}}" # required for helmfile
     requires:
       vars: ["cluster"]
     preconditions:
@@ -57,7 +61,7 @@ tasks:
       vars: ["node", "image"]
     preconditions:
       - talosctl config get-contexts | grep {{.cluster}}
-      - talosctl --nodes {{.node}} get machineconfig
+      - talosctl --context {{.cluster}} --nodes {{.node}} get machineconfig >/dev/null 2>&1
 
   upgrade-k8s:
     desc: Upgrade k8s on a node
@@ -66,7 +70,7 @@ tasks:
       vars: ["node", "to"]
     preconditions:
       - talosctl config get-contexts | grep {{.cluster}}
-      - talosctl --nodes {{.node}} get machineconfig
+      - talosctl --context {{.cluster}} --nodes {{.node}} get machineconfig >/dev/null 2>&1
 
   fetch-kubeconfig:
     desc: Fetch kubeconfig from Talos controllers
@@ -77,3 +81,15 @@ tasks:
       vars: ["cluster"]
     preconditions:
       - talosctl config get-contexts | grep {{.cluster}}
+
+  apply-config:
+    desc: Apply Talos config to the nodes
+    dir: "{{.KUBERNETES_DIR}}/main/bootstrap/talos"
+    cmd: talhelper gencommand apply | bash
+
+  genconfig:
+    desc: Generate Talos config
+    dir: "{{.KUBERNETES_DIR}}/main/bootstrap/talos"
+    cmd: talhelper genconfig
+    preconditions:
+      - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
