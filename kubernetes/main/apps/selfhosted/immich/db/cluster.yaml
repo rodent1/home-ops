@@ -5,7 +5,7 @@ kind: Cluster
 metadata:
   name: immich
 spec:
-  instances: 2
+  instances: 1
   imageName: ghcr.io/bo0tzz/cnpgvecto.rs:16.1-v0.1.11
   primaryUpdateStrategy: unsupervised
   storage:
@@ -14,23 +14,17 @@ spec:
   superuserSecret:
     name: immich-db-secret
   enableSuperuserAccess: true
-  # Note: Bootstrap is needed when recovering from an existing cnpg cluster
-  # bootstrap:
-  #   recovery:
-  #     source: &previousCluster immich-v5
   postgresql:
     parameters:
-      max_connections: "600"
-      max_slot_wal_keep_size: 10GB
-      shared_buffers: 512MB
+      max_connections: "400"
+      shared_buffers: 256MB
     shared_preload_libraries:
       - "vectors.so"
   resources:
     requests:
-      memory: "1Gi"
-      cpu: "100m"
+      cpu: 100m
     limits:
-      memory: "2Gi"
+      memory: 2Gi
   monitoring:
     enablePodMonitor: true
     # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
@@ -39,7 +33,7 @@ spec:
       - { regex: cluster, action: labeldrop }
   backup:
     retentionPolicy: 30d
-    barmanObjectStore:
+    barmanObjectStore: &barmanObjectStore
       data:
         compression: bzip2
       wal:
@@ -47,27 +41,24 @@ spec:
         maxParallel: 8
       destinationPath: s3://immich-db/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: &currentCluster immich-v6
+      # Note: serverName version needs to be inclemented
+      # when recovering from an existing cnpg cluster
+      serverName: &currentCluster immich-v7
       s3Credentials:
         accessKeyId:
-          name: immich-db-secret
-          key: AWS_ACCESS_KEY_ID
+          name: cloudnative-pg-secret
+          key: aws-access-key-id
         secretAccessKey:
-          name: immich-db-secret
-          key: AWS_SECRET_ACCESS_KEY
+          name: cloudnative-pg-secret
+          key: aws-secret-access-key
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: &previousCluster immich-v6
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  # externalClusters:
-  #   - name: *previousCluster
-  #     barmanObjectStore:
-  #       wal:
-  #         compression: bzip2
-  #         maxParallel: 8
-  #       destinationPath: s3://immich-db/
-  #       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-  #       s3Credentials:
-  #         accessKeyId:
-  #           name: immich-db-secret
-  #           key: AWS_ACCESS_KEY_ID
-  #         secretAccessKey:
-  #           name: immich-db-secret
-  #           key: AWS_SECRET_ACCESS_KEY
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
