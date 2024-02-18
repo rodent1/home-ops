@@ -9,5 +9,5 @@ resources:
   - ./immich/ks.yaml
   - ./linkwarden/ks.yaml
   - ./paperless/ks.yaml
-  # - ./vikunja/ks.yaml
+  - ./vikunja/ks.yaml
   # - ./wallos/ks.yaml
