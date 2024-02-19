@@ -6,9 +6,10 @@ metadata:
   name: qbittorrent-exporter
   namespace: flux-system
 spec:
+  targetNamespace: observability
   dependsOn:
     - name: qbittorrent
-  path: ./kubernetes/main/apps/monitoring/exporters/qbittorrent-exporter/app
+  path: ./kubernetes/main/apps/observability/exporters/qbittorrent-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository

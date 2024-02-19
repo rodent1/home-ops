@@ -6,6 +6,7 @@ metadata:
   name: blackbox-exporter
   namespace: flux-system
 spec:
+  targetNamespace: observability
   path: ./kubernetes/main/apps/observability/exporters/blackbox-exporter/app
   prune: true
   sourceRef:
@@ -22,6 +23,7 @@ metadata:
   name: blackbox-exporter-probes
   namespace: flux-system
 spec:
+  targetNamespace: observability
   dependsOn:
     - name: blackbox-exporter
   path: ./kubernetes/main/apps/observability/exporters/blackbox-exporter/probes

@@ -6,13 +6,13 @@ metadata:
   name: &app prometheus-nut-exporter
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
+  targetNamespace: observability
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/monitoring/exporters/prometheus-nut-exporter/app
+  path: ./kubernetes/main/apps/observability/exporters/prometheus-nut-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository

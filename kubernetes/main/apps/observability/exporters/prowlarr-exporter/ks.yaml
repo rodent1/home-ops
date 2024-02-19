@@ -6,10 +6,11 @@ metadata:
   name: prowlarr-exporter
   namespace: flux-system
 spec:
+  targetNamespace: observability
   dependsOn:
     - name: prowlarr
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/monitoring/exporters/prowlarr-exporter/app
+  path: ./kubernetes/main/apps/observability/exporters/prowlarr-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository
