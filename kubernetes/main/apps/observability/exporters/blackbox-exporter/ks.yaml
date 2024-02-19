@@ -6,7 +6,7 @@ metadata:
   name: blackbox-exporter
   namespace: flux-system
 spec:
-  path: ./kubernetes/main/apps/monitoring/exporters/blackbox-exporter/app
+  path: ./kubernetes/main/apps/observability/exporters/blackbox-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -24,7 +24,7 @@ metadata:
 spec:
   dependsOn:
     - name: blackbox-exporter
-  path: ./kubernetes/main/apps/monitoring/exporters/blackbox-exporter/probes
+  path: ./kubernetes/main/apps/observability/exporters/blackbox-exporter/probes
   prune: true
   sourceRef:
     kind: GitRepository
