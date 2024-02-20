@@ -51,6 +51,7 @@ spec:
       bluefs_buffered_io = false
     cephClusterSpec:
       network:
+        provider: host
         connections:
           requireMsgr2: true
       resources:
