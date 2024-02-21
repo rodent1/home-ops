@@ -54,11 +54,12 @@ spec:
       enabled: false
     geoip:
       enabled: false
+    metrics:
+      serviceMonitor:
+        enabled: true
     prometheus:
       rules:
-        create: true
-      serviceMonitor:
-        create: true
+        enabled: true
     authentik:
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
