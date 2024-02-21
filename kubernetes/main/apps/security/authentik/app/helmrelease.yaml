@@ -28,12 +28,12 @@ spec:
       namespace: database
   values:
     global:
-      podAnnotations:
-        secret.reloader.stakater.com/reload: authentik-secret
-    server:
       envFrom:
         - secretRef:
             name: authentik-secret
+      podAnnotations:
+        secret.reloader.stakater.com/reload: authentik-secret
+    server:
       ingress:
         enabled: true
         ingressClassName: external
