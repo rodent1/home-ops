@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: authentik
-      version: 2023.10.7
+      version: 2024.2.0
       sourceRef:
         kind: HelmRepository
         name: authentik
@@ -27,15 +27,17 @@ spec:
     - name: cloudnative-pg
       namespace: database
   values:
+    global:
+      podAnnotations:
+        secret.reloader.stakater.com/reload: authentik-secret
+    server:
+      envFrom:
+        - secretRef:
+            name: authentik-secret  
     initContainers:
       init-db:
         image: ghcr.io/onedr0p/postgres-init:16
         imagePullPolicy: IfNotPresent
-        envFrom:
-          - secretRef:
-              name: authentik-secret
-    podAnnotations:
-      secret.reloader.stakater.com/reload: authentik-secret
     ingress:
       enabled: true
       ingressClassName: external
@@ -50,9 +52,6 @@ spec:
         - hosts:
             - *host
           secretName: *host
-    envFrom:
-      - secretRef:
-          name: authentik-secret
     postgresql:
       enabled: false
     redis:
