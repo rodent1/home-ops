@@ -34,32 +34,32 @@ spec:
       envFrom:
         - secretRef:
             name: authentik-secret
-    ingress:
-      enabled: true
-      ingressClassName: external
-      annotations:
-        external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-      hosts:
-        - host: &host authentik.${SECRET_DOMAIN}
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - *host
-          secretName: *host
+      ingress:
+        enabled: true
+        ingressClassName: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        hosts:
+          - host: &host authentik.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: *host
+      metrics:
+        serviceMonitor:
+          enabled: true
+    prometheus:
+      rules:
+        enabled: true
     postgresql:
       enabled: false
     redis:
       enabled: false
     geoip:
       enabled: false
-    metrics:
-      serviceMonitor:
-        enabled: true
-    prometheus:
-      rules:
-        enabled: true
     authentik:
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
