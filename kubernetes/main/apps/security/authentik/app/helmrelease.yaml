@@ -33,11 +33,7 @@ spec:
     server:
       envFrom:
         - secretRef:
-            name: authentik-secret  
-    initContainers:
-      init-db:
-        image: ghcr.io/onedr0p/postgres-init:16
-        imagePullPolicy: IfNotPresent
+            name: authentik-secret
     ingress:
       enabled: true
       ingressClassName: external
