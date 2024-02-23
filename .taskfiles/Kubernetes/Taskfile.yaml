@@ -4,21 +4,52 @@ version: "3"
 
 tasks:
 
-  browse-pvc: # This is broken
-    desc: Browse PersistentVolumeClaims
+  mount:
+    desc: Mount a PersistentVolumeClaim to a temporary pod for a cluster
     summary: |
       Args:
         cluster: Cluster to run command against (required)
-        ns: Namespace to browse PersistentVolumeClaims in (default: default)
-        claim: PersistentVolumeClaim to browse (required)
+        ns: Namespace the PVC is in (default: default)
+        claim: PVC to mount (required)
     interactive: true
     cmd: |
-      kubectl browse-pvc --context {{.cluster}} \
-          --namespace {{.ns}} \
-          --image ghcr.io/onedr0p/alpine:rolling \
-          {{.claim}}
+      kubectl --context {{.cluster}} run -n {{.ns}} debug-{{.claim}} -i --tty --rm --image=null --privileged --overrides='
+        {
+          "apiVersion": "v1",
+          "spec": {
+            "containers": [
+              {
+                "name": "debug",
+                "image": "ghcr.io/onedr0p/alpine:rolling",
+                "command": ["/bin/bash"],
+                "stdin": true,
+                "stdinOnce": true,
+                "tty": true,
+                "volumeMounts": [
+                  {
+                    "name": "config",
+                    "mountPath": "/config"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "config",
+                "persistentVolumeClaim": {
+                  "claimName": "{{.claim}}"
+                }
+              }
+            ],
+            "restartPolicy": "Never"
+          }
+        }'
     requires:
       vars: ["cluster", "claim"]
+    vars:
+      ns: '{{.ns | default "default"}}'
+    preconditions:
+      - { msg: "PVC not found", sh: "kubectl --context {{.cluster}} -n {{.ns}} get persistentvolumeclaim {{.claim}}" }
 
   drain:
     desc: Drain a node
