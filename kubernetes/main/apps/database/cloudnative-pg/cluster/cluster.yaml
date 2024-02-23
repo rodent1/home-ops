@@ -5,7 +5,7 @@ kind: Cluster
 metadata:
   name: postgres16
 spec:
-  instances: 6 # Set to my total number of nodes
+  instances: 5 # Set to my total number of nodes
   imageName: ghcr.io/cloudnative-pg/postgresql:16.2-5
   primaryUpdateStrategy: unsupervised
   storage:
