@@ -13,7 +13,6 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: rook-ceph-cluster
-    - name: immich-db
   path: ./kubernetes/main/apps/selfhosted/immich/app
   prune: true
   sourceRef:
