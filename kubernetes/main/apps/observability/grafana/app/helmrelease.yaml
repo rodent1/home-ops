@@ -49,7 +49,6 @@ spec:
       GF_DATABASE_TYPE: postgres
     envFromSecrets:
       - name: *secret
-
     grafana.ini:
       analytics:
         check_for_updates: false
@@ -80,7 +79,6 @@ spec:
         # org_role: Viewer
       news:
         news_feed_enabled: false
-
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -92,7 +90,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/default
+              path: /var/lib/grafana/dashboards/default-folder
           - name: ceph
             orgId: 1
             folder: Ceph
@@ -100,7 +98,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/ceph
+              path: /var/lib/grafana/dashboards/ceph-folder
           - name: flux
             orgId: 1
             folder: Flux
@@ -108,7 +106,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/flux
+              path: /var/lib/grafana/dashboards/flux-folder
           - name: kubernetes
             orgId: 1
             folder: Kubernetes
@@ -116,7 +114,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/kubernetes
+              path: /var/lib/grafana/dashboards/kubernetes-folder
           - name: nginx
             orgId: 1
             folder: Nginx
@@ -124,7 +122,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/nginx
+              path: /var/lib/grafana/dashboards/nginx-folder
           - name: prometheus
             orgId: 1
             folder: Prometheus
@@ -132,7 +130,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/prometheus
+              path: /var/lib/grafana/dashboards/prometheus-folder
           - name: thanos
             orgId: 1
             folder: Thanos
@@ -140,7 +138,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/thanos
+              path: /var/lib/grafana/dashboards/thanos-folder
           - name: unifi
             orgId: 1
             folder: Unifi
@@ -148,7 +146,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/unifi
+              path: /var/lib/grafana/dashboards/unifi-folder
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -179,7 +177,6 @@ spec:
             url: http://alertmanager-operated.observability.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
-
     dashboards:
       default:
         cloudflared:
@@ -208,23 +205,20 @@ spec:
           # renovate: depName="Redis Dashboard for Prometheus Redis Exporter 1.x"
           gnetId: 763
           revision: 6
-          datasource: Prometheus
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         spegel:
           # renovate: depName="Spegel"
           gnetId: 18089
           revision: 1
           datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
+            - { name: DS_PROMETHEUS, value: Prometheus }
         unpackerr:
           # renovate: depName="Unpackerr"
           gnetId: 18817
           revision: 1
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-        cloudnative-pg:
-          url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
-          datasource: Prometheus
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
           datasource: Prometheus
@@ -355,7 +349,6 @@ spec:
           gnetId: 11312
           revision: 9
           datasource: Prometheus
-
     sidecar:
       dashboards:
         enabled: true
