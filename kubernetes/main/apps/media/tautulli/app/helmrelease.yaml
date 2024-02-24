@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -56,25 +55,25 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 24m
-                memory: 100Mi
+                cpu: 10m
               limits:
-                memory: 100Mi
+                memory: 1Gi
           jbops:
             image:
               repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.2.1
+              tag: v4.2.1@sha256:004c213800fac0b71fa2f51979513f5fb383df713c4eaf514ddab65c9efa78b8
             env:
               GITSYNC_REPO: https://github.com/blacktwin/JBOPS
               GITSYNC_REF: master
               GITSYNC_PERIOD: 24h
               GITSYNC_ROOT: /add-ons
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+            securityContext: *securityContext
             resources:
               requests:
                 cpu: 10m
@@ -109,5 +108,7 @@ spec:
       config:
         enabled: true
         existingClaim: config-tautulli
+      tmp:
+        type: emptyDir
       add-ons:
         type: emptyDir

@@ -75,4 +75,5 @@ spec:
       config:
         enabled: true
         existingClaim: config-xteve
-
+      tmp:
+        type: emptyDir

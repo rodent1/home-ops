@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -40,7 +39,7 @@ spec:
               repository: ghcr.io/sct/overseerr
               tag: 1.33.2@sha256:714ea6db2bc007a2262d112bef7eec74972eb33d9c72bddb9cbd98b8742de950
             env:
-              TZ: ${TIMEZONE}
+              TZ: Europe/Oslo
               LOG_LEVEL: "info"
               PORT: &port 80
             probes:
@@ -64,14 +63,14 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 13m
-                memory: 256Mi
+                cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 2Gi
         pod:
           securityContext:
             runAsUser: 568
             runAsGroup: 568
+            runAsNonRoot: true
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
     service:
@@ -101,3 +100,13 @@ spec:
         existingClaim: config-overseerr
         globalMounts:
           - path: /app/config
+      cache:
+        existingClaim: config-overseerr-cache
+        globalMounts:
+          - path: /app/config/cache
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /app/config/logs
+      tmp:
+        type: emptyDir
