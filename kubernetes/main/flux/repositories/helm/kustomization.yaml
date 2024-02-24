@@ -12,9 +12,9 @@ resources:
   - ./cloudnative-pg.yaml
   - ./coder.yaml
   - ./coredns.yaml
-  - ./crunchydata.yaml
   - ./csi-driver-nfs.yaml
   - ./descheduler.yaml
+  - ./dragonfly.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
   - ./grafana.yaml
@@ -22,7 +22,6 @@ resources:
   - ./intel.yaml
   - ./jetstack.yaml
   - ./k8s-gateway.yaml
-  - ./kyverno.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
   - ./openebs.yaml

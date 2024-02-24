@@ -3,16 +3,16 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app dragonfly
+  name: dragonfly
 spec:
   interval: 30m
   chart:
     spec:
-      chart: app-template
-      version: 2.6.0
+      chart: dragonfly
+      version: 0.20.1
       sourceRef:
         kind: HelmRepository
-        name: bjw-s
+        name: dragonfly
         namespace: flux-system
   install:
     remediation:
@@ -23,83 +23,47 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: openebs
+      namespace: openebs-system
   values:
-    serviceAccount:
-      create: false
-      name: dragonfly-operator-controller-manager
-    controllers:
-      main:
-        containers:
-          rbac-proxy:
-            image:
-              repository: gcr.io/kubebuilder/kube-rbac-proxy
-              tag: v0.15.0
-            args:
-              - "--secure-listen-address=0.0.0.0:8443"
-              - "--upstream=http://127.0.0.1:8080/"
-              - "--logtostderr=true"
-              - "--v=0"
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                cpu: 5m
-                memory: 64Mi
-              limits:
-                cpu: 500m
-                memory: 128Mi
-          main:
-            image:
-              repository: docker.dragonflydb.io/dragonflydb/operator
-              tag: v1.1.0
-            args:
-              - "--health-probe-bind-address=:8081"
-              - "--metrics-bind-address=127.0.0.1:8080"
-              - "--leader-elect"
-            command:
-              - "/manager"
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /healthz
-                    port: &port 8081
-                  initialDelaySeconds: 15
-                  periodSeconds: 20
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /readyz
-                    port: *port
-                  initialDelaySeconds: 5
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              startup:
-                enabled: false
-            resources:
-              requests:
-                cpu: 10m
-                memory: 64Mi
-              limits:
-                cpu: 500m
-                memory: 128Mi
-        annotations:
-          reloader.stakater.com/auto: "true"
-    service:
-      main:
-        ports:
-          http:
-            port: *port
+    image:
+      repository: ghcr.io/dragonflydb/dragonfly/helm/dragonfly
+      tag: v1.14.5@sha256:6950ff5034a6be9773a81bb4855a87af99098056d23ebd1133b27885eff8cb2d
+    replicaCount: 3
+    storage:
+      enabled: true
+      requests: 1Gi
+      storageClassName: openebs-hostpath
+    extraArgs:
+      - --dbfilename=dump
+      - --snapshot_cron=* * * * * # cron format
+    podSecurityContext:
+      fsGroup: 2000
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    serviceMonitor:
+      enabled: true
+    prometheusRule:
+      enabled: true
+      spec:
+        - alert: DragonflyMissing
+          expr: absent(dragonfly_uptime_in_seconds) == 1
+          for: 0m
+          labels:
+            severity: critical
+          annotations:
+            summary: Dragonfly is missing
+            description: "Dragonfly is missing"
