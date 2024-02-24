@@ -34,6 +34,9 @@ spec:
       podAnnotations:
         secret.reloader.stakater.com/reload: authentik-secret
     server:
+      autoscaling:
+        enabled: true
+        minReplicas: 2
       ingress:
         enabled: true
         ingressClassName: external
@@ -63,5 +66,8 @@ spec:
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
       redis:
-        host: "dragonfly.database.svc.cluster.local"
-        password: ""
+        host: dragonfly.database.svc.cluster.local
+    worker:
+      autoscaling:
+        enabled: true
+        minReplicas: 2
