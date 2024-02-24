@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -25,8 +24,6 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: cloudnative-pg
-      namespace: database
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -36,15 +33,6 @@ spec:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-              pullPolicy: IfNotPresent
-            envFrom: &envFrom
-              - secretRef:
-                  name: home-assistant-secret
         containers:
           main:
             image:
@@ -52,10 +40,11 @@ spec:
               tag: 2024.2.3@sha256:4880575480641e0f83618de45c27dd75ff9d413f092523a75b7ec1e825d22b1b
             env:
               TZ: Europe/Oslo
-              POSTGRES_HOST: ${POSTGRES_URL}
-              POSTGRES_DB: home_assistant
-            envFrom: *envFrom
-            probes:
+              HASS_HTTP_TRUSTED_PROXY_1: 10.0.0.0/8
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secret
+            probes: &probes
               liveness:
                 enabled: false
               readiness:
@@ -69,12 +58,32 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 319Mi
               limits:
                 memory: 1Gi
+          code:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.21.1
+            env:
+              TZ: Europe/Oslo
+            args: [
+              "--auth", "none",
+              "--user-data-dir", "/config/.vscode",
+              "--extensions-dir", "/config/.vscode",
+              "--port", "80",
+              "/config"
+            ]
+            probes: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+        pod:
           securityContext:
             runAsUser: 568
             runAsGroup: 568
+            runAsNonRoot: true
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
     service:
@@ -82,6 +91,8 @@ spec:
         ports:
           http:
             port: 8123
+          code:
+            port: 80
     ingress:
       main:
         enabled: true
@@ -98,7 +109,22 @@ spec:
         tls:
           - hosts:
               - *host
+      code:
+        enabled: true
+        className: internal
+        hosts:
+          - host: &host hass-code.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: code
+        tls:
+          - hosts:
+              - *host
     persistence:
       config:
         enabled: true
         existingClaim: config-home-assistant
+      tmp:
+        type: emptyDir
