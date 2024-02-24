@@ -27,9 +27,6 @@ spec:
     - name: openebs
       namespace: openebs-system
   values:
-    image:
-      repository: ghcr.io/dragonflydb/dragonfly/helm/dragonfly
-      tag: v1.14.5@sha256:6950ff5034a6be9773a81bb4855a87af99098056d23ebd1133b27885eff8cb2d
     replicaCount: 3
     storage:
       enabled: true
