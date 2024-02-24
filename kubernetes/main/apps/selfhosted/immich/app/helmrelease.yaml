@@ -54,7 +54,7 @@ spec:
           reloader.stakater.com/auto: "true"
         type: deployment
         strategy: RollingUpdate
-        replicas: 2
+        replicas: 1
         initContainers:
           01-init-db:
             image:
@@ -86,7 +86,7 @@ spec:
                 memory: 256Mi
       microservices:
         type: deployment
-        replicas: 2
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
