@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -41,7 +41,6 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
-
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -49,39 +48,31 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: *app
-
     controllers:
       main:
         annotations:
-          configmap.reloader.stakater.com/reload: &configMap immich-configmap
-          secret.reloader.stakater.com/reload: &secret immich-secret
-
+          reloader.stakater.com/auto: "true"
         type: deployment
         strategy: RollingUpdate
-        replicas: 2
-
+        replicas: 1
         initContainers:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
               imagePullPolicy: IfNotPresent
-
             envFrom: &envFrom
               - configMapRef:
-                  name: *configMap
+                  name: immich-configmap
               - secretRef:
-                  name: *secret
-
+                  name: immich-secret
         containers:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.95.1@sha256:78665b75735f248b2ee1646a671d340b6a221260d87c38771c060aef62421a19
               imagePullPolicy: IfNotPresent
-
             args: ["start-server.sh"]
-
             envFrom: *envFrom
             securityContext:
               allowPrivilegeEscalation: false
@@ -93,13 +84,57 @@ spec:
                 memory: 144M
               limits:
                 memory: 256Mi
-
+      microservices:
+        type: deployment
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v1.95.1@sha256:78665b75735f248b2ee1646a671d340b6a221260d87c38771c060aef62421a19
+              imagePullPolicy: IfNotPresent
+            args: ["start-microservices.sh"]
+            envFrom: *envFrom
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                gpu.intel.com/i915: 1
+                memory: 512Mi
+              limits:
+                gpu.intel.com/i915: 1
+                memory: 4000Mi
+      machine-learning:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v1.95.1@sha256:33211bbedb8af1a24c1416617c1e2504d6011a18d6ed83a4b8023647bfbfe58a
+              imagePullPolicy: IfNotPresent
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250M
+              limits:
+                memory: 4000M
     service:
       main:
         ports:
           http:
             port: 3001
-
+      machine-learning:
+        controller: machine-learning
+        ports:
+          http:
+            port: 3003
     ingress:
       main:
         enabled: true
@@ -118,7 +153,6 @@ spec:
           nignx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
           nginx.ingress.kubernetes.io/upstream-hash-by: "$client_ip"
-
         hosts:
           - host: &host photos.${SECRET_DOMAIN}
             paths:
@@ -130,11 +164,27 @@ spec:
         tls:
           - hosts:
               - *host
-
     persistence:
       library:
         enabled: true
         existingClaim: config-immich
         globalMounts:
           - path: /usr/src/app/upload
-            subPath: Immich
+      cache:
+        type: emptyDir
+        advancedMounts:
+          machine-learning:
+            main:
+              - path: /cache
+      geocoding-dump:
+        type: emptyDir
+        advancedMounts:
+          machine-learning:
+            main:
+              - path: /usr/src/app/.reverse-geocoding-dump
+      transformers-cache:
+        type: emptyDir
+        advancedMounts:
+          machine-learning:
+            main:
+              - path: /usr/src/app/.transformers_cache
