@@ -170,6 +170,7 @@ spec:
         existingClaim: config-immich
         globalMounts:
           - path: /usr/src/app/upload
+            subPath: Immich
       cache:
         type: emptyDir
         advancedMounts:
