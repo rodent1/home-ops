@@ -63,5 +63,5 @@ spec:
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
       redis:
-        host: "authentik-redis.security.svc.cluster.local"
+        host: "dragonfly.database.svc.cluster.local"
         password: ""

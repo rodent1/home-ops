@@ -52,7 +52,7 @@ spec:
               PAPERLESS_OCR_LANGUAGES: nor
               PAPERLESS_OCR_LANGUAGE: nor
               # Configure redis integration
-              PAPERLESS_REDIS: redis://paperless-redis.selfhosted.svc.cluster.local:6379
+              PAPERLESS_REDIS: redis://dragonfly.database.svc.cluster.local:6379
               # Configure admin user
               PAPERLESS_ADMIN_USER:
                 valueFrom:
