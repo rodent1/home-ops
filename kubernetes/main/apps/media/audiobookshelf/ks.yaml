@@ -12,8 +12,6 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-    - name: volsync
-    - name: rook-ceph-cluster
   path: ./kubernetes/main/apps/media/audiobookshelf/app
   prune: true
   sourceRef:

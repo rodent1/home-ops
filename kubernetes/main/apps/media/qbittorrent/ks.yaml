@@ -10,9 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: rook-ceph-cluster
-    - name: volsync
   path: ./kubernetes/main/apps/media/qbittorrent/app
   prune: true
   sourceRef:
@@ -42,6 +39,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: qbittorrent
   path: ./kubernetes/main/apps/media/qbittorrent/tools
   prune: true
   sourceRef:

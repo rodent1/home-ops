@@ -10,9 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: volsync
-    - name: rook-ceph-cluster
   path: ./kubernetes/main/apps/media/xteve/app
   prune: true
   sourceRef:

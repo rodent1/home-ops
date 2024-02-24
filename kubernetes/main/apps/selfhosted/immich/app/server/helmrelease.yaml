@@ -25,6 +25,15 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: database
+    - name: dragonfly
+      namespace: database
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: system
   values:
     defaultPodOptions:
       securityContext:
@@ -74,6 +83,10 @@ spec:
             args: ["start-server.sh"]
 
             envFrom: *envFrom
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m

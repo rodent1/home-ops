@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: external-secrets-stores
   interval: 10m
   path: ./kubernetes/main/apps/selfhosted/homepage/app
   prune: true
@@ -17,8 +19,6 @@ spec:
     kind: GitRepository
     name: home-kubernetes
   wait: false
-  dependsOn:
-    - name: external-secrets-stores
   postBuild:
     substitute:
       APP: *app

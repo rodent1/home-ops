@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: backube
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -24,7 +23,15 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: snapshot-controller
+      namespace: system-controllers
   values:
     manageCRDs: true
+    image: &image
+      repository: ghcr.io/onedr0p/volsync
+      tag: 0.8.0
+    restic:
+      <<: *image
     metrics:
       disableAuth: true

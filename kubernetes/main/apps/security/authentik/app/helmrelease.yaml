@@ -26,6 +26,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
+    - name: dragonfly
+      namespace: database
   values:
     global:
       envFrom:
@@ -36,7 +38,7 @@ spec:
     server:
       autoscaling:
         enabled: true
-        minReplicas: 2
+        minReplicas: 1
       ingress:
         enabled: true
         ingressClassName: external
@@ -70,4 +72,4 @@ spec:
     worker:
       autoscaling:
         enabled: true
-        minReplicas: 2
+        minReplicas: 1
