@@ -56,7 +56,6 @@ spec:
             envFrom: *envFrom
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -95,3 +94,5 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /data/.next/cache
+      tmp:
+        type: emptyDir

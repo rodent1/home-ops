@@ -41,10 +41,6 @@ spec:
               tag: latest
             env:
               TZ: Europe/Oslo
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 50m

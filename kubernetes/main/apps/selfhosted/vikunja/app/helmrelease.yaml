@@ -60,10 +60,6 @@ spec:
               VIKUNJA_MAILER_PORT: "587"
               VIKUNJA_MAILER_FROMEMAIL: Vikunja <mailer@${SECRET_DOMAIN}>
               VIKUNJA_MAILER_AUTHTYPE: login
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -74,10 +70,6 @@ spec:
             image:
               repository: vikunja/frontend
               tag: 0.22.1@sha256:6342414b764aca75742111440684a48c9174329979f7dd3c30d723726d3766e3
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -88,10 +80,6 @@ spec:
             image:
               repository: caddy
               tag: 2.7.6-alpine@sha256:67d0aa24ce021bee77049ddd2c0cc64732dd43d04598085ec39f950a13981bd0
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m

@@ -89,15 +89,14 @@ spec:
         globalMounts:
           - path: /usr/src/app/upload
             subPath: Immich
-
       cache:
         type: emptyDir
-
+      tmp:
+        type: emptyDir
       geocoding-dump:
         type: emptyDir
         globalMounts:
           - path: /usr/src/app/.reverse-geocoding-dump
-
       transformers-cache:
         type: emptyDir
         globalMounts:
