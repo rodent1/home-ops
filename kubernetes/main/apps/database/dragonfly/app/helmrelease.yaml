@@ -35,6 +35,7 @@ spec:
     extraArgs:
       - --dbfilename=dump
       - --snapshot_cron=* * * * * # cron format
+      - --default_lua_flags=allow-undeclared-keys
     podSecurityContext:
       fsGroup: 2000
     securityContext:
