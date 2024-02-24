@@ -65,10 +65,6 @@ spec:
                   name: *configMap
               - secretRef:
                   name: *secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -90,8 +86,6 @@ spec:
           - path: /usr/src/app/upload
             subPath: Immich
       cache:
-        type: emptyDir
-      tmp:
         type: emptyDir
       geocoding-dump:
         type: emptyDir
