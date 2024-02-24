@@ -13,6 +13,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg-cluster
     - name: external-secrets
+    - name: dragonfly
   path: ./kubernetes/main/apps/security/authentik/app
   prune: true
   sourceRef:

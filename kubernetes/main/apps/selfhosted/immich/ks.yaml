@@ -13,6 +13,7 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: rook-ceph-cluster
+    - name: dragonfly
   path: ./kubernetes/main/apps/selfhosted/immich/app
   prune: true
   sourceRef:
