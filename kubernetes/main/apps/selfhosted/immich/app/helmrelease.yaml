@@ -105,10 +105,10 @@ spec:
               requests:
                 cpu: 10m
                 gpu.intel.com/i915: 1
-                memory: 512Mi
+                memory: 500Mi
               limits:
                 gpu.intel.com/i915: 1
-                memory: 4000Mi
+                memory: 500Mi
       machine-learning:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -122,9 +122,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 250M
+                memory: 2Gi
               limits:
-                memory: 4000M
+                memory: 2Gi
     service:
       main:
         ports:

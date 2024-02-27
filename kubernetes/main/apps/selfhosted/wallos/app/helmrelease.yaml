@@ -43,8 +43,10 @@ spec:
               TZ: Europe/Oslo
             resources:
               requests:
-                cpu: 50m
-                memory: 256Mi
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 100Mi
 
     service:
       main:
