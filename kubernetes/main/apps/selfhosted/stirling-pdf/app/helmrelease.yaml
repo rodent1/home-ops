@@ -34,6 +34,11 @@ spec:
               repository: ghcr.io/frooodle/s-pdf
               tag: 0.18.1@sha256:8967366617998d99ce8f71af9041302e5ee6bd007d8d603456716a54e928eaf7
               pullPolicy: IfNotPresent
+            env:
+              TZ: Europe/Oslo
+              DOCKER_ENABLE_SECURIT: "true"
+              SECURITY_ENABLE_LOGIN: "true"
+
             probes: &probes
               liveness:
                 enabled: false
@@ -46,10 +51,10 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 5m
-                memory: 10Mi
+                cpu: 10m
+                memory: 250M
               limits:
-                memory: 50Mi
+                memory: 300M
         pod:
           securityContext:
             runAsUser: 568
@@ -78,3 +83,7 @@ spec:
         tls:
           - hosts:
               - *host
+    persistence:
+      config:
+        enabled: true
+        existingClaim: config-stirling-pdf
