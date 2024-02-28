@@ -6,7 +6,7 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  # - ./audiobookshelf/ks.yaml
+  - ./audiobookshelf/ks.yaml
   - ./cross-seed/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
