@@ -9,18 +9,18 @@ version: "3"
 #   4. Each application only has one PVC that is being replicated
 
 x-env: &env
-  app: '{{.app}}'
-  claim: '{{.claim}}'
-  controller: '{{.controller}}'
-  job: '{{.job}}'
-  ns: '{{.ns}}'
-  pgid: '{{.pgid}}'
-  previous: '{{.previous}}'
-  puid: '{{.puid}}'
+  app: "{{.app}}"
+  claim: "{{.claim}}"
+  controller: "{{.controller}}"
+  job: "{{.job}}"
+  ns: "{{.ns}}"
+  pgid: "{{.pgid}}"
+  previous: "{{.previous}}"
+  puid: "{{.puid}}"
 
 vars:
-  VOLSYNC_SCRIPTS_DIR: '{{.ROOT_DIR}}/.taskfiles/VolSync/scripts'
-  VOLSYNC_TEMPLATES_DIR: '{{.ROOT_DIR}}/.taskfiles/VolSync/templates'
+  VOLSYNC_SCRIPTS_DIR: "{{.ROOT_DIR}}/.taskfiles/VolSync/scripts"
+  VOLSYNC_TEMPLATES_DIR: "{{.ROOT_DIR}}/.taskfiles/VolSync/templates"
 
 tasks:
 
@@ -31,8 +31,8 @@ tasks:
         cluster: Cluster to run command against (required)
     cmds:
       - flux --context {{.cluster}} suspend ks volsync
-      - flux --context {{.cluster}} suspend hr -n system volsync
-      - kubectl --context {{.cluster}} -n system scale deployment volsync --replicas 0
+      - flux --context {{.cluster}} suspend hr -n volsync-system volsync
+      - kubectl --context {{.cluster}} -n volsync-system scale deployment volsync --replicas 0
     env: *env
     requires:
       vars: ["cluster"]
