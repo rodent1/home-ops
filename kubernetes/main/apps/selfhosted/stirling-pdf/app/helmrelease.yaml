@@ -36,8 +36,8 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: Europe/Oslo
-              DOCKER_ENABLE_SECURIT: "true"
-              SECURITY_ENABLE_LOGIN: "true"
+              DOCKER_ENABLE_SECURITY: true
+              SECURITY_ENABLE_LOGIN: true
 
             probes: &probes
               liveness:
@@ -56,7 +56,7 @@ spec:
       main:
         ports:
           http:
-            port: 80
+            port: 8080
     ingress:
       main:
         enabled: true
