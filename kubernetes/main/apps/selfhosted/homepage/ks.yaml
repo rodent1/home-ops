@@ -22,4 +22,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_URL: home
+      GATUS_SUBDOMAIN: home

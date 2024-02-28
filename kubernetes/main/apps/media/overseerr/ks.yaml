@@ -22,5 +22,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_URL: requests
+      GATUS_SUBDOMAIN: requests
       VOLSYNC_CAPACITY: 5Gi

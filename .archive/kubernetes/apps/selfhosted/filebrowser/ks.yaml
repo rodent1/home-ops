@@ -22,5 +22,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_URL: share
+      GATUS_SUBDOMAIN: share
       VOLSYNC_CAPACITY: 10Gi
