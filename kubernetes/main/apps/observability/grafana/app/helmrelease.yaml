@@ -26,6 +26,10 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
+    - name: kube-prometheus-stack
+      namespace: observability
+    - name: loki
+      namespace: observability
   values:
     extraInitContainers:
       - name: 01-init-db
