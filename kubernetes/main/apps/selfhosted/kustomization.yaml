@@ -5,9 +5,11 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
+  - ./excalidraw/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
   - ./linkwarden/ks.yaml
   - ./paperless/ks.yaml
+  - ./stirling-pdf/ks.yaml
   - ./vikunja/ks.yaml
   - ./wallos/ks.yaml
