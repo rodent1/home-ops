@@ -31,8 +31,8 @@ spec:
         containers:
           main:
             image:
-              repository: excalidraw/excalidraw
-              tag: latest@sha256:648edf36c55793fdeed475e09a86fb6c16a68783dc442d37d5070adfc0362a8f
+              repository: ghcr.io/frooodle/s-pdf
+              tag: 0.18.1@sha256:8967366617998d99ce8f71af9041302e5ee6bd007d8d603456716a54e928eaf7
               pullPolicy: IfNotPresent
             probes: &probes
               liveness:
@@ -70,7 +70,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host draw.${SECRET_DOMAIN}
+          - host: &host pdf.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
