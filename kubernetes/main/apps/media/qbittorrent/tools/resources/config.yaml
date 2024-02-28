@@ -11,7 +11,7 @@ trackers:
     urls:
     - myanonamouse.net
     required_seed_ratio: 1.05
-    required_seed_days: 14
+    required_seed_days: 60
 
   - name: hdbits
     urls:
