@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -132,15 +132,13 @@ spec:
       main:
         enabled: false
     persistence:
-      config-file:
-        type: configMap
-        name: qbtools-configmap
-        advancedMounts:
-          tagging:
-            tagging:
-              - path: /config/config.yaml
-                subPath: config.yaml
-                readOnly: true
+      secret-file:
+        type: secret
+        name: qbtools-secret
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
       media:
         type: nfs
         server: 10.1.1.15
