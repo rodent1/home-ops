@@ -31,8 +31,8 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/frooodle/s-pdf
-              tag: 0.18.1@sha256:8967366617998d99ce8f71af9041302e5ee6bd007d8d603456716a54e928eaf7
+              repository: ghcr.io/stirling-tools/s-pdf
+              tag: 0.21.0@sha256:f9147320fb0119457b3166c7ae72cc7317f3cbcbaa28d2bf1355e5be4dfae4bb
               pullPolicy: IfNotPresent
             env:
               TZ: Europe/Oslo
