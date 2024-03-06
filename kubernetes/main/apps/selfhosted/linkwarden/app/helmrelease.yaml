@@ -47,7 +47,7 @@ spec:
           main:
             image:
               repository: ghcr.io/linkwarden/linkwarden
-              tag: v2.4.9
+              tag: v2.5.0
             env:
               NEXT_PUBLIC_DISABLE_REGISTRATION: "true"
               NEXT_PUBLIC_CREDENTIALS_ENABLED: "false"
