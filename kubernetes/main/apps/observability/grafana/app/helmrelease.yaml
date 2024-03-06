@@ -207,7 +207,7 @@ spec:
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
-          revision: 35
+          revision: 36
           datasource: Prometheus
         spegel:
           # renovate: depName="Spegel"
