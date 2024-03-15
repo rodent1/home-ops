@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +7,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -20,16 +18,13 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: qbittorrent
       namespace: media
   values:
     controllers:
-      main:
-        enabled: false
       tagging:
         type: cronjob
         cronjob: &cronJobSpec
@@ -99,7 +94,7 @@ spec:
           <<: *cronJobSpec
           schedule: "@daily"
         containers:
-          main:
+          app:
             image: *image
             env: *env
             args: [
@@ -116,7 +111,7 @@ spec:
           securityContext: *securityContext
       reannounce:
         containers:
-          main:
+          app:
             image: *image
             env: *env
             args: [
@@ -128,9 +123,6 @@ spec:
             resources: *resources
         pod:
           securityContext: *securityContext
-    service:
-      main:
-        enabled: false
     persistence:
       secret-file:
         type: secret
@@ -145,5 +137,5 @@ spec:
         path: /mnt/tank/Media
         advancedMounts:
           orphaned:
-            main:
+            app:
               - path: /media
