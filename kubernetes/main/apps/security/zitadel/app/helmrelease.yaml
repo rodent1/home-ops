@@ -89,7 +89,7 @@ spec:
     replicaCount: 1
     image:
       repository: ghcr.io/zitadel/zitadel
-      tag: v2.47.6@sha256:69a7b81a80965a2ff7287bb43191e32921fd94578e41c8123c6f412ebce608dd
+      tag: v2.47.6
 
     # Additional environment variables
     env:
@@ -136,7 +136,7 @@ spec:
 
     initJob:
       # Once ZITADEL is installed, the initJob can be disabled.
-      enabled: true
+      enabled: false
 
     readinessProbe:
       enabled: true
