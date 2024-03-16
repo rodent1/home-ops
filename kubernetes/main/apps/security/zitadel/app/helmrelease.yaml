@@ -32,25 +32,20 @@ spec:
           Level: info
           Formatter:
             Format: text
-        FirstInstance:
-          Org:
-            Machine:
-              Machine:
-                Username: zitadel-admin-sa
-                Name: Admin
-              MachineKey:
-                ExpirationDate: "2026-01-01T00:00:00Z"
-                # Type: 1 means JSON. This is currently the only supported machine key type.
-                Type: 1
         Database:
-          postgres:
+          Postgres:
             Host: ${POSTGRES_URL}
             Port: 5432
             Database: zitadel
+            MaxOpenConns: 20
+            MaxIdleConns: 10
+            MaxConnLifetime: 30m
+            MaxConnIdleTime: 5m
             User:
               SSL:
                 Mode: disable
             Admin:
+              Username: postgres
               SSL:
                 Mode: disable
         LogStore:
@@ -71,21 +66,7 @@ spec:
           # either directly or by a path to the corresponding file
           Enabled: false
         WebAuthNName: ZITADEL
-        # The Secret containing the root CA Certificate at key ca.crt needed for establishing secure database connections
-      dbSslRootCrtSecret:
-      # The Secret containing the client CA Certificate and key at tls.crt and tls.key needed for establishing secure database connections
-      dbSslClientCrtSecret:
-      masterkeySecretName: zitadel-secret
-
-      # Enabling this will create a debug pod that can be used to inspect the ZITADEL configuration and run zitadel commands using the zitadel binary.
-      # This is useful for debugging and troubleshooting.
-      # After the debug pod is created, you can open a shell within the pod.
-      # See more instructions by printing the pods logs using kubectl logs [pod name].
-      debug:
-        enabled: true
-        annotations:
-          helm.sh/hook: pre-install,pre-upgrade
-          helm.sh/hook-weight: "1"
+      masterkeySecretName: zitadel-secrety
     replicaCount: 1
     image:
       repository: ghcr.io/zitadel/zitadel
@@ -103,11 +84,6 @@ spec:
           secretKeyRef:
             name: zitadel-secret
             key: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
-      - name: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: zitadel-secret
-            key: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
       - name: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
         valueFrom:
           secretKeyRef:
@@ -136,7 +112,7 @@ spec:
 
     initJob:
       # Once ZITADEL is installed, the initJob can be disabled.
-      enabled: false
+      enabled: true
 
     readinessProbe:
       enabled: true
