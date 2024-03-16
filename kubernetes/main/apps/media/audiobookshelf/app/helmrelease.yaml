@@ -103,9 +103,9 @@ spec:
         path: /mnt/tank/Media
         globalMounts:
           - path: /audiobooks
-            subPath: Books
+            subPath: Media/Books
           - path: /podcasts
-            subPath: Podcasts
+            subPath: Media/Podcasts
       cache:
         globalMounts:
           - path: /.npm
