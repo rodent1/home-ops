@@ -7,4 +7,3 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./snapshot-controller/ks.yaml
-  # - ./system-upgrade-controller/ks.yaml
