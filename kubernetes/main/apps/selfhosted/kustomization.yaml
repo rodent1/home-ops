@@ -10,6 +10,6 @@ resources:
   - ./immich/ks.yaml
   - ./linkwarden/ks.yaml
   - ./paperless/ks.yaml
-  - ./stirling-pdf/ks.yaml
+  # - ./stirling-pdf/ks.yaml
   - ./vikunja/ks.yaml
   - ./wallos/ks.yaml
