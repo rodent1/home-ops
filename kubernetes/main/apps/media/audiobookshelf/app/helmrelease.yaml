@@ -101,10 +101,7 @@ spec:
         server: 10.1.1.15
         path: /mnt/tank/Media
         globalMounts:
-          - path: /audiobooks
-            subPath: Media/Books
-          - path: /podcasts
-            subPath: Media/Podcasts
+          - path: /media
       cache:
         globalMounts:
           - path: /.npm
