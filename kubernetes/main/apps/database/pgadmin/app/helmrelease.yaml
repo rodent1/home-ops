@@ -1,37 +1,34 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: pgadmin
+  name: &app pgadmin
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
-      main:
+      pgadmin:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: docker.io/dpage/pgadmin4
               tag: "8.4"
@@ -52,12 +49,13 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
 
     service:
-      main:
+      app:
+        controller: pgadmin
         ports:
           http:
             port: 80
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         hosts:
@@ -66,20 +64,16 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: pgadmin
                   port: http
         tls:
           - hosts:
               - *host
-
     persistence:
       config:
-        enabled: true
         existingClaim: config-pgadmin
         globalMounts:
           - path: /var/lib/pgadmin
-        accessMode: ReadWriteOnce
-
       server-json:
         enabled: true
         type: configMap
@@ -87,7 +81,6 @@ spec:
         globalMounts:
           - path: /pgadmin4/servers.json
             subPath: servers.json
-
       local-config:
         enabled: true
         type: secret
