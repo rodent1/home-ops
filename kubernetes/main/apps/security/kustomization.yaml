@@ -8,5 +8,6 @@ resources:
   # Flux-Kustomizations
   - ./authentik/ks.yaml
   - ./external-secrets/ks.yaml
+  - ./zitadel/ks.yaml
 
 
