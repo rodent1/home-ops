@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -21,12 +21,11 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
-      main:
+      vector-aggregator:
         replicas: 2
         strategy: RollingUpdate
         annotations:
@@ -44,11 +43,16 @@ spec:
               - secretRef:
                   name: vector-aggregator-secret
         containers:
-          main:
+          app:
             image:
               repository: docker.io/timberio/vector
               tag: 0.36.1-alpine@sha256:cf20f6f0adb57f561df678a70c4a68361885b861882235bfb0a808610bb1b532
             args: ["--config", "/etc/vector/vector.yaml"]
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
         pod:
           topologySpreadConstraints:
             - maxSkew: 1
@@ -58,21 +62,24 @@ spec:
                 matchLabels:
                   app.kubernetes.io/name: *app
     service:
-      main:
+      app:
+        controller: vector-aggregator
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: vector.${SECRET_DOMAIN}
           io.cilium/lb-ipam-ips: 10.1.2.13
         ports:
           http:
+            primary: true
             port: 8686
           journald:
             port: 6000
           kubernetes:
             port: 6010
+          vyos:
+            port: 6020
     persistence:
       config:
-        enabled: true
         type: configMap
         name: vector-aggregator-configmap
         globalMounts:
