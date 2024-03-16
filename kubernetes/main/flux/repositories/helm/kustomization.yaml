@@ -32,3 +32,4 @@ resources:
   - ./stakater.yaml
   - ./weaveworks.yaml
   - ./xenitab.yaml
+  - ./zitadel.yaml
