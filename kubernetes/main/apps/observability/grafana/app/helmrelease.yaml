@@ -62,7 +62,7 @@ spec:
         oauth_allow_insecure_email_lookup: true
       auth.generic_oauth:
         enabled: true
-        name: Authentik
+        name: OAuth
         icon: signin
         scopes: openid profile email groups
         empty_scopes: false
