@@ -29,11 +29,11 @@ spec:
       namespace: system
   values:
     controllers:
-      main:
+      stirling-pdf:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          stirling-pdf:
+          app:
             image:
               repository: ghcr.io/stirling-tools/s-pdf
               tag: 0.22.2@sha256:38e8c1dca7f272e445c1dde54313d2bcf3f9a4b1e17dc9ee03fb5158df5e4663
