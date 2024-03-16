@@ -64,7 +64,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: pgadmin
+                  identifier: app
                   port: http
         tls:
           - hosts:
