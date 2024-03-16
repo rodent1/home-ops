@@ -112,6 +112,6 @@ spec:
         enabled: true
         existingClaim: config-paperless
         advancedMounts:
-          main:
-            main:
+          paperless:
+            app:
               - path: /data/local
