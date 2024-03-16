@@ -1,30 +1,27 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app immich
+  name: immich
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: cloudnative-pg
       namespace: database
@@ -49,7 +46,7 @@ spec:
             matchLabels:
               app.kubernetes.io/name: *app
     controllers:
-      main:
+      immich:
         annotations:
           reloader.stakater.com/auto: "true"
         type: deployment
@@ -60,18 +57,16 @@ spec:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
-              imagePullPolicy: IfNotPresent
             envFrom: &envFrom
               - configMapRef:
                   name: immich-configmap
               - secretRef:
                   name: immich-secret
         containers:
-          main:
+          server:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.98.2@sha256:5d46c02f171b2c85c5c445ed9ae233d68568b241e14e293b0195d539b98de42a
-              imagePullPolicy: IfNotPresent
             args: ["start-server.sh"]
             envFrom: *envFrom
             securityContext:
@@ -84,17 +79,10 @@ spec:
                 memory: 144M
               limits:
                 memory: 256Mi
-      microservices:
-        type: deployment
-        replicas: 1
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          main:
+          microservices:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.98.2@sha256:5d46c02f171b2c85c5c445ed9ae233d68568b241e14e293b0195d539b98de42a
-              imagePullPolicy: IfNotPresent
             args: ["start-microservices.sh"]
             envFrom: *envFrom
             securityContext:
@@ -109,15 +97,10 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 500Mi
-      machine-learning:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          main:
+          machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.98.2@sha256:ac21ed6160c106eb26f704626d1fbf693dd74640131afd4d2ccad5db26aa98c5
-              imagePullPolicy: IfNotPresent
             envFrom: *envFrom
             resources:
               requests:
@@ -126,12 +109,13 @@ spec:
               limits:
                 memory: 2Gi
     service:
-      main:
+      server:
+        controller: immich
         ports:
           http:
             port: 3001
       machine-learning:
-        controller: machine-learning
+        controller: immich
         ports:
           http:
             port: 3003
@@ -159,14 +143,13 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: server
                   port: 3001
         tls:
           - hosts:
               - *host
     persistence:
       library:
-        enabled: true
         existingClaim: config-immich
         globalMounts:
           - path: /usr/src/app/upload
