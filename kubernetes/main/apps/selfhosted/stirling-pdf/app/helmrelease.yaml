@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -20,19 +20,23 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: system
   values:
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          stirling-pdf:
             image:
               repository: ghcr.io/stirling-tools/s-pdf
-              tag: 0.22.0@sha256:b91931d1eef7c16b8c0270b77eeaeec2071c2d1bac52e39a66c3485bc057daf9
+              tag: 0.22.2@sha256:38e8c1dca7f272e445c1dde54313d2bcf3f9a4b1e17dc9ee03fb5158df5e4663
               pullPolicy: IfNotPresent
             env:
               TZ: Europe/Oslo
@@ -53,7 +57,8 @@ spec:
               limits:
                 memory: 500Mi
     service:
-      main:
+      app:
+        controller: stirling-pdf
         ports:
           http:
             port: 8080
@@ -68,7 +73,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -77,3 +82,11 @@ spec:
       config:
         enabled: true
         existingClaim: config-stirling-pdf
+        globalMounts:
+          - path: /configs
+      logs:
+        type: emptyDir
+      tessdata:
+        type: emptyDir
+        globalMounts:
+          - path: /usr/share/tessdata
