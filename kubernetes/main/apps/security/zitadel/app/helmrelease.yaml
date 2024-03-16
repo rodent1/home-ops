@@ -66,7 +66,7 @@ spec:
           # either directly or by a path to the corresponding file
           Enabled: false
         WebAuthNName: ZITADEL
-      masterkeySecretName: zitadel-secrety
+      masterkeySecretName: zitadel-secret
     replicaCount: 1
     image:
       repository: ghcr.io/zitadel/zitadel
