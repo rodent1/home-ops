@@ -55,7 +55,7 @@ spec:
         controller: theme-park
         ports:
           http:
-            port: *port
+            port: 8080
     ingress:
       app:
         className: internal
