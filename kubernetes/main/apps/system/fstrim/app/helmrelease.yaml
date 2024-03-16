@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -20,30 +20,22 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
-      main:
+      fstrim:
         type: cronjob
         cronjob:
           schedule: "@weekly"
           parallelism: 6 # Set to my total number of nodes
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/kubanetics
               tag: 2024.3.4@sha256:2dfb70e154b4d4cbd8b1f98f1647e4a96aa1fc084a7e07b2586e35f7fc743383
             env:
               SCRIPT_NAME: fstrim.sh
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
             resources:
               requests:
                 cpu: 25m
@@ -61,9 +53,6 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: *app
-    service:
-      main:
-        enabled: false
     persistence:
       procfs:
         type: hostPath
