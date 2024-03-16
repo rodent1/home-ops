@@ -24,15 +24,15 @@ data:
         enabled: true
         # The url to redirect clients to. Defaults to the configured frontend url. If you're using Vikunja with the official
         # frontend, you don't need to change this value.
-        redirecturl: https://tasks.${SECRET_DOMAIN}/auth/openid/
+        redirecturl: {{ .VIKUNJA_OAUTH_REDIRECT_URL }}
         # A list of enabled providers
         providers:
           # The name of the provider as it will appear in the frontend.
-          - name: authentik
+          - name: OAuth
             # The auth url to send users to if they want to authenticate using OpenID Connect.
-            authurl: https://authentik.${SECRET_DOMAIN}/application/o/vikunja/
+            authurl: {{ .VIKUNJA_OAUTH_AUTH_URL }}
             # The client ID used to authenticate Vikunja at the OpenID Connect provider.
-            clientid: vikunja
+            clientid: {{ .VIKUNJA_OAUTH_CLIENT_ID }}
             # The client secret used to authenticate Vikunja at the OpenID Connect provider.
             clientsecret: {{ .VIKUNJA_OAUTH_CLIENT_SECRET }}
 
