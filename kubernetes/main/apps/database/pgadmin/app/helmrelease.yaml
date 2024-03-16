@@ -27,14 +27,6 @@ spec:
       pgadmin:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          volume-permissions:
-            image:
-              repository: dpage/pgadmin4
-              tag: "8.4@sha256:18cd5711fc9a7ed633a5c4b2b1a8f3e969d9262a94b8166c79fe0bba52697788"
-            command: ["/bin/chown", "-R", "5050:5050", "/var/lib/pgadmin"]
-            securityContext:
-              runAsUser: 0
         containers:
           app:
             image:
@@ -52,8 +44,8 @@ spec:
         pod:
           securityContext:
             runAsUser: 5050
-            runAsGroup: 5050
-            fsGroup: 5050
+            runAsGroup: 0
+            fsGroup: 0
             fsGroupChangePolicy: OnRootMismatch
 
     service:
