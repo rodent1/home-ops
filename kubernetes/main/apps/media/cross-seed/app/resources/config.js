@@ -15,14 +15,6 @@ module.exports = {
   duplicateCategories: true,
   matchMode: "safe",
   skipRecheck: true,
-  linkType: "hardlink",
-  linkDir: "/media/Downloads/complete/cross-seed",
-  dataDirs: [
-    "/media/Downloads/complete/prowlarr",
-    "/media/Downloads/complete/radarr",
-    "/media/Downloads/complete/sonarr",
-  ],
-  maxDataDepth: 1,
-  outputDir: "/config/xseeds",
-  torrentDir: "/config/qBittorrent/BT_backup",
+  outputDir: "/config",
+  torrentDir: "/qbittorrent/qBittorrent/BT_backup",
 };

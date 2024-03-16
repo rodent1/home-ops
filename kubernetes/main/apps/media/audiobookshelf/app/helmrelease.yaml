@@ -1,50 +1,39 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: audiobookshelf
+  name: qbittorrent
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
       namespace: system
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-        supplementalGroups:
-          - 1000
     controllers:
-      main:
+      audiobookshelf:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/advplyr/audiobookshelf
               tag: 2.8.0@sha256:34bc1414a7a65f3f1e12f3e03195561732cc740792d1dea1858d483006ceba1e
@@ -60,9 +49,9 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
-                    port: &port 80
-                  initialDelaySeconds: 0
+                    path: /healthcheck
+                    port: *port
+                  initialDelaySeconds: 30
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
@@ -75,13 +64,21 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 256Mi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [10000]
     service:
-      main:
+      app:
+        controller: audiobookshelf
         ports:
           http:
             port: *port
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -92,25 +89,23 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
               - *host
     persistence:
       config:
-        enabled: true
         existingClaim: config-audiobookshelf
-        advancedMounts:
-          main:
-            main:
-              - path: /config
       media:
         type: nfs
         server: 10.1.1.15
         path: /mnt/tank/Media
         globalMounts:
-          - path: /media
+          - path: /audiobooks
+            subPath: Books
+          - path: /podcasts
+            subPath: Podcasts
       cache:
         globalMounts:
           - path: /.npm
