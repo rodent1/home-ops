@@ -30,11 +30,10 @@ spec:
     - name: volsync
       namespace: system
   values:
-    paperless:
-      main:
+    controllers:
+      paperless:
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
