@@ -23,4 +23,5 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: zitadel
+      APP: *app
+      GATUS_SUBDOMAIN: auth
