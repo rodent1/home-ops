@@ -49,7 +49,7 @@ spec:
             env:
               NEXT_PUBLIC_DISABLE_REGISTRATION: "true"
               NEXT_PUBLIC_CREDENTIALS_ENABLED: "false"
-              DISABLE_NEW_SSO_USERS: "false"
+              DISABLE_NEW_SSO_USERS: "true"
               STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
               HOME: /data/config
             envFrom: *envFrom
