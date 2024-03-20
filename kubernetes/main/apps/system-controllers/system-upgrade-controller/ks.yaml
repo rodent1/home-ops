@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: node-feature-discovery-rules
   path: ./kubernetes/main/apps/system-controllers/system-upgrade-controller/app
   prune: true
   sourceRef:
@@ -28,11 +30,11 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: system-controllers
-  dependsOn:
-    - name: system-upgrade-controller
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: system-upgrade-controller
   path: ./kubernetes/main/apps/system-controllers/system-upgrade-controller/plans
   prune: true
   sourceRef:
