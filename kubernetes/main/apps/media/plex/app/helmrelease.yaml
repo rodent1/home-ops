@@ -63,10 +63,9 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 2Gi
               limits:
                 gpu.intel.com/i915: 1
-                memory: 10Gi
+                memory: 12Gi
         pod:
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: "true"
@@ -100,8 +99,7 @@ spec:
                   identifier: app
                   port: http
         tls:
-          - hosts:
-              - *host
+          - hosts: [*host]
     persistence:
       config:
         existingClaim: config-plex
