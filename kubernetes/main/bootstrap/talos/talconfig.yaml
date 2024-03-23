@@ -239,7 +239,7 @@ controlPlane:
             allowedRoles:
               - os:admin
             allowedKubernetesNamespaces:
-              - system-controllers
+              - system-upgrade
 
 
 worker:
