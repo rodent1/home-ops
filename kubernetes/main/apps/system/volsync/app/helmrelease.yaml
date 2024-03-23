@@ -25,7 +25,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: snapshot-controller
-      namespace: system-controllers
+      namespace: system
   values:
     manageCRDs: true
     image: &image
