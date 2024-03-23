@@ -7,7 +7,7 @@ vars:
   TALHELPER_CONFIG_FILE: "{{.KUBERNETES_DIR}}/main/bootstrap/talos/talconfig.yaml"
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
   TALOS_VERSION: v1.6.7
-  TALOS_SCHEMATIC_ID: df491c50a5acc05b977ef00c32050e1ceb0df746e40b33c643ac8a9bfb7c7263
+  TALOS_SCHEMATIC_ID: 22b1d04da881ef7c57edb0f24d1f3ba2c78a8e22cbe3fa9af4f42d487b2863f7
   # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
   KUBERNETES_VERSION: v1.29.3
   TALOS_SCRIPTS_DIR: "{{.ROOT_DIR}}/.taskfiles/Talos/scripts"
@@ -70,12 +70,24 @@ tasks:
       - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
 
+  upgrade:
+    desc: Upgrade Talos on a node
+    cmd: bash {{.TALOS_SCRIPTS_DIR}}/upgrade.sh "{{.cluster}}" "{{.node}}" "{{.TALOS_SCHEMATIC_ID}}:{{.TALOS_VERSION}}" "{{.rollout}}"
+    vars:
+      rollout: '{{.rollout | default "false"}}'
+    requires:
+      vars: ["cluster", "node"]
+    preconditions:
+      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
+      - talosctl --context {{.cluster}} config info >/dev/null 2>&1
+      - talosctl --context {{.cluster}} --nodes {{.node}} get machineconfig >/dev/null 2>&1
+
   upgrade-rollout:
     desc: Rollout Talos upgrade on all nodes
     cmds:
       - flux --context {{.cluster}} suspend kustomization --all
       - kubectl cnpg --context {{.cluster}} maintenance set --reusePVC --all-namespaces
-      - for: { var: nodes }
+      - for: { var: nodes, split: "," }
         task: upgrade
         vars:
           cluster: "{{.cluster}}"
@@ -88,24 +100,13 @@ tasks:
           cluster: "{{.cluster}}"
     vars:
       nodes:
-        sh: talosctl --context {{.cluster}} config info --output json | jq --join-output '[.nodes[]] | join(" ")'
+        sh: talosctl --context {{.cluster}} config info --output json | jq --join-output '[.nodes[]] | join(",")'
     requires:
       vars: ["cluster"]
     preconditions:
       - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
-
-  upgrade:
-    desc: Upgrade Talos on a node
-    cmd: bash {{.TALOS_SCRIPTS_DIR}}/upgrade.sh "{{.cluster}}" "{{.node}}" "{{.TALOS_SCHEMATIC_ID}}:{{.TALOS_VERSION}}" "{{.rollout}}"
-    vars:
-      rollout: '{{.rollout | default "false"}}'
-    requires:
-      vars: ["cluster", "node"]
-    preconditions:
-      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
-      - talosctl --context {{.cluster}} config info >/dev/null 2>&1
-      - talosctl --context {{.cluster}} --nodes {{.node}} get machineconfig >/dev/null 2>&1
+      - talosctl --context {{.cluster}} --nodes {{.nodes}} get machineconfig >/dev/null 2>&1
 
   upgrade-k8s:
     desc: Upgrade the clusters k8s version
@@ -119,3 +120,40 @@ tasks:
       - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
       - talosctl --context {{.cluster}} --nodes {{.node}} get machineconfig >/dev/null 2>&1
+
+  reset-node:
+    desc: Reset a Talos node and shut it down
+    prompt: Reset Talos '{{.node}}' node on the '{{.cluster}}' cluster ... continue?
+    cmd: talosctl --context {{.cluster}} reset --nodes {{.node}} --graceful=false
+    requires:
+      vars: ["cluster", "node"]
+    preconditions:
+      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
+      - talosctl --context {{.cluster}} config info >/dev/null 2>&1
+      - talosctl --context {{.cluster}} --nodes {{.node}} get machineconfig >/dev/null 2>&1
+
+  reset-cluster:
+    desc: Reset all the Talos nodes and shut 'em down
+    prompt: Reset Talos on the '{{.cluster}}' cluster ... continue?
+    cmd: talosctl --context {{.cluster}} reset --nodes {{.nodes}} --graceful=false
+    vars:
+      nodes:
+        sh: talosctl --context {{.cluster}} config info --output json | jq --join-output '[.nodes[]] | join(",")'
+    requires:
+      vars: ["cluster"]
+    preconditions:
+      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
+      - talosctl --context {{.cluster}} config info >/dev/null 2>&1
+      - talosctl --context {{.cluster}} --nodes {{.nodes}} get machineconfig >/dev/null 2>&1
+
+  apply-config:
+    desc: Apply Talos config to the nodes
+    dir: "{{.KUBERNETES_DIR}}/main/bootstrap/talos"
+    cmd: talhelper gencommand apply | bash
+
+  genconfig:
+    desc: Generate Talos config
+    dir: "{{.KUBERNETES_DIR}}/main/bootstrap/talos"
+    cmd: talhelper genconfig
+    preconditions:
+      - { msg: "Missing talhelper config file", sh: "test -f {{.TALHELPER_CONFIG_FILE}}" }
