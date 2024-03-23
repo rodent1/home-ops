@@ -22,7 +22,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
-  ingressClassName: nginx-internal
+  ingressClassName: internal
   rules:
     - host: &host "cdi.${SECRET_DOMAIN}"
       http:
@@ -37,4 +37,3 @@ spec:
   tls:
     - hosts:
         - *host
-      secretName: "${SECRET_DOMAIN/./-}-production-tls"
