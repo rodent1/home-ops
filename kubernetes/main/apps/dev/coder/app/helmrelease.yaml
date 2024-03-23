@@ -34,10 +34,9 @@ spec:
     coder:
       resources:
         limits:
-          memory: 436Mi
+          memory: 1Gi
         requests:
           cpu: 71m
-          memory: 436Mi
       env:
       # DB
       - name: CODER_PG_CONNECTION_URL
