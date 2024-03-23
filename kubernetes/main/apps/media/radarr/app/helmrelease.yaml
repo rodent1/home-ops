@@ -108,6 +108,8 @@ spec:
           - hosts:
               - *host
     persistence:
+      config:
+        existingClaim: config-radarr
       tmp:
         type: emptyDir
       media:
