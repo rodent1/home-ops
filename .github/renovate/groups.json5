@@ -8,7 +8,7 @@
         "gha-runner-scale-set-controller",
         "gha-runner-scale-set"
       ],
-      "matchDatasources": ["helm", "docker"],
+      "matchDatasources": ["docker", "helm"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       },
@@ -20,16 +20,6 @@
       "matchPackagePatterns": ["fluxcd"],
       "matchDatasources": ["docker", "github-tags"],
       "versioning": "semver",
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": true
-    },
-    {
-      "description": ["Immich Group"],
-      "groupName": "Immich",
-      "matchPackagePatterns": ["immich"],
-      "matchDatasources": ["docker", "github-releases"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       },
@@ -58,8 +48,22 @@
     {
       "description": ["Talos Group"],
       "groupName": "Talos",
-      "matchPackagePatterns": ["(rancher\/kubectl|siderolabs)"],
-      "matchDatasources": ["docker", "github-releases"],
+      "matchPackagePatterns": [
+        "siderolabs/talosctl",
+        "siderolabs/installer"
+      ],
+      "matchDatasources": ["docker"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
+    {
+      "description": ["Volsync Group"],
+      "groupName": "Volsync",
+      "matchPackagePatterns": ["volsync"],
+      "matchDatasources": ["docker", "helm"],
+      "matchUpdateTypes": ["minor", "patch"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       },

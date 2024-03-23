@@ -4,6 +4,10 @@
   color: "0e8a16"
 - name: area/kubernetes
   color: "0e8a16"
+- name: area/taskfile
+  color: "0e8a16"
+- name: area/terraform
+  color: "0e8a16"
 # Clusters
 - name: cluster/main
   color: "ffc300"
@@ -34,5 +38,7 @@
 - name: type/major
   color: "f6412d"
 # Uncategorized
+- name: community
+  color: "370fb2"
 - name: hold
   color: "ee0701"
