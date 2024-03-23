@@ -8,7 +8,7 @@ spec:
   interval: 30m
   url: https://github.com/rodent1/kubevirt-flux.git
   ref:
-    branch: cdi-v1.58.2
+    branch: cdi-v1.58.3
   ignore: |
     # exclude all
     /*
