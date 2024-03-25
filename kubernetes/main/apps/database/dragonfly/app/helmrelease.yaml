@@ -37,7 +37,6 @@ spec:
               - --health-probe-bind-address=:8081
               - --metrics-bind-address=:8080
               - --leader-elect
-              - --default_lua_flags=allow-undeclared-keys,disable-atomicity
             probes:
               liveness:
                 enabled: true
