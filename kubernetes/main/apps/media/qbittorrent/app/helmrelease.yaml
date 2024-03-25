@@ -28,6 +28,11 @@ spec:
     - name: volsync
       namespace: system
   values:
+    defaultPodOptions:
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
     controllers:
       qbittorrent:
         annotations:
