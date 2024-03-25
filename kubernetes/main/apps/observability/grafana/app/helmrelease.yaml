@@ -20,9 +20,8 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: cloudnative-pg
       namespace: database
@@ -43,6 +42,7 @@ spec:
       GF_EXPLORE_ENABLED: true
       GF_FEATURE_TOGGLES_ENABLE: publicDashboards
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
+      GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN}
       # Optionally enable auto-login (bypasses Grafana login screen)
@@ -162,7 +162,7 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://thanos-query-frontend.observability.svc.cluster.local:9090
+            url: http://thanos-query-frontend.observability.svc.cluster.local:10902
             jsonData:
               prometheusType: Thanos
               timeInterval: 1m
@@ -376,8 +376,7 @@ spec:
       hosts:
         - &host grafana.${SECRET_DOMAIN}
       tls:
-        - hosts:
-            - *host
+        - hosts: [*host]
     persistence:
       enabled: false
     testFramework:
