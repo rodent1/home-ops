@@ -25,7 +25,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
-    - name: dragonfly
+    - name: dragonfly-operator
       namespace: database
     - name: rook-ceph-cluster
       namespace: rook-ceph

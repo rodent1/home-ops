@@ -26,7 +26,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
-    - name: dragonfly
+    - name: dragonfly-operator
       namespace: database
   values:
     global:
