@@ -1,18 +1,18 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: dragonfly
+  name: &app dragonfly-operator
 spec:
   interval: 30m
   chart:
     spec:
-      chart: dragonfly
-      version: v1.15.1
+      chart: app-template
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
-        name: dragonfly
+        name: bjw-s
         namespace: flux-system
   install:
     remediation:
@@ -20,48 +20,84 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
-  dependsOn:
-    - name: openebs
-      namespace: openebs-system
   values:
-    replicaCount: 1
-    storage:
-      enabled: true
-      requests: 1Gi
-      storageClassName: openebs-hostpath
-    extraArgs:
-      - --dbfilename=dump
-      - --snapshot_cron=* * * * * # cron format
-      - --default_lua_flags=allow-undeclared-keys
-    podSecurityContext:
-      fsGroup: 2000
-    securityContext:
-      capabilities:
-        drop:
-          - ALL
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      runAsUser: 1000
-    resources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-      limits:
-        cpu: 500m
-        memory: 512Mi
+    controllers:
+      dragonfly-operator:
+        replicas: 2
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/dragonflydb/operator
+              tag: v1.1.1@sha256:73db24768f5b652a408b864875e367979e539fe543b3c83771be61f282f34d89
+            command: ["/manager"]
+            args:
+              - --health-probe-bind-address=:8081
+              - --metrics-bind-address=:8080
+              - --leader-elect
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: &port 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: *port
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+          metrics:
+            port: 8080
+    serviceAccount:
+      create: true
+      name: *app
     serviceMonitor:
-      enabled: true
-    prometheusRule:
-      enabled: true
-      spec:
-        - alert: DragonflyMissing
-          expr: absent(dragonfly_uptime_in_seconds) == 1
-          for: 0m
-          labels:
-            severity: critical
-          annotations:
-            summary: Dragonfly is missing
-            description: "Dragonfly is missing"
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
