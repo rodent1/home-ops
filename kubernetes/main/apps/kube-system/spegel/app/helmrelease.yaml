@@ -1,18 +1,18 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: coredns
+  name: spegel
 spec:
   interval: 30m
   chart:
     spec:
-      chart: coredns
-      version: 1.29.0
+      chart: spegel
+      version: v0.0.18
       sourceRef:
         kind: HelmRepository
-        name: coredns
+        name: xenitab
         namespace: flux-system
   install:
     remediation:
@@ -24,4 +24,7 @@ spec:
       retries: 3
   valuesFrom:
     - kind: ConfigMap
-      name: coredns-helm-values
+      name: spegel-helm-values
+  values:
+    serviceMonitor:
+      enabled: true

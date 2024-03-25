@@ -20,12 +20,11 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   valuesFrom:
     - kind: ConfigMap
-      name: cilium-values
+      name: cilium-helm-values
   values:
     hubble:
       enabled: true
