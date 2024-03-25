@@ -10,3 +10,4 @@ resources:
   - ./coredns/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
   - ./metrics-server/ks.yaml
+  - ./spegel/ks.yaml
