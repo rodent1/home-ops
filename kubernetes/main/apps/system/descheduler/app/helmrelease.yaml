@@ -20,18 +20,11 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     replicas: 2
     kind: Deployment
-    resources:
-      requests:
-        cpu: 10m
-        memory: 256Mi
-      limits:
-        memory: 256Mi
     deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
       profiles:
