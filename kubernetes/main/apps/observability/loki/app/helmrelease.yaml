@@ -21,9 +21,8 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: openebs
       namespace: openebs-system
@@ -142,8 +141,7 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - *host
+          - hosts: [*host]
     read:
       replicas: 2
       persistence:
