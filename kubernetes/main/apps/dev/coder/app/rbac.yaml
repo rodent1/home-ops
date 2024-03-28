@@ -4,27 +4,27 @@ kind: ClusterRole
 metadata:
   name: coder-crd
 rules:
-- apiGroups: ["apiextensions.k8s.io"]
-  resources: ["customresourcedefinitions"]
-  verbs: ["get", "list", "watch"]
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: coder-vm
 rules:
-- apiGroups: ["kubevirt.io"]
-  resources: ["virtualmachines"]
-  verbs: ["*"]
+  - apiGroups: ["kubevirt.io"]
+    resources: ["virtualmachines"]
+    verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: coder-dv
 rules:
-- apiGroups: ["cdi.kubevirt.io"]
-  resources: ["datavolumes"]
-  verbs: ["*"]
+  - apiGroups: ["cdi.kubevirt.io"]
+    resources: ["datavolumes"]
+    verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -32,9 +32,9 @@ metadata:
   name: coder-secrets
   namespace: dev
 rules:
-- apiGroups: [""]
-  resources: ["secrets"]
-  verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -42,18 +42,18 @@ metadata:
   name: coder-services
   namespace: dev
 rules:
-- apiGroups: [""]
-  resources: ["services"]
-  verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: coder-crd-binding
 subjects:
-- kind: ServiceAccount
-  name: coder
-  namespace: dev
+  - kind: ServiceAccount
+    name: coder
+    namespace: dev
 roleRef:
   kind: ClusterRole
   name: coder-crd
@@ -65,9 +65,9 @@ metadata:
   name: coder-secrets-binding
   namespace: dev
 subjects:
-- kind: ServiceAccount
-  name: coder
-  namespace: dev
+  - kind: ServiceAccount
+    name: coder
+    namespace: dev
 roleRef:
   kind: Role
   name: coder-secrets
