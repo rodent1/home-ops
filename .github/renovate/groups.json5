@@ -26,6 +26,16 @@
       "separateMinorPatch": true
     },
     {
+      "description": ["Immich Group"],
+      "groupName": "Immich",
+      "matchPackagePatterns": ["ghcr.io/immich-app"],
+      "matchDatasources": ["docker", "github-releases"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
+    {
       "description": ["Rook-Ceph Group"],
       "groupName": "Rook-Ceph",
       "matchPackagePatterns": ["rook.ceph"],
