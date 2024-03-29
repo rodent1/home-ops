@@ -58,10 +58,10 @@ spec:
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-      hosts:
-        - &host authentik.${SECRET_DOMAIN}
-      tls:
-        - hosts: [*host]
+        hosts:
+          - &host authentik.${SECRET_DOMAIN}
+        tls:
+          - hosts: [*host]
     worker:
       autoscaling:
         enabled: true
