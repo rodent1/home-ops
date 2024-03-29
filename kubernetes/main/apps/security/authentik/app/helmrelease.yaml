@@ -20,9 +20,8 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: cloudnative-pg
       namespace: database
@@ -30,45 +29,39 @@ spec:
       namespace: database
   values:
     global:
+      podAnnotations:
+        secret.reloader.stakater.com/reload: &secret authentik-secret
+      deploymentStrategy:
+        type: RollingUpdate
       envFrom:
         - secretRef:
-            name: authentik-secret
-      podAnnotations:
-        secret.reloader.stakater.com/reload: authentik-secret
+            name: *secret
+    authentik:
+      redis:
+        host: dragonfly.database.svc.cluster.local
     server:
+      initContainers:
+        - name: init-db
+          image: ghcr.io/onedr0p/postgres-init:16.2@sha256:930a20e3ea8c82504d8e80f413d042d9936930d625fb098dd306b5aad427a151
+          envFrom:
+            - secretRef:
+                name: *secret
       autoscaling:
         enabled: true
         minReplicas: 1
+      metrics:
+        prometheus:
+          serviceMonitor:
+            enabled: true
       ingress:
         enabled: true
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-        hosts:
-          - &host authentik.${SECRET_DOMAIN}
-        paths:
-          - /
-        tls:
-          - hosts:
-              - *host
-            secretName: *host
-      metrics:
-        serviceMonitor:
-          enabled: true
-    prometheus:
-      rules:
-        enabled: true
-    postgresql:
-      enabled: false
-    redis:
-      enabled: false
-    geoip:
-      enabled: false
-    authentik:
-      redis:
-        host: dragonfly.database.svc.cluster.local
-      outposts:
-        docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
+      hosts:
+        - &host authentik.${SECRET_DOMAIN}
+      tls:
+        - hosts: [*host]
     worker:
       autoscaling:
         enabled: true
