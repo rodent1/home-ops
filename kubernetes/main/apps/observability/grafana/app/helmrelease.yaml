@@ -64,7 +64,7 @@ spec:
         enabled: true
         name: OAuth
         icon: signin
-        scopes: openid profile email groups
+        scopes: openid email profile
         empty_scopes: false
         login_attribute_path: preferred_username
         groups_attribute_path: groups
@@ -73,7 +73,7 @@ spec:
       auth.generic_oauth.group_mapping:
         org_id: 1
         role_attribute_path: |
-          contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
+          contains(groups, 'Grafana Admins') && 'Admin' || contains(groups, 'Grafana Editors') && 'Editor' || 'Viewer'
       auth.basic:
         enabled: false
       auth.anonymous:
