@@ -8,7 +8,7 @@ resources:
   - ./excalidraw/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
-  # - ./linkwarden/ks.yaml
+  - ./linkwarden/ks.yaml
   - ./paperless/ks.yaml
   - ./stirling-pdf/ks.yaml
   - ./vikunja/ks.yaml
