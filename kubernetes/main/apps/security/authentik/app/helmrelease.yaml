@@ -46,9 +46,6 @@ spec:
           envFrom:
             - secretRef:
                 name: *secret
-      autoscaling:
-        enabled: true
-        minReplicas: 1
       metrics:
         prometheus:
           serviceMonitor:
@@ -62,7 +59,3 @@ spec:
           - &host auth.${SECRET_DOMAIN}
         tls:
           - hosts: [*host]
-    worker:
-      autoscaling:
-        enabled: true
-        minReplicas: 1
