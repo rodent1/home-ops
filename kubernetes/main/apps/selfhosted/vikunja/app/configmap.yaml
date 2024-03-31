@@ -31,6 +31,8 @@ data:
           - name: OAuth
             # The auth url to send users to if they want to authenticate using OpenID Connect.
             authurl: {{ .VIKUNJA_OAUTH_AUTH_URL }}
+            # The logout url to send users to if they want to log out.
+            logouturl: {{ .VIKUNJA_OAUTH_LOGOUT_URL }}
             # The client ID used to authenticate Vikunja at the OpenID Connect provider.
             clientid: {{ .VIKUNJA_OAUTH_CLIENT_ID }}
             # The client secret used to authenticate Vikunja at the OpenID Connect provider.
