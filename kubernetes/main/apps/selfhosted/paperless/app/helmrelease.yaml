@@ -78,7 +78,7 @@ spec:
                     key: PAPERLESS_ADMIN_PASSWORD
               # Signups
               PAPERLESS_ACCOUNT_ALLOW_SIGNUPS: "false"
-              PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: "true"
+              PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: "false"
               # OIDC
               PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
               PAPERLESS_SOCIALACCOUNT_PROVIDERS:
