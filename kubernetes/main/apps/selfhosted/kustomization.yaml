@@ -11,5 +11,5 @@ resources:
   - ./linkwarden/ks.yaml
   - ./paperless/ks.yaml
   - ./stirling-pdf/ks.yaml
-  - ./vikunja/ks.yaml
+  # - ./vikunja/ks.yaml
   - ./wallos/ks.yaml
