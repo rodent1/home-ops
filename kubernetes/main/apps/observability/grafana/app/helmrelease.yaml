@@ -63,7 +63,7 @@ spec:
       auth.generic_oauth:
         enabled: true
         name: OAuth
-        scopes: openid email profile
+        scopes: openid email profile offline_access
         role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
       auth.basic:
         enabled: false
