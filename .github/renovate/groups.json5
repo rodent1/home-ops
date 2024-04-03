@@ -17,11 +17,8 @@
     {
       "description": ["Dragonfly Group"],
       "groupName": "Dragonfly",
-      "matchPackagePatterns": [
-        "ghcr.io/dragonflydb/operator",
-        "ghcr.io/dragonflydb/dragonfly"
-      ],
-      "matchDatasources": ["docker"],
+      "matchPackagePatterns": ["dragonflydb"],
+      "matchDatasources": ["docker", "github-releases", "github-tags"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       },
