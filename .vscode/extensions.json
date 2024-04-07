@@ -3,7 +3,6 @@
     "redhat.ansible",
     "redhat.vscode-yaml",
     "hashicorp.terraform",
-    "shipitsmarter.sops-edit",
     "ms-kubernetes-tools.vscode-kubernetes-tools",
     "catppuccin.catppuccin-vsc",
     "catppuccin.catppuccin-vsc-icons"
