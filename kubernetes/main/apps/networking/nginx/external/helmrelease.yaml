@@ -77,7 +77,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: network/rodent-cc-tls
+        default-ssl-certificate: networking/rodent-cc-tls
       terminationGracePeriodSeconds: 120
       topologySpreadConstraints:
         - maxSkew: 1
