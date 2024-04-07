@@ -60,7 +60,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.rodent.cc"
             paths:
               - path: /
                 service:

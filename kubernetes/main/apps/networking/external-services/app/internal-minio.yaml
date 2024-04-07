@@ -38,7 +38,7 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: &host minio.${SECRET_DOMAIN}
+    - host: &host minio.rodent.cc
       http:
         paths:
           - path: /

@@ -38,7 +38,7 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: &host s3.${SECRET_DOMAIN}
+    - host: &host s3.rodent.cc
       http:
         paths:
           - path: /

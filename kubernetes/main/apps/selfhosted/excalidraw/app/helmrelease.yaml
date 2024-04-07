@@ -56,9 +56,9 @@ spec:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.rodent.cc
         hosts:
-          - host: &host draw.${SECRET_DOMAIN}
+          - host: &host draw.rodent.cc
             paths:
               - path: /
                 service:

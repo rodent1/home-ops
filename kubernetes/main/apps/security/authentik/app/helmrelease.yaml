@@ -54,8 +54,8 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.rodent.cc"
         hosts:
-          - &host auth.${SECRET_DOMAIN}
+          - &host auth.rodent.cc
         tls:
           - hosts: [*host]

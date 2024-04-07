@@ -68,7 +68,7 @@ spec:
         enabled: true
         className: internal
         hosts:
-          - host: &host "xteve.${SECRET_DOMAIN}"
+          - host: &host "xteve.rodent.cc"
             paths:
               - path: /
                 service:

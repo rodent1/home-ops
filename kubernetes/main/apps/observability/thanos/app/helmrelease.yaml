@@ -26,8 +26,6 @@ spec:
   dependsOn:
     - name: openebs
       namespace: openebs-system
-    - name: dragonfly-operator
-      namespace: database
     - name: rook-ceph-cluster
       namespace: rook-ceph
   valuesFrom:
@@ -76,7 +74,7 @@ spec:
         size: 10Gi
     query:
       replicas: 2
-      extraArgs: ["--alert.query-url=https://thanos.${SECRET_DOMAIN}"]
+      extraArgs: ["--alert.query-url=https://thanos.rodent.cc"]
     queryFrontend:
       enabled: true
       replicas: 2
@@ -91,7 +89,7 @@ spec:
         enabled: true
         ingressClassName: internal
         hosts:
-          - &host thanos.${SECRET_DOMAIN}
+          - &host thanos.rodent.cc
         tls:
           - hosts: [*host]
       podAnnotations: &podAnnotations

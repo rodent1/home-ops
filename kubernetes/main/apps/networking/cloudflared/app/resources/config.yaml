@@ -1,10 +1,10 @@
 ---
 originRequest:
-  originServerName: external.${SECRET_DOMAIN}
+  originServerName: external.rodent.cc
 
 ingress:
-  - hostname: ${SECRET_DOMAIN}
+  - hostname: rodent.cc
     service: https://nginx-external-controller.networking.svc.cluster.local:443
-  - hostname: "*.${SECRET_DOMAIN}"
+  - hostname: "*.rodent.cc"
     service: https://nginx-external-controller.networking.svc.cluster.local:443
   - service: http_status:404

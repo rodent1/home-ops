@@ -36,7 +36,7 @@ spec:
             env:
               TZ: America/New_York
               UP_UNIFI_DEFAULT_ROLE: home-ops
-              UP_UNIFI_DEFAULT_URL: https://unifi.${SECRET_DOMAIN}
+              UP_UNIFI_DEFAULT_URL: https://unifi.rodent.cc
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_UNIFI_DEFAULT_USER: unifipoller
               UP_UNIFI_DEFAULT_PASS: 1nternalUseOnly

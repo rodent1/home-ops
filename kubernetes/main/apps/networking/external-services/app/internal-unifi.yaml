@@ -27,7 +27,7 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: &host unifi.${SECRET_DOMAIN}
+    - host: &host unifi.rodent.cc
       http:
         paths:
           - path: /

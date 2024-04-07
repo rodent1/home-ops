@@ -44,7 +44,7 @@ spec:
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SECURITY_COOKIE_SAMESITE: grafana
-      GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN}
+      GF_SERVER_ROOT_URL: https://grafana.rodent.cc
       # Optionally enable auto-login (bypasses Grafana login screen)
       GF_AUTH_OAUTH_AUTO_LOGIN: "false"
       # Database
@@ -365,7 +365,7 @@ spec:
       enabled: true
       ingressClassName: internal
       hosts:
-        - &host grafana.${SECRET_DOMAIN}
+        - &host grafana.rodent.cc
       tls:
         - hosts: [*host]
     persistence:

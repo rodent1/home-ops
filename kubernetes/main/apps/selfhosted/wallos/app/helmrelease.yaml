@@ -58,7 +58,7 @@ spec:
         enabled: true
         className: internal
         hosts:
-          - host: &host "wallos.${SECRET_DOMAIN}"
+          - host: &host "wallos.rodent.cc"
             paths:
               - path: /
                 service:

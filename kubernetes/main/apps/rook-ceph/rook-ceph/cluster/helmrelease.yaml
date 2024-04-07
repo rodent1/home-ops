@@ -35,7 +35,7 @@ spec:
       dashboard:
         ingressClassName: internal
         host:
-          name: &host rook.${SECRET_DOMAIN}
+          name: &host rook.rodent.cc
           path: /
         tls:
           - hosts:
@@ -206,7 +206,7 @@ spec:
           enabled: true
           ingressClassName: internal
           host:
-            name: &host rgw.${SECRET_DOMAIN}
+            name: &host rgw.rodent.cc
             path: /
           tls:
             - hosts:

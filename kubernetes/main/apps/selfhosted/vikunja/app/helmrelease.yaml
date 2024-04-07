@@ -50,11 +50,11 @@ spec:
             envFrom: *envFrom
             env:
               VIKUNJA_SERVICE_TIMEZONE: ${TZ}
-              VIKUNJA_SERVICE_FRONTENDURL: https://tasks.${SECRET_DOMAIN}
+              VIKUNJA_SERVICE_FRONTENDURL: https://tasks.rodent.cc
               VIKUNJA_MAILER_ENABLED: "true"
               VIKUNJA_MAILER_HOST: smtp.office365.com
               VIKUNJA_MAILER_PORT: "587"
-              VIKUNJA_MAILER_FROMEMAIL: Vikunja <mailer@${SECRET_DOMAIN}>
+              VIKUNJA_MAILER_FROMEMAIL: Vikunja <mailer@rodent.cc>
               VIKUNJA_MAILER_AUTHTYPE: login
             resources:
               requests:
@@ -93,9 +93,9 @@ spec:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.rodent.cc
         hosts:
-          - host: &host "tasks.${SECRET_DOMAIN}"
+          - host: &host "tasks.rodent.cc"
             paths:
               - path: /
                 service:

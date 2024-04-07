@@ -136,7 +136,7 @@ spec:
         enabled: true
         ingressClassName: internal
         hosts:
-          - host: &host loki.${SECRET_DOMAIN}
+          - host: &host loki.rodent.cc
             paths:
               - path: /
                 pathType: Prefix

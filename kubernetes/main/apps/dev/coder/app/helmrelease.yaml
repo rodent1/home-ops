@@ -46,9 +46,9 @@ spec:
               key: CODER_PG_CONNECTION_URL
         # App
         - name: CODER_ACCESS_URL
-          value: https://coder.${SECRET_DOMAIN}
+          value: https://coder.rodent.cc
         - name: CODER_WILDCARD_ACCESS_URL
-          value: "*.coder.${SECRET_DOMAIN}"
+          value: "*.coder.rodent.cc"
         # Github
         - name: CODER_GITAUTH_0_ID
           valueFrom:
@@ -95,5 +95,5 @@ spec:
         enable: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        host: "coder.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: external.rodent.cc
+        host: "coder.rodent.cc"

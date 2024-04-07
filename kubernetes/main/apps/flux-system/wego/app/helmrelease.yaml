@@ -33,7 +33,7 @@ spec:
       enabled: true
       className: internal
       hosts:
-        - host: &host wego.${SECRET_DOMAIN}
+        - host: &host wego.rodent.cc
           paths:
             - path: /
               pathType: Prefix

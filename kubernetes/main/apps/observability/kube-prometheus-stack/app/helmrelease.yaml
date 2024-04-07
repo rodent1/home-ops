@@ -40,7 +40,7 @@ spec:
         pathType: Prefix
         ingressClassName: internal
         hosts:
-          - &host alertmanager.${SECRET_DOMAIN}
+          - &host alertmanager.rodent.cc
         tls:
           - hosts: [*host]
       alertmanagerSpec:
@@ -97,7 +97,7 @@ spec:
         ingressClassName: internal
         pathType: Prefix
         hosts:
-          - &host prometheus.${SECRET_DOMAIN}
+          - &host prometheus.rodent.cc
         tls:
           - hosts: [*host]
       thanosService:
