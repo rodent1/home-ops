@@ -7,20 +7,18 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: "${SECRET_ACME_EMAIL}"
+    email: "stian.sporaland@rodent.cc"
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
       - dns01:
           cloudflare:
-            email: "${SECRET_CLOUDFLARE_EMAIL}"
+            email: "stian.sporaland@rodent.cc"
             apiKeySecretRef:
               name: cloudflare-secret
               key: CLOUDFLARE_API_KEY
         selector:
-          dnsZones:
-            - rodent.cc
-            - rodent.casa
+          dnsZones: ["rodent.cc"]
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cert-manager.io/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
@@ -30,17 +28,15 @@ metadata:
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: "${SECRET_ACME_EMAIL}"
+    email: "stian.sporaland@rodent.cc"
     privateKeySecretRef:
       name: letsencrypt-staging
     solvers:
       - dns01:
           cloudflare:
-            email: "${SECRET_CLOUDFLARE_EMAIL}"
+            email: stian.sporaland@rodent.cc
             apiKeySecretRef:
               name: cloudflare-secret
               key: CLOUDFLARE_API_KEY
         selector:
-          dnsZones:
-            - rodent.cc
-            - rodent.casa
+          dnsZones: ["rodent.cc"]
