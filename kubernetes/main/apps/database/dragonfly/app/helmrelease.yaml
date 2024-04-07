@@ -25,7 +25,7 @@ spec:
   values:
     controllers:
       dragonfly-operator:
-        replicas: 2
+        replicas: 1
         strategy: RollingUpdate
         containers:
           app:
@@ -36,7 +36,6 @@ spec:
             args:
               - --health-probe-bind-address=:8081
               - --metrics-bind-address=:8080
-              - --leader-elect
             probes:
               liveness:
                 enabled: true
@@ -89,9 +88,6 @@ spec:
             port: *port
           metrics:
             port: 8080
-    serviceAccount:
-      create: true
-      name: *app
     serviceMonitor:
       app:
         serviceName: *app
@@ -101,3 +97,6 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
+    serviceAccount:
+      create: true
+      name: *app

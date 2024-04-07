@@ -15,10 +15,10 @@
       "separateMinorPatch": true
     },
     {
-      "description": ["Dragonfly Group"],
-      "groupName": "Dragonfly",
-      "matchPackagePatterns": ["dragonflydb"],
-      "matchDatasources": ["docker", "github-releases", "github-tags"],
+      "description": ["Dragonfly Operator Group"],
+      "groupName": "Dragonfly Operator",
+      "matchPackagePatterns": ["dragonfly(?:db)?.operator"],
+      "matchDatasources": ["docker", "github-releases"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       },
