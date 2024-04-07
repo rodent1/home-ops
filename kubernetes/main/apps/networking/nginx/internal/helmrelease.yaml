@@ -20,18 +20,16 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     fullnameOverride: nginx-internal
     controller:
       replicaCount: 2
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: internal.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: internal.rodent.cc
           io.cilium/lb-ipam-ips: 10.1.1.152
-        externalTrafficPolicy: Cluster
       ingressClassResource:
         name: internal
         default: true
@@ -73,7 +71,8 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: networking/${SECRET_DOMAIN/./-}-tls
+        default-ssl-certificate: networking/rodent-cc-tls
+      terminationGracePeriodSeconds: 120
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -86,7 +85,6 @@ spec:
       resources:
         requests:
           cpu: 100m
-          memory: 250Mi
         limits:
           memory: 500Mi
     defaultBackend:
