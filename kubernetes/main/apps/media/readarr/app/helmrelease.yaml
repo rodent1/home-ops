@@ -71,7 +71,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 330M
+                memory: 1Gi
         pod:
           securityContext:
             runAsUser: 568
@@ -105,6 +105,8 @@ spec:
           - hosts:
               - *host
     persistence:
+      config:
+        existingClaim: config-readarr
       tmp:
         type: emptyDir
       media:
