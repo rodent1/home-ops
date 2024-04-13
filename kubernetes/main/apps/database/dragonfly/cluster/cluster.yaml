@@ -6,7 +6,7 @@ metadata:
   name: dragonfly
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.16.1
-  replicas: 3
+  replicas: 5 # set to the number of nodes in the cluster
   env:
     - name: MAX_MEMORY
       valueFrom:
@@ -17,6 +17,7 @@ spec:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
+    - --lock_on_hashtags
     - --default_lua_flags=allow-undeclared-keys
   resources:
     requests:
