@@ -6,7 +6,7 @@ endpoint: "https://${clusterName}.${clusterDNSSuffix}:6443"
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.7.0
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.30.0
+kubernetesVersion: 1.29.4
 
 cniConfig:
   name: none
@@ -25,7 +25,7 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          driver: e1000e
+          hardwareAddr: "c4:65:16:a5:6f:ea"
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
@@ -49,7 +49,7 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          driver: e1000e
+          hardwareAddr: "c4:65:16:b4:cc:3a"
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
@@ -63,7 +63,7 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          driver: e1000e
+          hardwareAddr: "c4:65:16:a7:ef:4a"
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
