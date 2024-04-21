@@ -6,7 +6,7 @@ endpoint: "https://${clusterName}.${clusterDNSSuffix}:6443"
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.7.0
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: 1.29.4
+kubernetesVersion: 1.30.0
 
 cniConfig:
   name: none
@@ -149,7 +149,6 @@ controlPlane:
       machine:
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
