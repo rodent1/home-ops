@@ -7,4 +7,4 @@ resources:
   - ./helmrelease.yaml
   # Templates
   - ../../../../templates/volsync
-  - ./b2.yaml
+  # - ./b2.yaml
