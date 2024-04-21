@@ -8,6 +8,7 @@ resources:
   - ./helmrelease.yaml
   # Templates
   - ../../../../templates/volsync
+  - ./b2.yaml
 configMapGenerator:
   - name: recyclarr-configmap
     files:
