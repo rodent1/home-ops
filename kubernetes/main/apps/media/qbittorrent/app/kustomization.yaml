@@ -8,7 +8,7 @@ resources:
   # Templates
   - ../../../../templates/gatus/guarded
   - ../../../../templates/volsync
-  # - ./b2.yaml
+  - ./b2.yaml
 configMapGenerator:
   - name: qbittorrent-scripts
     files:

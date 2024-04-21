@@ -8,4 +8,4 @@ resources:
   # Templates
   - ../../../../templates/gatus/external
   - ../../../../templates/volsync
-  # - ./b2.yaml
+  - ./b2.yaml
