@@ -6,6 +6,7 @@ metadata:
 data:
   # Library root can either be an absolute path or a relative path to your docker-compose.yml file.
   LIBRARY_ROOT: /media
+  SCANNER_LIBRARY_ROOT: /media
   # You should set this to a path where kyoo can write large amount of data, this is used as a cache by the transcoder.
   # It will automatically be cleaned up on kyoo's startup/shutdown/runtime.
   CACHE_ROOT: /cache
