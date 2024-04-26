@@ -92,5 +92,5 @@ spec:
         server: 10.1.1.15
         path: /mnt/tank/Media
         globalMounts:
-          - path: /media/Downloads/qbittorrent
-            subPath: Downloads/qbittorrent
+          - path: /media/Downloads
+            subPath: Downloads
