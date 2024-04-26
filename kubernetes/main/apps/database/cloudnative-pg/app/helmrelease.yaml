@@ -20,9 +20,8 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   dependsOn:
     - name: openebs
       namespace: openebs-system
@@ -31,5 +30,5 @@ spec:
       create: true
     monitoring:
       podMonitorEnabled: false
-      grafanaDashboard:
-        create: true
+      # grafanaDashboard:
+      #   create: true
