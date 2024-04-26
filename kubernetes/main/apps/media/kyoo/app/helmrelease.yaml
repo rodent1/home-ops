@@ -316,7 +316,7 @@ spec:
       media:
         type: nfs
         server: 10.1.1.15
-        path: /mnt/tank/Media/Media
+        path: /mnt/tank/Media
         globalMounts:
           - path: /media
             readOnly: true
