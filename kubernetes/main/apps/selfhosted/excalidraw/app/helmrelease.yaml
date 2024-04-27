@@ -30,8 +30,8 @@ spec:
         containers:
           app:
             image:
-              repository: excalidraw/excalidraw
-              tag: latest@sha256:648edf36c55793fdeed475e09a86fb6c16a68783dc442d37d5070adfc0362a8f
+              repository: ghcr.io/rodent1/excalidraw
+              tag: 0.17.3@sha256:476f4b1e1b9b2ab8b3da9035e89fbb2aa0d7294b2a9990f133e7e9412296c123
               pullPolicy: IfNotPresent
             probes: &probes
               liveness:
@@ -50,7 +50,7 @@ spec:
         controller: excalidraw
         ports:
           http:
-            port: 80
+            port: 8080
     ingress:
       app:
         enabled: true
