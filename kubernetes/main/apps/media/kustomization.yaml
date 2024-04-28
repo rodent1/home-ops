@@ -8,7 +8,6 @@ resources:
   # Flux-Kustomizations
   - ./audiobookshelf/ks.yaml
   - ./cross-seed/ks.yaml
-  # - ./kyoo/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
