@@ -84,7 +84,7 @@ spec:
           app:
             image:
               repository: ghcr.io/zoriya/kyoo_front
-              tag: master@sha256:bd1bbe677145dcf3d4c40e18312b078fc5fb383d59270219cef93ee8d43675a3
+              tag: master@sha256:f32a063935cf16081e72fa7d05c1058eb69f5f8c8d73f07c6dc098686f994c1d
             envFrom: *envFrom
             resources:
               requests:
