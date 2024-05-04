@@ -5,7 +5,7 @@ kind: Cluster
 metadata:
   name: postgres16
 spec:
-  instances: 5 # Set to my total number of nodes
+  instances: 3 # Set to my total number of nodes
   imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.2
   primaryUpdateStrategy: unsupervised
   storage:
