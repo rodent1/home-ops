@@ -102,6 +102,7 @@ spec:
               "orphaned",
               "--exclude-pattern", "*_unpackerred*",
               "--exclude-pattern", "*/manual/*",
+              "--exclude-pattern", "*/cross-seed/*",
               # "--dry-run",
               "--server", "qbittorrent.media.svc.cluster.local",
               "--port", "80"
