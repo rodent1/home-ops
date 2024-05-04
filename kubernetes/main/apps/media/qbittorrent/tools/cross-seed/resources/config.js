@@ -16,7 +16,7 @@ module.exports = {
   linkType: "hardlink",
   matchMode: "safe",
   outputDir: "/config",
-  qbittorrentUrl: "http://qbittorrent.media.svc.cluster.local:8080",
+  qbittorrentUrl: "http://qbittorrent.media.svc.cluster.local",
   skipRecheck: true,
   torrentDir: "/config/qBittorrent/BT_backup",
   torznab: [], // Only using annoucements from autobrr
