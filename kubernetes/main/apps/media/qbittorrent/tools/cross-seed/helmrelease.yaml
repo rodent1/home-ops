@@ -80,7 +80,7 @@ spec:
             subPath: config.js
             readOnly: true
       config-qbittorrent:
-        existingClaim: qbittorrent
+        existingClaim: config-qbittorrent
         globalMounts:
           - path: /config/qBittorrent/BT_backup
             subPath: qBittorrent/BT_backup
