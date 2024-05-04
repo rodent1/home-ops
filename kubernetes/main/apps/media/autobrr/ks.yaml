@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cross-seed
+  name: &app autobrr
   namespace: flux-system
 spec:
   targetNamespace: media
@@ -11,8 +11,9 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: cloudnative-pg-cluster
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/media/cross-seed/app
+  path: ./kubernetes/main/apps/media/autobrr/app
   prune: true
   sourceRef:
     kind: GitRepository

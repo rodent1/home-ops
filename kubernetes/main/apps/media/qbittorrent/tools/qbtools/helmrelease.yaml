@@ -125,13 +125,15 @@ spec:
         pod:
           securityContext: *securityContext
     persistence:
-      secret-file:
-        type: secret
-        name: qbtools-secret
-        globalMounts:
-          - path: /config/config.yaml
-            subPath: config.yaml
-            readOnly: true
+      config:
+        type: configMap
+        name: qbtools-configmap
+        advancedMounts:
+          tagging:
+            tagging:
+              - path: /config/config.yaml
+                subPath: config.yaml
+                readOnly: true
       media:
         type: nfs
         server: 10.1.1.15

@@ -35,13 +35,16 @@ spec:
             image:
               repository: ghcr.io/cross-seed/cross-seed
               tag: 6.0.0-0@sha256:ae6da5e53ef2b279520d9b98ecdcea209475b703f7e15d972ec193053c000c45
-            env:
-              TZ: Europe/Oslo
-              CROSSSEED_PORT: &port 80
+            args:
+              - daemon
             envFrom:
               - secretRef:
                   name: cross-seed-secret
-            args: ["daemon"]
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
             probes:
               liveness:
                 enabled: true
@@ -51,11 +54,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -74,17 +72,17 @@ spec:
     persistence:
       config:
         type: emptyDir
-      secret-file:
-        type: secret
-        name: cross-seed-secret
+      config-file:
+        type: configMap
+        name: cross-seed-configmap
         globalMounts:
           - path: /config/config.js
             subPath: config.js
             readOnly: true
-      qbittorrent:
-        existingClaim: config-qbittorrent
+      config-qbittorrent:
+        existingClaim: qbittorrent
         globalMounts:
-          - path: /qbittorrent/qBittorrent/BT_backup
+          - path: /config/qBittorrent/BT_backup
             subPath: qBittorrent/BT_backup
             readOnly: true
       media:
@@ -92,5 +90,4 @@ spec:
         server: 10.1.1.15
         path: /mnt/tank/Media
         globalMounts:
-          - path: /media/Downloads
-            subPath: Downloads
+          - path: /media
