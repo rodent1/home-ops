@@ -22,13 +22,20 @@ nodes:
     ipAddress: 10.1.1.31
     controlPlane: true
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+      busPath: /pci0000:00/0000:00:17.0/ata2/host2/target2:0:0/2:0:0:0/
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
+        vlans:
+          - &vlan30
+            vlanId: 30
+            dhcp: true
+            routes:
+              - network: 0.0.0.0/0
+                gateway: 10.1.3.1
     patches:
       - &kubelet_extra_mounts |-
         machine:
@@ -53,6 +60,8 @@ nodes:
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
+        vlans:
+          - *vlan30
     patches:
       - *kubelet_extra_mounts
 
@@ -67,6 +76,8 @@ nodes:
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
+        vlans:
+          - *vlan30
 
     patches:
       - *kubelet_extra_mounts
@@ -80,6 +91,8 @@ nodes:
       - deviceSelector:
           driver: r8169
         dhcp: true
+        vlans:
+          - *vlan30
     patches:
       - *kubelet_extra_mounts
 
@@ -92,6 +105,8 @@ nodes:
       - deviceSelector:
           driver: r8169
         dhcp: true
+        vlans:
+          - *vlan30
     patches:
       - *kubelet_extra_mounts
 
