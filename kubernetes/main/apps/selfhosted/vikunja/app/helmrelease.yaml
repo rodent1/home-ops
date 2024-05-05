@@ -49,7 +49,7 @@ spec:
               tag: 0.22.1@sha256:b99c067a706525e13b5bc836d17690f3ab8990baf0e80b92d8e7ad54947c7907
             envFrom: *envFrom
             env:
-              VIKUNJA_SERVICE_TIMEZONE: ${TZ}
+              VIKUNJA_SERVICE_TIMEZONE: Europe/Oslo
               VIKUNJA_SERVICE_FRONTENDURL: https://tasks.rodent.cc
               VIKUNJA_MAILER_ENABLED: "true"
               VIKUNJA_MAILER_HOST: smtp.office365.com

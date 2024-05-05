@@ -7,6 +7,4 @@ metadata:
 data:
   CLUSTER_NAME: main
   CLUSTER_CLOUDFLARE_TUNNEL_ID: 73f66c1e-1048-49b5-bba5-c535ca8162d9
-  TIMEZONE: Europe/Oslo
   POSTGRES_URL: postgres16-rw.database.svc.cluster.local
-  TRUENAS_IP: 10.1.1.15
