@@ -61,10 +61,10 @@ spec:
                 spec:
                   failureThreshold: 30
                   periodSeconds: 10
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities: { drop: ["ALL"] }
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
@@ -108,6 +108,9 @@ spec:
     persistence:
       config:
         existingClaim: config-plex
+        # TODO: If setting up Plex for the first time, you'll want to add the globalMounts section
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server
       # Separate PVC for cache to avoid backing up cache files
       cache:
         existingClaim: plex-cache
