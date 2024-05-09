@@ -159,6 +159,7 @@ tasks:
           hostname: |-
             {{ trimPrefix (printf "%s-" .cluster) .ITEM | trimSuffix ".yaml" }}
           dry_run: "{{ .dry_run }}"
+          insecure: "{{ .insecure }}"
     requires:
       vars:
         - cluster
@@ -191,6 +192,7 @@ tasks:
         --nodes "{{.hostname}}"
         --file "{{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/clusterconfig/{{.filename}}"
         {{ if eq "true" .dry_run }}--dry-run{{ end }}
+        {{ if eq "true" .insecure }}--insecure{{ end }}
     requires:
       vars:
         - cluster
