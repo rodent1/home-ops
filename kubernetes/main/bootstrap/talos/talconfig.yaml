@@ -36,13 +36,6 @@ nodes:
         mtu: 1500
         vip:
           ip: ${clusterEndpointIP}
-        vlans:
-          - &vlan40
-            vlanId: 40
-            dhcp: true
-            mtu: 1500
-            dhcpOptions:
-              routeMetric: 4096
     patches:
       - &kubelet_extra_mounts |-
         machine:
@@ -68,8 +61,7 @@ nodes:
         mtu: 1500
         vip:
           ip: ${clusterEndpointIP}
-        vlans:
-          - *vlan40
+
     patches:
       - *kubelet_extra_mounts
 
@@ -85,8 +77,6 @@ nodes:
         mtu: 1500
         vip:
           ip: ${clusterEndpointIP}
-        vlans:
-          - *vlan40
 
     patches:
       - *kubelet_extra_mounts
@@ -101,8 +91,6 @@ nodes:
           driver: r8169
         dhcp: true
         mtu: 1500
-        vlans:
-          - *vlan40
     patches:
       - *kubelet_extra_mounts
 
@@ -116,8 +104,6 @@ nodes:
           driver: r8169
         dhcp: true
         mtu: 1500
-        vlans:
-          - *vlan40
     patches:
       - *kubelet_extra_mounts
 
