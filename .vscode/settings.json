@@ -34,6 +34,6 @@
   "yaml.schemas": {
     "ansible": "./ansible/**/*.yaml",
     "kubernetes": "./kubernetes/**/*.yaml",
-    "https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json": "file:///home/stianrs/home-ops/kubernetes/main/apps/database/pgadmin/app/helmrelease.yaml"
+    "https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json": "file:///home/stianrs/home-ops/kubernetes/main/apps/database/pgadmin/app/helmrelease.yaml"
   }
 }
