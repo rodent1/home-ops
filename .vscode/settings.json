@@ -24,16 +24,4 @@
   },
   "files.trimTrailingWhitespace": true,
   "sops.defaults.ageKeyFile": "age.key",
-  "vs-kubernetes": {
-    "vs-kubernetes.kubeconfig": "./kubeconfig",
-    "vs-kubernetes.knownKubeconfigs": [
-      "./kubeconfig"
-    ]
-  },
-  "yaml.schemaStore.enable": true,
-  "yaml.schemas": {
-    "ansible": "./ansible/**/*.yaml",
-    "kubernetes": "./kubernetes/**/*.yaml",
-    "https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json": "file:///home/stianrs/home-ops/kubernetes/main/apps/database/pgadmin/app/helmrelease.yaml"
-  }
 }
