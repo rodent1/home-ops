@@ -32,7 +32,7 @@ fi
 echo "Upgrading Talos on node '${NODE}' in cluster '${CLUSTER}' to ${TO_VERSION}..."
 talosctl --context "${CLUSTER}" --nodes "${NODE}" upgrade \
     --image="factory.talos.dev/installer/${TALOS_STANZA}" \
-        --wait=true --timeout=10m --preserve=true
+        --wait=true --timeout=10m --preserve=true --reboot-mode=powercycle
 
 echo "Waiting for Talos to be healthy on node '${NODE}' in cluster '${CLUSTER}' ..."
 talosctl --context "${CLUSTER}" --nodes "${NODE}" health \
