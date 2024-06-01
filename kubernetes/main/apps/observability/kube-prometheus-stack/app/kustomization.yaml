@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./prometheusrules
+  - ./prometheusrule.yaml
 configMapGenerator:
   - name: alertmanager-config-tpl
     files:

@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -16,33 +16,32 @@ spec:
         name: prometheus-community
         namespace: flux-system
   install:
-    crds: CreateReplace
+    crds: Skip
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
+    crds: Skip
     remediation:
       strategy: rollback
       retries: 3
   dependsOn:
+    - name: prometheus-operator-crds
+      namespace: observability
     - name: openebs
       namespace: openebs-system
     - name: thanos
       namespace: observability
   values:
     crds:
-      enabled: true
+      enabled: false
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
       ingress:
         enabled: true
         pathType: Prefix
         ingressClassName: internal
-        hosts:
-          - &host alertmanager.rodent.cc
-        tls:
-          - hosts: [*host]
+        hosts: ["alertmanager.rodent.cc"]
       alertmanagerSpec:
         replicas: 2
         useExistingSecret: true
@@ -96,10 +95,7 @@ spec:
         enabled: true
         ingressClassName: internal
         pathType: Prefix
-        hosts:
-          - &host prometheus.rodent.cc
-        tls:
-          - hosts: [*host]
+        hosts: ["prometheus.rodent.cc"]
       thanosService:
         enabled: true
       thanosServiceMonitor:
@@ -122,10 +118,6 @@ spec:
           - auto-gomemlimit
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
-        image:
-          registry: quay.io
-          repository: prometheus/prometheus
-          tag: v2.51.0-dedupelabels
         thanos:
           image: quay.io/thanos/thanos:${THANOS_VERSION}
           version: "${THANOS_VERSION#v}"
