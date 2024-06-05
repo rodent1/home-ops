@@ -75,7 +75,7 @@ spec:
           proxy:
             image:
               repository: caddy
-              tag: 2.8.4-alpine@sha256:443526818b69884bf249bffad2a25a7c81a2971d8a34df692567850e967602ce
+              tag: 2.8.4-alpine@sha256:ff19025e3865a65d732147cb62499b6178e6aad1eea0b3969a9dfffa6f3ce914
             resources:
               requests:
                 cpu: 10m
