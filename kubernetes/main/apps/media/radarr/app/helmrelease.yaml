@@ -44,13 +44,14 @@ spec:
               repository: ghcr.io/onedr0p/radarr-develop
               tag: 5.6.0.8846@sha256:99c264af3f2d177e6674a9b304b64a35261202de30e54b35d5758d40edd94366
             env:
-              COMPlus_EnableDiagnostics: "0"
-              RADARR__AUTHENTICATION_METHOD: External
-              RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              RADARR__INSTANCE_NAME: Radarr
-              RADARR__PORT: &port 80
-              RADARR__LOG_LEVEL: info
-              RADARR__THEME: dark
+              RADARR__APP__INSTANCENAME: Radarr
+              RADARR__APP__THEME: dark
+              RADARR__AUTH__METHOD: External
+              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              RADARR__LOG__DBENABLED: "False"
+              RADARR__LOG__LEVEL: info
+              RADARR__SERVER__PORT: &port 80
+              RADARR__UPDATE__BRANCH: develop
               TZ: Europe/Oslo
             envFrom: *envFrom
             probes:
@@ -75,14 +76,15 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [10000]
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: radarr
@@ -91,22 +93,16 @@ spec:
             port: *port
     ingress:
       app:
-        className: internal
         annotations:
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.rodent.cc/css/base/radarr/nord.css"></head>';
-            sub_filter_once on;
+          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
+        className: internal
         hosts:
-          - host: &host "{{ .Release.Name }}.rodent.cc"
+          - host: "{{ .Release.Name }}.rodent.cc"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
     persistence:
       config:
         existingClaim: config-radarr
@@ -114,7 +110,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: 10.1.1.15
+        server: tank.internal
         path: /mnt/tank/Media
         globalMounts:
           - path: /media

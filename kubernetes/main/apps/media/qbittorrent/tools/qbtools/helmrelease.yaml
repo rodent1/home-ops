@@ -137,7 +137,7 @@ spec:
                 readOnly: true
       media:
         type: nfs
-        server: 10.1.1.15
+        server: tank.internal
         path: /mnt/tank/Media
         advancedMounts:
           orphaned:

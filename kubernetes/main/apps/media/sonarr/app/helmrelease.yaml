@@ -44,13 +44,14 @@ spec:
               repository: ghcr.io/onedr0p/sonarr-develop
               tag: 4.0.5.1719@sha256:602af44d766a8c7c494d01fb79f6e7624aed58f0b86ffe10e1ecad280160a3df
             env:
-              COMPlus_EnableDiagnostics: "0"
-              SONARR__AUTHENTICATION_METHOD: External
-              SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              SONARR__INSTANCE_NAME: Sonarr
-              SONARR__PORT: &port 80
-              SONARR__LOG_LEVEL: info
-              SONARR__THEME: dark
+              SONARR__APP__INSTANCENAME: Sonarr
+              SONARR__APP__THEME: dark
+              SONARR__AUTH__METHOD: External
+              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              SONARR__LOG__DBENABLED: "False"
+              SONARR__LOG__LEVEL: info
+              SONARR__SERVER__PORT: &port 80
+              SONARR__UPDATE__BRANCH: develop
               TZ: Europe/Oslo
             envFrom: *envFrom
             probes:
@@ -75,14 +76,15 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [10000]
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: sonarr
@@ -91,22 +93,16 @@ spec:
             port: *port
     ingress:
       app:
-        className: internal
         annotations:
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.rodent.cc/css/base/sonarr/nord.css"></head>';
-            sub_filter_once on;
+          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
+        className: internal
         hosts:
-          - host: &host "{{ .Release.Name }}.rodent.cc"
+          - host: "{{ .Release.Name }}.rodent.cc"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
     persistence:
       config:
         existingClaim: config-sonarr
@@ -114,7 +110,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: 10.1.1.15
+        server: tank.internal
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
