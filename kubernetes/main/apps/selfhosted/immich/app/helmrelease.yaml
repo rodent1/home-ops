@@ -72,27 +72,14 @@ spec:
               IMMICH_MEDIA_LOCATION: /usr/src/app/upload
               TZ: Europe/Oslo
               # REDIS
-              REDIS_HOSTNAME: dragonfly.database.svc.cluster.local # Requires the extraArg `--default_lua_flags=allow-undeclared-keys` to be set in the dragonfly helm chart
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              # Requires the extraArg `--default_lua_flags=allow-undeclared-keys` to be set in the dragonfly helm chart
+              REDIS_HOSTNAME: dragonfly.database.svc.cluster.local
             resources:
               requests:
                 cpu: 10m
                 memory: 144M
               limits:
                 memory: 256Mi
-            probes:
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 5
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
@@ -105,16 +92,6 @@ spec:
                 memory: 500Mi
               limits:
                 memory: 4Gi
-            probes:
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 5
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
     service:
       server:
         controller: immich
