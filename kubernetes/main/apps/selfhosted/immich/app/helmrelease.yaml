@@ -161,15 +161,3 @@ spec:
           immich:
             machine-learning:
               - path: /cache
-      geocoding-dump:
-        type: emptyDir
-        advancedMounts:
-          immich:
-            machine-learning:
-              - path: /usr/src/app/.reverse-geocoding-dump
-      transformers-cache:
-        type: emptyDir
-        advancedMounts:
-          immich:
-            machine-learning:
-              - path: /usr/src/app/.transformers_cache

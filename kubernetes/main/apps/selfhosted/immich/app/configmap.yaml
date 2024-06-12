@@ -4,10 +4,13 @@ kind: ConfigMap
 metadata:
   name: immich-configmap
 data:
+  # APP
+  LOG_LEVEL: verbose
+  IMMICH_MEDIA_LOCATION: /usr/src/app/upload
   # URLS
-  IMMICH_WEB_URL: http://immich-web.selfhosted.svc.cluster.local:3000
-  IMMICH_SERVER_URL: http://immich-server.selfhosted.svc.cluster.local:3001
-  IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.selfhosted.svc.cluster.local:3003
-
+  MACHINE_LEARNING_HOST: "0.0.0.0"
+  MACHINE_LEARNING_PORT: "3003"
+  MACHINE_LEARNING_CACHE_FOLDER: /cache
+  TRANSFORMERS_CACHE: /cache
   # REDIS
   REDIS_HOSTNAME: dragonfly.database.svc.cluster.local # Requires the extraArg `--default_lua_flags=allow-undeclared-keys` to be set in the dragonfly helm chart
