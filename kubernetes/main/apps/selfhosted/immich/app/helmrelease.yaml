@@ -76,10 +76,10 @@ spec:
               REDIS_HOSTNAME: dragonfly.database.svc.cluster.local
             resources:
               requests:
-                cpu: 10m
-                memory: 144M
+                cpu: 100m
+                memory: 256M
               limits:
-                memory: 256Mi
+                memory: 1024Mi
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
