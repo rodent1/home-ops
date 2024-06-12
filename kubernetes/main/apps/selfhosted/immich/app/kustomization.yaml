@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   # App
   - ./externalsecret.yaml
-  - ./configmap.yaml
   - ./helmrelease.yaml
   # Templates
   - ../../../../templates/gatus/external

@@ -58,8 +58,6 @@ spec:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
             envFrom: &envFrom
-              - configMapRef:
-                  name: immich-configmap
               - secretRef:
                   name: immich-secret
         containers:
@@ -68,6 +66,13 @@ spec:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.106.2@sha256:7c853eee0f9a6f742dafe71db64486a34067f24d253cba3ddc7b7eaa7420f00c
             envFrom: *envFrom
+            env: &env
+              # APP
+              IMMICH_LOG_LEVEL: verbose
+              IMMICH_MEDIA_LOCATION: /usr/src/app/upload
+              TZ: Europe/Oslo
+              # REDIS
+              REDIS_HOSTNAME: dragonfly.database.svc.cluster.local # Requires the extraArg `--default_lua_flags=allow-undeclared-keys` to be set in the dragonfly helm chart
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -93,6 +98,7 @@ spec:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.106.2@sha256:3aecde307deb0c881a1b4cbaf51db965e5ba1c085b8b4abb1a88c0225812cb05
             envFrom: *envFrom
+            env: *env
             resources:
               requests:
                 cpu: 10m
