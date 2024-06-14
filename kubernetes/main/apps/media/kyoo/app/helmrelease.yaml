@@ -277,8 +277,8 @@ spec:
                   identifier: back
                   port: http
     persistence:
-      kyoo:
-        existingClaim: *app
+      config:
+        existingClaim: config-kyoo
         advancedMounts:
           back:
             app:

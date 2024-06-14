@@ -8,7 +8,7 @@ resources:
   # Flux-Kustomizations
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
-  # - ./kyoo/ks.yaml
+  - ./kyoo/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
