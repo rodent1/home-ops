@@ -7,8 +7,7 @@ tasks:
   main:
     vars: &vars
       cluster: main
-      cephnodes:
-        sh: talosctl --context {{.cluster}} config info --output json | jq --join-output '[.nodes[]] | join(" ")'
+      cephnodes: node-1 node-2 node-3 node-4 node-5
       cephdisk: /dev/nvme0n1
     cmds:
       - task: :talos:bootstrap
@@ -20,15 +19,3 @@ tasks:
     preconditions:
       - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
-
-  storage:
-    vars: &vars
-      cluster: storage
-      playbook: cluster-installation
-    cmds:
-      - task: :ansible:venv
-        vars: *vars
-      - task: :ansible:run
-        vars: *vars
-      - task: :flux:bootstrap
-        vars: *vars

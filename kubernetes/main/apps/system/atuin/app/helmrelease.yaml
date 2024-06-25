@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: atuin
+  name: &app atuin
 spec:
   interval: 30m
   chart:
@@ -25,7 +25,6 @@ spec:
   values:
     controllers:
       atuin:
-        replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -74,13 +73,12 @@ spec:
                 cpu: 10m
               limits:
                 memory: 256Mi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: atuin
@@ -101,17 +99,16 @@ spec:
             scrapeTimeout: 10s
     ingress:
       app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
         className: internal
         hosts:
-          - host: &host sh.rodent.cc
+          - host: sh.rodent.cc
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
     persistence:
       config:
         type: emptyDir

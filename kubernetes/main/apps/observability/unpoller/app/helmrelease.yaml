@@ -34,13 +34,14 @@ spec:
               repository: ghcr.io/unpoller/unpoller
               tag: v2.11.2@sha256:73b39c0b3b8fa92aa82a7613d3486253ffbd8c057833b4621402a268159bf2a2
             env:
-              TZ: America/New_York
+              TZ: Europe/Oslo
               UP_UNIFI_DEFAULT_ROLE: home-ops
-              UP_UNIFI_DEFAULT_URL: https://unifi.rodent.cc
-              UP_UNIFI_DEFAULT_VERIFY_SSL: false
-              UP_UNIFI_DEFAULT_USER: unifipoller
-              UP_UNIFI_DEFAULT_PASS: 1nternalUseOnly
+              UP_UNIFI_DEFAULT_URL: https://10.1.1.1
+              UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:80
               UP_INFLUXDB_DISABLE: true
+            envFrom:
+              - secretRef:
+                  name: unpoller-secret
             probes:
               liveness:
                 enabled: true
@@ -55,17 +56,18 @@ spec:
                 cpu: 10m
               limits:
                 memory: 128Mi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: unpoller
         ports:
           http:
-            port: 9130
+            port: 80
     serviceMonitor:
       app:
         serviceName: unpoller

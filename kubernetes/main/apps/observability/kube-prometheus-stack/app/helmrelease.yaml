@@ -30,8 +30,6 @@ spec:
       namespace: observability
     - name: openebs
       namespace: openebs-system
-    - name: thanos
-      namespace: observability
   values:
     crds:
       enabled: false
@@ -39,11 +37,12 @@ spec:
     alertmanager:
       ingress:
         enabled: true
-        pathType: Prefix
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
         ingressClassName: internal
         hosts: ["alertmanager.rodent.cc"]
+        pathType: Prefix
       alertmanagerSpec:
-        replicas: 2
         useExistingSecret: true
         configSecret: alertmanager-secret
         storage:
@@ -93,19 +92,12 @@ spec:
     prometheus:
       ingress:
         enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
         ingressClassName: internal
-        pathType: Prefix
         hosts: ["prometheus.rodent.cc"]
-      thanosService:
-        enabled: true
-      thanosServiceMonitor:
-        enabled: true
+        pathType: Prefix
       prometheusSpec:
-        podMetadata:
-          annotations:
-            secret.reloader.stakater.com/reload: &secret thanos-objstore-config
-        replicas: 2
-        replicaExternalLabelName: __replica__
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
@@ -118,17 +110,8 @@ spec:
           - auto-gomemlimit
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
-        thanos:
-          image: quay.io/thanos/thanos:${THANOS_VERSION}
-          version: "${THANOS_VERSION#v}"
-          objectStorageConfig:
-            existingSecret:
-              name: *secret
-              key: config
-        retention: 2d
-        retentionSize: 15GB
-        externalLabels:
-          cluster: main
+        retention: 14d
+        retentionSize: 70GB
         resources:
           requests:
             cpu: 100m
@@ -140,7 +123,7 @@ spec:
               storageClassName: openebs-hostpath
               resources:
                 requests:
-                  storage: 20Gi
+                  storage: 75Gi
     nodeExporter:
       enabled: true
     prometheus-node-exporter:
@@ -174,10 +157,3 @@ spec:
     grafana:
       enabled: false
       forceDeployDashboards: true
-      sidecar:
-        dashboards:
-          annotations:
-            grafana_folder: Kubernetes
-          multicluster:
-            etcd:
-              enabled: true

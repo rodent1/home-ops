@@ -8,7 +8,6 @@ resources:
   # Flux-Kustomizations
   - ./atuin/ks.yaml
   - ./descheduler/ks.yaml
-  - ./fstrim/ks.yaml
   - ./intel-device-plugin/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
