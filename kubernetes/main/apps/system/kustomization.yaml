@@ -11,5 +11,5 @@ resources:
   - ./intel-device-plugin/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
-  - ./snapshot-controller/ks.yaml
-  - ./volsync/ks.yaml
+  # - ./snapshot-controller/ks.yaml
+  # - ./volsync/ks.yaml
