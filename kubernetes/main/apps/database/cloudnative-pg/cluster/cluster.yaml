@@ -5,7 +5,7 @@ kind: Cluster
 metadata:
   name: postgres16
 spec:
-  instances: 3 # Set to my total number of nodes
+  instances: 3
   imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.2
   primaryUpdateStrategy: unsupervised
   storage:
@@ -20,10 +20,12 @@ spec:
     parameters:
       max_connections: "400"
       shared_buffers: 256MB
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
   resources:
     requests:
       cpu: 500m
-      memory: 2Gi
     limits:
       memory: 4Gi
   monitoring:
