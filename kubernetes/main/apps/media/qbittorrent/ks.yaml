@@ -23,10 +23,7 @@ spec:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: qb
-      VOLSYNC_CAPACITY: 5Gi
-      VOLSYNC_ACCESSMODES: ReadWriteMany
-      VOLSYNC_STORAGECLASS: ceph-filesystem
-      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
+      VOLSYNC_CAPACITY: 2Gi
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -39,8 +36,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: qbittorrent
   path: ./kubernetes/main/apps/media/qbittorrent/tools
   prune: true
   sourceRef:

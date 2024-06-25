@@ -28,14 +28,6 @@ spec:
     - name: volsync
       namespace: system
   values:
-    defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: node-role.kubernetes.io/control-plane
-                    operator: DoesNotExist
     controllers:
       qbittorrent:
         annotations:
@@ -49,12 +41,7 @@ spec:
               TZ: Europe/Oslo
               QBITTORRENT__PORT: &port 80
               QBITTORRENT__BT_PORT: &bittorrentPort 50413
-              QBT_Application__MemoryWorkingSetLimit:
-                valueFrom:
-                  resourceFieldRef:
-                    containerName: app
-                    resource: limits.memory
-                    divisor: 1Mi
+              QBT_Application__MemoryWorkingSetLimit: 10000
               QBT_Preferences__WebUI__AlternativeUIEnabled: false
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: 10.0.0.0/8
@@ -87,13 +74,15 @@ spec:
                 cpu: 100m
               limits:
                 memory: 12Gi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [10000]
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: qbittorrent
@@ -109,28 +98,18 @@ spec:
             protocol: TCP
     ingress:
       app:
-        className: internal
         annotations:
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_hide_header "x-webkit-csp";
-            proxy_hide_header "content-security-policy";
-            proxy_hide_header "X-Frame-Options";
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.rodent.cc/css/base/qbittorrent/nord.css"></head>';
-            sub_filter_once on;
+          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
+        className: internal
         hosts:
-          - host: &host qb.rodent.cc
+          - host: qb.rodent.cc
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
     persistence:
       config:
-        enabled: true
         existingClaim: config-qbittorrent
       media:
         type: nfs
