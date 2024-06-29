@@ -6,20 +6,15 @@ vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
 
 env:
-  KUBECONFIG: "{{.KUBERNETES_DIR}}/kubernetes/main/kubeconfig:{{.KUBERNETES_DIR}}/kubernetes/storage/kubeconfig"
+  KUBECONFIG: "{{.KUBERNETES_DIR}}/kubernetes/main/kubeconfig"
   SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
 
 includes:
-  bootstrap: .taskfiles/Bootstrap
-  external-secrets: .taskfiles/ExternalSecrets
-  flux: .taskfiles/Flux
-  kubernetes: .taskfiles/Kubernetes
-  rook: .taskfiles/Rook
-  talos: .taskfiles/Talos
-  volsync: .taskfiles/VolSync
+  bootstrap: .taskfiles/bootstrap
+  kubernetes: .taskfiles/kubernetes
+  talos: .taskfiles/talos
+  volsync: .taskfiles/volsync
 
 tasks:
 
-  default:
-    silent: true
-    cmd: task -l
+  default: task -l
