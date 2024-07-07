@@ -33,8 +33,8 @@ spec:
         initContainers:
           init-db:
             image:
-              repository: ghcr.io/onedr0p/postgres-init:16.3@sha256:8ba3204f6b293dd168766009aae2ce4fa986a29b931c2d30ac1b30238ac750b8
-              tag: 16
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16.3@sha256:8ba3204f6b293dd168766009aae2ce4fa986a29b931c2d30ac1b30238ac750b8
             envFrom: &envFrom
               - secretRef:
                   name: radarr-secret
