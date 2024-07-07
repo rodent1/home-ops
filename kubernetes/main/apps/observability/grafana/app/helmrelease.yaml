@@ -23,10 +23,16 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    extraInitContainers:
+      - name: 01-init-db
+        image: ghcr.io/onedr0p/postgres-init:16.3@sha256:8ba3204f6b293dd168766009aae2ce4fa986a29b931c2d30ac1b30238ac750b8:16
+        envFrom:
+          - secretRef:
+              name: &secret grafana-secret
     deploymentStrategy:
       type: Recreate
     admin:
-      existingSecret: &secret grafana-secret
+      existingSecret: *secret
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
@@ -35,6 +41,9 @@ spec:
       GF_SERVER_ROOT_URL: https://grafana.rodent.cc
       # Optionally enable auto-login (bypasses Grafana login screen)
       GF_AUTH_OAUTH_AUTO_LOGIN: "false"
+      # Database
+      GF_DATABASE_SSL_MODE: disable
+      GF_DATABASE_TYPE: postgres
     envFromSecrets:
       - name: *secret
     grafana.ini:

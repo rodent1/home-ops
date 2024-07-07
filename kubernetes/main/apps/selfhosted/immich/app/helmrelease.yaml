@@ -55,7 +55,7 @@ spec:
         initContainers:
           01-init-db:
             image:
-              repository: ghcr.io/onedr0p/postgres-init
+              repository: ghcr.io/onedr0p/postgres-init:16.3@sha256:8ba3204f6b293dd168766009aae2ce4fa986a29b931c2d30ac1b30238ac750b8
               tag: 16
             envFrom: &envFrom
               - secretRef:
@@ -66,8 +66,7 @@ spec:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.107.2@sha256:75746006b35a7bc61408cd4d124dc73344f0a087c2d9769c4715ca84a1d87591
             envFrom: *envFrom
-            env: &env
-              # APP
+            env: &env # APP
               IMMICH_LOG_LEVEL: verbose
               IMMICH_MEDIA_LOCATION: /usr/src/app/upload
               TZ: Europe/Oslo
