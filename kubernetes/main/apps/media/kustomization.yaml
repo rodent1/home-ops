@@ -14,7 +14,7 @@ resources:
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
   # - ./readarr/ks.yaml
-  # - ./recyclarr/ks.yaml
+  - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./theme-park/ks.yaml
