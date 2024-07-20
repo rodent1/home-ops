@@ -6,7 +6,7 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./excalidraw/ks.yaml
-  - ./home-assistant/ks.yaml
+  # - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
   - ./linkwarden/ks.yaml
   - ./paperless/ks.yaml
