@@ -6,7 +6,6 @@ vars:
   BOOTSTRAP_RESOURCES_DIR: "{{.ROOT_DIR}}/.taskfiles/bootstrap/resources"
 
 tasks:
-
   kubernetes:
     desc: Bootstrap a Talos Kubernetes cluster backed by flux, sops, and rook
     prompt: Bootstrap a Talos Kubernetes cluster ... continue?
@@ -16,16 +15,14 @@ tasks:
       disk: Disk to reset Rook on (required, e.g. /dev/nvme0n1)
     vars: &vars
       cluster: '{{.cluster | default "main"}}'
-      nodes: '{{.nodes}}'
-      disk: '{{.disk}}'
+      nodes: '{{.nodes | default "node-1 node-2 node-3 node-4 node-5"}}'
+      disk: '{{.disk | default "/dev/nvme0n1"}}'
     cmds:
       - { task: etcd, vars: *vars }
       - { task: kubeconfig, vars: *vars }
       - { task: apps, vars: *vars }
       - { task: rook, vars: *vars }
       - { task: flux, vars: *vars }
-    requires:
-      vars: ["nodes", "disk"]
     preconditions:
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
       - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
@@ -79,9 +76,9 @@ tasks:
   rook:
     internal: true
     vars: &vars
-      cluster: '{{.cluster}}'
-      node: '{{.ITEM}}'
-      disk: '{{.disk}}'
+      cluster: "{{.cluster}}"
+      node: "{{.ITEM}}"
+      disk: "{{.disk}}"
     cmds:
       - for: { var: nodes }
         task: rook-data
@@ -99,9 +96,9 @@ tasks:
       - kubectl --context {{.cluster}} --namespace default logs job/{{.job}}
       - kubectl --context {{.cluster}} --namespace default delete job {{.job}}
     env:
-      disk: '{{.disk}}'
-      job: '{{.job}}'
-      node: '{{.node}}'
+      disk: "{{.disk}}"
+      job: "{{.job}}"
+      node: "{{.node}}"
     vars:
       job: wipe-disk-{{.node}}
     preconditions:
@@ -117,9 +114,9 @@ tasks:
       - kubectl --context {{.cluster}} --namespace default logs job/{{.job}}
       - kubectl --context {{.cluster}} --namespace default delete job {{.job}}
     env:
-      disk: '{{.disk}}'
-      job: '{{.job}}'
-      node: '{{.node}}'
+      disk: "{{.disk}}"
+      job: "{{.job}}"
+      node: "{{.node}}"
     vars:
       job: wipe-data-{{.node}}
     preconditions:
