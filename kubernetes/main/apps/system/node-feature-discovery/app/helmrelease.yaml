@@ -22,22 +22,12 @@ spec:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     worker:
       config:
         core:
-          sources: ["custom", "pci", "usb"]
-      resources:
-        limits:
-          cpu: null
-    master:
-      resources:
-        limits:
-          cpu: null
-    gc:
-      resources:
-        limits:
-          cpu: null
+          sources: ["pci", "system", "usb"]
+    prometheus:
+      enable: true
