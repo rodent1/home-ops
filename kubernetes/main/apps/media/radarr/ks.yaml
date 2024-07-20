@@ -24,4 +24,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CLAIM: sonarr-config
+      VOLSYNC_CAPACITY: 10Gi
