@@ -32,12 +32,18 @@ nodes:
     installDiskSelector:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
-      - deviceSelector:
-          driver: e1000e
+      - interface: eth0
         dhcp: true
         mtu: 1500
         vip:
           ip: ${clusterEndpointIP}
+        vlans:
+          - &vlan40
+            vlanId: 40
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
     patches:
       - &kubelet_extra_mounts |-
         machine:
@@ -57,13 +63,13 @@ nodes:
     installDiskSelector:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
-      - deviceSelector:
-          driver: e1000e
+      - interface: eth0
         dhcp: true
         mtu: 1500
+        vlans:
+          - *vlan40
         vip:
           ip: ${clusterEndpointIP}
-
     patches:
       - *kubelet_extra_mounts
 
@@ -73,13 +79,13 @@ nodes:
     installDiskSelector:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
-      - deviceSelector:
-          driver: e1000e
+      - interface: eth0
         dhcp: true
         mtu: 1500
+        vlans:
+          - *vlan40
         vip:
           ip: ${clusterEndpointIP}
-
     patches:
       - *kubelet_extra_mounts
 
@@ -89,10 +95,11 @@ nodes:
     installDiskSelector:
       busPath: /pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:0a.0/0000:07:00.0/ata7/host6/target6:0:0/6:0:0:0/
     networkInterfaces:
-      - deviceSelector:
-          driver: r8169
+      - interface: eth0
         dhcp: true
         mtu: 1500
+        vlans:
+          - *vlan40
     patches:
       - *kubelet_extra_mounts
 
@@ -102,10 +109,11 @@ nodes:
     installDiskSelector:
       busPath: /pci0000:00/0000:00:01.2/0000:12:00.1/ata1/host0/target0:0:0/0:0:0:0/
     networkInterfaces:
-      - deviceSelector:
-          driver: r8169
+      - interface: eth0
         dhcp: true
         mtu: 1500
+        vlans:
+          - *vlan40
     patches:
       - *kubelet_extra_mounts
 

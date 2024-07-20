@@ -13,7 +13,6 @@ x-vars: &vars
     sh: talosctl --context {{.cluster}} config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
 
 tasks:
-
   apply-config:
     desc: Apply Talos configuration to a node
     cmds:
@@ -36,6 +35,7 @@ tasks:
     desc: Apply clusterconfig for a Talos cluster
     prompt: Apply config to all nodes on the '{{.cluster}}' cluster ... continue?
     vars:
+      cluster: '{{.cluster | default "main"}}'
       CLUSTERCONFIG_HOSTS:
         sh: find {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/clusterconfig -type f -name '*.yaml' | grep -o 'node-[0-9]'
     cmds:
@@ -46,8 +46,6 @@ tasks:
           hostname: "{{.ITEM}}"
           dry_run: "{{ .dry_run }}"
           insecure: "{{ .insecure }}"
-    requires:
-      vars: ["cluster"]
     preconditions:
       - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
@@ -113,8 +111,8 @@ tasks:
         --secret-file {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/talsecret.sops.yaml
         --config-file {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/talconfig.yaml
         --out-dir {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/clusterconfig
-    requires:
-      vars: ["cluster"]
+    vars:
+      cluster: '{{.cluster | default "main"}}'
     preconditions:
       - which talhelper
       - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/talos/talenv.sops.yaml
