@@ -85,24 +85,11 @@ spec:
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       storage:
-        useAllNodes: false
-        useAllDevices: false
+        useAllNodes: true
+        useAllDevices: true
         deviceFilter: nvme0n1
         config:
           osdsPerDevice: "1"
-        nodes:
-          - name: "node-1"
-            devices:
-              - name: "/dev/nvme0n1"
-          - name: "node-2"
-            devices:
-              - name: "/dev/nvme0n1"
-          - name: "node-3"
-            devices:
-              - name: "/dev/nvme0n1"
-          - name: "node-4"
-            devices:
-              - name: "/dev/nvme0n1"
       placement:
         mgr: &placement
           nodeAffinity:
