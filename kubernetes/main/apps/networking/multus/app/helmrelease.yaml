@@ -14,27 +14,23 @@ spec:
         kind: HelmRepository
         name: angelnu
         namespace: flux-system
-      interval: 30m
-  maxHistory: 2
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     image:
       repository: ghcr.io/k8snetworkplumbingwg/multus-cni
-      tag: v4.0.2-thick
-
+      tag: v4.0.2-thick@sha256:3fbcc32bd4e4d15bd93c96def784a229cd84cca27942bf4858b581f31c97ee02
     cni:
       image:
         repository: ghcr.io/angelnu/cni-plugins
-        tag: 1.5.1
-
+        tag: 1.5.1@sha256:e4bedec8c7a02872cfe730a7d1a873e3b834ed9aa79b0f9a7ae627e467f58e42
+      logLevel: error
       paths:
         config: /etc/cni/net.d
         bin: /opt/cni/bin
@@ -42,7 +38,6 @@ spec:
     resources:
       requests:
         cpu: 5m
-        memory: 96Mi
       limits:
         memory: 96Mi
 

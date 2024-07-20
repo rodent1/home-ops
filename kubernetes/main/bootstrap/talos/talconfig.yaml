@@ -3,6 +3,8 @@
 clusterName: &cluster ${clusterName}
 endpoint: "https://${clusterEndpointIP}:6443"
 
+allowSchedulingOnMasters: true
+
 clusterPodNets:
   - 10.42.0.0/16
 clusterSvcNets:
@@ -112,14 +114,10 @@ controlPlane:
     customization:
       extraKernelArgs:
         - net.ifnames=0
-        - mitigations=off
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
           - siderolabs/i915-ucode
-  nodeLabels:
-    topology.kubernetes.io/region: *cluster
-    topology.kubernetes.io/zone: m
   patches:
     # Configure containerd
     - &containerdPatch |-
@@ -226,7 +224,6 @@ controlPlane:
           net.ipv4.tcp_tw_reuse: 1
           net.ipv4.tcp_window_scaling: 1
 
-
     # Cluster configuration
     - |-
       cluster:
@@ -268,9 +265,13 @@ controlPlane:
               - system-upgrade
 
 worker:
-  nodeLabels:
-    topology.kubernetes.io/region: *cluster
-    topology.kubernetes.io/zone: w
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/amd-ucode
   patches:
     - *containerdPatch
     - *disableSearchDomainPatch
