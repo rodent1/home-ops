@@ -8,3 +8,4 @@ resources:
   # Flux-Kustomizations
   - ./authentik/ks.yaml
   - ./external-secrets/ks.yaml
+  - ./onepassword-connect/ks.yaml
