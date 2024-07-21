@@ -85,11 +85,26 @@ spec:
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       storage:
-        useAllNodes: true
-        useAllDevices: true
-        deviceFilter: nvme0n1
+        useAllNodes: false
+        useAllDevices: false
         config:
           osdsPerDevice: "1"
+        nodes:
+          - name: node-1
+            devices:
+              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA9D0
+          - name: node-2
+            devices:
+              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CAA00
+          - name: node-3
+            devices:
+              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B72831CA96F
+          - name: node-4
+            devices:
+              - name: /dev/disk/by-id/nvme-INTEL_SSDPEKNW010T8_BTNH916507DA1P0B
+          - name: node-5
+            devices:
+              - name: /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B728308EA85
       placement:
         mgr: &placement
           nodeAffinity:
