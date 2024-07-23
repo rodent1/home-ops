@@ -18,11 +18,11 @@ tasks:
       nodes: '{{.nodes | default "node-1 node-2 node-3 node-4 node-5"}}'
       disk: '{{.disk | default "/dev/nvme0n1"}}'
     cmds:
-      # - { task: etcd, vars: *vars }
-      # - { task: kubeconfig, vars: *vars }
+      - { task: etcd, vars: *vars }
+      - { task: kubeconfig, vars: *vars }
       - { task: apps, vars: *vars }
       - { task: rook, vars: *vars }
-      # - { task: flux, vars: *vars }
+      - { task: flux, vars: *vars }
     preconditions:
       - talosctl --context {{.cluster}} config info >/dev/null 2>&1
       - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/talosconfig
