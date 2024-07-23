@@ -217,13 +217,21 @@ controlPlane:
     - |-
       cluster:
         allowSchedulingOnMasters: true
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
         proxy:
           disabled: true
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
 
     # ETCD configuration
     - |-
       cluster:
         etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
           advertisedSubnets:
             - 10.1.1.0/24
 
