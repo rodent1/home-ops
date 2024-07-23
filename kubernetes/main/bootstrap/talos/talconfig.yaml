@@ -158,6 +158,15 @@ controlPlane:
             service:
               disabled: true
 
+    # Enable host dns
+    - &hostDnsPatch |-
+      machine:
+        features:
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
+
     # Configure kubelet
     - &kubeletPatch |-
       machine:
@@ -284,6 +293,7 @@ worker:
     - *containerdPatch
     - *disableSearchDomainPatch
     - *discoveryPatch
+    - *hostDnsPatch
     - *kubeletPatch
     - *kubePrismPatch
     - *nameserverPatch
