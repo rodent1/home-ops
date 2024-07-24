@@ -170,7 +170,7 @@ controlPlane:
             - 10.1.1.1
 
     # Configure NFS mount options
-    - &nfsPatch |-
+    - &nfsPatch |
       machine:
         files:
           - op: overwrite
