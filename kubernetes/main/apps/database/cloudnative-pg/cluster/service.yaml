@@ -16,21 +16,3 @@ spec:
   selector:
     cnpg.io/cluster: postgres16
     role: primary
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres-temp-lb
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: postgres-temp.rodent.cc
-    io.cilium/lb-ipam-ips: 10.1.2.144
-spec:
-  type: LoadBalancer
-  ports:
-    - name: postgres
-      port: 5432
-      protocol: TCP
-      targetPort: 5432
-  selector:
-    cnpg.io/cluster: postgres16-temp
-    role: primary
