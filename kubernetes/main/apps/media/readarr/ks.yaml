@@ -24,4 +24,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CLAIM: readarr-config
+      VOLSYNC_CLAIM: 10Gi
