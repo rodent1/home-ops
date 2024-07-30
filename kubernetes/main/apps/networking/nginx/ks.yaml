@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: certificates
+    - name: cert-manager
     - name: external-secrets-stores
   path: ./kubernetes/main/apps/networking/nginx/external
   prune: false
@@ -35,7 +35,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: certificates
+    - name: cert-manager
     - name: external-secrets-stores
   path: ./kubernetes/main/apps/networking/nginx/internal
   prune: false
