@@ -51,6 +51,7 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
       separateMinorPatch: true,
+      changelogUrl: "https://github.com/immich-app/immich",
     },
     {
       description: ["Intel Device Plugins Group"],
