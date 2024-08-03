@@ -10,3 +10,4 @@ resources:
   # - ./emqx/ks.yaml
   - ./dragonfly/ks.yaml
   - ./pgadmin/ks.yaml
+  # - ./pgbackweb/ks.yaml
