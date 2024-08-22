@@ -36,6 +36,11 @@ spec:
       envFrom:
         - secretRef:
             name: *secret
+      env:
+        AUTHENTIK_SESSION_STORAGE: "db"
+        AUTHENTIK_REDIS__DB: "1"
+        AUTHENTIK_STORAGE__MEDIA__BACKEND: "s3"
+        AUTHENTIK_STORAGE__MEDIA__S3__BUCKET_NAME: "authentik"
     authentik:
       redis:
         host: dragonfly.database.svc.cluster.local
