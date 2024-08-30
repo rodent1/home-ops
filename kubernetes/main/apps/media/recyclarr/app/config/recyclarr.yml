@@ -10,8 +10,6 @@ sonarr:
 
     include:
       - template: sonarr-quality-definition-series
-      - template: sonarr-v4-quality-profile-web-1080p
-      - template: sonarr-v4-custom-formats-web-1080p
       - template: sonarr-v4-quality-profile-web-2160p
       - template: sonarr-v4-custom-formats-web-2160p
 
@@ -70,8 +68,6 @@ radarr:
 
     include:
       - template: radarr-quality-definition-sqp-streaming
-      # - template: radarr-quality-profile-sqp-1-1080p
-      # - template: radarr-custom-formats-sqp-1-1080p
       - template: radarr-quality-profile-sqp-1-2160p-default
       - template: radarr-custom-formats-sqp-1-2160p
 
