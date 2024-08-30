@@ -120,6 +120,19 @@ spec:
         ports:
           http:
             port: *apiPort
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: &host "{{ .Release.Name }}.rodent.cc"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
     persistence:
       config:
         type: emptyDir
