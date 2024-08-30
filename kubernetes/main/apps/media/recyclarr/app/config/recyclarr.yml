@@ -10,7 +10,9 @@ sonarr:
 
     include:
       - template: sonarr-quality-definition-series
+      - template: sonarr-v4-quality-profile-web-1080p
       - template: sonarr-v4-custom-formats-web-1080p
+      - template: sonarr-v4-quality-profile-web-2160p
       - template: sonarr-v4-custom-formats-web-2160p
 
     quality_profiles:
@@ -49,6 +51,7 @@ sonarr:
           - 1b3994c551cbb92a2c781af061f4ab44 # Scene
         assign_scores_to:
           - name: WEB-2160p
+          - name: Any
 
 # Instance Definition: https://recyclarr.dev/wiki/yaml/config-reference/basic/
 radarr:
