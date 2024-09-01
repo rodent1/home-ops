@@ -1,0 +1,9 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
+    {
+      matchPackagePatterns: ["audiobookshelf"],
+      sourceUrl: "https://github.com/advplyr/audiobookshelf",
+    },
+  ],
+}

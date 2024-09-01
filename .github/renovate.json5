@@ -20,6 +20,7 @@
     "github>rodent1/home-ops//.github/renovate/labels.json5",
     "github>rodent1/home-ops//.github/renovate/packageRules.json5",
     "github>rodent1/home-ops//.github/renovate/semanticCommits.json5",
+    "github>rodent1/home-ops//.github/renovate/sources.json5",
   ],
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
