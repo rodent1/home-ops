@@ -5,5 +5,9 @@
       matchPackagePatterns: ["audiobookshelf"],
       sourceUrl: "https://github.com/advplyr/audiobookshelf",
     },
+    {
+      matchPackagePatterns: ["restic"],
+      sourceUrl: "https://github.com/restic/restic",
+    },
   ],
 }
