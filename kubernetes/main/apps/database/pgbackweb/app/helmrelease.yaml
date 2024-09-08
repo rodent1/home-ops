@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: docker.io/eduardolat/pgbackweb
-              tag: "0.2.0@sha256:cd5aa9e57d7d331d152fa1e532b83ecd2cb467a181ffc9e151afb4858dd2174a"
+              tag: "0.3.0@sha256:f5d05a4a1f4ea00338fff6ecc0d6bc01cb22ef49f695304f93187cb4a3b0a810"
             envFrom: *envFrom
             resources:
               requests:
