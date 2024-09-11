@@ -6,10 +6,6 @@
       sourceUrl: "https://github.com/advplyr/audiobookshelf",
     },
     {
-      matchPackagePatterns: ["external-dns"],
-      sourceUrl: "https://github.com/kubernetes-sigs/external-dns",
-    },
-    {
       matchPackagePatterns: ["restic"],
       sourceUrl: "https://github.com/restic/restic",
     },
