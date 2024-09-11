@@ -81,12 +81,21 @@ spec:
                 service:
                   identifier: app
                   port: http
-          - host: links.stianrs.dev
+      app2:
+        enabled: true
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.stianrs.dev
+        hosts:
+          - host: &host "links.stianrs.dev"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - *host
     persistence:
       config:
         enabled: true
