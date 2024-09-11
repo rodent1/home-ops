@@ -28,7 +28,7 @@ spec:
       replicaCount: 2
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: internal.rodent.cc
+          external-dns.alpha.kubernetes.io/hostname: internal.rodent.cc,internal.stianrs.dev
           io.cilium/lb-ipam-ips: 10.1.1.152
       ingressClassResource:
         name: internal
