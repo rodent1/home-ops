@@ -62,7 +62,7 @@ spec:
     sources: ["ingress", "service"]
     txtOwnerId: main
     txtPrefix: k8s.main.
-    domainFilters: ["rodent.cc"]
+    domainFilters: ["rodent.cc", "stianrs.dev"]
     serviceMonitor:
       enabled: true
     podAnnotations:

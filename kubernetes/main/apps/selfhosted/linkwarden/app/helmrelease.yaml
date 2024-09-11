@@ -75,15 +75,18 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.rodent.cc
         hosts:
-          - host: &host "{{ .Release.Name }}.rodent.cc"
+          - host: "{{ .Release.Name }}.rodent.cc"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
+          - host: links.stianrs.dev
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     persistence:
       config:
         enabled: true

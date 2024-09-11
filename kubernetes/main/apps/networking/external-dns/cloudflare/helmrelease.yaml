@@ -47,7 +47,7 @@ spec:
     sources: ["crd", "ingress"]
     txtOwnerId: default
     txtPrefix: k8s.
-    domainFilters: ["rodent.cc"]
+    domainFilters: ["rodent.cc", "stianrs.dev"]
     serviceMonitor:
       enabled: true
     podAnnotations:
