@@ -1,3 +1,5 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -11,3 +13,18 @@ spec:
   dnsNames:
     - rodent.cc
     - "*.rodent.cc"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: stianrs-dev
+spec:
+  secretName: stianrs-dev-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "stianrs.dev"
+  dnsNames:
+    - stianrs.dev
+    - "*.stianrs.dev"
