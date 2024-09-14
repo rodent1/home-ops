@@ -3,7 +3,6 @@
 version: "3"
 
 tasks:
-
   apply-ks:
     desc: Apply a Flux Kustomization resource for a cluster
     summary: |
@@ -19,6 +18,33 @@ tasks:
       | \
       kubectl --context {{.cluster}} apply --server-side \
           --field-manager=kustomize-controller -f -
+    requires:
+      vars: ["cluster", "path"]
+    vars:
+      ns: '{{.ns | default "flux-system"}}'
+      ks:
+        sh: flux --context {{.cluster}} --namespace {{.ns}} get kustomizations $(basename {{.path}}) 2>&1
+    preconditions:
+      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/apps/{{.path}}/ks.yaml
+
+  delete-ks:
+    desc: Delete a Flux Kustomization resource from a cluster
+    summary: |
+      cluster: Cluster to run command against (required)
+      path: Path to the Flux Kustomization resource (required)
+      ns: Namespace the Flux Kustomization exists in (default: flux-system)
+    cmd: |
+      # Suspend the kustomization if it exists
+      flux --context {{.cluster}} suspend kustomization $(basename {{.path}}) --namespace {{.ns}} || true && \
+      # Build and delete the resources
+      flux --context {{.cluster}} build ks $(basename {{.path}}) \
+          --namespace {{.ns}} \
+          --kustomization-file {{.KUBERNETES_DIR}}/{{.cluster}}/apps/{{.path}}/ks.yaml \
+          --path {{.KUBERNETES_DIR}}/{{.cluster}}/apps/{{.path}} \
+          {{- if contains "not found" .ks }}--dry-run \{{ end }} | \
+      kubectl --context {{.cluster}} delete -f - && \
+      # Delete the kustomization resource if it exists
+      kubectl --context {{.cluster}} delete kustomization $(basename {{.path}}) --namespace {{.ns}} || true
     requires:
       vars: ["cluster", "path"]
     vars:
