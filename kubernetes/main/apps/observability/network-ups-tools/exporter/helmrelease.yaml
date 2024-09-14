@@ -35,7 +35,7 @@ spec:
               tag: 3.1.1
             env:
               TZ: Europe/Oslo
-            args: --nut.vars_enable="battery.charge,battery.runtime,battery.type,device.mfr,device.model,device.type,driver.name,driver.parameter.pollfreq,driver.parameter.pollinterval,driver.parameter.port,driver.parameter.vendorid,driver.version,driver.version.data,driver.version.internal,input.voltage,outlet.1.status,outlet.desc,outlet.id,outlet.switchable,output.frequency,output.frequency.nominal,output.voltage,output.voltage.nominal,ups.beeper.status,ups.delay.shutdown,ups.firmware,ups.load,ups.mfr,ups.model,ups.power.nominal,ups.productid,ups.start.battery,ups.status,ups.timer.shutdown,ups.vendorid"
+            args: --nut.vars_enable="battery.charge,battery.charge,battery.runtime,battery.type,device.mfr,device.model,device.type,driver.name,driver.parameter.pollfreq,driver.parameter.pollinterval,driver.parameter.port,driver.parameter.vendorid,driver.version,driver.version.data,driver.version.internal,input.voltage,outlet.1.status,outlet.desc,outlet.id,outlet.switchable,output.frequency,output.frequency.nominal,output.voltage,output.voltage.nominal,ups.beeper.status,ups.delay.shutdown,ups.firmware,ups.load,ups.mfr,ups.model,ups.power.nominal,ups.productid,ups.start.battery,ups.status,ups.timer.shutdown,ups.vendorid,ups.vendorid"
             probes:
               liveness:
                 enabled: true
