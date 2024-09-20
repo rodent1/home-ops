@@ -38,7 +38,6 @@ sonarr:
           - 7878c33f1963fefb3d6c8657d46c2f0a # DV HDR10
           - 1f733af03141f068a540eec352589a89 # DV HLG
           - 27954b0a80aab882522a88a4d9eae1cd # DV SDR
-          - 6d0d8de7b57e35518ac0308b0ddf404e # DV
           - bb019e1cd00f304f80971c965de064dc # HDR (undefined)
           - 3e2c4e748b64a1a1118e0ea3f4cf6875 # HDR
           - 3497799d29a085e2ac2df9d468413c94 # HDR10
@@ -92,6 +91,10 @@ sonarr:
         assign_scores_to:
           - name: WEB-Combined
 
+      - trash_ids: [6d0d8de7b57e35518ac0308b0ddf404e] # DV
+        assign_scores_to:
+          - name: WEB-Combined
+            score: -10000
 radarr:
   radarr:
     base_url: http://radarr.media.svc.cluster.local
