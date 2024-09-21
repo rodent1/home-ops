@@ -6,15 +6,11 @@ resources:
   - ./angelnu.yaml
   - ./authentik.yaml
   - ./backube.yaml
-  - ./bitnami.yaml
   - ./bjw-s.yaml
   - ./cilium.yaml
   - ./cloudnative-pg.yaml
   - ./coder.yaml
-  - ./coredns.yaml
-  - ./csi-driver-nfs.yaml
   - ./descheduler.yaml
-  - ./dragonfly.yaml
   - ./emqx.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
@@ -22,7 +18,6 @@ resources:
   - ./ingress-nginx.yaml
   - ./intel.yaml
   - ./jetstack.yaml
-  - ./k8s-gateway.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
   - ./openebs.yaml
@@ -33,5 +28,3 @@ resources:
   - ./stakater.yaml
   - ./weaveworks.yaml
   - ./xenitab.yaml
-  - ./stevehipwell.yaml
-  - ./zitadel.yaml
