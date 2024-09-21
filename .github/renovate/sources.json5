@@ -6,6 +6,10 @@
       sourceUrl: "https://github.com/advplyr/audiobookshelf",
     },
     {
+      matchPackagePatterns: ["pinepods"],
+      sourceUrl: "https://github.com/madeofpendletonwool/PinePods",
+    },
+    {
       matchPackagePatterns: ["restic"],
       sourceUrl: "https://github.com/restic/restic",
     },
