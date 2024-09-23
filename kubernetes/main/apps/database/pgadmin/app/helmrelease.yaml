@@ -31,7 +31,7 @@ spec:
           volume-permissions:
             image:
               repository: docker.io/dpage/pgadmin4
-              tag: "8.11@sha256:822dd7a1fa68601f70b3e06445c9cb52b134862b0c43f0f7a96ab6ac44a592a4"
+              tag: "8.12@sha256:585350593e8b0483941fa9a2d5ebb04b88a66e83a7b5603c169f9446b271312f"
             command: ["/bin/chown", "-R", "5050:5050", "/var/lib/pgadmin"]
             securityContext:
               runAsUser: 0
@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: docker.io/dpage/pgadmin4
-              tag: "8.11@sha256:822dd7a1fa68601f70b3e06445c9cb52b134862b0c43f0f7a96ab6ac44a592a4"
+              tag: "8.12@sha256:585350593e8b0483941fa9a2d5ebb04b88a66e83a7b5603c169f9446b271312f"
             envFrom:
               - secretRef:
                   name: pgadmin-secret
