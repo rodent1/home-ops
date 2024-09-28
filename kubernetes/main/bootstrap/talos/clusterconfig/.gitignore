@@ -1,9 +1,6 @@
-main-test.stianrs.casa.yaml
+main-node-1.internal.yaml
+main-node-2.internal.yaml
+main-node-3.internal.yaml
+main-node-4.internal.yaml
+main-node-5.internal.yaml
 talosconfig
-main-node-1.rodent.casa.yaml
-main-node-2.rodent.casa.yaml
-main-node-3.rodent.casa.yaml
-main-node-4.rodent.casa.yaml
-main-node-5.rodent.casa.yaml
-main-worker-1.rodent.casa.yaml
-main-worker-2.rodent.casa.yaml
