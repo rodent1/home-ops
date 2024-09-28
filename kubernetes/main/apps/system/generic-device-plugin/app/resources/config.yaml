@@ -1,0 +1,7 @@
+---
+devices:
+  - name: eaton
+    groups:
+      - usb:
+          - vendor: 0463
+            product: ffff
