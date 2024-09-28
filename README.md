@@ -1,10 +1,8 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/onedr0p/home-ops/main/docs/src/assets/logo.png" align="center" width="144px" height="144px"/>
+![Repository logo](docs/images/homeops-logo.png)
 
-### My Home Operations Repository
-
-### v2-talos
+### My Home Operations Repository: v2-talos
 
 _... managed with Flux, Renovate, and GitHub Actions_ 🤖
 
