@@ -19,7 +19,8 @@ _... managed with Flux, Renovate, and GitHub Actions_ 🤖
 
 <div align="center">
 
-[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/) [![flux-cluster-template](https://img.shields.io/badge/upstream-flux--cluster--template-blue.svg)](https://github.com/onedr0p/flux-cluster-template)
+[![Status-Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.rodent.cc%2Fapi%2Fv1%2Fendpoints%2Fexternal_status%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.rodent.cc)&nbsp;&nbsp;
+[![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fhealthchecks.io%2Fb%2F2%2F916a96cd-aca4-45e0-9e0f-08edf426e122.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://status.rodent.cc)
 
 </div>
 
@@ -31,5 +32,11 @@ _... managed with Flux, Renovate, and GitHub Actions_ 🤖
 [![Pod-Count](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.rodent.cc%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_pod_count&style=flat-square&label=Pods)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
 [![CPU-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.rodent.cc%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_cpu_usage&style=flat-square&label=CPU)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
 [![Memory-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.rodent.cc%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_memory_usage&style=flat-square&label=Memory)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
+
+</div>
+
+<div align="center">
+
+[![flux-cluster-template](https://img.shields.io/badge/upstream-flux--cluster--template-blue.svg)](https://github.com/onedr0p/flux-cluster-template)
 
 </div>
