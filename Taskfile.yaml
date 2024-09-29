@@ -4,6 +4,7 @@ version: "3"
 
 vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+  TALOS_DIR: "{{.ROOT_DIR}}/kubernetes/main/bootstrap/talos"
 
 env:
   KUBECONFIG: "{{.KUBERNETES_DIR}}/kubernetes/main/kubeconfig"
@@ -16,5 +17,4 @@ includes:
   volsync: .taskfiles/volsync
 
 tasks:
-
   default: task -l

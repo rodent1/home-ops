@@ -2,15 +2,15 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ${job}
-  namespace: default
+  name: ${JOB}
+  namespace: ${NS:-default}
 spec:
   ttlSecondsAfterFinished: 3600
   template:
     spec:
       automountServiceAccountToken: false
       restartPolicy: Never
-      nodeName: ${node}
+      nodeName: ${NODE}
       containers:
         - name: main
           image: docker.io/library/alpine:latest

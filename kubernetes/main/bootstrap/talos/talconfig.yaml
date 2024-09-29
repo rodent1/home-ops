@@ -209,18 +209,6 @@ controlPlane:
           net.ipv4.tcp_tw_reuse: 1
           net.ipv4.tcp_window_scaling: 1
 
-    # Various udev rules
-    - &udevPatch |-
-      machine:
-        udev:
-          rules:
-            # Intel GPU
-            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
-            # Eaton UPS
-            - SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", GROUP="20", MODE="0660"
-            # set all disks to `none` scheduler (optimal setting for Ceph and ZFS)
-            - SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ATTR{queue/scheduler}="none"
-
     # Cluster configuration
     - |-
       cluster:
@@ -265,6 +253,16 @@ controlPlane:
         sysctls:
           kernel.kexec_load_disabled: "1"
 
+    # Various udev rules
+    - |-
+      machine:
+        udev:
+          rules:
+            # Intel GPU
+            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+            # Eaton UPS
+            - SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", GROUP="20", MODE="0660"
+
 worker:
   schematic:
     customization:
@@ -284,4 +282,3 @@ worker:
     - *ntpPatch
     - *staticHostEntriesPatch
     - *sysctlPatch
-    - *udevPatch
