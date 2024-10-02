@@ -39,7 +39,7 @@ spec:
           tagging:
             image: &image
               repository: ghcr.io/buroa/qbtools
-              tag: v0.17.1@sha256:38bfa33fa264994ccff031fdcab5676d6752b33aa3c7526b7abf2d541547768c
+              tag: v0.17.5@sha256:2b2755921201b64ae757d6f08dce99b9ee2fa62c0397245c8c3babd462864431
             env: &env
               TZ: *timeZone
               POD_NAMESPACE:
