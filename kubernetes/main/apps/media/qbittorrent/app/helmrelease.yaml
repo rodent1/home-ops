@@ -104,6 +104,13 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.rodent.cc
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_hide_header "x-webkit-csp";
+            proxy_hide_header "content-security-policy";
+            proxy_hide_header "X-Frame-Options";
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.rodent.cc/css/base/qbittorrent/catppuccin-macchiato.css"></head>';
+            sub_filter_once on;
         className: internal
         hosts:
           - host: qb.rodent.cc
