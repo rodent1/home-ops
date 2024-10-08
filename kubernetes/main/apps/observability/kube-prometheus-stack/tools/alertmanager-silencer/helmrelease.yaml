@@ -1,0 +1,66 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alertmanager-silencer
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      alertmanager-silencer:
+        type: cronjob
+        cronjob:
+          schedule: "@daily"
+          timeZone: Europe/Oslo
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/kubanetics
+              tag: 2024.10.4@sha256:46f882438429f91381685693c1825c73c5c5afde04182e2a0c4a9153eb1a0d35
+            env:
+              SCRIPT_NAME: alertmanager-silencer.sh
+              ALERTMANAGER_URL: http://alertmanager-operated.observability.svc.cluster.local:9093
+              MATCHERS_0: alertname=CephNodeInconsistentMTU
+              MATCHERS_1: alertname=CephNodeNetworkPacketErrors
+              MATCHERS_2: alertname=CephMonClockSkew
+              MATCHERS_3: alertname=CephNodeNetworkPacketDrops
+              MATCHERS_4: alertname=CephNodeDiskspaceWarning
+            resources:
+              requests:
+                cpu: 25m
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+    defaultPodOptions:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
