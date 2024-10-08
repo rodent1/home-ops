@@ -31,38 +31,42 @@ spec:
     controllers:
       recyclarr:
         type: cronjob
-        annotations:
-          reloader.stakater.com/auto: "true"
         cronjob:
           schedule: "@daily"
+          timeZone: &timeZone Europe/Oslo
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
         containers:
           app:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 7.2.4@sha256:1bf2436ed4749a4309765dd21643aac858dd436a536e37c25bb463513601e962
+            args:
+              - sync
             env:
-              COMPlus_EnableDiagnostics: "0"
-              TZ: Europe/Oslo
+              TZ: *timeZone
             envFrom:
               - secretRef:
                   name: recyclarr-secret
-            args: ["sync"]
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 128Mi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
       config:
         existingClaim: config-recyclarr
@@ -73,3 +77,7 @@ spec:
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
             readOnly: true
+      config-logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
