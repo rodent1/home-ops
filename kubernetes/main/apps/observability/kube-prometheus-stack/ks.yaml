@@ -34,7 +34,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: kube-prometheus-stack
-  path: ./kubernetes/apps/observability/kube-prometheus-stack/tools
+  path: ./kubernetes/main/apps/observability/kube-prometheus-stack/tools
   prune: true
   sourceRef:
     kind: GitRepository
