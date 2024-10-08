@@ -29,105 +29,88 @@ spec:
     controllers:
       tagging:
         type: cronjob
-        cronjob: &cronJobSpec
+        cronjob: &cronjob
           schedule: "@hourly"
           timeZone: &timeZone Europe/Oslo
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
         initContainers:
-          tagging:
-            image: &image
+          tagging: &container
+            image:
               repository: ghcr.io/buroa/qbtools
-              tag: v0.18.1@sha256:abf54e85a0827eb205c3b5b1d8dad9d484f87b2f255682d038bd36da846c6e38
-            env: &env
+              tag: v0.18.2@sha256:c778cca1c844e604850716c6d702f0b0b1239e0c538d07ae8521361ff11c875e
+            args:
+              - tagging
+              - --added-on
+              - --expired
+              - --last-activity
+              - --sites
+              - --unregistered
+            env:
+              QBITTORRENT_HOST: qbittorrent.media.svc.cluster.local
+              QBITTORRENT_PORT: 80
               TZ: *timeZone
-              POD_NAMESPACE:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: metadata.namespace
-            args: [
-              "tagging",
-              "--added-on",
-              "--expired",
-              "--last-activity",
-              "--sites",
-              "--unregistered",
-              "--server", "qbittorrent.$(POD_NAMESPACE).svc.cluster.local",
-              "--port", "80",
-              "--config", "/config/config.yaml"
-            ]
-            resources: &resources
+            resources:
               requests:
                 cpu: 25m
               limits:
-                memory: 256M
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
         containers:
           unregistered:
-            image: *image
-            env: *env
-            args: [
-              "prune",
-              "--exclude-category", "manual",
-              "--exclude-tag", "added:24h",
-              "--include-tag", "unregistered",
-              # "--dry-run",
-              "--server", "qbittorrent.$(POD_NAMESPACE).svc.cluster.local",
-              "--port", "80"
-            ]
-            resources: *resources
+            <<: *container
+            args:
+              - prune
+              - --exclude-tag=expired
+              - --exclude-tag=added:1d
+              - --include-tag=unregistered
           expired:
-            image: *image
-            env: *env
-            args: [
-              "prune",
-              "--exclude-category", "manual",
-              "--include-tag", "expired", # defined in config.yaml
-              # "--dry-run",
-              "--server", "qbittorrent.$(POD_NAMESPACE).svc.cluster.local",
-              "--port", "80"
-            ]
-            resources: *resources
+            <<: *container
+            args:
+              - prune
+              - --exclude-category=manual
+              - --exclude-tag=activity:1d
+              - --include-tag=expired
         pod:
           restartPolicy: OnFailure
+          securityContext: &podSecurityContext
+            runAsNonRoot: true
+            runAsUser: 568
+            runAsGroup: 568
       orphaned:
         type: cronjob
         cronjob:
-          <<: *cronJobSpec
-          schedule: "@daily"
+          <<: *cronjob
+          schedule: "@weekly"
         containers:
           app:
-            image: *image
-            env: *env
-            args: [
-              "orphaned",
-              "--exclude-pattern", "*_unpackerred*",
-              "--exclude-pattern", "*/manual/*",
-              # "--dry-run",
-              "--server", "qbittorrent.$(POD_NAMESPACE).svc.cluster.local",
-              "--port", "80"
-            ]
-            resources: *resources
+            <<: *container
+            args:
+              - orphaned
+              - --exclude-pattern="*_unpackerred"
+              - --exclude-pattern="*/manual/*"
         pod:
           restartPolicy: OnFailure
+          securityContext:
+            <<: *podSecurityContext
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65536
       reannounce:
         containers:
           app:
-            image: *image
-            env: *env
-            args: [
-              "reannounce",
-              "--process-seeding",
-              "--server", "qbittorrent.$(POD_NAMESPACE).svc.cluster.local",
-              "--port", "80"
-            ]
-            resources: *resources
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        seccompProfile: { type: RuntimeDefault }
+            <<: *container
+            args:
+              - reannounce
+        pod:
+          securityContext: *podSecurityContext
     persistence:
       secret-file:
         type: secret
