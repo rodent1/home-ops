@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cert-manager-issuers
+    - name: external-secrets-stores
   path: ./kubernetes/main/apps/networking/nginx/certificates
   prune: false
   sourceRef:
@@ -19,7 +19,6 @@ spec:
     name: home-kubernetes
   wait: true
   interval: 30m
-  retryInterval: 1m
   timeout: 5m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
@@ -34,8 +33,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    # - name: nginx-certificates
-    - name: external-secrets-stores
+    - name: nginx-certificates
   path: ./kubernetes/main/apps/networking/nginx/external
   prune: false
   sourceRef:
@@ -58,8 +56,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    # - name: nginx-certificates
-    - name: external-secrets-stores
+    - name: nginx-certificates
   path: ./kubernetes/main/apps/networking/nginx/internal
   prune: false
   sourceRef:
