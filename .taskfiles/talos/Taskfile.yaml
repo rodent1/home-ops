@@ -3,12 +3,14 @@
 version: "3"
 
 x-vars: &vars
-  TALOS_VERSION: "1.8.0" # Manual versions + schematic ID for now
-  TALOS_SCHEMATIC_ID: "df491c50a5acc05b977ef00c32050e1ceb0df746e40b33c643ac8a9bfb7c7263"
-  TALOS_SCHEMATIC_ID_WORKERS: "6c789e7a3eec37617fd9d239a7f696ba48e75bc4780f5cb30bf8882686d79a22"
+  KUBERNETES_VERSION:
+    sh: yq 'select(document_index == 1).spec.postBuild.substitute.KUBERNETES_VERSION' {{.KUBERNETES_DIR}}/{{.CLUSTER}}/apps/system-upgrade/system-upgrade-controller/ks.yaml
+  TALOS_VERSION:
+    sh: yq 'select(document_index == 1).spec.postBuild.substitute.TALOS_VERSION' {{.KUBERNETES_DIR}}/{{.CLUSTER}}/apps/system-upgrade/system-upgrade-controller/ks.yaml
+  TALOS_SCHEMATIC_ID:
+    sh: yq 'select(document_index == 1).spec.postBuild.substitute.TALOS_SCHEMATIC_ID_CONTROL' {{.KUBERNETES_DIR}}/{{.CLUSTER}}/apps/system-upgrade/system-upgrade-controller/ks.yaml
   TALOS_CONTROLLER:
     sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
-  KUBERNETES_VERSION: "1.31.1"
 
 tasks:
   apply-config:
