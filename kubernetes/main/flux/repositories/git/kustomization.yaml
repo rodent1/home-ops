@@ -2,8 +2,4 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - ./k8s-digester.yaml
-  # - ./kubevirt.yaml
-  # - ./kubevirt-cdi.yaml
-  - ./local-path-provisioner.yaml
+resources: []
