@@ -39,18 +39,8 @@ spec:
               tag: 5.0.0@sha256:1cc1878d06fafe6a1a1294f1547203634e729e3386324b7a63c8fde68554d705
             env:
               TZ: Europe/Oslo
-              QBITTORRENT__PORT: &port 80
-              QBITTORRENT__BT_PORT: &bittorrentPort 50413
-              QBT_Preferences__WebUI__AlternativeUIEnabled: false
-              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
-              QBT_Preferences__WebUI__AuthSubnetWhitelist: 10.0.0.0/8
-              QBT_Preferences__WebUI__LocalHostAuth: false
-              QBT_BitTorrent__Session__Interface: eth0
-              QBT_BitTorrent__Session__InterfaceAddress:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: status.podIP
-              QBT_BitTorrent__Session__InterfaceName: eth0
+              QBT_WEBUI_PORT: &port 80
+              QBT_TORRENTING_PORT: &torrentPort 50413
             probes:
               liveness: &probes
                 enabled: true
@@ -87,18 +77,19 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
+      terminationGracePeriodSeconds: 300
     service:
       app:
         controller: qbittorrent
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 10.1.2.11
+          lbipam.cilium.io/ips: 10.1.2.11
         ports:
           http:
             port: *port
           bittorrent:
             enabled: true
-            port: *bittorrentPort
+            port: *torrentPort
             protocol: TCP
     ingress:
       app:
