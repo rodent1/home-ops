@@ -37,7 +37,7 @@ tasks:
       flux build ks $(basename {{.PATH}}) \
           --namespace {{.NS}} \
           --kustomization-file {{.KUBERNETES_DIR}}/{{.CLUSTER}}/apps/{{.PATH}}/ks.yaml \
-          --PATH {{.KUBERNETES_DIR}}/{{.CLUSTER}}/apps/{{.PATH}} \
+          --path {{.KUBERNETES_DIR}}/{{.CLUSTER}}/apps/{{.PATH}} \
           {{- if contains "not found" .KS }}--dry-run \{{ end }} | \
       kubectl delete -f - && \
       kubectl delete kustomization $(basename {{.PATH}}) --namespace {{.NS}} || true
