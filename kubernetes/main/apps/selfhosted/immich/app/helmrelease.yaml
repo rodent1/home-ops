@@ -38,6 +38,7 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups: [44, 10000]
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -78,6 +79,7 @@ spec:
                 memory: 256M
               limits:
                 memory: 2048Mi
+                gpu.intel.com/i915: 1
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
@@ -107,18 +109,6 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.rodent.cc
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            set $forwarded_client_ip "";
-            if ($http_x_forwarded_for ~ "^([^,]+)") {
-              set $forwarded_client_ip $1;
-            }
-            set $client_ip $remote_addr;
-            if ($forwarded_client_ip != "") {
-              set $client_ip $forwarded_client_ip;
-            }
-          nignx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/proxy-body-size: "0"
-          nginx.ingress.kubernetes.io/upstream-hash-by: "$client_ip"
         hosts:
           - host: &host photos.rodent.cc
             paths:
@@ -142,3 +132,15 @@ spec:
           immich:
             machine-learning:
               - path: /cache
+      geocoding-dump:
+        type: emptyDir
+        advancedMounts:
+          server:
+            main:
+              - path: /usr/src/app/.reverse-geocoding-dump
+      transformers-cache:
+        type: emptyDir
+        advancedMounts:
+          server:
+            main:
+              - path: /usr/src/app/.transformers_cache
