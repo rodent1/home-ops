@@ -135,12 +135,12 @@ spec:
       geocoding-dump:
         type: emptyDir
         advancedMounts:
-          server:
+          immich:
             main:
               - path: /usr/src/app/.reverse-geocoding-dump
       transformers-cache:
         type: emptyDir
         advancedMounts:
-          server:
+          immich:
             main:
               - path: /usr/src/app/.transformers_cache
