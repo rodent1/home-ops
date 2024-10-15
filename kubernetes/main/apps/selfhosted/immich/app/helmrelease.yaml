@@ -69,6 +69,7 @@ spec:
             envFrom: *envFrom
             env: &env # APP
               IMMICH_MEDIA_LOCATION: /usr/src/app/upload
+              MPLCONFIGDIR: /usr/src/app/.matplotlib
               TZ: Europe/Oslo
               # REDIS
               # Requires the extraArg `--default_lua_flags=allow-undeclared-keys` to be set in the dragonfly helm chart
@@ -144,3 +145,9 @@ spec:
           immich:
             main:
               - path: /usr/src/app/.transformers_cache
+      matplotlib:
+        type: emptyDir
+        advancedMounts:
+          immich:
+            main:
+              - path: /usr/src/app/.matplotlib
