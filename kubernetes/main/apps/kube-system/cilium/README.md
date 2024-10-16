@@ -1,3 +1,6 @@
+## Note: As of UnifiOS 4.1, the below is no longer neccesary. Disable the FRR service and upload a config file to the UI.
+
+
 # UDM-Pro BGP Configuration for Cilium
 
 This guide outlines the steps to enable and configure BGP routing on your UDM-Pro device for integration with a Cilium-based Kubernetes cluster.
