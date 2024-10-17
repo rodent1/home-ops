@@ -22,3 +22,5 @@ router bgp 64513
   address-family ipv4 unicast
     neighbor k8s next-hop-self
 ```
+### CiliumBGPPeeringPolicy config file
+[l3.yaml](./config/l3.yaml)
