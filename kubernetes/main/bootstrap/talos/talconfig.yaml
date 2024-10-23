@@ -13,7 +13,7 @@ allowSchedulingOnMasters: true
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.8.1
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.31.1
+kubernetesVersion: v1.31.2
 
 additionalApiServerCertSans: &sans
   - ${CLUSTER_ENDPOINT_IP}
