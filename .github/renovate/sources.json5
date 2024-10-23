@@ -13,5 +13,9 @@
       matchPackagePatterns: ["restic"],
       sourceUrl: "https://github.com/restic/restic",
     },
+    {
+      matchPackagePatterns: ["system-upgrade-controller"],
+      sourceUrl: "https://github.com/rancher/system-upgrade-controller",
+    },
   ],
 }
