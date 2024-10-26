@@ -13,4 +13,4 @@ resources:
   - ./morphos/ks.yaml
   - ./paperless/ks.yaml
   - ./stirling-pdf/ks.yaml
-  - ./vikunja/ks.yaml
+  # - ./vikunja/ks.yaml
