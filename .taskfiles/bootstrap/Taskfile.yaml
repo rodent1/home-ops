@@ -109,7 +109,6 @@ tasks:
       - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/rook-data-job.yaml.j2
 
   flux:
-    internal: true
     cmds:
       - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap/apps
       - for: { var: TEMPLATES }

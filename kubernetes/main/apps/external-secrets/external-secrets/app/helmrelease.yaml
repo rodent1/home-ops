@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -24,17 +24,23 @@ spec:
       retries: 3
   dependsOn:
     - name: onepassword-connect
-      namespace: security
+      namespace: external-secrets
   values:
     installCRDs: true
-    serviceMonitor:
-      enabled: true
-      interval: 1m
+    image:
+      repository: ghcr.io/external-secrets/external-secrets
     webhook:
+      image:
+        repository: ghcr.io/external-secrets/external-secrets
       serviceMonitor:
         enabled: true
         interval: 1m
     certController:
+      image:
+        repository: ghcr.io/external-secrets/external-secrets
       serviceMonitor:
         enabled: true
         interval: 1m
+    serviceMonitor:
+      enabled: true
+      interval: 1m
