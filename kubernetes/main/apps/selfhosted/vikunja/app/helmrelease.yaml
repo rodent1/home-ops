@@ -23,8 +23,6 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: cloudnative-pg
-      namespace: database
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -34,60 +32,50 @@ spec:
       vikunja:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16.3@sha256:9c136223fb4e05b0ca24e2350c2dc45843110d0e1d09615c52c9a037628c09fa
-            envFrom: &envFrom
-              - secretRef:
-                  name: vikunja-secret
         containers:
           app:
             image:
-              repository: vikunja/api
-              tag: 0.22.1@sha256:c9415431e6235229302bb8f9ee6660b74c24859d1e8adbc4a3e25bd418604b57
-            envFrom: *envFrom
+              repository: docker.io/vikunja/vikunja
+              tag: 0.24.4@sha256:c93c58841215592c51a40fa978da25efadd1fff2460b42443c344132f322eef1
+            envFrom:
+              - secretRef:
+                  name: vikunja-secret
             env:
               VIKUNJA_SERVICE_TIMEZONE: Europe/Oslo
               VIKUNJA_SERVICE_FRONTENDURL: https://tasks.rodent.cc
-              VIKUNJA_MAILER_ENABLED: "true"
-              VIKUNJA_MAILER_HOST: smtp.office365.com
-              VIKUNJA_MAILER_PORT: "587"
-              VIKUNJA_MAILER_FROMEMAIL: Vikunja <mailer@rodent.cc>
-              VIKUNJA_MAILER_AUTHTYPE: login
+              VIKUNJA_FILES_BASEPATH: /files
+              VIKUNJA_DATABASE_TYPE: sqlite
+              VIKUNJA_DATABASE_PATH: /db/vikunja.db
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 10m
-                memory: 100Mi
+                cpu: 5m
+                memory: 192Mi
               limits:
-                memory: 100Mi
-          frontend:
-            image:
-              repository: vikunja/frontend
-              tag: 0.22.1@sha256:f0223d441997fe29c377d0b476dc4bb2fc091b44b9c24d76b1b88c213df520c5
-            resources:
-              requests:
-                cpu: 10m
-                memory: 100Mi
-              limits:
-                memory: 100Mi
-          proxy:
-            image:
-              repository: caddy
-              tag: 2.8.4-alpine@sha256:33937b9d51461ea87794350c1c09ce53f327802508929d78f3b5642533f2f7db
-            resources:
-              requests:
-                cpu: 10m
-                memory: 100Mi
-              limits:
-                memory: 100Mi
+                memory: 1024Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: vikunja
         ports:
           http:
-            port: 8080
+            port: 3456
     ingress:
       app:
         enabled: true
@@ -108,17 +96,10 @@ spec:
       config:
         enabled: true
         existingClaim: config-vikunja
-        globalMounts:
-          - path: /app/vikunja/files
-      caddy-config:
-        type: configMap
-        name: vikunja-configmap
-        globalMounts:
-          - path: /etc/caddy/Caddyfile
-            subPath: Caddyfile
-      vikunja-config:
-        type: secret
-        name: vikunja-configmap-secret
-        globalMounts:
-          - path: /etc/vikunja/config.yml
-            subPath: config.yml
+        advancedMounts:
+          vikunja:
+            app:
+              - path: /db
+                subPath: db
+              - path: /files
+                subPath: files
