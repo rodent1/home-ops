@@ -47,4 +47,4 @@ spec:
                   - name: repository
                     nfs:
                       server: tank.internal
-                      path: /cauldron/Volsync
+                      path: /mnt/cauldron/Volsync
