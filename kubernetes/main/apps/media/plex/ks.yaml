@@ -23,5 +23,4 @@ spec:
     substitute:
       APP: *app
       GATUS_PATH: /web/index.html
-      VOLSYNC_CAPACITY: 150Gi
-      VOLSYNC_MINIO_SCHEDULE: "0 */8 * * *"
+      VOLSYNC_CAPACITY: 30Gi

@@ -26,7 +26,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
-      namespace: system
+      namespace: volsync-system
   values:
     controllers:
       tautulli:
@@ -40,11 +40,15 @@ spec:
             env:
               TZ: Europe/Oslo
             command: ["/usr/local/bin/python", "Tautulli.py"]
-            args: [
-              "--config", "/config/config.ini",
-              "--datadir", "/config",
-              "--port", "80"
-            ]
+            args:
+              [
+                "--config",
+                "/config/config.ini",
+                "--datadir",
+                "/config",
+                "--port",
+                "80",
+              ]
             probes:
               liveness: &probes
                 enabled: true

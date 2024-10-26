@@ -2,13 +2,20 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+set: [pipefail]
+shopt: [globstar]
+
 vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
   TALOS_DIR: "{{.ROOT_DIR}}/kubernetes/main/bootstrap/talos"
 
 env:
-  KUBECONFIG: "{{.KUBERNETES_DIR}}/kubernetes/main/kubeconfig"
+  GOPATH: "{{.ROOT_DIR}}/.go"
+  KUBECONFIG: "{{.CLUSTER_DIR}}/kubeconfig"
+  MINIJINJA_CONFIG_FILE: "{{.ROOT_DIR}}/.minijinja.toml"
   SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
+  TALOSCONFIG: "{{.CLUSTER_DIR}}/talosconfig"
+  VIRTUAL_ENV: "{{.ROOT_DIR}}/.venv"
 
 includes:
   bootstrap: .taskfiles/bootstrap
@@ -17,4 +24,6 @@ includes:
   volsync: .taskfiles/volsync
 
 tasks:
-  default: task -l
+  default:
+    cmd: task --list
+    silent: true
