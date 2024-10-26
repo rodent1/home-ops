@@ -6,6 +6,10 @@
       sourceUrl: "https://github.com/advplyr/audiobookshelf",
     },
     {
+      matchPackagePatterns: ["twin/gatus"],
+      sourceUrl: "https://github.com/TwiN/gatus",
+    },
+    {
       matchPackagePatterns: ["pinepods"],
       sourceUrl: "https://github.com/madeofpendletonwool/PinePods",
     },
