@@ -103,3 +103,9 @@ spec:
                 subPath: db
               - path: /files
                 subPath: files
+      vikunja-config:
+        type: secret
+        name: vikunja-configmap-secret
+        globalMounts:
+          - path: /etc/vikunja/config.yml
+            subPath: config.yml
