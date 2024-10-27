@@ -48,7 +48,7 @@ spec:
                 cpu: 10m
                 memory: 256Mi
               limits:
-                memory: 1Gi
+                memory: 512Mi
           meilisearch:
             image:
               repository: getmeili/meilisearch
@@ -59,9 +59,8 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 128Mi
               limits:
-                memory: 256Mi
+                memory: 128Mi
           chrome:
             image:
               repository: gcr.io/zenika-hub/alpine-chrome
@@ -75,12 +74,6 @@ spec:
               - --remote-debugging-address=0.0.0.0
               - --remote-debugging-port=9222
               - --hide-scrollbars
-            resources:
-              requests:
-                cpu: 10m
-                memory: 128Mi
-              limits:
-                memory: 1Gi
     service:
       app:
         controller: hoarder
