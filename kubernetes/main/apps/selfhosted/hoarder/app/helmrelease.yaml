@@ -1,0 +1,119 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: hoarder
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      hoarder:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/hoarder-app/hoarder
+              tag: 0.18.0@sha256:a49249cd3d4966f1c41a2eb6d9b30e5564d769ffe65ee804859efd696159930b
+            env:
+              DATA_DIR: /data
+              MEILI_ADDR: http://hoarder-meilisearch:7700
+              BROWSER_WEB_URL: http://hoarder-chrome:9222
+              NEXTAUTH_URL: https://hoarder.rodent.cc
+              # OAuth setup
+              OAUTH_PROVIDER_NAME: Authentik
+              DISABLE_PASSWORD_AUTH: "true"
+            envFrom: &envFrom
+              - secretRef:
+                  name: hoarder-secret
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+          meilisearch:
+            image:
+              repository: getmeili/meilisearch
+              tag: v1.10.3@sha256:9d1b9b02fe6c68f60b54ce40092d8078f051b9341c400c90f907607636b7c9c1
+            env:
+              MEILI_NO_ANALYTICS: "true"
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+          chrome:
+            image:
+              repository: gcr.io/zenika-hub/alpine-chrome
+              tag: 124@sha256:cae4f3b8645950a400cd180d870d90a711a0217de1a8772cafc1596bdb23d83c
+            command:
+              - chromium-browser
+              - --headless
+              - --no-sandbox
+              - --disable-gpu
+              - --disable-dev-shm-usage
+              - --remote-debugging-address=0.0.0.0
+              - --remote-debugging-port=9222
+              - --hide-scrollbars
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+    service:
+      app:
+        controller: hoarder
+        ports:
+          http:
+            port: 3000
+      chrome:
+        controller: hoarder
+        ports:
+          http:
+            port: 9222
+      meilisearch:
+        controller: hoarder
+        ports:
+          http:
+            port: 7700
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.rodent.cc
+        className: external
+        hosts:
+          - host: "{{ .Release.Name }}.rodent.cc"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: config-hoarder
+        advancedMounts:
+          hoarder:
+            app:
+              - path: /data
+                subPath: data
+            meilisearch:
+              - path: /meili_data
+                subPath: meili_data
