@@ -10,6 +10,10 @@
       sourceUrl: "https://github.com/TwiN/gatus",
     },
     {
+      matchPackagePatterns: ["getmeili/meilisearch"],
+      sourceUrl: "https://github.com/meilisearch/meilisearch",
+    },
+    {
       matchPackagePatterns: ["pinepods"],
       sourceUrl: "https://github.com/madeofpendletonwool/PinePods",
     },
