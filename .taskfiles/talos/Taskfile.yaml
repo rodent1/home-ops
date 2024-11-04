@@ -5,7 +5,6 @@ version: "3"
 tasks:
   apply-node:
     desc: Apply Talos config to a node [CLUSTER=main] [HOSTNAME=required]
-    # FIXME: See if I can put dotenv into talhelper files
     dotenv: ["{{.CLUSTER_DIR}}/cluster.env"]
     cmds:
       - task: down
@@ -74,6 +73,20 @@ tasks:
       - talosctl config info &>/dev/null
       - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
 
+  shutdown-cluster:
+    desc: Shutdown Talos across the whole cluster [CLUSTER=main]
+    prompt: Shutdown the Talos cluster '{{.CLUSTER}}' ... continue?
+    cmd: talosctl shutdown --nodes {{.HOSTNAMES}} --force
+    vars:
+      HOSTNAMES:
+        sh: talosctl config info --output json | jq --join-output '[.nodes[]] | join(",")'
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - test -f {{.CLUSTER_DIR}}/talosconfig
+      - talosctl config info &>/dev/null
+      - talosctl --nodes {{.NODES}} get machineconfig &>/dev/null
+
   reset-node:
     desc: Reset Talos on a single node [CLUSTER=main] [HOSTNAME=required]
     prompt: Reset Talos node '{{.HOSTNAME}}' on the '{{.CLUSTER}}' cluster ... continue?
@@ -87,7 +100,7 @@ tasks:
 
   reset-cluster:
     desc: Reset Talos across the whole cluster [CLUSTER=main]
-    prompt: Reset Talos cluster '{{.CLUSTER}}' ... continue?
+    prompt: Reset the Talos cluster '{{.CLUSTER}}' ... continue?
     cmd: talosctl reset --nodes {{.HOSTNAMES}} --graceful=false
     vars:
       HOSTNAMES:
@@ -110,15 +123,12 @@ tasks:
   up:
     internal: true
     cmds:
-      - defer:
-          task: :kubernetes:delete-failed-pods
       - flux --namespace flux-system resume kustomization --all
       - until kubectl wait cephcluster --for=jsonpath=.status.ceph.health=HEALTH_OK --timeout=10m --all --all-namespaces &>/dev/null; do sleep 5; done
       - until kubectl wait jobs --all --all-namespaces --for=condition=complete --timeout=5m &>/dev/null; do sleep 5; done
       - task: :volsync:state-resume
 
   genconfig:
-    # FIXME: See if I can put dotenv into talhelper files
     desc: Generate Talos config
     dir: "{{.TALOS_DIR}}"
     cmd: talhelper genconfig
