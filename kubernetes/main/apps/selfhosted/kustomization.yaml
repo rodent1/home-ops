@@ -5,12 +5,12 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./excalidraw/ks.yaml
-  - ./hoarder/ks.yaml
-  - ./home-assistant/ks.yaml
-  - ./immich/ks.yaml
-  - ./it-tools/ks.yaml
-  - ./morphos/ks.yaml
-  - ./paperless/ks.yaml
-  - ./stirling-pdf/ks.yaml
-  - ./vikunja/ks.yaml
+  # - ./excalidraw/ks.yaml
+  # - ./hoarder/ks.yaml
+  # - ./home-assistant/ks.yaml
+  # - ./immich/ks.yaml
+  # - ./it-tools/ks.yaml
+  # - ./morphos/ks.yaml
+  # - ./paperless/ks.yaml
+  # - ./stirling-pdf/ks.yaml
+  # - ./vikunja/ks.yaml
