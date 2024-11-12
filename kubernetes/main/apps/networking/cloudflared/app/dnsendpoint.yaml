@@ -8,4 +8,4 @@ spec:
   endpoints:
     - dnsName: external.rodent.cc
       recordType: CNAME
-      targets: ["${CLUSTER_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
+      targets: ["73f66c1e-1048-49b5-bba5-c535ca8162d9.cfargotunnel.com"]
