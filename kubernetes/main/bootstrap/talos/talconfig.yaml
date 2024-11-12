@@ -100,6 +100,9 @@ controlPlane:
     customization:
       extraKernelArgs:
         - net.ifnames=0
+        - apparmor=0
+        - mitigations=off
+        - security=none
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
@@ -171,11 +174,10 @@ controlPlane:
               nfsvers=4.2
               async=True
               hard=True
+              nconnect=16
               noatime=True
-              nodiratime=True
               rsize=1048576
               wsize=1048576
-              nconnect=4
 
     # Configure NTP
     - &ntpPatch |-
@@ -200,8 +202,6 @@ controlPlane:
         sysctls:
           fs.inotify.max_user_watches: 1048576
           fs.inotify.max_user_instances: 8192
-          kernel.kexec_load_disabled: 1
-          kernel.randomize_va_space: 0
           net.core.netdev_max_backlog: 30000
           net.core.rmem_max: 67108864
           net.core.wmem_max: 67108864
@@ -209,6 +209,8 @@ controlPlane:
           net.ipv4.tcp_wmem: 4096 65536 33554432
           net.ipv4.tcp_tw_reuse: 1
           net.ipv4.tcp_window_scaling: 1
+          net.ipv4.tcp_congestion_control: bbr
+          vm.nr_hugepages: 1024
 
     # Cluster configuration
     - |-
@@ -285,6 +287,7 @@ worker:
       systemExtensions:
         officialExtensions:
           - siderolabs/amd-ucode
+
   patches:
     - *disableSearchDomainPatch
     - *discoveryPatch
