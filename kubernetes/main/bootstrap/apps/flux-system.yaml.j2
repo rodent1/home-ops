@@ -22,4 +22,4 @@ metadata:
   namespace: flux-system
 stringData:
   age.agekey: |
-    {{ ENV.FLUX_SOPS_PRIVATE_KEY }}
+    {{ ENV.FLUX_SOPS_PRIVATE_KEY | indent(4)  }}

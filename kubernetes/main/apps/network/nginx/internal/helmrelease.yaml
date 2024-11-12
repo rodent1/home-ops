@@ -29,7 +29,7 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: internal.rodent.cc,internal.stianrs.dev
-          io.cilium/lb-ipam-ips: 10.1.1.152
+          io.cilium/lb-ipam-ips: 10.1.1.102
       ingressClassResource:
         name: internal
         default: true
