@@ -39,7 +39,7 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://cnpg/
-      endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+      endpointURL: https://d74d8dfc1170c5004e77bb7bb67219a6.r2.cloudflarestorage.com/cnpg
       # Note: serverName version needs to be inclemented
       # when recovering from an existing cnpg cluster
       serverName: &currentCluster cnpg16-v01
