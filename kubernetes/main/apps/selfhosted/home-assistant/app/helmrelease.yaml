@@ -25,8 +25,6 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   values:
     controllers:
       home-assistant:
@@ -63,7 +61,7 @@ spec:
             k8s.v1.cni.cncf.io/networks: |
               [{
                 "name":"multus-iot",
-                "namespace": "networking",
+                "namespace": "network",
                 "ips": ["10.1.4.10/24"]
               }]
     service:

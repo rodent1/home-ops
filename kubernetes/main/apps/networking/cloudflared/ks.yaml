@@ -8,14 +8,14 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  targetNamespace: networking
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-dns-cloudflare
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/networking/cloudflared/app
+  path: ./kubernetes/main/apps/network/cloudflared/app
   prune: false
   sourceRef:
     kind: GitRepository

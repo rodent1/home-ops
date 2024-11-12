@@ -10,6 +10,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  dependsOn:
+    - name: external-secrets-stores
+    - name: volsync
   interval: 10m
   path: ./kubernetes/main/apps/selfhosted/stirling-pdf/app
   prune: true
@@ -17,8 +20,6 @@ spec:
     kind: GitRepository
     name: home-kubernetes
   wait: false
-  dependsOn:
-    - name: external-secrets-stores
   postBuild:
     substitute:
       APP: *appname

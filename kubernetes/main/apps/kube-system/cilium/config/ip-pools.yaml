@@ -13,7 +13,7 @@ spec:
 apiVersion: cilium.io/v2alpha1
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: networking-pool
+  name: network-pool
 spec:
   allowFirstLastIPs: "Yes"
   blocks:
@@ -21,4 +21,4 @@ spec:
       stop: 10.1.1.160
   serviceSelector:
     matchLabels:
-      "io.kubernetes.service.namespace": "networking"
+      "io.kubernetes.service.namespace": "network"

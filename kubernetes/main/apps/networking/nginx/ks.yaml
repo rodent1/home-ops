@@ -6,13 +6,13 @@ metadata:
   name: &app nginx-certificates
   namespace: flux-system
 spec:
-  targetNamespace: networking
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/networking/nginx/certificates
+  path: ./kubernetes/main/apps/network/nginx/certificates
   prune: false
   sourceRef:
     kind: GitRepository
@@ -28,13 +28,13 @@ metadata:
   name: &app nginx-external
   namespace: flux-system
 spec:
-  targetNamespace: networking
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: nginx-certificates
-  path: ./kubernetes/main/apps/networking/nginx/external
+  path: ./kubernetes/main/apps/network/nginx/external
   prune: false
   sourceRef:
     kind: GitRepository
@@ -51,13 +51,13 @@ metadata:
   name: &app nginx-internal
   namespace: flux-system
 spec:
-  targetNamespace: networking
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: nginx-certificates
-  path: ./kubernetes/main/apps/networking/nginx/internal
+  path: ./kubernetes/main/apps/network/nginx/internal
   prune: false
   sourceRef:
     kind: GitRepository
