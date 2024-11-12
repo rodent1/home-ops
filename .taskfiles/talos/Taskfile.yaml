@@ -150,11 +150,3 @@ tasks:
       - task: :volsync:state-resume
     preconditions:
       - which flux kubectl
-
-  genconfig:
-    desc: Generate Talos config
-    dir: "{{.TALOS_DIR}}"
-    cmd: talhelper genconfig
-    preconditions:
-      - test -f {{.TALOS_DIR}}/talconfig.yaml
-      - which talhelper
