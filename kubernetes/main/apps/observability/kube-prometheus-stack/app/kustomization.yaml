@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./prometheusrule.yaml
+  - ./scrapeconfig.yaml
+  - ../../../../../shared/templates/gatus/guarded
