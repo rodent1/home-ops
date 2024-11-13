@@ -7,8 +7,8 @@ resources:
   - ./helmrelease.yaml
   - ./pvc.yaml
   # Templates
-  - ../../../../templates/gatus/external
-  - ../../../../templates/volsync
+  - ../../../../../shared/templates/gatus/external
+  - ../../../../../shared/templates/volsync
 configMapGenerator:
   - name: plex-loki-rules
     files:

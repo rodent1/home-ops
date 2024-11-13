@@ -40,3 +40,7 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 15m
+  postBuild:
+    substitute:
+      APP: *app
+      GATUS_SUBDOMAIN: rook
