@@ -6,4 +6,4 @@ resources:
   # App
   - ./helmrelease.yaml
   # Templates
-  - ../../../../templates/volsync
+  - ../../../../../shared/templates/volsync

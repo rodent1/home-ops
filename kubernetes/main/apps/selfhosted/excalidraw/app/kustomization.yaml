@@ -6,4 +6,4 @@ resources:
   # App
   - ./helmrelease.yaml
   # Templates
-  - ../../../../templates/gatus/external
+  - ../../../../../shared/templates/gatus/external
