@@ -6,7 +6,8 @@
       description: ["Process custom dependencies"],
       fileMatch: [
         "(^|/).taskfiles/.+\\.ya?ml$",
-        "(^|/)kubernetes/.+\\.(ya?ml(?:\\.j2)?|env)$",
+        "(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$",
+        "(^|/)kubernetes/.+\\.env?$",
       ],
       matchStrings: [
         // # renovate: datasource=github-releases depName=k3s-io/k3s
