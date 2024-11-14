@@ -28,15 +28,15 @@
   requireConfig: "ignored",
   ignorePaths: ["**/*.sops.*", "**/.archive/**", "**/resources/**"],
   flux: {
-    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"],
+    fileMatch: ["(^|/)kubernetes/.+\\.(ya?ml(?:\\.j2)?|env)$"],
   },
   "helm-values": {
-    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"],
+    fileMatch: ["(^|/)kubernetes/.+\\.(ya?ml(?:\\.j2)?|env)$"],
   },
   kubernetes: {
     fileMatch: [
       "(^|/)\\.taskfiles/.+\\.ya?ml(?:\\.j2)?$",
-      "(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$",
+      "(^|/)kubernetes/.+\\.(ya?ml(?:\\.j2)?|env)$",
     ],
   },
 }
