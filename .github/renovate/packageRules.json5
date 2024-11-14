@@ -4,13 +4,13 @@
     {
       description: ["Loose versioning for non-semver packages"],
       matchDatasources: ["docker"],
-      matchPackagePatterns: ["plex"],
+      matchPackagePatterns: ["cross-seed", "plex"],
       versioning: "loose",
     },
     {
       description: ["Custom schedule for frequently updated packages"],
       matchDataSources: ["docker", "helm"],
-      matchPackagePatterns: ["minio", "reloader"],
+      matchPackagePatterns: ["minio", "postgresql", "reloader"],
       schedule: ["on the first day of the month"],
     },
   ],

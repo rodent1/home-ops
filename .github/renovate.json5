@@ -5,7 +5,6 @@
     "docker:enableMajor",
     "replacements:k8s-registry-move",
     ":automergeBranch",
-    ":automergeDigest",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
@@ -13,6 +12,7 @@
     ":timezone(Europe/Oslo)",
     "github>rodent1/home-ops//.github/renovate/allowedVersions.json5",
     "github>rodent1/home-ops//.github/renovate/autoMerge.json5",
+    "github>rodent1/home-ops//.github/renovate/clusters.json5",
     "github>rodent1/home-ops//.github/renovate/commitMessage.json5",
     "github>rodent1/home-ops//.github/renovate/customManagers.json5",
     "github>rodent1/home-ops//.github/renovate/grafanaDashboards.json5",
@@ -28,15 +28,12 @@
   requireConfig: "ignored",
   ignorePaths: ["**/*.sops.*", "**/.archive/**", "**/resources/**"],
   flux: {
-    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"],
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
   },
   "helm-values": {
-    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"],
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
   },
   kubernetes: {
-    fileMatch: [
-      "(^|/)\\.taskfiles/.+\\.ya?ml(?:\\.j2)?$",
-      "(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$",
-    ],
+    fileMatch: ["(^|/)\\.taskfiles/.+\\.ya?ml$", "(^|/)kubernetes/.+\\.ya?ml$"],
   },
 }
