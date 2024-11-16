@@ -110,3 +110,20 @@ spec:
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
+      incomplete:
+        type: custom
+        volumeSpec:
+          ephemeral:
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                storageClassName: openebs-hostpath
+                resources:
+                  requests:
+                    storage: 100Gi
+        advancedMounts:
+          qbittorrent:
+            app:
+              - path: /incomplete
+                subPath: incomplete
