@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -22,19 +22,19 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  # valuesFrom:
-  #   - targetPath: controller.maxmindLicenseKey
-  #     kind: Secret
-  #     name: nginx-external-maxmind-secret
-  #     valuesKey: MAXMIND_LICENSE_KEY
+  valuesFrom:
+    - targetPath: controller.maxmindLicenseKey
+      kind: Secret
+      name: nginx-external-maxmind-secret
+      valuesKey: MAXMIND_LICENSE_KEY
   values:
     fullnameOverride: nginx-external
     controller:
       replicaCount: 2
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: external.rodent.cc,external.stianrs.dev
-          io.cilium/lb-ipam-ips: 10.1.1.101
+          external-dns.alpha.kubernetes.io/hostname: external.rodent.cc
+          lbipam.cilium.io/ips: 10.1.1.101
       ingressClassResource:
         name: external
         default: false
@@ -65,7 +65,7 @@ spec:
           "request_id": "$req_id", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time,
           "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args",
           "request_length": $request_length, "duration": $request_time, "method": "$request_method", "http_referrer": "$http_referer",
-          "http_user_agent": "$http_user_agent"}
+          "http_user_agent": "$http_user_agent", "country_code": "$geoip2_city_country_code", "country_name": "$geoip2_city_country_name"}
         proxy-body-size: 0
         proxy-buffer-size: 16k
         ssl-protocols: TLSv1.3 TLSv1.2
@@ -80,15 +80,6 @@ spec:
       extraArgs:
         default-ssl-certificate: network/rodent-cc-tls
       terminationGracePeriodSeconds: 120
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: ingress-nginx
-              app.kubernetes.io/instance: nginx-external
-              app.kubernetes.io/component: controller
       resources:
         requests:
           cpu: 100m
