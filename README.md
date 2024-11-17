@@ -19,7 +19,7 @@ _... managed with Flux, Renovate, and GitHub Actions_ 🤖
 
 <div align="center">
 
-[![Status-Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.rodent.cc%2Fapi%2Fv1%2Fendpoints%2Fexternal_status%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.rodent.cc)&nbsp;&nbsp;
+[![Status-Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.rodent.cc%2Fapi%2Fv1%2Fendpoints%2Fexternal_gatus%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.rodent.cc)&nbsp;&nbsp;
 [![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fhealthchecks.io%2Fb%2F2%2F916a96cd-aca4-45e0-9e0f-08edf426e122.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://status.rodent.cc)
 
 </div>
