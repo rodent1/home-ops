@@ -74,9 +74,9 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 256M
+                memory: 750Mi
               limits:
-                memory: 2048Mi
+                memory: 750Mi
                 gpu.intel.com/i915: 1
           machine-learning:
             image:
@@ -87,9 +87,8 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 500Mi
               limits:
-                memory: 4Gi
+                memory: 1500Mi
     service:
       server:
         controller: immich
