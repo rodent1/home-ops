@@ -86,9 +86,9 @@ spec:
                     key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m
               limits:
-                memory: 1112Mi
+                memory: 2Gi
 
     service:
       app:
