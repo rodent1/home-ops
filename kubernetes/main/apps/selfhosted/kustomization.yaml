@@ -10,6 +10,7 @@ resources:
   - ./immich/ks.yaml
   - ./it-tools/ks.yaml
   - ./memos/ks.yaml
+  - ./miniflux/ks.yaml
   # - ./morphos/ks.yaml
   - ./paperless/ks.yaml
   - ./stirling-pdf/ks.yaml
