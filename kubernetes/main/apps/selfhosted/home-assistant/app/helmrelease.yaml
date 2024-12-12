@@ -89,6 +89,8 @@ spec:
             port: 12321
     ingress:
       app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.rodent.cc
         className: external
         hosts:
           - host: hass.rodent.cc
@@ -98,6 +100,8 @@ spec:
                   identifier: app
                   port: http
       code-server:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
         className: internal
         hosts:
           - host: hass-code.rodent.cc
