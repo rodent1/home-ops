@@ -91,6 +91,7 @@ spec:
     ingress:
       app:
         className: external
+        annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
           - host: &host "{{ .Release.Name }}.rodent.cc"
