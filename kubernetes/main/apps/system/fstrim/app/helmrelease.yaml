@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -26,9 +27,8 @@ spec:
       fstrim:
         type: cronjob
         cronjob:
-          schedule: 0 0 * * 1
-          timeZone: Europe/Oslo
-          parallelism: 6 # Set to my total number of nodes
+          schedule: 0 0 * * 0
+          parallelism: 5 # Set to total number of nodes
           successfulJobsHistory: 1
           failedJobsHistory: 1
         containers:
@@ -41,7 +41,6 @@ spec:
             resources:
               requests:
                 cpu: 25m
-                memory: 128Mi
               limits:
                 memory: 128Mi
             securityContext:
