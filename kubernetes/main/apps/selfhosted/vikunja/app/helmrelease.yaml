@@ -77,8 +77,6 @@ spec:
       app:
         enabled: true
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.rodent.cc
         hosts:
           - host: &host "tasks.rodent.cc"
             paths:

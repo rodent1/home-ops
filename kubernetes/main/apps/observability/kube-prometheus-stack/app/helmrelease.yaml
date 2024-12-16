@@ -37,8 +37,6 @@ spec:
     alertmanager:
       ingress:
         enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
         ingressClassName: internal
         hosts: ["alertmanager.rodent.cc"]
         pathType: Prefix
@@ -71,8 +69,6 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
         ingressClassName: internal
         hosts: ["prometheus.rodent.cc"]
         pathType: Prefix

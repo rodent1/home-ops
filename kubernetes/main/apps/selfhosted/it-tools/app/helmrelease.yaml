@@ -59,8 +59,6 @@ spec:
             port: 8080
     ingress:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.rodent.cc
         className: external
         hosts:
           - host: "{{ .Release.Name }}.rodent.cc"

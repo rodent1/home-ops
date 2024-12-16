@@ -34,8 +34,6 @@ spec:
       createPrometheusRules: true
     ingress:
       dashboard:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
         ingressClassName: internal
         host:
           name: rook.rodent.cc
@@ -226,7 +224,6 @@ spec:
       #   ingress:
       #     enabled: true
       #     annotations:
-      #       external-dns.alpha.kubernetes.io/target: internal.rodent.cc
       #       nginx.ingress.kubernetes.io/proxy-body-size: "0"
       #       nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
       #     ingressClassName: internal

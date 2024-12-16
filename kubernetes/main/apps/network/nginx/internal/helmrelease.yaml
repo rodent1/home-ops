@@ -28,7 +28,7 @@ spec:
       replicaCount: 2
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: internal.rodent.cc
+          external-dns.alpha.kubernetes.io/hostname: &hostname internal.rodent.cc
           lbipam.cilium.io/ips: 10.1.1.102
       ingressClassResource:
         name: internal
@@ -73,7 +73,10 @@ spec:
             any: true
       extraArgs:
         default-ssl-certificate: network/rodent-cc-tls
+        publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
+      publishService:
+        enabled: false
       resources:
         requests:
           cpu: 100m
