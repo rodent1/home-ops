@@ -86,8 +86,6 @@ spec:
     ingress:
       app:
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.rodent.cc
         hosts:
           - host: &host "{{ .Release.Name }}.rodent.cc"
             paths:

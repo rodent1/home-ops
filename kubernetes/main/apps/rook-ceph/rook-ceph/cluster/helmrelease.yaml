@@ -34,8 +34,6 @@ spec:
       createPrometheusRules: true
     ingress:
       dashboard:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.rodent.cc
         ingressClassName: internal
         host:
           name: rook.rodent.cc
@@ -48,6 +46,8 @@ spec:
       bdev_async_discard = true
       osd_class_update_on_start = false
     cephClusterSpec:
+      cephVersion:
+        image: quay.io/ceph/ceph:v19.2.0 # TODO: Remove when Rook is updated >= v19.2.0
       crashCollector:
         disable: false
       dashboard:
@@ -57,7 +57,11 @@ spec:
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
         modules:
+          - name: insights
+            enabled: true
           - name: pg_autoscaler
+            enabled: true
+          - name: rook
             enabled: true
       network:
         provider: host
@@ -220,7 +224,6 @@ spec:
       #   ingress:
       #     enabled: true
       #     annotations:
-      #       external-dns.alpha.kubernetes.io/target: internal.rodent.cc
       #       nginx.ingress.kubernetes.io/proxy-body-size: "0"
       #       nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
       #     ingressClassName: internal

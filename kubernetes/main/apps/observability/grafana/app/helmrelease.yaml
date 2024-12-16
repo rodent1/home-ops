@@ -269,8 +269,6 @@ spec:
       enabled: true
     ingress:
       enabled: true
-      annotations:
-        external-dns.alpha.kubernetes.io/target: internal.rodent.cc
       ingressClassName: internal
       hosts: ["grafana.rodent.cc"]
     persistence:

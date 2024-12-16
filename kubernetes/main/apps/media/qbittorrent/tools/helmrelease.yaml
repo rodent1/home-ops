@@ -29,92 +29,101 @@ spec:
     controllers:
       tagging:
         type: cronjob
-        cronjob: &cronjob
-          schedule: "@hourly"
-          timeZone: &timeZone Europe/Oslo
+        cronjob: &cronJobSpec
+          schedule: 0 * * * *
+          backoffLimit: 0
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
+          ttlSecondsAfterFinished: 3600
         initContainers:
-          tagging: &container
+          tag: &container
             image:
               repository: ghcr.io/buroa/qbtools
-              tag: v0.19.11@sha256:a133bd7f02ecb9ea0111a4016724f33404136c41295217f163991910e1d2784c
-            args:
-              - tagging
-              - --added-on
-              - --expired
-              - --last-activity
-              - --sites
-              - --unregistered
+              tag: v0.19.10@sha256:fc9c2fd65a454d39084d3b7ea802c92dba4032fb0b4eaadf6a684fdf740b8c17
             env:
               QBITTORRENT_HOST: qbittorrent.media.svc.cluster.local
               QBITTORRENT_PORT: 80
-              TZ: *timeZone
+            args: [
+              "tagging",
+              "--added-on",
+              "--expired",
+              "--last-activity",
+              "--sites",
+              "--unregistered"
+            ]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 25m
               limits:
-                memory: 256Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+                memory: 256M
         containers:
           unregistered:
             <<: *container
-            args:
-              - prune
-              - --exclude-tag=expired
-              - --exclude-tag=added:1d
-              - --include-tag=unregistered
+            args: [
+              "prune",
+              "--exclude-tag", "added:1d",
+              "--include-tag", "unregistered",
+              "--with-data"
+            ]
           expired:
             <<: *container
-            args:
-              - prune
-              - --exclude-category=manual
-              - --exclude-tag=activity:1d
-              - --include-tag=expired
+            args: [
+              "prune",
+              "--exclude-tag", "added:1d",
+              "--include-tag", "expired",
+              "--with-data"
+            ]
         pod:
-          restartPolicy: OnFailure
-          securityContext: &podSecurityContext
-            runAsNonRoot: true
-            runAsUser: 568
-            runAsGroup: 568
+          restartPolicy: Never
       orphaned:
         type: cronjob
         cronjob:
-          <<: *cronjob
-          schedule: "@weekly"
+          <<: *cronJobSpec
+          schedule: 0 0 * * 0
+          suspend: true
         containers:
           app:
             <<: *container
-            args:
-              - orphaned
-              - --exclude-pattern="*_unpackerred"
-              - --exclude-pattern="*/manual/*"
+            args: [
+              "orphaned",
+              "--exclude-pattern", "*_unpackerred*",
+            ]
         pod:
-          restartPolicy: OnFailure
-          securityContext:
-            <<: *podSecurityContext
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups:
-              - 65536
+          restartPolicy: Never
       reannounce:
         containers:
           app:
             <<: *container
-            args:
-              - reannounce
-        pod:
-          securityContext: *podSecurityContext
+            args: [
+              "reannounce",
+              "--process-seeding"
+            ]
+      limiter:
+        containers:
+          app:
+            <<: *container
+            args: [
+              "limiter",
+              "--max-line-speed-mbps", "800",
+              "--max-percent", "0.8",
+              "--limit-percent", "0.4",
+              "--interval", "5"
+            ]
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        seccompProfile: { type: RuntimeDefault }
     persistence:
       secret-file:
         type: secret
-        name: qbtools-secret
+        name: qbtools-config-secret
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml

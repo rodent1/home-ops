@@ -94,6 +94,4 @@ spec:
       ingress:
         enable: true
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.rodent.cc
         host: "coder.rodent.cc"

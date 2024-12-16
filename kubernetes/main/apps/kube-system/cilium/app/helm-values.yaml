@@ -4,6 +4,7 @@ bandwidthManager:
   enabled: true
   bbr: true
 bpf:
+  datapathMode: netkit
   masquerade: true
   tproxy: true
 bgpControlPlane:
@@ -36,6 +37,7 @@ kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
   enabled: true
 loadBalancer:
+  acceleration: best-effort
   algorithm: maglev
   mode: dsr
 localRedirectPolicy: true
