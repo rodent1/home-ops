@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: qbtools-secret
+    name: qbtools-config-secret
 stringData:
     config.yaml: ENC[AES256_GCM,data:2jOeBu+Bc8qz2Thyy/aD+JvJuLs9Yt/D5Vp9DupgRk+nnKWFqoX4hJq/6PIHqJHWToNBPHcS/upqcJzToFEoNOVDySh596XnWxdBrmSNl2TrImHbzTGcklEU4bMMaquONZrdYZQrTNqICYczr0tnpPbirQfaieZ53+CKa/98Sf201PR7MH1Ejax03QE/QBMl5NCgnY4YA6tA9KrT74OOgMYL/kCqjAOIMwK8AsUhZJ2zNK6yYFF6+ABgBjXORHbrMMkpKTYJ4LbUQwubTvF/bOsXT0QWGlt7/6bc4QPg5fLnV0/647Sp8McDgQS7t3jvjFqm4p6EQ3eATBfYBW1TkPK2oZxGc+h9VCcFO8ZftSV1qu5CQu1Bl8x0gS4aRxbcm8cyJA2nJZJdfddfLDOi7CktBkN1C4Kcm1Ld1BLwjvtZxqEZ3vDzhllX3mz2MI5+sTvnD9LR+3LGIcoQDao=,iv:WckCEwnYONKQtemfASMukmLpW/salWQhSjESH9DEpKU=,tag:nlv0tBX01msGRLdr+4pWhQ==,type:str]
 sops:
@@ -29,8 +29,8 @@ sops:
             eGh3YkdQU0ZJUmJ4TTNCT09mZzI3VWcKM0m+S3iv954NoHI74JILMtB5TNojexrR
             Z6XcWUsV2FhOLdC4Zt8QjtxsrSomRXyxcOubdNe+yG0spNqL2rgyDg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-27T08:52:44Z"
-    mac: ENC[AES256_GCM,data:6uyZ2lOLmwcMxEBN7AeOhbhjffecbUZIXT7fh+CGd+DJVVILBupB3GMdVESHkWzZRRqpb5GYP26KZ4jTbyBS8O0mSTeOg45RU0cbp+zGsdjiV7LlmQBdIhb4aEDhQpD0j1fBAyYr2s8cUfFYLT3HjRiahlkDPEUKXrk4sATzQNw=,iv:NTwtJpi7YpxvYjktoTp43jBCrwm441BwooHBhZY67vo=,tag:WYcRv++N+w6TKTU6TJY9NQ==,type:str]
+    lastmodified: "2024-12-16T15:48:26Z"
+    mac: ENC[AES256_GCM,data:vFYptbazHfn22rnniY6U2oJEmV5WOYGJrooFtbibX9mniNHynLWTR5+NhYU//KHRZfls1uRdfgLWXfIAB1g814c5DymftCjdddNxepsRmqzCNzdw3ACrbJpdbX8K9OQgAvgQDMiyLACqnq2QFRrZlnxmu8SxAOCzBUSza+riEmM=,iv:J6AqZ59tsfsX6byVN6nsZX+0EvQe2+c7Is4zh2C8odM=,tag:pU/whVME0pIK110VeKsFPg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
-    version: 3.8.1
+    version: 3.9.2
