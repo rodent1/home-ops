@@ -30,30 +30,31 @@ nodes:
     ipAddress: 10.1.1.31
     controlPlane: true
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+      model: SanDisk SD9TB8W-
+    machineDisks:
+      - device: /dev/disk/by-id/ata-SanDisk_SD9TB8W-512G-1006_182194420295
+        partitions:
+          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
         mtu: 9000
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
-        vlans:
-          - &vlan40
-            vlanId: 40
-            mtu: 1500
-            dhcp: false
 
   - hostname: node-2.${INTERNAL_DOMAIN}
     ipAddress: 10.1.1.32
     controlPlane: true
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+      model: SanDisk SD9TB8W5
+    machineDisks:
+      - device: /dev/disk/by-id/ata-SanDisk_SD9TB8W512G1122_185119800091
+        partitions:
+          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
         mtu: 9000
-        vlans:
-          - *vlan40
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
 
@@ -61,13 +62,15 @@ nodes:
     ipAddress: 10.1.1.33
     controlPlane: true
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+      model: SanDisk SD9TB8W-
+    machineDisks:
+      - device: /dev/disk/by-id/ata-SanDisk_SD9TB8W-512G-1006_19208F800872
+        partitions:
+          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
         mtu: 9000
-        vlans:
-          - *vlan40
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
 
@@ -75,44 +78,61 @@ nodes:
     ipAddress: 10.1.1.34
     controlPlane: false
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:0a.0/0000:07:00.0/ata7/host6/target6:0:0/6:0:0:0/
+      model: KINGSTON SA400S3
+    machineDisks:
+      - device: /dev/disk/by-id/ata-KINGSTON_SA400S37960G_50026B7381DC412E
+        partitions:
+          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
         mtu: 9000
-        vlans:
-          - *vlan40
 
   - hostname: node-5.${INTERNAL_DOMAIN}
     ipAddress: 10.1.1.35
     controlPlane: false
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:01.2/0000:12:00.1/ata1/host0/target0:0:0/0:0:0:0/
+      model: KINGSTON SA400S3
+    machineDisks:
+      - device: /dev/disk/by-id/ata-KINGSTON_SA400S37960G_50026B7381DC413D
+        partitions:
+          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
         mtu: 9000
-        vlans:
-          - *vlan40
 
 controlPlane:
+  machineSpec:
+    secureboot: true
+  nodeLabels:
+    topology.kubernetes.io/region: *cluster
+    topology.kubernetes.io/zone: m
   schematic:
     customization:
       extraKernelArgs:
         - net.ifnames=0
         - apparmor=0
+        - init_on_alloc=0
+        - init_on_free=0
+        - intel_iommu=on
+        - iommu=pt
         - mitigations=off
         - security=none
       systemExtensions:
         officialExtensions:
+          - siderolabs/i915
           - siderolabs/intel-ucode
-          - siderolabs/i915-ucode
   patches:
-    # Disable search domain everywhere
-    - &disableSearchDomainPatch |-
+    # Configure containerd
+    - &configureContainerd |-
       machine:
-        network:
-          disableSearchDomain: true
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |-
+              [plugins."io.containerd.cri.v1.images"]
+                discard_unpacked_layers = false
 
     # Enable cluster discovery
     - &discoveryPatch |-
@@ -133,17 +153,12 @@ controlPlane:
             resolveMemberNames: true
             forwardKubeDNSToHost: false
 
-    - &kubelet_extra_mounts |-
+    # Kernel modules
+    - &kernelPatch |-
       machine:
-        kubelet:
-          extraMounts:
-            - destination: /var/mnt/sata
-              type: bind
-              source: /var/mnt/sata
-              options:
-                - rbind
-                - rshared
-                - rw
+        kernel:
+          modules:
+            - name: nbd
 
     # Configure kubelet
     - &kubeletPatch |-
@@ -151,16 +166,19 @@ controlPlane:
         kubelet:
           extraArgs:
             rotate-server-certificates: true
+          extraConfig:
+            maxPods: 150
+          extraMounts:
+            - destination: /var/mnt/extra
+              source: /var/mnt/extra
+              type: bind
+              options:
+                - bind
+                - rshared
+                - rw
           nodeIP:
             validSubnets:
               - 10.1.1.0/24
-
-    # Force nameserver
-    - &nameserverPatch |-
-      machine:
-        network:
-          nameservers:
-            - 10.1.1.1
 
     # Configure NFS mount options
     - &nfsPatch |
@@ -172,29 +190,9 @@ controlPlane:
             content: |
               [ NFSMount_Global_Options ]
               nfsvers=4.2
-              async=True
               hard=True
               nconnect=16
               noatime=True
-              rsize=1048576
-              wsize=1048576
-
-    # Configure NTP
-    - &ntpPatch |-
-      machine:
-        time:
-          disabled: false
-          servers:
-            - time.cloudflare.com
-
-    # Static host entries
-    - &staticHostEntriesPatch |-
-      machine:
-        network:
-          extraHostEntries:
-            - ip: ${CLUSTER_ENDPOINT_IP}
-              aliases:
-                - main.${INTERNAL_DOMAIN}
 
     # Custom sysctl settings
     - &sysctlPatch |-
@@ -202,14 +200,14 @@ controlPlane:
         sysctls:
           fs.inotify.max_user_watches: 1048576
           fs.inotify.max_user_instances: 8192
-          net.core.netdev_max_backlog: 30000
+          net.core.default_qdisc: fq
           net.core.rmem_max: 67108864
           net.core.wmem_max: 67108864
+          net.ipv4.tcp_congestion_control: bbr
+          net.ipv4.tcp_mtu_probing: 1
           net.ipv4.tcp_rmem: 4096 87380 33554432
           net.ipv4.tcp_wmem: 4096 65536 33554432
-          net.ipv4.tcp_tw_reuse: 1
           net.ipv4.tcp_window_scaling: 1
-          net.ipv4.tcp_congestion_control: bbr
           vm.nr_hugepages: 1024
 
     # Cluster configuration
@@ -249,11 +247,6 @@ controlPlane:
           advertisedSubnets:
             - 10.1.1.0/24
 
-    # Disable default API server admission plugins.
-    - |-
-      - op: remove
-        path: /cluster/apiServer/admissionControl
-
     # Enable K8s Talos API Access
     - |-
       machine:
@@ -282,22 +275,37 @@ controlPlane:
             - SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", GROUP="20", MODE="0660"
 
 worker:
+  machineSpec:
+    secureboot: true
+  nodeLabels:
+    topology.kubernetes.io/region: *cluster
+    topology.kubernetes.io/zone: m
   schematic:
     customization:
       extraKernelArgs:
         - net.ifnames=0
+        - apparmor=0
+        - init_on_alloc=0
+        - init_on_free=0
+        - amd_iommu=on
+        - iommu=pt
+        - mitigations=off
+        - security=none
       systemExtensions:
         officialExtensions:
           - siderolabs/amd-ucode
 
   patches:
-    - *disableSearchDomainPatch
+    - *configureContainerd
     - *discoveryPatch
     - *hostDnsPatch
-    - *kubelet_extra_mounts
+    - *kernelPatch
     - *kubeletPatch
-    - *nameserverPatch
     - *nfsPatch
-    - *ntpPatch
-    - *staticHostEntriesPatch
     - *sysctlPatch
+    - |-
+      machine:
+        udev:
+          rules:
+            # Eaton UPS
+            - SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", GROUP="20", MODE="0660"
