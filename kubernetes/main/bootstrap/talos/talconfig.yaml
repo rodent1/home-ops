@@ -114,15 +114,11 @@ controlPlane:
               [plugins."io.containerd.cri.v1.images"]
                 discard_unpacked_layers = false
 
-    # Enable cluster discovery
-    - &discoveryPatch |-
-      cluster:
-        discovery:
-          registries:
-            kubernetes:
-              disabled: false
-            service:
-              disabled: true
+    # Disable search domain everywhere
+    - &disableSearchDomainPatch |-
+      machine:
+        network:
+          disableSearchDomain: true
 
     # Enable host dns
     - &hostDnsPatch |-
@@ -174,6 +170,14 @@ controlPlane:
               nconnect=16
               noatime=True
 
+    # Configure NTP
+    - &ntpPatch |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
+
     # Custom sysctl settings
     - &sysctlPatch |-
       machine:
@@ -194,12 +198,20 @@ controlPlane:
     - |-
       cluster:
         allowSchedulingOnMasters: true
+        apiServer:
+          extraArgs:
+            enable-aggregator-routing: true
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0
-        proxy:
-          disabled: true
         coreDNS:
+          disabled: true
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+          advertisedSubnets:
+            - 10.1.1.0/24
+        proxy:
           disabled: true
         scheduler:
           extraArgs:
@@ -218,15 +230,6 @@ controlPlane:
                           topologyKey: kubernetes.io/hostname
                           whenUnsatisfiable: ScheduleAnyway
 
-    # ETCD configuration
-    - |-
-      cluster:
-        etcd:
-          extraArgs:
-            listen-metrics-urls: http://0.0.0.0:2381
-          advertisedSubnets:
-            - 10.1.1.0/24
-
     # Disable default API server admission plugins.
     - |-
       - op: remove
@@ -242,6 +245,13 @@ controlPlane:
               - os:admin
             allowedKubernetesNamespaces:
               - system-upgrade
+
+    # Disable AuthorizeNodeWithSelectors feature gate
+    - |-
+      cluster:
+        apiServer:
+          extraArgs:
+            feature-gates: AuthorizeNodeWithSelectors=false
 
     # Disable kexec on control-plane to fix networking issues with reboot: https://github.com/siderolabs/talos/issues/8751#issuecomment-2120141890
     - |-
@@ -282,11 +292,12 @@ worker:
 
   patches:
     - *configureContainerd
-    - *discoveryPatch
+    - *disableSearchDomainPatch
     - *hostDnsPatch
     - *kernelPatch
     - *kubeletPatch
     - *nfsPatch
+    - *ntpPatch
     - *sysctlPatch
     - |-
       machine:
