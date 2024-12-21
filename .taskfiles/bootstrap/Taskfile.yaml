@@ -38,7 +38,7 @@ tasks:
 
   # NOTE: Nodes must all be part of the Ceph cluster and Ceph disks must share the same disk model
   rook:
-    desc: Bootstrap Rook-Ceph [CLUSTER=main] [MODEL=required]
+    desc: Bootstrap Rook-Ceph [CLUSTER=main]
     cmds:
       - minijinja-cli {{.BOOTSTRAP_RESOURCES_DIR}}/wipe-rook.yaml.j2 | kubectl apply --server-side --filename -
       - until kubectl --namespace default get job/wipe-rook &>/dev/null; do sleep 5; done
@@ -46,11 +46,10 @@ tasks:
       - stern --namespace default job/wipe-rook --no-follow
       - kubectl --namespace default delete job wipe-rook
     env:
-      MODEL: "{{.MODEL}}"
       NODE_COUNT:
         sh: talosctl config info --output json | jq --raw-output '.nodes | length'
     requires:
-      vars: [CLUSTER, MODEL]
+      vars: [CLUSTER]
     preconditions:
       - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/wipe-rook.yaml.j2
       - which kubectl minijinja-cli stern talosctl
