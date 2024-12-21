@@ -13,7 +13,7 @@ allowSchedulingOnMasters: true
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.9.0
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.31.4
+kubernetesVersion: v1.32.0
 
 additionalApiServerCertSans: &sans
   - ${CLUSTER_ENDPOINT_IP}
@@ -31,10 +31,6 @@ nodes:
     controlPlane: true
     installDiskSelector:
       model: SanDisk SD9TB8W-
-    machineDisks:
-      - device: /dev/disk/by-id/ata-SanDisk_SD9TB8W-512G-1006_182194420295
-        partitions:
-          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
@@ -47,10 +43,6 @@ nodes:
     controlPlane: true
     installDiskSelector:
       model: SanDisk SD9TB8W5
-    machineDisks:
-      - device: /dev/disk/by-id/ata-SanDisk_SD9TB8W512G1122_185119800091
-        partitions:
-          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
@@ -63,10 +55,6 @@ nodes:
     controlPlane: true
     installDiskSelector:
       model: SanDisk SD9TB8W-
-    machineDisks:
-      - device: /dev/disk/by-id/ata-SanDisk_SD9TB8W-512G-1006_19208F800872
-        partitions:
-          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
@@ -79,10 +67,6 @@ nodes:
     controlPlane: false
     installDiskSelector:
       model: KINGSTON SA400S3
-    machineDisks:
-      - device: /dev/disk/by-id/ata-KINGSTON_SA400S37960G_50026B7381DC412E
-        partitions:
-          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
@@ -93,10 +77,6 @@ nodes:
     controlPlane: false
     installDiskSelector:
       model: KINGSTON SA400S3
-    machineDisks:
-      - device: /dev/disk/by-id/ata-KINGSTON_SA400S37960G_50026B7381DC413D
-        partitions:
-          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: eth0
         dhcp: true
