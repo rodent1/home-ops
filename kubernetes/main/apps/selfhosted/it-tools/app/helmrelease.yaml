@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bjw-s-labs/it-tools
-              tag: 2024.5.13@sha256:64c1293364cf0a8a831f9baadab5134453b173cff14fe185fe20b26b7c891a3c
+              tag: 2024.5.13@sha256:c993190b18413d5cac9e76620eb300e247ab7d0e84f105d43b5a12f16b317ef5
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
