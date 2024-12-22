@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: docker.io/vikunja/vikunja
-              tag: 0.24.6@sha256:7d235a4d6e497d0ffe406305ca4e90e06295be21270709c2bff7cac232df8002
+              tag: 0.24.6@sha256:ed1f3ed467fecec0b57e9de7bc6607f8bbcbb23ffced6a81f5dfefc794cdbe3b
             envFrom:
               - secretRef:
                   name: vikunja-secret
