@@ -27,8 +27,6 @@ spec:
       namespace: database
     - name: dragonfly-operator
       namespace: database
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     defaultPodOptions:
       securityContext:
@@ -44,6 +42,15 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: *app
+    serviceMonitor:
+      immich:
+        serviceName: immich
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 30s
     controllers:
       immich:
         annotations:
@@ -65,8 +72,8 @@ spec:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.123.0@sha256:666ce77995230ff7327da5d285c861895576977237de08564e3c3ddf842877eb
             envFrom: *envFrom
-            env: &env # APP
-              IMMICH_MEDIA_LOCATION: /usr/src/app/upload
+            env: &env
+              IMMICH_LOG_LEVEL: verbose
               TZ: Europe/Oslo
               # REDIS
               # Requires the extraArg `--default_lua_flags=allow-undeclared-keys` to be set in the dragonfly helm chart
@@ -96,6 +103,8 @@ spec:
         ports:
           http:
             port: &immichPort 2283
+          metrics:
+            port: 8081
       machine-learning:
         controller: immich
         ports:
@@ -105,6 +114,8 @@ spec:
       main:
         enabled: true
         className: external
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
           - host: &host photos.rodent.cc
             paths:
@@ -117,17 +128,13 @@ spec:
           - hosts:
               - *host
     persistence:
-      library:
-        existingClaim: config-immich
+      media:
+        type: nfs
+        server: tank.internal
+        path: /mnt/tank/Photos
         globalMounts:
           - path: /usr/src/app/upload
             subPath: Immich
-      cache:
-        type: emptyDir
-        advancedMounts:
-          immich:
-            machine-learning:
-              - path: /cache
       geocoding-dump:
         type: emptyDir
         advancedMounts:
@@ -140,3 +147,9 @@ spec:
           immich:
             main:
               - path: /usr/src/app/.transformers_cache
+      model-cache:
+        type: emptyDir
+        advancedMounts:
+          machine-learning:
+            main:
+              - path: /cache
