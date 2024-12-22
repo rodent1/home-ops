@@ -150,6 +150,6 @@ spec:
       model-cache:
         type: emptyDir
         advancedMounts:
-          machine-learning:
-            main:
+          immich:
+            machine-learning:
               - path: /cache
