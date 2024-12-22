@@ -29,5 +29,9 @@
       matchPackagePatterns: ["system-upgrade-controller"],
       sourceUrl: "https://github.com/rancher/system-upgrade-controller",
     },
+    {
+      matchPackagePatterns: ["vikunja"],
+      sourceUrl: "https://github.com/go-vikunja/vikunja",
+    },
   ],
 }
