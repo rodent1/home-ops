@@ -83,8 +83,6 @@ nodes:
         mtu: 9000
 
 controlPlane:
-  machineSpec:
-    secureboot: true
   nodeLabels:
     topology.kubernetes.io/region: *cluster
     topology.kubernetes.io/zone: m
@@ -222,6 +220,10 @@ controlPlane:
             kind: KubeSchedulerConfiguration
             profiles:
               - schedulerName: default-scheduler
+                plugins:
+                  score:
+                    disabled:
+                      - name: ImageLocality
                 pluginConfig:
                   - name: PodTopologySpread
                     args:
@@ -247,13 +249,6 @@ controlPlane:
             allowedKubernetesNamespaces:
               - system-upgrade
               - actions-runner-system
-
-    # Disable AuthorizeNodeWithSelectors feature gate
-    - |-
-      cluster:
-        apiServer:
-          extraArgs:
-            feature-gates: AuthorizeNodeWithSelectors=false
 
     # Disable kexec on control-plane to fix networking issues with reboot: https://github.com/siderolabs/talos/issues/8751#issuecomment-2120141890
     - |-
