@@ -25,6 +25,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     controllers:
       readarr:
@@ -53,19 +55,35 @@ spec:
               READARR__UPDATE__BRANCH: develop
               TZ: Europe/Oslo
             envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
               limits:
-                memory: 350Mi
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
@@ -86,6 +104,10 @@ spec:
     persistence:
       config:
         existingClaim: config-readarr
+      cache:
+        existingClaim: readarr-cache
+        globalMounts:
+          - path: /config/MediaCover
       tmp:
         type: emptyDir
       media:

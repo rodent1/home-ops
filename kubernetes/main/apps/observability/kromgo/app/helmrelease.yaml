@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app kromgo
+  name: kromgo
 spec:
   interval: 30m
   chart:
@@ -25,6 +25,7 @@ spec:
   values:
     controllers:
       kromgo:
+        replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -35,10 +36,8 @@ spec:
               tag: v0.4.3@sha256:c9148045a3e211ad46d416c3e3bb7ffd4c169a8b6f8e56df03ea68ed1ed5571b
             env:
               PROMETHEUS_URL: http://prometheus-operated.observability.svc.cluster.local:9090
-              SERVER_HOST: 0.0.0.0
               SERVER_PORT: &serverPort 80
-              HEALTH_HOST: 0.0.0.0
-              HEALTH_PORT: &healthPort 8888
+              HEALTH_PORT: &healthPort 8080
             probes:
               liveness: &probes
                 enabled: true
@@ -64,8 +63,8 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
+        runAsUser: 1000
+        runAsGroup: 1000
         seccompProfile: { type: RuntimeDefault }
     service:
       app:

@@ -23,8 +23,8 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: node-feature-discovery
-      namespace: system
+    - name: intel-device-plugin-gpu
+      namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
@@ -69,16 +69,17 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 10Gi
-        pod:
-          nodeSelector:
-            intel.feature.node.kubernetes.io/gpu: "true"
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [44, 10000]
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44]
+        seccompProfile: { type: RuntimeDefault }
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"
     service:
       app:
         controller: plex
@@ -90,24 +91,28 @@ spec:
             port: 32400
     ingress:
       app:
-        className: external
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          nginx.ingress.kubernetes.io/server-snippet: |
+            location ~ ^/library/streams {
+              proxy_set_header        Range "";
+              proxy_pass              http://plex.media.svc.cluster.local:32400;
+              proxy_http_version      1.1;
+            }
+        className: external
         hosts:
-          - host: &host "{{ .Release.Name }}.rodent.cc"
+          - host: "{{ .Release.Name }}.rodent.cc"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts: [*host]
     persistence:
       config:
         existingClaim: config-plex
         # TODO: If setting up Plex for the first time, you'll want to add the globalMounts section
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server
+        # globalMounts:
+        #   - path: /config/Library/Application Support/Plex Media Server
       # Separate PVC for cache to avoid backing up cache files
       cache:
         existingClaim: plex-cache

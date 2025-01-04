@@ -1,12 +1,11 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: loki
 spec:
   interval: 30m
-  timeout: 15m
   chart:
     spec:
       chart: loki
@@ -26,8 +25,8 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: openebs
-      namespace: openebs-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     deploymentMode: SingleBinary
     loki:
@@ -38,6 +37,10 @@ spec:
         log_level: info
       commonConfig:
         replication_factor: 1
+      compactor:
+        working_directory: /var/loki/compactor/retention
+        delete_request_store: filesystem
+        retention_enabled: true
       ingester:
         chunk_encoding: snappy
       storage:
@@ -57,7 +60,7 @@ spec:
       replicas: 1
       persistence:
         enabled: true
-        storageClass: openebs-hostpath
+        storageClass: ceph-block
         size: 50Gi
     gateway:
       replicas: 0
@@ -75,3 +78,8 @@ spec:
       enabled: false
     test:
       enabled: false
+    sidecar:
+      image:
+        repository: ghcr.io/kiwigrid/k8s-sidecar
+      rules:
+        searchNamespace: ALL

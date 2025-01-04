@@ -23,47 +23,26 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    extraInitContainers:
-      - name: 01-init-db
-        image: ghcr.io/onedr0p/postgres-init:16.6@sha256:c1d3a845d47fe1aeebd110fefb5f43f54c4735aec1d2b0c01de8d4d5e8cdd6a4
-        envFrom:
-          - secretRef:
-              name: &secret grafana-secret
     deploymentStrategy:
       type: Recreate
     admin:
-      existingSecret: *secret
+      existingSecret: grafana-admin-secret
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SERVER_ROOT_URL: https://grafana.rodent.cc
-      # Optionally enable auto-login (bypasses Grafana login screen)
-      GF_AUTH_OAUTH_AUTO_LOGIN: "false"
-      # Database
-      GF_DATABASE_SSL_MODE: disable
-      GF_DATABASE_TYPE: postgres
-    envFromSecrets:
-      - name: *secret
     grafana.ini:
       analytics:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
-      auth:
-        oauth_auto_login: true
-        oauth_allow_insecure_email_lookup: true
       auth.anonymous:
         enabled: true
         org_id: 1
         org_name: Main Org.
         org_role: Viewer
-      auth.generic_oauth:
-        enabled: true
-        name: OAuth
-        scopes: openid email profile offline_access
-        role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
       news:
         news_feed_enabled: false
     datasources:
@@ -79,8 +58,6 @@ spec:
             uid: prometheus
             access: proxy
             url: http://prometheus-operated.observability.svc.cluster.local:9090
-            jsonData:
-              timeInterval: 1m
             isDefault: true
           - name: Loki
             type: loki
@@ -137,7 +114,7 @@ spec:
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         dragonfly:
-          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
+          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/refs/heads/main/tools/local/monitoring/grafana/provisioning/dashboards/dragonfly.json
           datasource: Prometheus
         eaton-ups:
           # renovate: depName="Eaton UPS Monitoring"
@@ -193,6 +170,9 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
+        miniflux:
+          url: https://raw.githubusercontent.com/miniflux/v2/main/contrib/grafana/dashboard.json
+          datasource: Prometheus
         nginx:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
           datasource: Prometheus
@@ -212,6 +192,12 @@ spec:
           gnetId: 19105
           revision: 6
           datasource: Prometheus
+        smart:
+          # renovate: depName="Dashboard for smartctl_exporter"
+          gnetId: 20204
+          revision: 1
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         unifi-insights:
           # renovate: depName="UniFi-Poller: Client Insights - Prometheus"
           gnetId: 11315
@@ -245,6 +231,11 @@ spec:
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
             - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
+        zfs:
+          # renovate: depName="ZFS"
+          gnetId: 7845
+          revision: 4
+          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true

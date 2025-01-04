@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    logLevel: debug
+    # logLevel: debug
     provider:
       name: webhook
       webhook:
@@ -44,8 +44,8 @@ spec:
               secretKeyRef:
                 name: *secret
                 key: EXTERNAL_DNS_UNIFI_PASS
-          - name: LOG_LEVEL
-            value: "debug"
+          # - name: LOG_LEVEL
+          #   value: "debug"
         livenessProbe:
           httpGet:
             path: /healthz
@@ -58,11 +58,14 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
+    extraArgs:
+      - --ignore-ingress-tls-spec
+    triggerLoopOnEvent: true
     policy: sync
     sources: ["ingress", "service"]
     txtOwnerId: main
     txtPrefix: k8s.main.
-    domainFilters: ["rodent.cc", "stianrs.dev"]
+    domainFilters: ["rodent.cc"]
     serviceMonitor:
       enabled: true
     podAnnotations:

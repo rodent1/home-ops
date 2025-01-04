@@ -35,7 +35,8 @@ spec:
             env:
               TZ: Europe/Oslo
               UN_WEBSERVER_METRICS: true
-              UN_WEBSERVER_LOG_FILE: /logs
+              UN_WEBSERVER_LISTEN_ADDR: 0.0.0.0:80
+              UN_WEBSERVER_LOG_FILE: /logs/webserver.log
               UN_ACTIVITY: true
               UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local
               UN_SONARR_0_PATHS_0: /media/Downloads/complete/sonarr
@@ -58,23 +59,22 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 100Mi
               limits:
-                memory: 4Gi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [10000]
+                memory: 8Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: unpackerr
         ports:
           http:
-            port: 5656
+            port: 80
     serviceMonitor:
       app:
         serviceName: unpackerr
@@ -92,4 +92,5 @@ spec:
         server: tank.internal
         path: /mnt/tank/Media
         globalMounts:
-          - path: /media
+          - path: /media/Downloads
+            subPath: Downloads

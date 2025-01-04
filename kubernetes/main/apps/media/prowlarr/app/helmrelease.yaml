@@ -22,6 +22,11 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: database
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     controllers:
       prowlarr:
@@ -70,15 +75,15 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m
               limits:
-                memory: 350Mi
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
@@ -99,6 +104,6 @@ spec:
                   port: http
     persistence:
       config:
-        type: emptyDir
+        existingClaim: config-prowlarr
       tmp:
         type: emptyDir

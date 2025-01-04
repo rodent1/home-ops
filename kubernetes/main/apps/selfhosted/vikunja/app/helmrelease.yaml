@@ -55,17 +55,16 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 5m
+                cpu: 10m
               limits:
                 memory: 256Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
     service:
       app:

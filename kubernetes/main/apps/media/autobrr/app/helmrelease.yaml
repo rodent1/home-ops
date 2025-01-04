@@ -22,6 +22,9 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: database
   values:
     controllers:
       autobrr:
@@ -67,12 +70,14 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 256Mi
+                memory: 100Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
@@ -90,3 +95,12 @@ spec:
                 service:
                   identifier: app
                   port: http
+    persistence:
+      config:
+        existingClaim: config-autobrr
+      log:
+        type: emptyDir
+        globalMounts:
+          - path: /config/log
+      tmp:
+        type: emptyDir

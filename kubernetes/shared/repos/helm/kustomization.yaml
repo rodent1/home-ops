@@ -32,3 +32,4 @@ resources:
   - ./spegel.yaml
   - ./stakater.yaml
   - ./weaveworks.yaml
+  - ./wiremind.yaml

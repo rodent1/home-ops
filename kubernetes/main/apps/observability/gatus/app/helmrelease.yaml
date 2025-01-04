@@ -22,21 +22,16 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     controllers:
       gatus:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16.6@sha256:c1d3a845d47fe1aeebd110fefb5f43f54c4735aec1d2b0c01de8d4d5e8cdd6a4
-            envFrom: &envFrom
-              - secretRef:
-                  name: gatus-secret
           init-config:
-            dependsOn: init-db
             image:
               repository: ghcr.io/kiwigrid/k8s-sidecar
               tag: 1.28.4@sha256:20caf4e241e1f9f9231527db5e75b735aa7b0da7bee3d262cbe369bb9b33469f
@@ -48,11 +43,11 @@ spec:
               UNIQUE_FILENAMES: true
               METHOD: WATCH
             restartPolicy: Always
-            resources: &resources
+            resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 256Mi
+                memory: 128Mi
         containers:
           app:
             image:
@@ -63,7 +58,9 @@ spec:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               WEB_PORT: &port 80
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: gatus-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -81,16 +78,20 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            resources: *resources
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 256Mi
     defaultPodOptions:
       dnsConfig:
         options:
           - { name: ndots, value: "1" }
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
-        fsGroup: 65534
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
@@ -123,7 +124,7 @@ spec:
       name: gatus
     persistence:
       config:
-        type: emptyDir
+        existingClaim: gatus
       config-file:
         type: configMap
         name: gatus-configmap

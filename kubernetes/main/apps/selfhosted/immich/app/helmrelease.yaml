@@ -28,20 +28,6 @@ spec:
     - name: dragonfly-operator
       namespace: database
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-        supplementalGroups: [44, 10000]
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
     serviceMonitor:
       immich:
         serviceName: immich
@@ -78,12 +64,15 @@ spec:
               # REDIS
               # Requires the extraArg `--default_lua_flags=allow-undeclared-keys` to be set in the dragonfly helm chart
               REDIS_HOSTNAME: dragonfly.database.svc.cluster.local
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
-                memory: 250Mi
               limits:
-                memory: 1.5Gi
+                memory: 2Gi
                 gpu.intel.com/i915: 1
           machine-learning:
             image:
@@ -91,12 +80,30 @@ spec:
               tag: v1.123.0@sha256:fca90362ff3081fc7762d731eb24de262181eaec28afc51eff1d3ca5348663cd
             envFrom: *envFrom
             env: *env
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 10m
-                memory: 250Mi
+                cpu: 100m
               limits:
-                memory: 4000Mi
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
     service:
       server:
         controller: immich
@@ -153,3 +160,5 @@ spec:
           immich:
             machine-learning:
               - path: /cache
+      tmp:
+        type: emptyDir

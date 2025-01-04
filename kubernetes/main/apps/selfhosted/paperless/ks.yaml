@@ -13,13 +13,14 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: volsync
-  interval: 10m
   path: ./kubernetes/main/apps/selfhosted/paperless/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
   wait: false
+  interval: 30m
+  timeout: 5m
   postBuild:
     substitute:
       APP: *appname

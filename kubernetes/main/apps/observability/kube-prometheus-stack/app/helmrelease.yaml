@@ -6,7 +6,6 @@ metadata:
   name: kube-prometheus-stack
 spec:
   interval: 30m
-  timeout: 15m
   chart:
     spec:
       chart: kube-prometheus-stack
@@ -26,10 +25,10 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: prometheus-operator-crds
+    - name: kube-prometheus-stack-crds
       namespace: observability
-    - name: openebs
-      namespace: openebs-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     crds:
       enabled: false
@@ -41,12 +40,15 @@ spec:
         hosts: ["alertmanager.rodent.cc"]
         pathType: Prefix
       alertmanagerSpec:
-        useExistingSecret: true
-        configSecret: alertmanager-secret
+        alertmanagerConfiguration:
+          name: alertmanager
+          global:
+            resolveTimeout: 5m
+        externalUrl: https://alertmanager.rodent.cc
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: openebs-hostpath
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 1Gi
@@ -73,11 +75,6 @@ spec:
         hosts: ["prometheus.rodent.cc"]
         pathType: Prefix
       prometheusSpec:
-        image:
-          registry: quay.io
-          repository: prometheus/prometheus
-          tag: v3.1.0
-        scrapeInterval: 1m # Must match interval in Grafana Helm chart
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
@@ -88,19 +85,19 @@ spec:
         enableFeatures:
           - memory-snapshot-on-shutdown
         retention: 14d
-        retentionSize: 70GB
+        retentionSize: 50GB
         resources:
           requests:
             cpu: 100m
           limits:
-            memory: 1500Mi
+            memory: 2000Mi
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: openebs-hostpath
+              storageClassName: ceph-block
               resources:
                 requests:
-                  storage: 75Gi
+                  storage: 50Gi
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
