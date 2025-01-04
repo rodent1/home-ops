@@ -10,7 +10,7 @@ resources:
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
   # - ./jellyfin/ks.yaml
-  - ./jellyseer/ks.yaml
+  - ./jellyseerr/ks.yaml
   # - ./overseerr/ks.yaml
   # - ./pinepods/ks.yaml
   - ./plex/ks.yaml
