@@ -14,12 +14,12 @@ resources:
   # - ./overseerr/ks.yaml
   # - ./pinepods/ks.yaml
   - ./plex/ks.yaml
-  # - ./prowlarr/ks.yaml
+  - ./prowlarr/ks.yaml
   # - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
-  # - ./readarr/ks.yaml
+  - ./readarr/ks.yaml
   # - ./recyclarr/ks.yaml
-  # - ./sonarr/ks.yaml
+  - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./unpackerr/ks.yaml
   - ./xteve/ks.yaml
