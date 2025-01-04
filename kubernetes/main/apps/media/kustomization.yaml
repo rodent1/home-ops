@@ -13,8 +13,8 @@ resources:
   - ./jellyseerr/ks.yaml
   # - ./overseerr/ks.yaml
   # - ./pinepods/ks.yaml
-  # - ./plex/ks.yaml
-  - ./prowlarr/ks.yaml
+  - ./plex/ks.yaml
+  # - ./prowlarr/ks.yaml
   # - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
   # - ./readarr/ks.yaml
