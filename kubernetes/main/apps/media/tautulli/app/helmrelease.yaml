@@ -33,20 +33,11 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/tautulli/tautulli
-              tag: v2.15.0@sha256:f13daee2a403a95a51902b2625de5f6b944f034e9cd790e9d2a0c5e84c9842cb
+              repository: ghcr.io/onedr0p/tautulli
+              tag: 2.15.0@sha256:189f7b29da755a8e20da45af1e56bc9fc88d836a363da4273a52b267609511c4
             env:
               TZ: Europe/Oslo
-            command: ["/usr/local/bin/python", "Tautulli.py"]
-            args:
-              [
-                "--config",
-                "/config/config.ini",
-                "--datadir",
-                "/config",
-                "--port",
-                "80",
-              ]
+              TAUTULLI__PORT: &port 80
             probes:
               liveness: &probes
                 enabled: true
@@ -54,13 +45,13 @@ spec:
                 spec:
                   httpGet:
                     path: /status
-                    port: &port 80
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            securityContext: &securityContext
+            securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -68,28 +59,13 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 250Mi
-          jbops:
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.4.0@sha256:0330739a707a2969d617e859f096659ab6d149212658ac0ad7e550b59482ebf0
-            env:
-              GITSYNC_REPO: https://github.com/blacktwin/JBOPS
-              GITSYNC_REF: master
-              GITSYNC_PERIOD: 24h
-              GITSYNC_ROOT: /add-ons
-            securityContext: *securityContext
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
@@ -111,7 +87,13 @@ spec:
     persistence:
       config:
         existingClaim: config-tautulli
-      tmp:
+      cache:
+        existingClaim: tautulli-cache
+        globalMounts:
+          - path: /config/cache
+      logs:
         type: emptyDir
-      add-ons:
+        globalMounts:
+          - path: /config/logs
+      tmp:
         type: emptyDir

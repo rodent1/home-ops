@@ -10,6 +10,7 @@ resources:
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
   # - ./jellyfin/ks.yaml
+  - ./jellyseer/ks.yaml
   - ./overseerr/ks.yaml
   # - ./pinepods/ks.yaml
   - ./plex/ks.yaml
@@ -20,6 +21,5 @@ resources:
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
-  - ./theme-park/ks.yaml
   - ./unpackerr/ks.yaml
   - ./xteve/ks.yaml

@@ -37,36 +37,38 @@ spec:
               MEILI_ADDR: http://hoarder-meilisearch:7700
               BROWSER_WEB_URL: http://hoarder-chrome:9222
               NEXTAUTH_URL: https://hoarder.rodent.cc
+              CRAWLER_DOWNLOAD_BANNER_IMAGE: true
+              CRAWLER_ENABLE_ADBLOCKER: true
+              CRAWLER_STORE_SCREENSHOT: true
               # OAuth setup
               OAUTH_PROVIDER_NAME: Authentik
-              DISABLE_PASSWORD_AUTH: "true"
+              DISABLE_PASSWORD_AUTH: true
+              DISABLE_SIGNUPS: true
+              DISABLE_NEW_RELEASE_CHECK: true
             envFrom: &envFrom
               - secretRef:
                   name: hoarder-secret
-            resources:
-              requests:
-                cpu: 10m
-                memory: 256Mi
-              limits:
-                memory: 750Mi
-          meilisearch:
-            image:
-              repository: getmeili/meilisearch
-              tag: v1.10.3@sha256:9d1b9b02fe6c68f60b54ce40092d8078f051b9341c400c90f907607636b7c9c1
-            env:
-              MEILI_NO_ANALYTICS: "true"
-            envFrom: *envFrom
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 128Mi
-          chrome:
+                memory: 512Mi
+      chrome:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
             image:
               repository: gcr.io/zenika-hub/alpine-chrome
-              tag: 124@sha256:1a0046448e0bb6c275c88f86e01faf0de62b02ec8572901256ada0a8c08be23f
+              tag: 124
             command:
               - chromium-browser
+            args:
               - --headless
               - --no-sandbox
               - --disable-gpu
@@ -74,6 +76,38 @@ spec:
               - --remote-debugging-address=0.0.0.0
               - --remote-debugging-port=9222
               - --hide-scrollbars
+            securityContext:
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+      meilisearch:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/getmeili/meilisearch
+              tag: v1.12.0
+            env:
+              MEILI_NO_ANALYTICS: true
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: hoarder
@@ -81,12 +115,12 @@ spec:
           http:
             port: 3000
       chrome:
-        controller: hoarder
+        controller: chrome
         ports:
           http:
             port: 9222
       meilisearch:
-        controller: hoarder
+        controller: meilisearch
         ports:
           http:
             port: 7700
@@ -107,7 +141,8 @@ spec:
           hoarder:
             app:
               - path: /data
-                subPath: data
-            meilisearch:
+                subPath: hoarder
+          meilisearch:
+            app:
               - path: /meili_data
-                subPath: meili_data
+                subPath: meilisearch

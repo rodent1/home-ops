@@ -25,6 +25,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     controllers:
       sonarr:
@@ -79,11 +81,10 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
@@ -104,6 +105,10 @@ spec:
     persistence:
       config:
         existingClaim: config-sonarr
+      cache:
+        existingClaim: sonarr-cache
+        globalMounts:
+          - path: /config/MediaCover
       tmp:
         type: emptyDir
       media:

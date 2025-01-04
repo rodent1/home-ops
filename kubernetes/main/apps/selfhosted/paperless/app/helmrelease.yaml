@@ -84,9 +84,19 @@ spec:
                   secretKeyRef:
                     name: paperless-secret
                     key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
-                cpu: 100m
+                cpu: 25m
               limits:
                 memory: 2Gi
 

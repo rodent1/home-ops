@@ -3,10 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # App
-  - ./helmrelease.yaml
   - ./pvc.yaml
-  # Templates
+  - ./helmrelease.yaml
   - ../../../../../shared/templates/gatus/external
   - ../../../../../shared/templates/volsync
 configMapGenerator:
