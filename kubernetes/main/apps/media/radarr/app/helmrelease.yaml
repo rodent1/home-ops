@@ -23,8 +23,6 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: cloudnative-pg
-      namespace: database
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
@@ -32,14 +30,6 @@ spec:
       radarr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16.6@sha256:c1d3a845d47fe1aeebd110fefb5f43f54c4735aec1d2b0c01de8d4d5e8cdd6a4
-            envFrom: &envFrom
-              - secretRef:
-                  name: radarr-secret
         containers:
           app:
             image:
@@ -55,7 +45,9 @@ spec:
               RADARR__SERVER__PORT: &port 80
               RADARR__UPDATE__BRANCH: develop
               TZ: Europe/Oslo
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: radarr-secret
             probes:
               liveness: &probes
                 enabled: true
