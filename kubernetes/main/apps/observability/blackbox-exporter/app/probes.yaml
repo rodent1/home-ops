@@ -12,6 +12,6 @@ spec:
     staticConfig:
       static:
         - tank.internal
-        - heater.internal
-        - hue.internal
-        - vacuum.internal
+        # - heater.internal
+        # - hue.internal
+        # - vacuum.internal
