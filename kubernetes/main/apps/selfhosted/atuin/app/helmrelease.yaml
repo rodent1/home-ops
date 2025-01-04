@@ -49,6 +49,9 @@ spec:
             env:
               ATUIN_PORT: &port 80
               ATUIN_OPEN_REGISTRATION: "true"
+              ATUIN_METRICS__ENABLE: true
+              ATUIN_METRICS__HOST: 0.0.0.0
+              ATUIN_METRICS__PORT: &metricsPort 8081
               TZ: Europe/Oslo
             envFrom: *envFrom
             args: ["server", "start"]
@@ -89,6 +92,13 @@ spec:
           http:
             primary: true
             port: *port
+          metrics:
+            port: *metricsPort
+    serviceMonitor:
+      app:
+        serviceName: atuin
+        endpoints:
+          - port: metrics
     ingress:
       app:
         className: internal
