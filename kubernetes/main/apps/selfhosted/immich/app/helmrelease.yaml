@@ -122,7 +122,7 @@ spec:
         enabled: true
         className: external
         annotations:
-          nginx.ingress.kubernetes.io/proxy-body-size: "0"
+          nginx.ingress.kubernetes.io/proxy-body-size: "50000M"
         hosts:
           - host: &host photos.rodent.cc
             paths:
