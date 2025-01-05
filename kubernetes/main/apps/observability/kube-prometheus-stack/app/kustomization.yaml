@@ -6,5 +6,5 @@ resources:
   - ./alertmanagerconfig.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  # - ./scrapeconfig.yaml #TODO: Do this!
+  - ./scrapeconfig.yaml
   - ../../../../../shared/templates/gatus/guarded
