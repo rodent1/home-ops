@@ -50,25 +50,10 @@ spec:
               VALKEY_PORT: &valkeyPort 6379
               DEBUG_MODE: true
             envFrom: *envFrom
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
           valkey:
             image:
               repository: valkey/valkey
               tag: 8-alpine
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: pinepods
@@ -102,3 +87,11 @@ spec:
         existingClaim: config-pinepods
         globalMounts:
           - path: /opt/pinepods/backup
+      tmp:
+        type: emptyDir
+      data:
+        type: emptyDir
+        advancedMounts:
+          pinepods:
+            valkey:
+              - path: /data
