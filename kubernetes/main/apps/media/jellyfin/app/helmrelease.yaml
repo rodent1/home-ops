@@ -23,8 +23,8 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: node-feature-discovery
-      namespace: system
+    - name: intel-device-plugin-gpu
+      namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
@@ -39,10 +39,8 @@ spec:
               tag: 10.10.3@sha256:17c3a8d9dddb97789b5f37112840ebf96566442c14d4754193a6c2eb154bc221
             env:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
-              JELLYFIN_FFmpeg__probesize: 50000000
-              JELLYFIN_FFmpeg__analyzeduration: 50000000
-              JELLYFIN_PublishedServerUrl: &loadBalancerIP 10.1.2.15
-              TZ: EU/Oslo
+              JELLYFIN_PublishedServerUrl:
+              TZ: Europe/Oslo
             probes:
               liveness: &probes
                 enabled: true
@@ -64,37 +62,38 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 4Gi
-        pod:
-          nodeSelector:
-            intel.feature.node.kubernetes.io/gpu: "true"
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [44, 10000]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44]
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: *app
+        controller: jellyfin
         type: LoadBalancer
-        loadBalancerIP: 10.1.1.205
-        externalTrafficPolicy: Local
+        annotations:
+          lbipam.cilium.io/ips: 10.1.1.205
         ports:
           http:
-            port: 8096
+            port: *port
     ingress:
       app:
         className: external
         hosts:
-          - host: &host "{{ .Release.Name }}.rodent.cc"
+          - host: "{{ .Release.Name }}.rodent.cc"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts: [*host]
     persistence:
       config:
         enabled: true
@@ -108,13 +107,12 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
-      transcode:
-        enabled: true
+      tmpfs:
         type: emptyDir
-        globalMounts:
-          - path: /transcode
-      cache:
-        enabled: true
-        type: emptyDir
-        globalMounts:
-          - path: /cache
+        advancedMounts:
+          jellyfin:
+            app:
+              - path: /cache
+                subPath: cache
+              - path: /transcode
+                subPath: transcode
