@@ -11,7 +11,7 @@ resources:
   - ./bazarr/ks.yaml
   # - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
-  # - ./pinepods/ks.yaml
+  - ./pinepods/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml

@@ -43,33 +43,54 @@ spec:
             image:
               repository: madeofpendletonwool/pinepods
               tag: 0.7.2@sha256:a0efc52b0c09b905e5a55a84cd96c6ee32a84bdbde9c4f54d1bd88518fb287b3
+            env:
+              SEARCH_API_URL: "https://search.pinepods.online/api/search"
+              PEOPLE_API_URL: "https://people.pinepods.online"
+              VALKEY_HOST: valkey
+              VALKEY_PORT: &valkeyPort 6379
+              DEBUG_MODE: true
             envFrom: *envFrom
-            resources:
-              requests:
-                cpu: 11m
-              limits:
-                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+          valkey:
+            image:
+              repository: valkey/valkey
+              tag: 8-alpine
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: pinepods
         ports:
           http:
             port: 8040
+      valkey:
+        controller: pinepods
+        ports:
+          http:
+            port: *valkeyPort
     ingress:
       app:
-        enabled: true
         className: external
         hosts:
-          - host: &host "{{ .Release.Name }}.rodent.cc"
+          - host: "{{ .Release.Name }}.rodent.cc"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
     persistence:
       media:
         type: nfs
@@ -77,3 +98,7 @@ spec:
         path: /mnt/tank/Media/Media/Pinepods
         globalMounts:
           - path: /opt/pinepods/downloads
+      config:
+        existingClaim: config-pinepods
+        globalMounts:
+          - path: /opt/pinepods/backup
