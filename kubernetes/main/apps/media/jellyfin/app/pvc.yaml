@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: config-jellyfin.
+  name: config-jellyfin
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
