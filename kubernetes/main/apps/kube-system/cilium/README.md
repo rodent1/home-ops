@@ -8,7 +8,6 @@
 router bgp 64513
   bgp router-id 10.1.1.1
   no bgp ebgp-requires-policy
-  maximum-paths 1
 
   redistribute connected
   redistribute static
