@@ -8,7 +8,6 @@ clusterSvcNets:
   - 10.43.0.0/16
 
 endpoint: "https://main.${INTERNAL_DOMAIN}:6443"
-allowSchedulingOnMasters: true
 
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.9.1
@@ -138,8 +137,6 @@ controlPlane:
     - &kubeletPatch |-
       machine:
         kubelet:
-          extraArgs:
-            rotate-server-certificates: true
           extraConfig:
             maxPods: 150
           extraMounts:
@@ -196,7 +193,7 @@ controlPlane:
     # Cluster configuration
     - |-
       cluster:
-        allowSchedulingOnMasters: true
+        allowSchedulingOnControlPlanes: true
         apiServer:
           extraArgs:
             enable-aggregator-routing: true

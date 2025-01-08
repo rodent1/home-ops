@@ -12,7 +12,6 @@ resources:
   - ./fstrim/ks.yaml
   - ./generic-device-plugin/ks.yaml
   - ./intel-device-plugin/ks.yaml
-  - ./kubelet-csr-approver/ks.yaml
   - ./metrics-server/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
