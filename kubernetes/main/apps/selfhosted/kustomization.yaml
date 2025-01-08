@@ -5,6 +5,7 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
+  - ./actual/ks.yaml
   - ./atuin/ks.yaml
   - ./authentik/ks.yaml
   - ./hoarder/ks.yaml
