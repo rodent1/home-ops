@@ -18,11 +18,8 @@ repositories:
   - name: coredns
     url: https://coredns.github.io/helm
 
-  - name: postfinance
-    url: https://postfinance.github.io/kubelet-csr-approver
-
 releases:
-  - name: prometheus-operator-crds
+  - name: kube-prometheus-stack-crds
     namespace: observability
     chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
     version: 17.0.2
@@ -32,7 +29,7 @@ releases:
     chart: cilium/cilium
     version: 1.16.5
     values: ["../../apps/kube-system/cilium/app/helm-values.yaml"]
-    needs: ["observability/prometheus-operator-crds"]
+    needs: ["observability/kube-prometheus-stack-crds"]
 
   - name: coredns
     namespace: kube-system
@@ -41,16 +38,9 @@ releases:
     values: ["../../apps/kube-system/coredns/app/helm-values.yaml"]
     needs: ["kube-system/cilium"]
 
-  - name: kubelet-csr-approver
-    namespace: kube-system
-    chart: postfinance/kubelet-csr-approver
-    version: 1.2.4
-    values: ["../../apps/kube-system/kubelet-csr-approver/app/helm-values.yaml"]
-    needs: ["kube-system/coredns"]
-
   - name: spegel
     namespace: kube-system
     chart: oci://ghcr.io/spegel-org/helm-charts/spegel
     version: v0.0.28
     values: ["../../apps/kube-system/spegel/app/helm-values.yaml"]
-    needs: ["kube-system/kubelet-csr-approver"]
+    needs: ["kube-system/coredns"]
