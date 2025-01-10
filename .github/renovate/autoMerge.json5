@@ -16,12 +16,12 @@
       ],
     },
     {
-      description: ["Auto-merge GitHub Actions for minor, patch, and digest"],
+      description: ["Auto-merge GitHub Actions for minor and patch"],
       matchManagers: ["github-actions"],
       matchDatasources: ["github-tags"],
       automerge: true,
       automergeType: "branch",
-      matchUpdateTypes: ["minor", "patch", "digest"],
+      matchUpdateTypes: ["minor", "patch"],
     },
   ],
 }

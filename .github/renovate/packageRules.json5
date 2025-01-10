@@ -2,7 +2,7 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: ["Loose versioning for non-semver packages"],
+      description: ["Loose versioning for non-semver containers"],
       matchDatasources: ["docker"],
       matchPackagePatterns: ["plex"],
       versioning: "loose",

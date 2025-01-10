@@ -9,8 +9,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
-      changelogUrl: "https://github.com/1Password/connect/blob/main/CHANGELOG.md"
     },
     {
       description: ["Actions Runner Controller Group"],
@@ -20,7 +18,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
       description: ["Dragonfly Operator Group"],
@@ -30,18 +27,15 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
-      description: ["Flux Group"],
-      groupName: "Flux",
-      matchPackagePatterns: ["fluxcd"],
-      matchDatasources: ["docker", "github-tags"],
-      versioning: "semver",
+      description: ["Flux Operator Group"],
+      groupName: "Flux Operator",
+      matchPackagePatterns: ["flux-operator", "flux-instance"],
+      matchDatasources: ["docker"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
       description: ["Immich Group"],
@@ -51,8 +45,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
-      sourceUrl: "https://github.com/immich-app/immich",
     },
     {
       description: ["Intel Device Plugins Group"],
@@ -62,7 +54,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
       description: ["Rook-Ceph Group"],
@@ -72,7 +63,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
       description: ["Talos Group"],
@@ -82,7 +72,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
   ],
 }

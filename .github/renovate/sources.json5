@@ -18,6 +18,10 @@
       sourceUrl: "https://github.com/kyverno/kyverno",
     },
     {
+      matchPackagePatterns: ["immich"],
+      sourceUrl: "https://github.com/immich-app/immich",
+    },
+    {
       matchPackagePatterns: ["pinepods"],
       sourceUrl: "https://github.com/madeofpendletonwool/PinePods",
     },
