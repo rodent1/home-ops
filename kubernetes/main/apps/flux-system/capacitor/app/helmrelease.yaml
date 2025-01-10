@@ -34,10 +34,9 @@ spec:
             resources:
               requests:
                 cpu: 50m
-                memory: 100Mi
                 ephemeral-storage: 1Gi
               limits:
-                memory: 200Mi
+                memory: 500Mi
                 ephemeral-storage: 2Gi
             securityContext:
               allowPrivilegeEscalation: false
