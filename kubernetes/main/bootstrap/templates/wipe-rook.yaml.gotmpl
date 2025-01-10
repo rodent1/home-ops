@@ -24,8 +24,6 @@ controllers:
         image:
           repository: docker.io/library/alpine
           tag: latest
-        env:
-          MODEL: {{ requiredEnv "MODEL" | quote }}
         command:
           - /bin/sh
           - -c
