@@ -30,5 +30,4 @@ resources:
   - ./rook-ceph.yaml
   - ./spegel.yaml
   - ./stakater.yaml
-  - ./weaveworks.yaml
   - ./wiremind.yaml
