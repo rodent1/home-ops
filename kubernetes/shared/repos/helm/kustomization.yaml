@@ -11,12 +11,14 @@ resources:
   - ./bjw-s.yaml
   - ./cilium.yaml
   - ./cloudnative-pg.yaml
+  - ./controlplaneio.yaml
   - ./coredns.yaml
   - ./coder.yaml
   - ./descheduler.yaml
   - ./emqx.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
+  - ./fluxcd-community.yaml
   - ./grafana.yaml
   - ./ingress-nginx.yaml
   - ./intel.yaml
