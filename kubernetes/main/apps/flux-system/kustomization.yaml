@@ -7,4 +7,4 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./flux-operator/ks.yaml
-  - ./wego/ks.yaml
+  - ./capacitor/ks.yaml
