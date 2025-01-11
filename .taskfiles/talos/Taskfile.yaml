@@ -8,7 +8,7 @@ tasks:
     dotenv: ["{{.CLUSTER_DIR}}/cluster.env"]
     cmds:
       - task: down
-      - talosctl --nodes {{.IP}} apply-config --mode={{.MODE}} --file {{.CLUSTER_DIR}}/talos/clusterconfig/main-{{.IP}}.internal.yaml # TODO: Fix ip vs hostname in filenames
+      - talosctl --nodes {{.IP}} apply-config --mode={{.MODE}} --file {{.CLUSTER_DIR}}/talos/clusterconfig/main-{{.IP}}.internal.yaml
       - talosctl --nodes {{.IP}} health
       - task: up
     vars:
