@@ -19,7 +19,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-lb
+  name: postgres-immich-lb
   annotations:
     lbipam.cilium.io/ips: 10.1.1.206
 spec:
