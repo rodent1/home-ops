@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-immich
+spec:
+  instances: 1
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.2
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+    storageClass: openebs-hostpath
+  superuserSecret:
+    name: cloudnative-pg-secret
+  enableSuperuserAccess: true
+  postgresql:
+    shared_preload_libraries:
+      - "vectors.so"
+    parameters:
+      max_connections: "200"
+      shared_buffers: 256MB
+  resources:
+    requests:
+      cpu: 50m
+    limits:
+      memory: 1Gi
+  monitoring:
+    enablePodMonitor: true
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore: &barmanObjectStore
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://cnpg/
+      endpointURL: https://d74d8dfc1170c5004e77bb7bb67219a6.r2.cloudflarestorage.com/
+      # Note: serverName version needs to be inclemented
+      # when recovering from an existing cnpg cluster
+      serverName: &currentCluster cnpg-immich
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: aws-access-key-id
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: aws-secret-access-key
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: &previousCluster cnpg16-v03
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
