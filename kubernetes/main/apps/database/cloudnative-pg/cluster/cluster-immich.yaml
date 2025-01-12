@@ -5,7 +5,7 @@ kind: Cluster
 metadata:
   name: postgres-immich
 spec:
-  instances: 1
+  instances: 2
   imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.5-v0.3.0@sha256:be3f025d79aa1b747817f478e07e71be43236e14d00d8a9eb3914146245035ba
   primaryUpdateStrategy: unsupervised
   storage:
@@ -24,7 +24,7 @@ spec:
     requests:
       cpu: 50m
     limits:
-      memory: 1Gi
+      memory: 500Mi
   monitoring:
     enablePodMonitor: true
   backup:
