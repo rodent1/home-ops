@@ -6,7 +6,7 @@ metadata:
   name: postgres-immich
 spec:
   instances: 1
-  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.2
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.5-v0.3.0@sha256:be3f025d79aa1b747817f478e07e71be43236e14d00d8a9eb3914146245035ba
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -49,15 +49,15 @@ spec:
           key: aws-secret-access-key
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
-  bootstrap:
-    recovery:
-      source: &previousCluster cnpg16-v03
-      recoveryTarget:
-        # Time base target for the recovery
-        targetTime: "2025-01-12 11:00:00.00000+02"
-  # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  externalClusters:
-    - name: *previousCluster
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *previousCluster
+  # bootstrap:
+  #   recovery:
+  #     source: &previousCluster cnpg16-v03
+  #     recoveryTarget:
+  #       # Time base target for the recovery
+  #       targetTime: "2025-01-12 11:00:00.00000+02"
+  # # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # externalClusters:
+  #   - name: *previousCluster
+  #     barmanObjectStore:
+  #       <<: *barmanObjectStore
+  #       serverName: *previousCluster
