@@ -104,7 +104,7 @@ spec:
       endpointURL: https://d74d8dfc1170c5004e77bb7bb67219a6.r2.cloudflarestorage.com/
       # Note: serverName version needs to be inclemented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster cnpg16-v1
+      serverName: &currentCluster cnpg17-v1
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
