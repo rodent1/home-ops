@@ -52,6 +52,9 @@ spec:
   bootstrap:
     recovery:
       source: &previousCluster cnpg16-v03
+      recoveryTarget:
+        # Time base target for the recovery
+        targetTime: "2025-01-12 11:00:00.00000+02"
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *previousCluster
