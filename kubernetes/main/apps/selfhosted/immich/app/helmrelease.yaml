@@ -60,6 +60,7 @@ spec:
             envFrom: *envFrom
             env: &env
               IMMICH_LOG_LEVEL: verbose
+              DB_VECTOR_EXTENSION: pgvector
               TZ: Europe/Oslo
               # REDIS
               # Requires the extraArg `--default_lua_flags=allow-undeclared-keys` to be set in the dragonfly helm chart
