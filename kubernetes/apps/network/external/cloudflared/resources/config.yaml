@@ -1,0 +1,10 @@
+---
+originRequest:
+  originServerName: external.rodent.cc
+
+ingress:
+  - hostname: rodent.cc
+    service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
+  - hostname: "*.rodent.cc"
+    service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
+  - service: http_status:404
