@@ -41,7 +41,7 @@ spec:
       name: actions-runner-controller-secret
       valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_PRIVATE_KEY
   values:
-    githubConfigUrl: https://github.com/onedr0p/home-ops
+    githubConfigUrl: https://github.com/rodent1/home-ops
     minRunners: 1
     maxRunners: 3
     containerMode:
