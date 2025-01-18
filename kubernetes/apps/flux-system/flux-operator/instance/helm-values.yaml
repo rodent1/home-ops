@@ -14,7 +14,7 @@ instance:
     kind: GitRepository
     url: ssh://git@github.com/rodent1/home-ops
     ref: refs/heads/main
-    path: kubernetes/main/flux/config
+    path: kubernetes/flux/cluster
     pullSecret: github-deploy-key
   commonMetadata:
     labels:
