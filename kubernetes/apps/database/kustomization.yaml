@@ -16,5 +16,5 @@ transformers:
     kind: NamespaceTransformer
     metadata:
       name: not-used
-      namespace: databases
+      namespace: database
     unsetOnly: true
