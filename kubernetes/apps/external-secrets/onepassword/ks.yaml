@@ -1,18 +1,16 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg
+  name: &app onepassword
   namespace: flux-system
 spec:
-  targetNamespace: database
+  targetNamespace: external-secrets
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: onepassword-store
-  path: ./kubernetes/apps/database/cloudnative-pg/app
+  path: ./kubernetes/apps/external-secrets/onepassword/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,20 +19,20 @@ spec:
   interval: 30m
   timeout: 5m
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg-cluster
+  name: &app onepassword-store
   namespace: flux-system
 spec:
-  targetNamespace: database
+  targetNamespace: external-secrets
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg
-  path: ./kubernetes/apps/database/cloudnative-pg/cluster
+    - name: onepassword
+  path: ./kubernetes/apps/external-secrets/onepassword/store
   prune: true
   sourceRef:
     kind: GitRepository

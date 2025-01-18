@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
   path: ./kubernetes/apps/network/external-dns/cloudflare
   prune: false
   sourceRef:
@@ -33,7 +33,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
   path: ./kubernetes/apps/network/external-dns/unifi
   prune: false
   sourceRef:
