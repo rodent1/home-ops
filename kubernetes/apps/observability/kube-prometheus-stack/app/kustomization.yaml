@@ -7,4 +7,4 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./scrapeconfig.yaml
-  - ../../../../../shared/templates/gatus/guarded
+  - ../../../../templates/gatus/guarded
