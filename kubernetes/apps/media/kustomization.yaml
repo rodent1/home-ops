@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
+  - ../../templates/alerts
   # Flux-Kustomizations
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
@@ -21,3 +22,11 @@ resources:
   - ./tautulli/ks.yaml
   - ./unpackerr/ks.yaml
   - ./xteve/ks.yaml
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: NamespaceTransformer
+    metadata:
+      name: not-used
+      namespace: media
+    unsetOnly: true
