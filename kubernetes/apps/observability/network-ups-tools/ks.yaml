@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/observability/network-ups-tools/app
+  path: ./kubernetes/apps/observability/network-ups-tools/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository
@@ -33,7 +33,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/observability/network-ups-tools/exporter
+  path: ./kubernetes/apps/observability/network-ups-tools/exporter
   prune: false # revert to true
   sourceRef:
     kind: GitRepository

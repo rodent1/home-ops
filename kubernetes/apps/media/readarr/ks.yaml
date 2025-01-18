@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: volsync
-  path: ./kubernetes/main/apps/media/readarr/app
+  path: ./kubernetes/apps/media/readarr/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository

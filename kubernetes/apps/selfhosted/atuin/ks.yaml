@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: volsync
-  path: ./kubernetes/main/apps/selfhosted/atuin/app
+  path: ./kubernetes/apps/selfhosted/atuin/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository

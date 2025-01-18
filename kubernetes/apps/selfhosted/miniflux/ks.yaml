@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg-cluster
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/selfhosted/miniflux/app
+  path: ./kubernetes/apps/selfhosted/miniflux/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository

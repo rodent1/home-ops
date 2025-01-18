@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: volsync
-  path: ./kubernetes/main/apps/media/plex/app
+  path: ./kubernetes/apps/media/plex/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository

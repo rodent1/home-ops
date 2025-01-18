@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/selfhosted/it-tools/app
+  path: ./kubernetes/apps/selfhosted/it-tools/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository

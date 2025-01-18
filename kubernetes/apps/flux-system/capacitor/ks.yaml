@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/flux-system/capacitor/app
+  path: ./kubernetes/apps/flux-system/capacitor/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository

@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: volsync
-  path: ./kubernetes/main/apps/selfhosted/vikunja/app
+  path: ./kubernetes/apps/selfhosted/vikunja/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository

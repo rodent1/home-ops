@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: volsync
-  path: ./kubernetes/main/apps/media/xteve/app
+  path: ./kubernetes/apps/media/xteve/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository

@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: volsync
-  path: ./kubernetes/main/apps/media/recyclarr/app
+  path: ./kubernetes/apps/media/recyclarr/app
   prune: false # revert to true
   sourceRef:
     kind: GitRepository
