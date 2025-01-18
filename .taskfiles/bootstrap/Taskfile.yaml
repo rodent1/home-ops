@@ -4,11 +4,11 @@ version: "3"
 
 tasks:
   talos:
-    desc: Bootstrap Talos [CLUSTER=main]
+    desc: Bootstrap Talos
     dotenv: ["{{.BOOTSTRAP_DIR}}/.cluster.env"]
     cmds:
       - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
-      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name {{.CLUSTER}} {{.CLUSTER_DIR}}
+      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name main {{.CLUSTER_DIR}}
     vars:
       TALOS_CONTROLLER:
         sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
@@ -20,7 +20,9 @@ tasks:
       - which jq minijinja-cli sops talosctl
 
   apps:
-    desc: Bootstrap Apps [CLUSTER=main]
+    desc: Bootstrap Apps [ROOK_DISK=required]
+    summary: |
+      IMPORTANT: All nodes will be used for OSDs and ROOK_DISK must be set to a value that matches the disk model on all nodes (e.g. Micron_7450)
     prompt: Bootstrap apps into the Talos cluster?
     cmds:
       - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
@@ -28,13 +30,12 @@ tasks:
       - helmfile --quiet --file {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
       - helmfile --quiet --file {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml destroy --selector name=wipe-rook
     env:
-      FLUX_GITHUB_PUBLIC_KEYS:
-        sh: curl -fsSL https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
       NODE_COUNT:
         sh: talosctl config info --output json | jq --raw-output '.nodes | length'
-      VAULT: '{{if eq .CLUSTER "main"}}home-ops{{else}}{{.CLUSTER}}{{end}}' # ¯\_(ツ)_/¯
+      ROOK_DISK: "{{.ROOK_DISK}}"
+      VAULT: kubernetes
     requires:
-      vars: [CLUSTER]
+      vars: [ROOK_DISK]
     preconditions:
       - op user get --me
       - talosctl config info
