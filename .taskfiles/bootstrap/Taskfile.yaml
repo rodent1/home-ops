@@ -33,7 +33,7 @@ tasks:
       NODE_COUNT:
         sh: talosctl config info --output json | jq --raw-output '.nodes | length'
       ROOK_DISK: "{{.ROOK_DISK}}"
-      VAULT: kubernetes
+      VAULT: home-ops
     requires:
       vars: [ROOK_DISK]
     preconditions:

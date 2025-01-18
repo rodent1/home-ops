@@ -73,7 +73,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: network/rodent-cc-tls
+        default-ssl-certificate: cert-manager/rodent-cc-tls
         publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
       publishService:
