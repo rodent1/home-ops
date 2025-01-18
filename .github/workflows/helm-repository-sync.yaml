@@ -22,7 +22,7 @@ env:
 jobs:
   sync:
     name: Helm Repository Sync
-    runs-on: ["gha-runner-scale-set"]
+    runs-on: ["home-ops-runner"]
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@v1
@@ -35,7 +35,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: "${{ steps.app-token.outputs.token }}"
-          fetch-depth: 0
 
       - name: Setup Homebrew
         uses: Homebrew/actions/setup-homebrew@master
