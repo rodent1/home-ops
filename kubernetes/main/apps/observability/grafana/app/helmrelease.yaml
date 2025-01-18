@@ -117,9 +117,9 @@ spec:
           url: https://raw.githubusercontent.com/dragonflydb/dragonfly/refs/heads/main/tools/local/monitoring/grafana/provisioning/dashboards/dragonfly.json
           datasource: Prometheus
         eaton-ups:
-          # renovate: depName="Eaton UPS Monitoring"
-          gnetId: 20355
-          revision: 1
+          # renovate: depName="Prometheus NUT Exporter for DRuggeri"
+          gnetId: 19308
+          revision: 3
           datasource: Prometheus
         external-dns:
           # renovate: depName="External-dns"
@@ -192,10 +192,10 @@ spec:
           gnetId: 19105
           revision: 6
           datasource: Prometheus
-        smart:
-          # renovate: depName="Dashboard for smartctl_exporter"
-          gnetId: 20204
-          revision: 1
+        smartctl-exporter:
+          # renovate: depName="SMARTctl Exporter Dashboard"
+          gnetId: 22604
+          revision: 2
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         unifi-insights:
