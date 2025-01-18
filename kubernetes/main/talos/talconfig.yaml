@@ -96,6 +96,7 @@ controlPlane:
         - iommu=pt
         - mitigations=off
         - security=none
+        - talos.auditd.disabled=1
       systemExtensions:
         officialExtensions:
           - siderolabs/i915
@@ -280,6 +281,7 @@ worker:
         - iommu=pt
         - mitigations=off
         - security=none
+        - talos.auditd.disabled=1
       systemExtensions:
         officialExtensions:
           - siderolabs/amd-ucode
