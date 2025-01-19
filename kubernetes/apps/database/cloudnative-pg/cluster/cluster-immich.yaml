@@ -39,7 +39,7 @@ spec:
       endpointURL: https://d74d8dfc1170c5004e77bb7bb67219a6.r2.cloudflarestorage.com/
       # Note: serverName version needs to be inclemented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster cnpg-immich-v2
+      serverName: &currentCluster cnpg-immich-v3
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
@@ -51,7 +51,7 @@ spec:
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
     recovery:
-      source: &previousCluster cnpg-immich
+      source: &previousCluster cnpg-immich-v2
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *previousCluster
