@@ -4,20 +4,23 @@ version: "3"
 
 tasks:
   talos:
-    desc: Bootstrap Talos
-    dotenv: ["{{.BOOTSTRAP_DIR}}/.cluster.env"]
+    desc: Bootstrap the Talos cluster
+    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     cmds:
-      - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
-      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name main {{.CLUSTER_DIR}}
+      - '{{if eq .TALHELPER_SECRET_EXISTS "false"}}talhelper gensecret > {{.TALHELPER_SECRET_FILE}}{{end}}'
+      - '{{if eq .TALHELPER_SECRET_EXISTS "false"}}sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}{{end}}'
+      - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
+      - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--insecure" | bash
+      - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
+      - until talhelper gencommand kubeconfig --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="{{.ROOT_DIR}} --force" | bash; do sleep 10; done
     vars:
-      TALOS_CONTROLLER:
-        sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
-    requires:
-      vars: [CLUSTER]
+      TALHELPER_SECRET_EXISTS:
+        sh: test -f {{.TALHELPER_SECRET_FILE}} && echo true || echo false
     preconditions:
-      - talosctl config info
-      - test -f {{.CLUSTER_DIR}}/talosconfig
-      - which jq minijinja-cli sops talosctl
+      - test -f {{.SOPS_CONFIG_FILE}}
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - test -f {{.TALHELPER_CONFIG_FILE}}
+      - which talhelper sops
 
   apps:
     desc: Bootstrap Apps [ROOK_DISK=required]
@@ -26,14 +29,14 @@ tasks:
     prompt: Bootstrap apps into the Talos cluster?
     cmds:
       - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
-      - op run --env-file {{.BOOTSTRAP_DIR}}/.secrets.env --no-masking -- minijinja-cli {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
+      - op run --env-file {{.BOOTSTRAP_DIR}}/apps/.secrets.env --no-masking -- minijinja-cli {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
       - helmfile --quiet --file {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
       - helmfile --quiet --file {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml destroy --selector name=wipe-rook
     env:
       NODE_COUNT:
         sh: talosctl config info --output json | jq --raw-output '.nodes | length'
       ROOK_DISK: "{{.ROOK_DISK}}"
-      VAULT: home-ops
+      VAULT: kubernetes
     requires:
       vars: [ROOK_DISK]
     preconditions:

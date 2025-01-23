@@ -13,7 +13,10 @@ env:
   KUBECONFIG: "{{.CLUSTER_DIR}}/kubeconfig"
   MINIJINJA_CONFIG_FILE: "{{.ROOT_DIR}}/.minijinja.toml"
   SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
-  TALOSCONFIG: "{{.CLUSTER_DIR}}/talosconfig"
+  TALHELPER_CLUSTER_DIR: "{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig"
+  TALHELPER_CONFIG_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml"
+  TALHELPER_SECRET_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml"
+  TALOSCONFIG: "{{.TALHELPER_CLUSTER_DIR}}/talosconfig"
 
 includes:
   bootstrap: .taskfiles/bootstrap
