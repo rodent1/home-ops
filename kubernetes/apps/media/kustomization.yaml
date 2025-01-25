@@ -2,11 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: media
 resources:
-  # Pre Flux-Kustomizations
-  - ./namespace.yaml
-  - ../../templates/alerts
-  # Flux-Kustomizations
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
@@ -23,11 +20,15 @@ resources:
   - ./tautulli/ks.yaml
   - ./threadfin/ks.yaml
   - ./unpackerr/ks.yaml
-transformers:
-  - |-
-    apiVersion: builtin
-    kind: NamespaceTransformer
-    metadata:
-      name: not-used
-      namespace: media
-    unsetOnly: true
+components:
+  - ../../flux/components/alerts
+  - ../../flux/components/sops
+  - ../../flux/components/namespace
+patches:
+  - # Add the name to the namespace
+    patch: |
+      - op: add
+        path: /metadata/name
+        value: media
+    target:
+      kind: Namespace
