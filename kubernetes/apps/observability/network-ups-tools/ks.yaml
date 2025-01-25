@@ -14,7 +14,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: true
+  prune: false #remove this later
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -35,7 +35,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   path: ./kubernetes/apps/observability/network-ups-tools/exporter
-  prune: true
+  prune: false #remove this later
   sourceRef:
     kind: GitRepository
     name: flux-system

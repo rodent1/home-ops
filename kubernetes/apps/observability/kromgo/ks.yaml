@@ -17,7 +17,7 @@ spec:
     substitute:
       APP: *app
       GATUS_PATH: /talos_version
-  prune: true
+  prune: false #remove this later
   sourceRef:
     kind: GitRepository
     name: flux-system

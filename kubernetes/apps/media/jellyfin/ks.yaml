@@ -20,7 +20,7 @@ spec:
     substitute:
       APP: *app
       GATUS_PATH: /web/index.html
-  prune: true
+  prune: false #remove this later
   sourceRef:
     kind: GitRepository
     name: flux-system
