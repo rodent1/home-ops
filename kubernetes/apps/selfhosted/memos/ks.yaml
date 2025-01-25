@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: volsync
   path: ./kubernetes/apps/selfhosted/memos/app
-  prune: true
+  prune: false #remove this later
   sourceRef:
     kind: GitRepository
     name: flux-system

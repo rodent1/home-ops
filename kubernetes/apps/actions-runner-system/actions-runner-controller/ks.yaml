@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: onepassword-store
   path: ./kubernetes/apps/actions-runner-system/actions-runner-controller/app
-  prune: true
+  prune: false #remove this later
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -33,7 +33,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/actions-runner-system/actions-runner-controller/runners
-  prune: true
+  prune: false #remove this later
   sourceRef:
     kind: GitRepository
     name: flux-system

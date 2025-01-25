@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: onepassword-store
   path: ./kubernetes/apps/observability/gatus/app
-  prune: true
+  prune: false #remove this later
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -14,7 +14,7 @@ spec:
     - name: cloudnative-pg-cluster
     - name: onepassword-store
   path: ./kubernetes/apps/selfhosted/immich/app
-  prune: true
+  prune: false #remove this later
   sourceRef:
     kind: GitRepository
     name: flux-system
