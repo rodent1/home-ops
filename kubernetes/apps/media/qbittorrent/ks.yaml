@@ -43,9 +43,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../flux/components/gatus/guarded
-    - ../../../../flux/components/volsync
   decryption:
     provider: sops
     secretRef:
