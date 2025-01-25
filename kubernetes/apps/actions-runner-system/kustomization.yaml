@@ -2,17 +2,18 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: actions-runner-system
 resources:
-  # Pre Flux-Kustomizations
-  - ./namespace.yaml
-  - ../../templates/alerts
-  # Flux-Kustomizations
   - ./actions-runner-controller/ks.yaml
-transformers:
-  - |-
-    apiVersion: builtin
-    kind: NamespaceTransformer
-    metadata:
-      name: not-used
-      namespace: actions-runner-system
-    unsetOnly: true
+components:
+  - ../../flux/components/alerts
+  - ../../flux/components/sops
+  - ../../flux/components/namespace
+patches:
+  - # Add the name to the namespace
+    patch: |
+      - op: add
+        path: /metadata/name
+        value: actions-runner-system
+    target:
+      kind: Namespace

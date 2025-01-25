@@ -4,24 +4,29 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app cross-seed
-  namespace: flux-system
+  namespace: &namespace media
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: onepassword-store
+      namespace: external-secrets
     - name: volsync
-  path: ./kubernetes/apps/media/cross-seed/app
-  prune: false #remove this later
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+      namespace: volsync-system
   interval: 30m
-  timeout: 5m
+  path: ./kubernetes/apps/media/cross-seed/app
   postBuild:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 5Gi
+  prune: false #remove this later
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

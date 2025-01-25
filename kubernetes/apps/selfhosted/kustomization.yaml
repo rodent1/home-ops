@@ -1,11 +1,9 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: selfhosted
 resources:
-  # Pre Flux-Kustomizations
-  - ./namespace.yaml
-  - ../../templates/alerts
-  # Flux-Kustomizations
   - ./actual/ks.yaml
   - ./atuin/ks.yaml
   - ./authentik/ks.yaml
@@ -17,11 +15,15 @@ resources:
   - ./miniflux/ks.yaml
   - ./paperless/ks.yaml
   - ./vikunja/ks.yaml
-transformers:
-  - |-
-    apiVersion: builtin
-    kind: NamespaceTransformer
-    metadata:
-      name: not-used
-      namespace: selfhosted
-    unsetOnly: true
+components:
+  - ../../flux/components/alerts
+  - ../../flux/components/sops
+  - ../../flux/components/namespace
+patches:
+  - # Add the name to the namespace
+    patch: |
+      - op: add
+        path: /metadata/name
+        value: selfhosted
+    target:
+      kind: Namespace
