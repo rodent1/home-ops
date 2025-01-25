@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   path: ./kubernetes/apps/database/dragonfly/app
-  prune: false #remove this later
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -35,7 +35,7 @@ spec:
       namespace: database
   interval: 30m
   path: ./kubernetes/apps/database/dragonfly/cluster
-  prune: false #remove this later
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

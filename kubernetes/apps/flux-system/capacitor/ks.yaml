@@ -16,7 +16,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: false #remove this later
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

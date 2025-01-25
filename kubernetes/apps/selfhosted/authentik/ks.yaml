@@ -20,7 +20,7 @@ spec:
     substitute:
       APP: authentik
       GATUS_SUBDOMAIN: auth
-  prune: false #remove this later
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
