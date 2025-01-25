@@ -21,8 +21,8 @@ resources:
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
+  - ./threadfin/ks.yaml
   - ./unpackerr/ks.yaml
-  - ./xteve/ks.yaml
 transformers:
   - |-
     apiVersion: builtin

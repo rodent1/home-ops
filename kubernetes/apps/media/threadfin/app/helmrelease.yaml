@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: xteve
+  name: threadfin
 spec:
   interval: 30m
   chart:
@@ -27,26 +27,40 @@ spec:
       namespace: rook-ceph
   values:
     controllers:
-      xteve:
+      threadfin:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/k8s-at-home/xteve
-              tag: v2.2.0.200@sha256:292b3614670f6bf4017cc65643c513cccb18323bd5269178bd3e36c8c68f5107
+              repository: fyb3roptik/threadfin
+              tag: 1.2.26@sha256:22a3ecd260d035c57beb23f58dce4d76ee98c7b478413a8c29054ee979f6c676
               pullPolicy: IfNotPresent
             env:
               TZ: Europe/Oslo
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              THREADFIN_PORT: &port 34400
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 512Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /status
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -57,10 +71,10 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: xteve
+        controller: threadfin
         ports:
           http:
-            port: 34400
+            port: *port
     ingress:
       app:
         className: internal
@@ -73,6 +87,8 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: config-xteve
+        existingClaim: config-threadfin
+        globalMounts:
+          - path: /home/threadfin/conf
       tmp:
         type: emptyDir
