@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
@@ -37,6 +39,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/gatus/guarded
   interval: 30m
   path: ./kubernetes/apps/observability/kube-prometheus-stack/crds
   prune: false

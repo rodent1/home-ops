@@ -9,6 +9,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/gatus/external
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: emqx-cluster
       namespace: database
