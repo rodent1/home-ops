@@ -8,8 +8,6 @@ tasks:
     cmd: talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
     preconditions:
       - test -f {{.TALHELPER_CONFIG_FILE}}
-      - test -f {{.SOPS_CONFIG_FILE}}
-      - test -f {{.SOPS_AGE_KEY_FILE}}
       - which talhelper
 
   apply-node:
@@ -22,7 +20,7 @@ tasks:
     preconditions:
       - talosctl --nodes {{.IP}} get machineconfig
       - talosctl config info
-      - test -f {{.TALOSCONFIG}}
+      - test -f {{.TALOS_DIR}}/clusterconfig/talosconfig
       - which talhelper talosctl yq
 
   upgrade-node:
@@ -40,7 +38,7 @@ tasks:
     preconditions:
       - talosctl --nodes {{.IP}} get machineconfig
       - talosctl config info
-      - test -f {{.TALOSCONFIG}}
+      - test -f {{.TALOS_DIR}}/clusterconfig/talosconfig
       - which kubectl talhelper talosctl yq
 
   upgrade-k8s:
@@ -51,13 +49,12 @@ tasks:
         sh: yq '.kubernetesVersion' {{.TALHELPER_CONFIG_FILE}}
     preconditions:
       - talosctl config info
-      - test -f {{.TALOSCONFIG}}
+      - test -f {{.TALOS_DIR}}/clusterconfig/talosconfig
       - which talhelper talosctl yq
 
   reset:
     desc: Resets nodes back to maintenance mode
-    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
     cmd: talhelper gencommand reset --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--reboot {{- if eq .CLI_FORCE false }} --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL{{ end }} --graceful=false --wait=false" | bash
-  preconditions:
-    - which talhelper
+    preconditions:
+      - which talhelper
