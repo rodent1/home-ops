@@ -4,23 +4,25 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app authentik
-  namespace: flux-system
+  namespace: &namespace selfhosted
 spec:
-  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-store
-  path: ./kubernetes/apps/selfhosted/authentik/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+      namespace: external-secrets
   interval: 30m
-  timeout: 15m
+  path: ./kubernetes/apps/selfhosted/authentik/app
   postBuild:
     substitute:
       APP: authentik
       GATUS_SUBDOMAIN: auth
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 15m
+  wait: false

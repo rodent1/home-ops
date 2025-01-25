@@ -4,26 +4,30 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app home-assistant
-  namespace: flux-system
+  namespace: &namespace selfhosted
 spec:
-  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: emqx-cluster
+      namespace: database
     - name: onepassword-store
+      namespace: external-secrets
     - name: volsync
-  path: ./kubernetes/apps/selfhosted/home-assistant/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+      namespace: volsync-system
   interval: 30m
-  timeout: 5m
+  path: ./kubernetes/apps/selfhosted/home-assistant/app
   postBuild:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: hass
       VOLSYNC_CAPACITY: 5Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
