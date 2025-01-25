@@ -20,7 +20,7 @@ tasks:
       - which talhelper sops
 
   apps:
-    desc: Bootstrap Apps [ROOK_DISK=required]
+    desc: Bootstrap Apps
     summary: |
       IMPORTANT: All nodes will be used for OSDs and ROOK_DISK must be set to a value that matches the disk model on all nodes (e.g. Micron_7450)
     prompt: Bootstrap apps into the Talos cluster?
@@ -32,14 +32,11 @@ tasks:
     env:
       NODE_COUNT:
         sh: talosctl config info --output json | jq --raw-output '.nodes | length'
-      ROOK_DISK: "{{.ROOK_DISK}}"
-      VAULT: kubernetes
-    requires:
-      vars: [ROOK_DISK]
+      VAULT: home-ops
     preconditions:
       - op user get --me
       - talosctl config info
-      - test -f {{.CLUSTER_DIR}}/talosconfig
+      - test -f {{.TALOS_DIR}}/clusterconfig/talosconfig
       - test -f {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml
       - test -f {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2
       - test -f {{.BOOTSTRAP_DIR}}/apps/templates/wipe-rook.yaml.gotmpl
