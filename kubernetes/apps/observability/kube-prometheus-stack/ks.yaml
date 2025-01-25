@@ -18,7 +18,7 @@ spec:
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   postBuild:
     substitute:
-      APP: *app
+      APP: kube-prometheus-stack
       GATUS_SUBDOMAIN: prometheus
   prune: true
   sourceRef:
@@ -39,8 +39,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../flux/components/gatus/guarded
   interval: 30m
   path: ./kubernetes/apps/observability/kube-prometheus-stack/crds
   prune: false
