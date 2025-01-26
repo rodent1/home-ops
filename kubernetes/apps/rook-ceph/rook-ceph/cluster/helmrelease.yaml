@@ -74,6 +74,16 @@ spec:
         devicePathFilter: /dev/disk/by-id/nvme-*
         config:
           osdsPerDevice: "1"
+      resources:
+        mgr:
+          requests:
+            cpu: 100m
+        mon:
+          requests:
+            cpu: 100m
+        osd:
+          requests:
+            cpu: 500m
     cephBlockPools:
       - name: ceph-blockpool
         spec:
