@@ -5,16 +5,16 @@ kind: Kustomization
 namespace: selfhosted
 resources:
   - ./actual/ks.yaml
-  # - ./atuin/ks.yaml
-  # - ./authentik/ks.yaml
-  # - ./hoarder/ks.yaml
-  # - ./home-assistant/ks.yaml
+  - ./atuin/ks.yaml
+  - ./authentik/ks.yaml
+  - ./hoarder/ks.yaml
+  - ./home-assistant/ks.yaml
   # - ./immich/ks.yaml
-  # - ./it-tools/ks.yaml
-  # - ./memos/ks.yaml
-  # - ./miniflux/ks.yaml
-  # - ./paperless/ks.yaml
-  # - ./vikunja/ks.yaml
+  - ./it-tools/ks.yaml
+  - ./memos/ks.yaml
+  - ./miniflux/ks.yaml
+  - ./paperless/ks.yaml
+  - ./vikunja/ks.yaml
 components:
   - ../../flux/components/alerts
   - ../../flux/components/sops
