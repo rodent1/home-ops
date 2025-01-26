@@ -97,7 +97,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-jellyfin
+        existingClaim: jellyfin
         globalMounts:
           - path: /config
       media:

@@ -125,7 +125,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: config-paperless
+        existingClaim: paperless
         advancedMounts:
           paperless:
             app:

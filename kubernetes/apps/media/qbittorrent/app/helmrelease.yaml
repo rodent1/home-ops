@@ -91,7 +91,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: config-qbittorrent
+        existingClaim: qbittorrent
       tmp:
         type: emptyDir
       media:

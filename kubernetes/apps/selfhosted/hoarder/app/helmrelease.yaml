@@ -127,7 +127,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: config-hoarder
+        existingClaim: hoarder
         advancedMounts:
           hoarder:
             app:

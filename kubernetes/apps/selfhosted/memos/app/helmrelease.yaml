@@ -87,4 +87,4 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: config-memos
+        existingClaim: memos

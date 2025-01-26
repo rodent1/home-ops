@@ -65,4 +65,4 @@ spec:
                   port: http
     persistence:
       data:
-        existingClaim: config-actual
+        existingClaim: actual

@@ -91,7 +91,7 @@ spec:
               - *host
     persistence:
       config:
-        existingClaim: config-audiobookshelf
+        existingClaim: audiobookshelf
       cache:
         type: emptyDir
         globalMounts:

@@ -96,7 +96,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: config-sonarr
+        existingClaim: sonarr
       cache:
         existingClaim: sonarr-cache
         globalMounts:

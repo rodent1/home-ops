@@ -95,7 +95,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: config-readarr
+        existingClaim: readarr
       cache:
         existingClaim: readarr-cache
         globalMounts:

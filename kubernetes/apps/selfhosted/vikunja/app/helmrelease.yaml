@@ -89,7 +89,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-vikunja
+        existingClaim: vikunja
         advancedMounts:
           vikunja:
             app:

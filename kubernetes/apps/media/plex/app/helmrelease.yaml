@@ -109,7 +109,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: config-plex
+        existingClaim: plex
         # TODO: If setting up Plex for the first time, you'll want to add the globalMounts section
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server
