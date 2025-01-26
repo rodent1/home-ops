@@ -65,7 +65,7 @@ nodes:
     ipAddress: 10.1.1.34
     controlPlane: false
     installDiskSelector:
-      model: KINGSTON SA400S3
+      wwid: naa.50026b7381dc412e
     networkInterfaces:
       - interface: eth0
         dhcp: true
@@ -75,7 +75,7 @@ nodes:
     ipAddress: 10.1.1.35
     controlPlane: false
     installDiskSelector:
-      model: KINGSTON SA400S3
+      wwid: naa.50026b7381dc413d
     networkInterfaces:
       - interface: eth0
         dhcp: true
@@ -273,8 +273,6 @@ controlPlane:
             - SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", GROUP="20", MODE="0660"
 
 worker:
-  machineSpec:
-    secureboot: true
   nodeLabels:
     topology.kubernetes.io/region: *cluster
     topology.kubernetes.io/zone: m
