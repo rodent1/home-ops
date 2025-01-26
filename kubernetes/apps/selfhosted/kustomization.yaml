@@ -9,7 +9,7 @@ resources:
   - ./authentik/ks.yaml
   - ./hoarder/ks.yaml
   - ./home-assistant/ks.yaml
-  # - ./immich/ks.yaml
+  - ./immich/ks.yaml
   - ./it-tools/ks.yaml
   - ./memos/ks.yaml
   - ./miniflux/ks.yaml
