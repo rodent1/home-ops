@@ -8,15 +8,13 @@ shopt: [globstar]
 vars:
   CLUSTER_DIR: "{{.ROOT_DIR}}/kubernetes"
   BOOTSTRAP_DIR: "{{.CLUSTER_DIR}}/bootstrap"
-  TALOS_DIR: "{{.CLUSTER_DIR}}/talos"
-  TALHELPER_CLUSTER_DIR: "{{.TALOS_DIR}}/clusterconfig"
-  TALHELPER_CONFIG_FILE: "{{.TALOS_DIR}}/talconfig.yaml"
-  TALHELPER_SECRET_FILE: "{{.TALOS_DIR}}/talsecret.sops.yaml"
+  TALHELPER_DIR: "{{.ROOT_DIR}}/kubernetes/talos"
+  TALOSCONFIG: "{{.TALHELPER_DIR}}/clusterconfig/talosconfig"
 
 env:
   KUBECONFIG: "{{.CLUSTER_DIR}}/kubeconfig"
   MINIJINJA_CONFIG_FILE: "{{.ROOT_DIR}}/.minijinja.toml"
-  TALOSCONFIG: "{{.TALOS_DIR}}/clusterconfig/talosconfig"
+  TALOSCONFIG: "{{.TALHELPER_DIR}}/clusterconfig/talosconfig"
 
 includes:
   bootstrap: .taskfiles/bootstrap
