@@ -23,10 +23,16 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    extraInitContainers:
+      - name: 01-init-db
+        image: ghcr.io/onedr0p/postgres-init:16.3@sha256:9c136223fb4e05b0ca24e2350c2dc45843110d0e1d09615c52c9a037628c09fa
+        envFrom:
+          - secretRef:
+              name: &secret grafana-admin-secret
     deploymentStrategy:
       type: Recreate
     admin:
-      existingSecret: grafana-admin-secret
+      existingSecret: *secret
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
@@ -43,6 +49,11 @@ spec:
         org_id: 1
         org_name: Main Org.
         org_role: Viewer
+      auth.generic_oauth:
+        enabled: true
+        name: OAuth
+        scopes: openid email profile offline_access
+        role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
       news:
         news_feed_enabled: false
     datasources:
