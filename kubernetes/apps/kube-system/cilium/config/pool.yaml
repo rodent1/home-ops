@@ -3,23 +3,8 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: main-pool
-spec:
-  allowFirstLastIPs: "No"
-  blocks:
-    - start: 10.1.1.200
-      stop: 10.1.1.254
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumloadbalancerippool_v2alpha1.json
-apiVersion: cilium.io/v2alpha1
-kind: CiliumLoadBalancerIPPool
-metadata:
-  name: network-pool
+  name: pool
 spec:
   allowFirstLastIPs: "Yes"
   blocks:
-    - start: 10.1.1.100
-      stop: 10.1.1.110
-  serviceSelector:
-    matchLabels:
-      "io.kubernetes.service.namespace": "network"
+    - cidr: 10.1.1.0/24
