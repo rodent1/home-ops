@@ -7,15 +7,13 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: stian.sporaland@pm.me
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
       - dns01:
           cloudflare:
-            email: stian.sporaland@pm.me
-            apiKeySecretRef:
+            apiTokenSecretRef:
               name: cloudflare-issuer-secret
-              key: CLOUDFLARE_API_KEY
+              key: CLOUDFLARE_DNS_TOKEN
         selector:
           dnsZones: ["rodent.cc"]
