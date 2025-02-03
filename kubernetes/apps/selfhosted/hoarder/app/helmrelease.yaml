@@ -44,6 +44,8 @@ spec:
               OAUTH_PROVIDER_NAME: Authentik
               DISABLE_PASSWORD_AUTH: true
               DISABLE_NEW_RELEASE_CHECK: true
+              # FIXME: Remove this when the following PR is merged and released https://github.com/hoarder-app/hoarder/pull/969/files
+              COREPACK_INTEGRITY_KEYS: 0
             envFrom: &envFrom
               - secretRef:
                   name: hoarder-secret
