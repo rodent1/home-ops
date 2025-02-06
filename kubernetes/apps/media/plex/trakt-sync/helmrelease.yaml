@@ -71,10 +71,13 @@ spec:
                 memory: 512M
     defaultPodOptions:
       securityContext:
+        runAsNonRoot: true
         runAsUser: 1000
-        runAsGroup: 100
-        fsGroup: 100
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44]
+        seccompProfile: { type: RuntimeDefault }
     persistence:
       config:
         enabled: true
