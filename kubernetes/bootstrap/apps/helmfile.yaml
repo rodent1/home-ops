@@ -15,34 +15,36 @@ repositories:
     url: https://charts.jetstack.io
 
 releases:
-  - name: kube-prometheus-stack-crds
-    namespace: observability
-    chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
-    version: 18.0.0
-
   - name: cilium
     namespace: kube-system
     chart: cilium/cilium
     version: 1.17.0
-    values: ["../../../kubernetes/apps/kube-system/cilium/app/helm-values.yaml"]
+    values:
+      [
+        '{{ requiredEnv "KUBERNETES_DIR" }}/apps/kube-system/cilium/app/helm-values.yaml',
+      ]
     hooks:
-      - events: ["postsync"]
-        command: kubectl
+      - events: ["presync"]
+        command: bash
         args:
-          - apply
-          - --namespace=kube-system
-          - --server-side
-          - --field-manager=kustomize-controller
-          - --kustomize
-          - ../../../kubernetes/apps/kube-system/cilium/config
-    needs: ["observability/kube-prometheus-stack-crds"]
+          [
+            '{{ requiredEnv "KUBERNETES_DIR" }}/bootstrap/apps/scripts/cilium-presync.sh',
+          ]
+      - events: ["postsync"]
+        command: bash
+        args:
+          [
+            '{{ requiredEnv "KUBERNETES_DIR" }}/bootstrap/apps/scripts/cilium-postsync.sh',
+          ]
 
   - name: coredns
     namespace: kube-system
     chart: oci://ghcr.io/coredns/charts/coredns
     version: 1.39.0
     values:
-      ["../../../kubernetes/apps/kube-system/coredns/app/helm-values.yaml"]
+      [
+        '{{ requiredEnv "KUBERNETES_DIR" }}/apps/kube-system/coredns/app/helm-values.yaml',
+      ]
     needs: ["kube-system/cilium"]
 
   - name: cert-manager
@@ -51,7 +53,7 @@ releases:
     version: v1.17.0
     values:
       [
-        "../../../kubernetes/apps/cert-manager/cert-manager/app/helm-values.yaml",
+        '{{ requiredEnv "KUBERNETES_DIR" }}/apps/cert-manager/cert-manager/app/helm-values.yaml',
       ]
     needs: ["kube-system/coredns"]
 
@@ -61,15 +63,18 @@ releases:
     version: 0.14.0
     values:
       [
-        "../../../kubernetes/apps/external-secrets/external-secrets/app/helm-values.yaml",
+        '{{ requiredEnv "KUBERNETES_DIR" }}/apps/external-secrets/external-secrets/app/helm-values.yaml',
       ]
     needs: ["cert-manager/cert-manager"]
 
   - name: wipe-rook
     namespace: kube-system
     chart: oci://ghcr.io/bjw-s/helm/app-template
-    version: 3.6.1
-    values: ["./templates/wipe-rook.yaml.gotmpl"]
+    version: 3.7.0
+    values:
+      [
+        '{{ requiredEnv "KUBERNETES_DIR" }}/bootstrap/apps/templates/wipe-rook.yaml.gotmpl',
+      ]
     needs: ["external-secrets/external-secrets"]
 
   - name: flux-operator
@@ -78,7 +83,7 @@ releases:
     version: 0.13.0
     values:
       [
-        "../../../kubernetes/apps/flux-system/flux-operator/app/helm-values.yaml",
+        '{{ requiredEnv "KUBERNETES_DIR" }}/apps/flux-system/flux-operator/app/helm-values.yaml',
       ]
     needs: ["kube-system/wipe-rook"]
 
@@ -89,6 +94,6 @@ releases:
     wait: false
     values:
       [
-        "../../../kubernetes/apps/flux-system/flux-operator/instance/helm-values.yaml",
+        '{{ requiredEnv "KUBERNETES_DIR" }}/apps/flux-system/flux-operator/instance/helm-values.yaml',
       ]
     needs: ["flux-system/flux-operator"]
