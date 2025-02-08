@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: neosmemo/memos
-              tag: 0.23.0-rc.1@sha256:6ffbc16cf74294fb815b19eec49ad64172b527ca22f3e92a85522b2b414dca40
+              tag: 0.24@sha256:4723d86e6797fd629f1f2ff7afd4e37e669df7318f00de31c7ff9acf1fe9db7f
             env:
               MEMOS_DATA: /config
               MEMOS_PORT: &port 80
