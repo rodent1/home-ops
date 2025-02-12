@@ -40,6 +40,9 @@ spec:
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
               CRAWLER_ENABLE_ADBLOCKER: true
               CRAWLER_STORE_SCREENSHOT: true
+              CRAWLER_FULL_PAGE_ARCHIVE: true
+              CRAWLER_FULL_PAGE_SCREENSHOT: true
+              CRAWLER_VIDEO_DOWNLOAD: true
               # OAuth setup
               OAUTH_PROVIDER_NAME: Authentik
               DISABLE_PASSWORD_AUTH: true
