@@ -29,7 +29,7 @@ spec:
       namespace: database
   values:
     controllers:
-      immich:
+      server:
         annotations:
           reloader.stakater.com/auto: "true"
         type: deployment
@@ -44,7 +44,7 @@ spec:
               - secretRef:
                   name: immich-secret
         containers:
-          server:
+          app:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.126.1@sha256:f8a3c78ec0a0ace20517acedaab9c2f3edcfc9b96e03080ba401acf55792470e
@@ -62,9 +62,13 @@ spec:
               requests:
                 cpu: 100m
               limits:
-                memory: 2Gi
+                memory: 1Gi
                 gpu.intel.com/i915: 1
-          machine-learning:
+      machine-learning:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.126.1@sha256:0989db1266d91e553375289571b989d49e10690d466802fcf23326f16b747d4c
@@ -78,7 +82,7 @@ spec:
               requests:
                 cpu: 100m
               limits:
-                memory: 2Gi
+                memory: 4Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -89,14 +93,14 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       server:
-        controller: immich
+        controller: server
         ports:
           http:
             port: &immichPort 2283
           metrics:
             port: 8081
       machine-learning:
-        controller: immich
+        controller: machine-learning
         ports:
           http:
             port: 3003
