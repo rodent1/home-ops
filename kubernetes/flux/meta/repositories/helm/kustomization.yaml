@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - ./actions-runner-controller.yaml
-  - ./angelnu.yaml
   - ./authentik.yaml
   - ./backube.yaml
   - ./bjw-s.yaml
@@ -14,15 +13,14 @@ resources:
   - ./controlplaneio.yaml
   - ./coredns.yaml
   - ./descheduler.yaml
+  - ./dragonfly.yaml
   - ./emqx.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
-  - ./fluxcd-community.yaml
   - ./grafana.yaml
   - ./ingress-nginx.yaml
   - ./intel.yaml
   - ./jetstack.yaml
-  - ./kyverno.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
   - ./openebs.yaml
