@@ -28,15 +28,6 @@ spec:
     - name: dragonfly-operator
       namespace: database
   values:
-    serviceMonitor:
-      immich:
-        serviceName: immich
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 30s
     controllers:
       immich:
         annotations:
@@ -59,11 +50,10 @@ spec:
               tag: v1.126.1@sha256:f8a3c78ec0a0ace20517acedaab9c2f3edcfc9b96e03080ba401acf55792470e
             envFrom: *envFrom
             env: &env
+              DB_VECTOR_EXTENSION: pgvector
               IMMICH_LOG_LEVEL: verbose
-              TZ: Europe/Oslo
-              # REDIS
-              # Requires the extraArg `--default_lua_flags=allow-undeclared-keys` to be set in the dragonfly helm chart
               REDIS_HOSTNAME: dragonfly.database.svc.cluster.local
+              TZ: Europe/Oslo
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -97,13 +87,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
     service:
       server:
         controller: immich
@@ -142,23 +125,9 @@ spec:
         globalMounts:
           - path: /usr/src/app/upload
             subPath: Immich
-      geocoding-dump:
+      cache:
         type: emptyDir
         advancedMounts:
-          immich:
-            main:
-              - path: /usr/src/app/.reverse-geocoding-dump
-      transformers-cache:
-        type: emptyDir
-        advancedMounts:
-          immich:
-            main:
-              - path: /usr/src/app/.transformers_cache
-      model-cache:
-        type: emptyDir
-        advancedMounts:
-          immich:
-            machine-learning:
+          machine-learning:
+            app:
               - path: /cache
-      tmp:
-        type: emptyDir
