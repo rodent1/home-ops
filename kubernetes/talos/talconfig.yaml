@@ -258,7 +258,7 @@ controlPlane:
             allowedRoles:
               - os:admin
             allowedKubernetesNamespaces:
-              - system-upgrade
+              - kube-system
               - actions-runner-system
 
     # Disable kexec on control-plane to fix networking issues with reboot: https://github.com/siderolabs/talos/issues/8751#issuecomment-2120141890
