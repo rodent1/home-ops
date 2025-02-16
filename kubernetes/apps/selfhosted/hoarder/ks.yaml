@@ -10,8 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../flux/components/gatus/external
-    - ../../../../flux/components/volsync/
+    - ../../../components/gatus/external
+    - ../../../components/volsync/
   interval: 30m
   path: ./kubernetes/apps/selfhosted/hoarder/app
   postBuild:
