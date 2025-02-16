@@ -5,16 +5,16 @@ version: "3"
 tasks:
   generate-config:
     desc: Generate Talos configuration
-    dir: "{{.TALHELPER_DIR}}"
+    dir: "{{.TALOS_DIR}}"
     cmd: talhelper genconfig
     preconditions:
-      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
+      - test -f {{.TALOS_DIR}}/talconfig.yaml
       - test -f {{.ROOT_DIR}}/.sops.yaml
       - which talhelper
 
   apply-node:
     desc: Apply Talos config to a node [IP=required]
-    dir: "{{.TALHELPER_DIR}}"
+    dir: "{{.TALOS_DIR}}"
     cmd: talhelper gencommand apply --node {{.IP}} --extra-flags '--mode={{.MODE}}' | bash
     vars:
       MODE: '{{.MODE | default "auto"}}'
@@ -28,15 +28,15 @@ tasks:
 
   upgrade-node:
     desc: Upgrade Talos on a single node [IP=required]
-    dir: "{{.TALHELPER_DIR}}"
+    dir: "{{.TALOS_DIR}}"
     cmd: talhelper gencommand upgrade --node {{.IP}} --extra-flags "--image='factory.talos.dev/installer{{if eq .TALOS_SECUREBOOT "true"}}-secureboot{{end}}/{{.TALOS_SCHEMATIC_ID}}:{{.TALOS_VERSION}}' --timeout=10m" | bash
     vars:
       TALOS_SCHEMATIC_ID:
-        sh: yq '.nodes[] | select(.ipAddress == "{{.IP}}") | .talosImageURL' {{.TALHELPER_DIR}}/talconfig.yaml | awk -F/ '{print $NF}'
+        sh: yq '.nodes[] | select(.ipAddress == "{{.IP}}") | .talosImageURL' {{.TALOS_DIR}}/talconfig.yaml | awk -F/ '{print $NF}'
       TALOS_SECUREBOOT:
-        sh: yq '.nodes[] | select(.ipAddress == "{{.IP}}") | .machineSpec.secureboot' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: yq '.nodes[] | select(.ipAddress == "{{.IP}}") | .machineSpec.secureboot' {{.TALOS_DIR}}/talconfig.yaml
       TALOS_VERSION:
-        sh: yq '.talosVersion' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: yq '.talosVersion' {{.TALOS_DIR}}/talconfig.yaml
     requires:
       vars: [IP]
     preconditions:
@@ -47,11 +47,11 @@ tasks:
 
   upgrade-k8s:
     desc: Upgrade Kubernetes
-    dir: "{{.TALHELPER_DIR}}"
+    dir: "{{.TALOS_DIR}}"
     cmd: talhelper gencommand upgrade-k8s --extra-flags "--to '{{.KUBERNETES_VERSION}}'" | bash
     vars:
       KUBERNETES_VERSION:
-        sh: yq '.kubernetesVersion' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: yq '.kubernetesVersion' {{.TALOS_DIR}}/talconfig.yaml
     preconditions:
       - talosctl config info
       - test -f {{.TALOSCONFIG}}
