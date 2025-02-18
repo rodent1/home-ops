@@ -16,3 +16,4 @@ resources:
   - ./memos/ks.yaml
   - ./miniflux/ks.yaml
   - ./paperless/ks.yaml
+  - ./wallos/ks.yaml
