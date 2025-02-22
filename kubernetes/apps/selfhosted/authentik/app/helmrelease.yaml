@@ -23,8 +23,6 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: cloudnative-pg
-      namespace: database
     - name: dragonfly-operator
       namespace: database
   values:
