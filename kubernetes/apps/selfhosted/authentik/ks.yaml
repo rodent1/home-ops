@@ -13,7 +13,7 @@ spec:
     - ../../../../components/gatus/external
   dependsOn:
     - name: cloudnative-pg-cluster
-      namespace: databases
+      namespace: database
     - name: dragonfly-cluster
       namespace: database
     - name: onepassword-store
