@@ -34,7 +34,7 @@ spec:
               tag: 2.6.6
             envFrom:
               - secretRef:
-                  name: paperless-ai
+                  name: paperless-ai-secret
             resources:
               requests:
                 cpu: 10m
