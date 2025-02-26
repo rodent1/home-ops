@@ -49,8 +49,6 @@ spec:
               DISABLE_NEW_RELEASE_CHECK: true
               # FIXME: Remove this when the following PR is merged and released https://github.com/hoarder-app/hoarder/pull/969/files
               COREPACK_INTEGRITY_KEYS: 0
-              # Meilesearch db fix
-              MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE: true
             envFrom: &envFrom
               - secretRef:
                   name: hoarder-secret
@@ -101,6 +99,7 @@ spec:
               tag: v1.13.1
             env:
               MEILI_NO_ANALYTICS: true
+              MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE: true
             envFrom: *envFrom
             resources:
               requests:
