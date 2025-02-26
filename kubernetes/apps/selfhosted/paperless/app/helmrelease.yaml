@@ -57,7 +57,7 @@ spec:
               PAPERLESS_OCR_LANGUAGES: nor
               PAPERLESS_OCR_LANGUAGE: nor
               # Configure redis integration
-              PAPERLESS_REDIS: redis://dragonfly.database.svc.cluster.local:6379
+              PAPERLESS_REDIS: redis://paperless-redis.selfhosted.svc.cluster.local:6379
               # Configure admin user
               PAPERLESS_ADMIN_USER:
                 valueFrom:
@@ -94,13 +94,29 @@ spec:
                 cpu: 25m
               limits:
                 memory: 2Gi
-
+      redis:
+        containers:
+          redis:
+            image:
+              repository: docker.io/valkey/valkey
+              tag: 8.0.2
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
     service:
       app:
         controller: paperless
         ports:
           http:
             port: 8000
+      redis:
+        controller: redis
+        ports:
+          http:
+            port: 6379
 
     ingress:
       app:
