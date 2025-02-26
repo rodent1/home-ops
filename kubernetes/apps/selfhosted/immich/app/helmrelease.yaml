@@ -46,8 +46,8 @@ spec:
             envFrom: *envFrom
             env: &env
               DB_VECTOR_EXTENSION: pgvector
-              IMMICH_LOG_LEVEL: verbose
-              REDIS_HOSTNAME: dragonfly.database.svc.cluster.local
+              IMMICH_LOG_LEVEL: debug
+              REDIS_HOSTNAME: immich-redis.selfhosted.svc.cluster.local
               TZ: Europe/Oslo
             securityContext:
               allowPrivilegeEscalation: false
@@ -74,6 +74,18 @@ spec:
                 cpu: 100m
               limits:
                 memory: 4Gi
+      redis:
+        containers:
+          redis:
+            image:
+              repository: docker.io/valkey/valkey
+              tag: 8.0.2
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -94,6 +106,11 @@ spec:
         ports:
           http:
             port: 3003
+      redis:
+        controller: redis
+        ports:
+          http:
+            port: 6379
     ingress:
       main:
         enabled: true
