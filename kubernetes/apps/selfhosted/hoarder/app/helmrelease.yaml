@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     controllers:
-      server:
+      hoarder:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -92,19 +92,35 @@ spec:
       meilisearch:
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - hoarder
+                      - key: app.kubernetes.io/component
+                        operator: In
+                        values:
+                          - hoarder
+                  topologyKey: kubernetes.io/hostname
         containers:
           app:
             image:
               repository: docker.io/getmeili/meilisearch
-              tag: v1.13.0
+              tag: v1.13.1
             env:
               MEILI_NO_ANALYTICS: true
+              MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE: true
             envFrom: *envFrom
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 2Gi
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsUser: 1000
@@ -112,7 +128,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      server:
+      hoarder:
         controller: server
         ports:
           http:
@@ -141,7 +157,7 @@ spec:
       config:
         existingClaim: hoarder
         advancedMounts:
-          server:
+          hoarder:
             app:
               - path: /data
                 subPath: hoarder
