@@ -96,10 +96,9 @@ spec:
           app:
             image:
               repository: docker.io/getmeili/meilisearch
-              tag: v1.13.1
+              tag: v1.13.0
             env:
               MEILI_NO_ANALYTICS: true
-              MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE: true
             envFrom: *envFrom
             resources:
               requests:
