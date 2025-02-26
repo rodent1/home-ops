@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     controllers:
-      server:
+      hoarder:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -49,8 +49,6 @@ spec:
               DISABLE_NEW_RELEASE_CHECK: true
               # FIXME: Remove this when the following PR is merged and released https://github.com/hoarder-app/hoarder/pull/969/files
               COREPACK_INTEGRITY_KEYS: 0
-              # Meilesearch db fix
-              MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE: true
             envFrom: &envFrom
               - secretRef:
                   name: hoarder-secret
@@ -59,6 +57,18 @@ spec:
                 enabled: true
               readiness:
                 enabled: true
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+          meilisearch:
+            image:
+              repository: docker.io/getmeili/meilisearch
+              tag: v1.13.0
+            env:
+              MEILI_NO_ANALYTICS: true
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 10m
@@ -91,22 +101,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-      meilisearch:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
-            image:
-              repository: docker.io/getmeili/meilisearch
-              tag: v1.13.1
-            env:
-              MEILI_NO_ANALYTICS: true
-            envFrom: *envFrom
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 2Gi
     defaultPodOptions:
       securityContext:
         runAsUser: 1000
@@ -114,8 +108,8 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      server:
-        controller: server
+      app:
+        controller: hoarder
         ports:
           http:
             port: 3000
@@ -125,7 +119,7 @@ spec:
           http:
             port: 9222
       meilisearch:
-        controller: meilisearch
+        controller: hoarder
         ports:
           http:
             port: 7700
@@ -137,17 +131,16 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: server
+                  identifier: app
                   port: http
     persistence:
       config:
         existingClaim: hoarder
         advancedMounts:
-          server:
+          hoarder:
             app:
               - path: /data
                 subPath: hoarder
-          meilisearch:
-            app:
+            meilisearch:
               - path: /meili_data
                 subPath: meilisearch
