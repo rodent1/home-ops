@@ -136,9 +136,14 @@ spec:
         globalMounts:
           - path: /usr/src/app/upload
             subPath: Immich
-      cache:
+      tmp:
         type: emptyDir
         advancedMounts:
           machine-learning:
             app:
               - path: /cache
+                subPath: machine-learning
+          redis:
+            redis:
+              - path: /data
+                subPath: redis
