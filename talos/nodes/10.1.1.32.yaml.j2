@@ -1,0 +1,9 @@
+machine:
+  network:
+    hostname: node-2
+  disks:
+    - device: /dev/disk/by-id/ata-SanDisk_SD9TB8W512G1122_185119800091
+      partitions:
+        - mountpoint: /var/mnt/extra
+  install:
+    image: factory.talos.dev/installer/74a9984df01c8501946cef09b2007f32da73976f9927d1f8bfc728e21033810e:{{ ENV.TALOS_VERSION }}

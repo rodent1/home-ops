@@ -1,11 +1,6 @@
-/.bin/
-/.go/
 /.private/
 /.task/
-/.venv/
-/scripts/
-*.secret.env
-*.secret.yaml
+*.crt
 *.key
 .decrypted~*
 .DS_Store
