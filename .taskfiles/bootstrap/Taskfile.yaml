@@ -3,37 +3,16 @@
 version: "3"
 
 tasks:
-  talos:
-    desc: Bootstrap the Talos cluster
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - "[ -f talsecret.sops.yaml ] || talhelper gensecret | sops --filename-override talos/talsecret.sops.yaml --encrypt /dev/stdin > talsecret.sops.yaml"
-      - talhelper genconfig
-      - talhelper gencommand apply --extra-flags="--insecure" | bash
-      - until talhelper gencommand bootstrap | bash; do sleep 10; done
-      - until talhelper gencommand kubeconfig --extra-flags="{{.ROOT_DIR}} --force" | bash; do sleep 10; done
-    preconditions:
-      - test -f {{.ROOT_DIR}}/.sops.yaml
-      - test -f {{.SOPS_AGE_KEY_FILE}}
-      - test -f {{.TALOS_DIR}}/talconfig.yaml
-      - which talhelper sops
-
-  apps:
-    desc: Bootstrap Apps [ROOK_DISK=required]
+  default:
+    desc: Bootstrap Talos nodes and Cluster apps [ROOK_DISK=required]
     summary: |
       IMPORTANT: ROOK_DISK must be set to the disk model used across all the nodes (e.g. Micron_7450_MTFDKBA800TFS)
-    prompt: Bootstrap apps into the Talos cluster?
-    cmds:
-      - bash {{.BOOTSTRAP_DIR}}/resources/prepare.sh
-      - helmfile --file {{.BOOTSTRAP_DIR}}/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+    cmd: bash {{.SCRIPTS_DIR}}/bootstrap-cluster.sh
     env:
       ROOK_DISK: "{{.ROOK_DISK}}"
     requires:
       vars: [ROOK_DISK]
     preconditions:
-      - op user get --me
       - talosctl config info
-      - test -f {{.TALOS_DIR}}/clusterconfig/talosconfig
-      - test -f {{.BOOTSTRAP_DIR}}/helmfile.yaml
-      - test -f {{.BOOTSTRAP_DIR}}/resources/prepare.sh
-      - which helmfile op talosctl
+      - test -f {{.ROOT_DIR}}/talosconfig
+      - test -f {{.SCRIPTS_DIR}}/bootstrap-cluster.sh

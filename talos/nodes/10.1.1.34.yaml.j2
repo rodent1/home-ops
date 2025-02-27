@@ -1,0 +1,9 @@
+machine:
+  network:
+    hostname: node-4
+  disks:
+    - device: /dev/disk/by-id/ata-KINGSTON_SA400S37960G_50026B7381DC412E
+      partitions:
+        - mountpoint: /var/mnt/extra
+  install:
+    image: factory.talos.dev/installer/6d77b92427e3eb978dee503b8266533b7b2c75a891ef3ffd66fee032f705683c:{{ ENV.TALOS_VERSION }}

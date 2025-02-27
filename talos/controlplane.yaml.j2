@@ -1,0 +1,180 @@
+version: v1alpha1
+debug: false
+persist: true
+machine:
+  type: controlplane
+  token: op://home-ops/talos/MACHINE_TOKEN
+  ca:
+    crt: op://home-ops/talos/MACHINE_CA_CRT
+    key: op://home-ops/talos/MACHINE_CA_KEY
+  certSANs: ["127.0.0.1", "10.1.1.30"]
+  kubelet:
+    image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
+    extraMounts:
+      - destination: /var/mnt/extra
+        type: bind
+        source: /var/mnt/extra
+        options: ["bind", "rshared", "rw"]
+    defaultRuntimeSeccompProfileEnabled: true
+    nodeIP:
+      validSubnets: ["10.1.1.0/24"]
+    disableManifestsDirectory: true
+  network:
+    interfaces:
+      - interface: eth0
+        mtu: 9000
+        dhcp: true
+        vip:
+          ip: 10.1.1.30
+  install:
+    diskSelector:
+      model: SandDisk*
+    extraKernelArgs:
+      - net.ifnames=0                       # eth0
+      - apparmor=0                          # Less security, faster puter
+      - init_on_alloc=0                     # Less security, faster puter
+      - init_on_free=0                      # Less security, faster puter
+      - intel_iommu=on                      # PCI Passthrough
+      - iommu=pt                            # PCI Passthrough
+      - mitigations=off                     # Less security, faster puter
+      - security=none                       # Less security, faster puter
+      - talos.auditd.disabled=1             # Less security, faster puter
+    wipe: false
+  files:
+    - # Spegel
+      op: create
+      path: /etc/cri/conf.d/20-customization.part
+      content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+    - op: overwrite
+      path: /etc/nfsmount.conf
+      permissions: 420
+      content: |
+        [ NFSMount_Global_Options ]
+        nfsvers=4.2
+        hard=True
+        nconnect=16
+        noatime=True
+  sysctls:
+    fs.inotify.max_user_watches: 1048576   # Watchdog
+    fs.inotify.max_user_instances: 8192    # Watchdog
+    net.core.default_qdisc: fq             # 10Gb/s
+    net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.ipv4.tcp_congestion_control: bbr   # 10Gb/s
+    net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
+    net.ipv4.tcp_mtu_probing: 1            # 10Gb/s | Jumbo frames
+    net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
+    net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
+    net.ipv4.tcp_window_scaling: 1         # 10Gb/s
+    vm.nr_hugepages: 1024                  # PostgreSQL
+  features:
+    rbac: true
+    stableHostname: true
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles: ["os:admin"]
+      allowedKubernetesNamespaces: ["actions-runner-system", "kube-system"]
+    apidCheckExtKeyUsage: true
+    diskQuotaSupport: true
+    kubePrism:
+      enabled: true
+      port: 7445
+    hostDNS:
+      enabled: true
+      resolveMemberNames: true
+      forwardKubeDNSToHost: false
+  udev:
+    rules:
+      - # Intel GPU
+        SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+      - # Eaton UPS
+        SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", GROUP="20", MODE="0660"
+  kernel:
+    modules:
+      - name: nbd
+  nodeLabels:
+    topology.kubernetes.io/region: main
+    topology.kubernetes.io/zone: m
+cluster:
+  id: op://home-ops/talos/CLUSTER_ID
+  secret: op://home-ops/talos/CLUSTER_SECRET
+  controlPlane:
+    endpoint: https://10.1.1.30:6443
+  clusterName: main
+  network:
+    cni:
+      name: none
+    dnsDomain: cluster.local
+    podSubnets: ["10.42.0.0/16"]
+    serviceSubnets: ["10.43.0.0/16"]
+  coreDNS:
+    disabled: true
+  extraManifests:
+    {% for crd in [
+        "alertmanagerconfigs", "alertmanagers", "podmonitors", "probes", "prometheusagents",
+        "prometheuses", "prometheusrules", "scrapeconfigs", "servicemonitors", "thanosrulers"
+    ] %}
+    - # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
+      https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.80.1/example/prometheus-operator-crd/monitoring.coreos.com_{{ crd }}.yaml
+    {% endfor %}
+  token: op://home-ops/talos/CLUSTER_TOKEN
+  secretboxEncryptionSecret: op://home-ops/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
+  ca:
+    crt: op://home-ops/talos/CLUSTER_CA_CRT
+    key: op://home-ops/talos/CLUSTER_CA_KEY
+  aggregatorCA:
+    crt: op://home-ops/talos/CLUSTER_AGGREGATORCA_CRT
+    key: op://home-ops/talos/CLUSTER_AGGREGATORCA_KEY
+  serviceAccount:
+    key: op://home-ops/talos/CLUSTER_SERVICEACCOUNT_KEY
+  apiServer:
+    image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
+    extraArgs:
+      enable-aggregator-routing: true
+      feature-gates: MutatingAdmissionPolicy=true
+      runtime-config: admissionregistration.k8s.io/v1alpha1=true
+    certSANs: ["127.0.0.1", "10.1.1.30"]
+    disablePodSecurityPolicy: true
+    auditPolicy:
+      apiVersion: audit.k8s.io/v1
+      kind: Policy
+      rules:
+        - level: Metadata
+  controllerManager:
+    image: registry.k8s.io/kube-controller-manager:{{ ENV.KUBERNETES_VERSION }}
+    extraArgs:
+      bind-address: 0.0.0.0
+  proxy:
+    disabled: true
+    image: registry.k8s.io/kube-proxy:{{ ENV.KUBERNETES_VERSION }}
+  scheduler:
+    image: registry.k8s.io/kube-scheduler:{{ ENV.KUBERNETES_VERSION }}
+    extraArgs:
+      bind-address: 0.0.0.0
+    config:
+      apiVersion: kubescheduler.config.k8s.io/v1
+      kind: KubeSchedulerConfiguration
+      profiles:
+        - schedulerName: default-scheduler
+          plugins:
+            score:
+              disabled:
+                - name: ImageLocality
+          pluginConfig:
+            - name: PodTopologySpread
+              args:
+                defaultingType: List
+                defaultConstraints:
+                  - maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: ScheduleAnyway
+  etcd:
+    ca:
+      crt: op://home-ops/talos/CLUSTER_ETCD_CA_CRT
+      key: op://home-ops/talos/CLUSTER_ETCD_CA_KEY
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+    advertisedSubnets: ["192.168.42.0/24"]
+  allowSchedulingOnControlPlanes: true
