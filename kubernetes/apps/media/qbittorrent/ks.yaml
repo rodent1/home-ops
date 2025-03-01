@@ -13,13 +13,13 @@ spec:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/media/qbittorrent/app
   postBuild:
     substitute:
@@ -27,6 +27,7 @@ spec:
       GATUS_SUBDOMAIN: qb
       VOLSYNC_CAPACITY: 2Gi
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -50,11 +51,12 @@ spec:
     secretRef:
       name: sops-age
   dependsOn:
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/media/qbittorrent/tools
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

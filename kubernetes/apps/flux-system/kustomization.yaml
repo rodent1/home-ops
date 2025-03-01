@@ -7,4 +7,5 @@ components:
   - ../../components/common
 resources:
   - ./capacitor/ks.yaml
+  - ./flux-instance/ks.yaml
   - ./flux-operator/ks.yaml

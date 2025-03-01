@@ -12,17 +12,18 @@ spec:
   components:
     - ../../../../components/gatus/guarded
   dependsOn:
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   postBuild:
     substitute:
       APP: kube-prometheus-stack
       GATUS_SUBDOMAIN: prometheus
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

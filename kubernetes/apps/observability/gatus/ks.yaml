@@ -10,17 +10,18 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/observability/gatus/app
   postBuild:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: status
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

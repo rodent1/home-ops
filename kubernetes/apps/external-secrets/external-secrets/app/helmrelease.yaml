@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: external-secrets
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: external-secrets
@@ -24,4 +24,4 @@ spec:
       retries: 3
   valuesFrom:
     - kind: ConfigMap
-      name: external-secrets-helm-values
+      name: external-secrets-values

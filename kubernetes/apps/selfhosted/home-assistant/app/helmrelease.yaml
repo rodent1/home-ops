@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: home-assistant
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: app-template
@@ -41,7 +41,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
@@ -51,18 +51,7 @@ spec:
             image:
               repository: ghcr.io/coder/code-server
               tag: 4.97.2@sha256:6ff0e9cf5a553b3961ece200be75e21e8c887ed0ae28a7c28213722dccf74b0c
-            args:
-              [
-                "--auth",
-                "none",
-                "--user-data-dir",
-                "/config/.vscode",
-                "--extensions-dir",
-                "/config/.vscode",
-                "--port",
-                "12321",
-                "/config",
-              ]
+            args: ["--auth", "none", "--user-data-dir", "/config/.vscode", "--extensions-dir", "/config/.vscode", "--port", "12321", "/config"]
             resources:
               requests:
                 cpu: 10m

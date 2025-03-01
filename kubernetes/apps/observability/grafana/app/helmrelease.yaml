@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: grafana
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: grafana
@@ -66,9 +66,9 @@ spec:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
-          - { name: Alertmanager, orgId: 1 }
-          - { name: Loki, orgId: 1 }
-          - { name: Prometheus, orgId: 1 }
+          - {name: Alertmanager, orgId: 1}
+          - {name: Loki, orgId: 1}
+          - {name: Prometheus, orgId: 1}
         datasources:
           - name: Prometheus
             type: prometheus
@@ -129,7 +129,7 @@ spec:
           gnetId: 17457
           revision: 6
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
+            - {name: DS_PROMETHEUS, value: Prometheus}
         dragonfly:
           url: https://raw.githubusercontent.com/dragonflydb/dragonfly/refs/heads/main/tools/local/monitoring/grafana/provisioning/dashboards/dragonfly.json
           datasource: Prometheus
@@ -138,7 +138,7 @@ spec:
           gnetId: 19308
           revision: 3
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
+            - {name: DS_PROMETHEUS, value: Prometheus}
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
@@ -215,7 +215,7 @@ spec:
           gnetId: 22604
           revision: 2
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
+            - {name: DS_PROMETHEUS, value: Prometheus}
         unifi-insights:
           # renovate: depName="UniFi-Poller: Client Insights - Prometheus"
           gnetId: 11315
@@ -241,14 +241,14 @@ spec:
           gnetId: 18817
           revision: 1
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
+            - {name: DS_PROMETHEUS, value: Prometheus}
         volsync:
           # renovate: depName="VolSync Dashboard"
           gnetId: 21356
           revision: 3
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
-            - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
+            - {name: DS_PROMETHEUS, value: Prometheus}
+            - {name: VAR_REPLICATIONDESTNAME, value: .*-dst}
         zfs:
           # renovate: depName="ZFS"
           gnetId: 7845

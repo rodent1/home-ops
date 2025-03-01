@@ -15,19 +15,20 @@ spec:
   dependsOn:
     - name: dragonfly-cluster
       namespace: database
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/selfhosted/paperless/app
   postBuild:
     substitute:
       APP: *appname
       VOLSYNC_CAPACITY: 25Gi
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

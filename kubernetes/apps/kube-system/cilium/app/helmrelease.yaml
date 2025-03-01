@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: cilium
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: cilium
@@ -24,35 +24,7 @@ spec:
       retries: 3
   valuesFrom:
     - kind: ConfigMap
-      name: cilium-helm-values
+      name: cilium-values
   values:
     operator:
       tolerations: []
-    hubble:
-      enabled: true
-      metrics:
-        enabled:
-          - dns:query
-          - drop
-          - tcp
-          - flow
-          - port-distribution
-          - icmp
-          - http
-        serviceMonitor:
-          enabled: true
-        dashboards:
-          enabled: true
-      relay:
-        enabled: true
-        rollOutPods: true
-        prometheus:
-          serviceMonitor:
-            enabled: true
-      ui:
-        enabled: true
-        rollOutPods: true
-        ingress:
-          enabled: true
-          className: internal
-          hosts: ["hubble.rodent.cc"]

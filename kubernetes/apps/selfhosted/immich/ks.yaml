@@ -16,15 +16,16 @@ spec:
       namespace: database
     - name: dragonfly-cluster
       namespace: database
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/selfhosted/immich/app
   postBuild:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: photos
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -14,14 +14,15 @@ spec:
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: database
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/selfhosted/miniflux/app
   postBuild:
     substitute:
       APP: *app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
