@@ -2,11 +2,11 @@ version: v1alpha1
 debug: false
 persist: true
 machine:
-  type: controlplane
+  type: worker
   token: op://home-ops/talos/MACHINE_TOKEN
   ca:
     crt: op://home-ops/talos/MACHINE_CA_CRT
-    key: op://home-ops/talos/MACHINE_CA_KEY
+    key: ""
   certSANs: ["127.0.0.1", "10.1.1.30"]
   kubelet:
     image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
@@ -24,8 +24,6 @@ machine:
       - interface: eth0
         mtu: 9000
         dhcp: true
-        vip:
-          ip: 10.1.1.30
   install:
     diskSelector:
       model: KINGSTON SA400S3
@@ -104,7 +102,6 @@ cluster:
     podSubnets: ["10.42.0.0/16"]
     serviceSubnets: ["10.43.0.0/16"]
   token: op://home-ops/talos/CLUSTER_TOKEN
-  secretboxEncryptionSecret: op://home-ops/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   ca:
     crt: op://home-ops/talos/CLUSTER_CA_CRT
-    key: op://home-ops/talos/CLUSTER_CA_KEY
+    key: ""
