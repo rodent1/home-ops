@@ -14,13 +14,14 @@ spec:
   dependsOn:
     - name: volsync
       namespace: volsync-system
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/media/jellyfin/app
   postBuild:
     substitute:
       APP: *app
       GATUS_PATH: /web/index.html
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

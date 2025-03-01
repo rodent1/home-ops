@@ -19,7 +19,7 @@ spec:
       namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/media/qbittorrent/app
   postBuild:
     substitute:
@@ -27,6 +27,7 @@ spec:
       GATUS_SUBDOMAIN: qb
       VOLSYNC_CAPACITY: 2Gi
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -52,9 +53,10 @@ spec:
   dependsOn:
     - name: onepassword
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/media/qbittorrent/tools
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

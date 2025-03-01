@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app paperless
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: app-template
@@ -117,7 +117,6 @@ spec:
         ports:
           http:
             port: 6379
-
     ingress:
       app:
         enabled: true
@@ -132,7 +131,6 @@ spec:
         tls:
           - hosts:
               - *host
-
     persistence:
       data:
         enabled: true

@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: kube-prometheus-stack
@@ -61,7 +61,7 @@ spec:
         selector:
           k8s-app: kube-controller-manager
     kubeEtcd:
-      <<: *kubeControllerManager # etcd runs on control plane nodes
+      !!merge <<: *kubeControllerManager # etcd runs on control plane nodes
     kubeProxy:
       enabled: false
     prometheus:

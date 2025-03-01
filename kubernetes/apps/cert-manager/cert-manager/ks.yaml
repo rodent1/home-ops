@@ -14,12 +14,13 @@ spec:
       namespace: external-secrets
   healthCheckExprs:
     - apiVersion: cert-manager.io/v1
-      kind: ClusterIssuer
-      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
-  interval: 30m
+      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
+      kind: ClusterIssuer
+  interval: 1h
   path: ./kubernetes/apps/cert-manager/cert-manager/app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -45,12 +46,13 @@ spec:
       namespace: external-secrets
   healthCheckExprs:
     - apiVersion: cert-manager.io/v1
-      kind: Certificate
-      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
-  interval: 30m
+      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
+      kind: Certificate
+  interval: 1h
   path: ./kubernetes/apps/cert-manager/cert-manager/tls
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

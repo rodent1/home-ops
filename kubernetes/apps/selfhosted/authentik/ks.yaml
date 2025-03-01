@@ -18,13 +18,14 @@ spec:
       namespace: database
     - name: onepassword
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/selfhosted/authentik/app
   postBuild:
     substitute:
       APP: authentik
       GATUS_SUBDOMAIN: auth
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
