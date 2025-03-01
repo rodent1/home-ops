@@ -12,6 +12,13 @@ spec:
   components:
     - ../../../../components/gatus/external
     - ../../../../components/volsync/
+  dependsOn:
+    - name: onepassword
+      namespace: external-secrets
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/selfhosted/hoarder/app
   postBuild:
