@@ -27,8 +27,6 @@ machine:
         vip:
           ip: 10.1.1.30
   install:
-    diskSelector:
-      model: SanDisk SD9TB8*
     extraKernelArgs:
       - net.ifnames=0                       # eth0
       - apparmor=0                          # Less security, faster puter
@@ -176,5 +174,5 @@ cluster:
       key: op://home-ops/talos/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
-    advertisedSubnets: ["192.168.42.0/24"]
+    advertisedSubnets: ["10.1.1.0/24"]
   allowSchedulingOnControlPlanes: true

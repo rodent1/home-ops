@@ -25,8 +25,6 @@ machine:
         mtu: 9000
         dhcp: true
   install:
-    diskSelector:
-      model: KINGSTON SA400S3
     extraKernelArgs:
       - net.ifnames=0                       # eth0
       - apparmor=0                          # Less security, faster puter

@@ -35,6 +35,16 @@ function apply_talos_config() {
         for node in ${nodes}; do
             log debug "Applying Talos node configuration" "node=${node}"
 
+            if [[ ${file} == "${talos_controlplane_file}" ]] && grep -q "type: worker" "${ROOT_DIR}/talos/nodes/${node}.yaml.j2"; then
+                log debug "Skipping controlplane configuration for worker node" "node=${node}"
+                continue
+            fi
+
+            if [[ ${file} == "${talos_worker_file}" ]] && grep -q "type: controlplane" "${ROOT_DIR}/talos/nodes/${node}.yaml.j2"; then
+                log debug "Skipping worker configuration for controlplane node" "node=${node}"
+                continue
+            fi
+
             if ! machine_config=$(bash "${ROOT_DIR}/scripts/render-machine-config.sh" "${file}" "${ROOT_DIR}/talos/nodes/${node}.yaml.j2") || [[ -z "${machine_config}" ]]; then
                 exit 1
             fi
@@ -155,7 +165,7 @@ function wipe_rook_disks() {
     # Wipe disks on each node that match the ROOK_DISK environment variable
     for node in ${nodes}; do
         if ! disks=$(talosctl --nodes "${node}" get disk --output json 2>/dev/null \
-            | jq --exit-status --raw-output --slurp '. | map(select(.spec.model == env.ROOK_DISK) | .metadata.id) | join(" ")') || [[ -z "${nodes}" ]];
+            | jq --exit-status --raw-output --slurp '. | map(select(.spec.dev_path == env.ROOK_DISK) | .metadata.id) | join(" ")') || [[ -z "${nodes}" ]];
         then
             log error "No disks found" "node=${node}" "model=${ROOK_DISK}"
         fi
