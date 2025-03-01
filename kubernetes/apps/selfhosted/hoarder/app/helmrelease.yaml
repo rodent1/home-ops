@@ -62,19 +62,42 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-          meilisearch:
+      meilisearch:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - hoarder
+                      - key: app.kubernetes.io/component
+                        operator: In
+                        values:
+                          - hoarder
+                  topologyKey: kubernetes.io/hostname
+        containers:
+          app:
             image:
               repository: docker.io/getmeili/meilisearch
               tag: v1.13.2
             env:
               MEILI_NO_ANALYTICS: true
               MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE: true
-            envFrom: *envFrom
+              MEILI_MASTER_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: hoarder-secret
+                    key: MEILI_MASTER_KEY
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 4Gi
       chrome:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -120,7 +143,7 @@ spec:
           http:
             port: 9222
       meilisearch:
-        controller: hoarder
+        controller: meilisearch
         ports:
           http:
             port: 7700
@@ -135,13 +158,14 @@ spec:
                   identifier: app
                   port: http
     persistence:
-      config:
+      data:
         existingClaim: hoarder
         advancedMounts:
           hoarder:
             app:
               - path: /data
                 subPath: hoarder
-            meilisearch:
+          meilisearch:
+            app:
               - path: /meili_data
                 subPath: meilisearch
