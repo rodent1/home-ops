@@ -1,8 +1,13 @@
 [env]
-_.file = '{{config_root}}/.talos.env'
+# File paths
+KUBECONFIG = '{{config_root}}/kubeconfig'
+MINIJINJA_CONFIG_FILE = '{{config_root}}/.minijinja.toml'
+TALOSCONFIG = '{{config_root}}/talosconfig'
+# Directory paths
+ROOT_DIR = '{{config_root}}'
 BOOTSTRAP_DIR = '{{config_root}}/bootstrap'
 KUBERNETES_DIR = '{{config_root}}/kubernetes'
+SCRIPTS_DIR = '{{config_root}}/scripts'
 TALOS_DIR = '{{config_root}}/talos'
-KUBECONFIG = '{{config_root}}/kubeconfig'
-TALOSCONFIG = '{{config_root}}/talos/clusterconfig/talosconfig'
-MINIJINJA_CONFIG_FILE = '{{config_root}}/.minijinja.toml'
+# Included file paths
+_.file = ['{{env.KUBERNETES_DIR}}/apps/system-upgrade/.env']
