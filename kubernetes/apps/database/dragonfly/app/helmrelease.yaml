@@ -15,7 +15,7 @@ spec:
         namespace: flux-system
   install:
     crds: CreateReplace
-  interval: 30m
+  interval: 1h
   maxHistory: 3
   upgrade:
     crds: CreateReplace

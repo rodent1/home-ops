@@ -14,16 +14,8 @@
       sourceUrl: "https://github.com/meilisearch/meilisearch",
     },
     {
-      matchPackagePatterns: ["kyverno"],
-      sourceUrl: "https://github.com/kyverno/kyverno",
-    },
-    {
       matchPackagePatterns: ["immich"],
       sourceUrl: "https://github.com/immich-app/immich",
-    },
-    {
-      matchPackagePatterns: ["pinepods"],
-      sourceUrl: "https://github.com/madeofpendletonwool/PinePods",
     },
     {
       matchPackagePatterns: ["restic"],
@@ -32,10 +24,6 @@
     {
       matchPackagePatterns: ["system-upgrade-controller"],
       sourceUrl: "https://github.com/rancher/system-upgrade-controller",
-    },
-    {
-      matchPackagePatterns: ["vikunja"],
-      sourceUrl: "https://github.com/go-vikunja/vikunja",
     },
   ],
 }

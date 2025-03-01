@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app capacitor
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: app-template
@@ -41,7 +41,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
     serviceAccount:
       create: true
       name: *app

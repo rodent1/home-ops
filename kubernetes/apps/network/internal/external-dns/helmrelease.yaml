@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app internal-external-dns
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: external-dns
@@ -39,8 +39,8 @@ spec:
               secretKeyRef:
                 name: &secret internal-external-dns-secret
                 key: UNIFI_API_KEY
-          # - name: LOG_LEVEL
-          #   value: "debug"
+                # - name: LOG_LEVEL
+                #   value: "debug"
         livenessProbe:
           httpGet:
             path: /healthz
