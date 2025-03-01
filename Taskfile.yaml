@@ -12,7 +12,7 @@ vars:
   TALOS_DIR: "{{.ROOT_DIR}}/talos"
 
 dotenv:
-  - "{{.ROOT_DIR}}/.env"
+  - "{{.KUBERNETES_DIR}}/apps/system-upgrade/.env"
 
 env:
   KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"

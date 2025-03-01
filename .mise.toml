@@ -10,4 +10,4 @@ KUBERNETES_DIR = '{{config_root}}/kubernetes'
 SCRIPTS_DIR = '{{config_root}}/scripts'
 TALOS_DIR = '{{config_root}}/talos'
 # Included file paths
-_.file = '{{config_root}}/.env'
+_.file = ['{{env.KUBERNETES_DIR}}/apps/system-upgrade/.env']
