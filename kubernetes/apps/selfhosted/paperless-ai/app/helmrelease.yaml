@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: docker.io/clusterzx/paperless-ai
-              tag: 2.6.7
+              tag: 2.7.1
             envFrom:
               - secretRef:
                   name: paperless-ai-secret
