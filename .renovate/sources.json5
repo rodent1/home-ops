@@ -2,8 +2,15 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
+      matchPackagePatterns: ["actualbudget"],
+      sourceUrl: "https://github.com/actualbudget/actual",
+    {
       matchPackagePatterns: ["audiobookshelf"],
       sourceUrl: "https://github.com/advplyr/audiobookshelf",
+    },
+    {
+      matchPackagePatterns: ["dragonfly-operator"],
+      sourceUrl: "https://github.com/dragonflydb/dragonfly-operator",
     },
     {
       matchPackagePatterns: ["twin/gatus"],
