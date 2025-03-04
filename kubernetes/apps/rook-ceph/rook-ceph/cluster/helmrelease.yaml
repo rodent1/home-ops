@@ -44,6 +44,7 @@ spec:
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
+          bdev_async_discard_threads: "1" # quote
           osd_class_update_on_start: "false" # quote
           device_failure_prediction_mode: local # requires mgr module
         mgr:
@@ -78,16 +79,6 @@ spec:
         devicePathFilter: /dev/disk/by-id/nvme-*
         config:
           osdsPerDevice: "1"
-      resources:
-        mgr:
-          requests:
-            cpu: 100m
-        mon:
-          requests:
-            cpu: 100m
-        osd:
-          requests:
-            cpu: 500m
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -120,6 +111,8 @@ spec:
       name: csi-ceph-blockpool
       isDefault: false
       deletionPolicy: Delete
+    # NOTE: After disabling the filesystem, the filesystem can be removed with the following commands:
+    # ceph fs fail ceph-filesystem && ceph fs rm ceph-filesystem --yes-i-really-mean-it
     cephFileSystems: []
     #   - name: &cephFileSystemName ceph-filesystem
     #     spec:
