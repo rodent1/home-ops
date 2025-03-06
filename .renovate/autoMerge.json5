@@ -7,7 +7,7 @@
       automerge: true,
       automergeType: "branch",
       matchUpdateTypes: ["digest"],
-      matchPackagePatterns: ["ghcr.io/bjw-s", "ghcr.io/onedr0p"],
+      matchPackageNames: ["/bjw-s/", "/onedr0p/"],
       ignoreTests: true,
     },
     {
@@ -25,7 +25,7 @@
       automerge: true,
       automergeType: "pr",
       matchUpdateTypes: ["minor", "patch"],
-      matchDepNames: ["kube-prometheus-stack"],
+      matchPackageNames: ["/kube-prometheus-stack/"],
       ignoreTests: false,
     },
   ],
