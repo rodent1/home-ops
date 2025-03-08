@@ -9,9 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: onepassword
-      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/rook-ceph/rook-ceph/app
   prune: true
@@ -36,9 +33,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
-  dependsOn:
-    - name: onepassword
-      namespace: external-secrets
   healthCheckExprs:
     - apiVersion: ceph.rook.io/v1
       current: status.ceph.health in ['HEALTH_OK', 'HEALTH_WARN']
