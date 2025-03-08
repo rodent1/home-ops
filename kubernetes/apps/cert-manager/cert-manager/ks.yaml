@@ -39,8 +39,6 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
-    - name: onepassword
-      namespace: external-secrets
   healthCheckExprs:
     - apiVersion: cert-manager.io/v1
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')

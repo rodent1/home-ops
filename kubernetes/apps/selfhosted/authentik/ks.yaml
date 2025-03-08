@@ -16,8 +16,6 @@ spec:
       namespace: database
     - name: dragonfly-cluster
       namespace: database
-    - name: onepassword
-      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/selfhosted/authentik/app
   postBuild:
