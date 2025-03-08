@@ -36,9 +36,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: onepassword
-      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/network/external/external-dns
   prune: true
