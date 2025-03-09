@@ -11,4 +11,7 @@ KUBERNETES_DIR = '{{config_root}}/kubernetes'
 SCRIPTS_DIR = '{{config_root}}/scripts'
 TALOS_DIR = '{{config_root}}/talos'
 # Included file paths
-_.file = ['{{env.KUBERNETES_DIR}}/apps/system-upgrade/.env']
+_.file = [
+  "{{config_root}}/onepassword.env",
+  "{{config_root}}/kubernetes/apps/system-upgrade/versions.env",
+]

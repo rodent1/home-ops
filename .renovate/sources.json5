@@ -1,37 +1,37 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  packageRules: [
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
     {
-      matchPackagePatterns: ["actualbudget"],
-      sourceUrl: "https://github.com/actualbudget/actual",
+      "matchPackagePatterns": ["actualbudget"],
+      "sourceUrl": "https://github.com/actualbudget/actual"
     },
     {
-      matchPackagePatterns: ["audiobookshelf"],
-      sourceUrl: "https://github.com/advplyr/audiobookshelf",
+      "matchPackagePatterns": ["audiobookshelf"],
+      "sourceUrl": "https://github.com/advplyr/audiobookshelf"
     },
     {
-      matchPackagePatterns: ["dragonfly-operator"],
-      sourceUrl: "https://github.com/dragonflydb/dragonfly-operator",
+      "matchPackagePatterns": ["dragonfly-operator"],
+      "sourceUrl": "https://github.com/dragonflydb/dragonfly-operator"
     },
     {
-      matchPackagePatterns: ["twin/gatus"],
-      sourceUrl: "https://github.com/TwiN/gatus",
+      "matchPackagePatterns": ["twin/gatus"],
+      "sourceUrl": "https://github.com/TwiN/gatus"
     },
     {
-      matchPackagePatterns: ["getmeili/meilisearch"],
-      sourceUrl: "https://github.com/meilisearch/meilisearch",
+      "matchPackagePatterns": ["getmeili/meilisearch"],
+      "sourceUrl": "https://github.com/meilisearch/meilisearch"
     },
     {
-      matchPackagePatterns: ["immich"],
-      sourceUrl: "https://github.com/immich-app/immich",
+      "matchPackagePatterns": ["immich"],
+      "sourceUrl": "https://github.com/immich-app/immich"
     },
     {
-      matchPackagePatterns: ["restic"],
-      sourceUrl: "https://github.com/restic/restic",
+      "matchPackagePatterns": ["restic"],
+      "sourceUrl": "https://github.com/restic/restic"
     },
     {
-      matchPackagePatterns: ["system-upgrade-controller"],
-      sourceUrl: "https://github.com/rancher/system-upgrade-controller",
-    },
-  ],
+      "matchPackagePatterns": ["system-upgrade-controller"],
+      "sourceUrl": "https://github.com/rancher/system-upgrade-controller"
+    }
+  ]
 }

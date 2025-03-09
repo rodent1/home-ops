@@ -1,5 +1,6 @@
 /.private/
 /.task/
+/.venv/
 *.crt
 *.key
 .decrypted~*
@@ -7,4 +8,5 @@
 Brewfile.lock.json
 Thumbs.db
 kubeconfig
+onepassword.env
 talosconfig
