@@ -11,10 +11,28 @@
       }
     },
     {
+      "description": ["CoreDNS Group"],
+      "groupName": "CoreDNS",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["/coredns/"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
+    },
+    {
       "description": ["Dragonfly Operator Group"],
       "groupName": "Dragonfly Operator",
       "matchPackagePatterns": ["dragonfly(?:db)?.operator"],
       "matchDatasources": ["docker", "github-releases"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
+    },
+    {
+      "description": ["External Secrets Operator Group"],
+      "groupName": "External Secrets Operator",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["/external-secrets/"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       }
@@ -41,7 +59,7 @@
       "description": ["Intel Device Plugins Group"],
       "groupName": "Intel-Device-Plugins",
       "matchDatasources": ["helm"],
-      "matchPackageNames": ["/intel-device-plugins/"],
+      "matchPackageNames": ["/intel-device-plugins-operator/", "/intel-device-plugins-gpu/"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       }
@@ -50,7 +68,7 @@
       "description": ["Rook-Ceph Group"],
       "groupName": "Rook-Ceph",
       "matchDatasources": ["helm"],
-      "matchPackageNames": ["/rook.ceph/"],
+      "matchPackageNames": ["/rook-ceph/", "/rook-ceph-cluster/"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       }
