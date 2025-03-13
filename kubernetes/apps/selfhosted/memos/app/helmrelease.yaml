@@ -26,8 +26,8 @@ spec:
         containers:
           app:
             image:
-              repository: neosmemo/memos
-              tag: 0.24@sha256:4723d86e6797fd629f1f2ff7afd4e37e669df7318f00de31c7ff9acf1fe9db7f
+              repository: ghcr.io/usememos/memos
+              tag: 0.24.0@sha256:4723d86e6797fd629f1f2ff7afd4e37e669df7318f00de31c7ff9acf1fe9db7f
             env:
               MEMOS_DATA: /config
               MEMOS_PORT: &port 80
