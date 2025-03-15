@@ -13,8 +13,6 @@ spec:
     - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
-    - name: dragonfly-cluster
-      namespace: database
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
