@@ -94,7 +94,7 @@ spec:
       app:
         hostnames:
           - "{{ .Release.Name }}.rodent.cc"
-          - status.devbu.io
+          - status.rodent.cc
         parentRefs:
           - name: external
             namespace: kube-system
