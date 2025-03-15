@@ -19,7 +19,7 @@ spec:
       retries: 3
   values:
     controllers:
-      server:
+      immich:
         annotations:
           reloader.stakater.com/auto: "true"
         type: deployment
@@ -89,7 +89,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      server:
+      immich:
         controller: *app
         ports:
           http:
