@@ -9,6 +9,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: onepassword
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/database/cloudnative-pg/app
   prune: true
@@ -34,6 +37,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
+    - name: openebs
+      namespace: openebs-system
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')

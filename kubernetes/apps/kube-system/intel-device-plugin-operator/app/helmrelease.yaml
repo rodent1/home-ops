@@ -3,15 +3,15 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: snapshot-controller
+  name: intel-device-plugins-operator
 spec:
   interval: 1h
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 4.0.1
-  url: oci://ghcr.io/onedr0p/charts-mirror/snapshot-controller
+    tag: 0.32.0
+  url: oci://ghcr.io/onedr0p/charts-mirror/intel-device-plugins-operator
   verify:
     provider: cosign
 ---
@@ -19,12 +19,12 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: snapshot-controller
+  name: intel-device-plugin-operator
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: snapshot-controller
+    name: intel-device-plugins-operator
   install:
     crds: CreateReplace
     remediation:
@@ -36,7 +36,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    controller:
-      replicaCount: 2
-      serviceMonitor:
-        create: true
+    manager:
+      devices:
+        gpu: true

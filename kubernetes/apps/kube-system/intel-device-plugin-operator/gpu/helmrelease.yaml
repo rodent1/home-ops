@@ -1,28 +1,30 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: cloudnative-pg
+  name: intel-device-plugins-gpu
 spec:
   interval: 1h
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.23.2
-  url: oci://ghcr.io/cloudnative-pg/charts/cloudnative-pg
+    tag: 0.32.0
+  url: oci://ghcr.io/onedr0p/charts-mirror/intel-device-plugins-gpu
   verify:
     provider: cosign
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: cloudnative-pg
+  name: intel-device-plugin-gpu
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: cloudnative-pg
+    name: intel-device-plugins-gpu
   install:
     remediation:
       retries: 3
@@ -32,9 +34,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    crds:
-      create: true
-    monitoring:
-      podMonitorEnabled: false
-      grafanaDashboard:
-        create: true
+    name: i915
+    nodeFeatureRule: false
+    sharedDevNum: 99
