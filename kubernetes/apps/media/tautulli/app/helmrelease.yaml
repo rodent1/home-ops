@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: tautulli
+  name: &app tautulli
 spec:
   interval: 1h
   chartRef:
@@ -65,24 +65,25 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: "{{ .Release.Name }}.rodent.cc"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.rodent.cc"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         existingClaim: tautulli
-      cache:
+      config-cache:
         existingClaim: tautulli-cache
         globalMounts:
           - path: /config/cache
-      logs:
+      config-logs:
         type: emptyDir
         globalMounts:
           - path: /config/logs

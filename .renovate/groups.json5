@@ -5,7 +5,7 @@
       "description": ["Actions Runner Controller Group"],
       "groupName": "Actions Runner Controller",
       "matchDatasources": ["docker", "helm"],
-      "matchPackageNames": ["/gha-runner-scale-set/"],
+      "matchPackageNames": ["/gha-runner-scale-set-controller/", "/gha-runner-scale-set/"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       }
@@ -69,6 +69,15 @@
       "groupName": "Rook-Ceph",
       "matchDatasources": ["helm"],
       "matchPackageNames": ["/rook-ceph/", "/rook-ceph-cluster/"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
+    },
+    {
+      "description": ["Spegel Group"],
+      "groupName": "Spegel",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["/spegel/"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       }

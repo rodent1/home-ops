@@ -15,8 +15,6 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/media/qbittorrent/app
   postBuild:
@@ -44,10 +42,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
   interval: 1h
   path: ./kubernetes/apps/media/qbittorrent/tools
   prune: true

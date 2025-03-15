@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: autobrr
+  name: &app autobrr
 spec:
   interval: 1h
   chartRef:
@@ -28,8 +28,8 @@ spec:
         initContainers:
           init-db:
             image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16.8@sha256:217c47c886965474f5c234b5a35ed008f53b39ea90a3088b31c0da98e1f9284d
+              repository: ghcr.io/buroa/postgres-init
+              tag: 17
             envFrom: &envFrom
               - secretRef:
                   name: autobrr-secret
@@ -75,20 +75,21 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: autobrr
+        controller: *app
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: "{{ .Release.Name }}.rodent.cc"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.rodent.cc"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         existingClaim: autobrr

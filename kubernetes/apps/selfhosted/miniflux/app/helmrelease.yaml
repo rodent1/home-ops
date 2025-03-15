@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: miniflux
+  name: &app miniflux
 spec:
   interval: 1h
   chartRef:
@@ -27,8 +27,8 @@ spec:
         initContainers:
           init-db:
             image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
+              repository: ghcr.io/buroa/postgres-init
+              tag: 17
             envFrom: &envFrom
               - secretRef:
                   name: miniflux-secret
@@ -78,26 +78,28 @@ spec:
         runAsGroup: 1000
     service:
       app:
-        controller: miniflux
+        controller: *app
         ports:
           http:
             port: *port
     serviceMonitor:
       app:
-        serviceName: miniflux
+        serviceName: *app
         endpoints:
           - port: http
             scheme: http
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
-    ingress:
+    route:
       app:
-        className: external
-        hosts:
-          - host: "{{ .Release.Name }}.rodent.cc"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port

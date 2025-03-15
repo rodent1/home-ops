@@ -1,7 +1,7 @@
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
 ---
-kind: Probe
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
+kind: Probe
 metadata:
   name: devices
 spec:
@@ -12,6 +12,3 @@ spec:
     staticConfig:
       static:
         - tank.internal
-        # - heater.internal
-        # - hue.internal
-        # - vacuum.internal

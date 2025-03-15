@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyseerr
+  name: &app jellyseerr
 spec:
   interval: 1h
   chartRef:
@@ -25,7 +25,7 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/fallenbagel/jellyseerr
+              repository: ghcr.io/fallenbagel/jellyseerr
               tag: 2.5.0@sha256:92dc0eb9ba260a11886ac52c3a82c5490769238f120e6312a2793809842021a6
             env:
               TZ: America/New_York
@@ -69,26 +69,29 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        className: external
-        hosts:
-          - host: requests.rodent.cc
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+          - requests.rodent.cc
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         existingClaim: jellyseerr
         globalMounts:
           - path: /app/config
-      cache:
+      config-cache:
         existingClaim: jellyseerr-cache
         globalMounts:
           - path: /app/config/cache
-      logs:
+      config-logs:
         type: emptyDir
         globalMounts:
           - path: /app/config/logs

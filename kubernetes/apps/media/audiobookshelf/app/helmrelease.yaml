@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: audiobookshelf
+  name: &app audiobookshelf
 spec:
   interval: 1h
   chartRef:
@@ -61,25 +61,22 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: audiobookshelf
+        controller: *app
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        enabled: true
-        className: external
-        hosts:
-          - host: &host "{{ .Release.Name }}.rodent.cc"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "{{ .Release.Name }}.devbu.io"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         existingClaim: audiobookshelf
