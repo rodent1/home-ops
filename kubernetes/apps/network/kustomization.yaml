@@ -6,5 +6,7 @@ namespace: network
 components:
   - ../../components/common
 resources:
-  - ./external/ks.yaml
-  - ./internal/ks.yaml
+  - ./cloudflare-tunnel/ks.yaml
+  - ./cloudflare-dns/ks.yaml
+  - ./echo/ks.yaml
+  - ./unifi-dns/ks.yaml

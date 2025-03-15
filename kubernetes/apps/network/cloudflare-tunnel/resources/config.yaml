@@ -1,0 +1,10 @@
+---
+originRequest:
+  originServerName: external.rodent.cc
+
+ingress:
+  - hostname: rodent.cc
+    service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
+  - hostname: "*.rodent.cc"
+    service: *svc
+  - service: http_status:404
