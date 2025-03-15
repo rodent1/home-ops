@@ -94,7 +94,8 @@ spec:
         controller: server
         ports:
           http:
-            port: &immichPort 2283
+            primary: true
+            port: 2283
           metrics:
             port: 8081
       machine-learning:
@@ -120,7 +121,7 @@ spec:
                 pathType: Prefix
                 service:
                   identifier: server
-                  port: *immichPort
+                  port: http
         tls:
           - hosts:
               - *host

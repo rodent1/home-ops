@@ -43,27 +43,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 2Gi
-          code-server:
-            image:
-              repository: ghcr.io/coder/code-server
-              tag: 4.98.2@sha256:9ed588a05d4e81aa464e753a409bc3b2b93267323d1c3975fbddf6f9aef84c26
-            args:
-              [
-                "--auth",
-                "none",
-                "--user-data-dir",
-                "/config/.vscode",
-                "--extensions-dir",
-                "/config/.vscode",
-                "--port",
-                "12321",
-                "/config",
-              ]
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -77,8 +56,6 @@ spec:
         ports:
           http:
             port: 8123
-          code-server:
-            port: 12321
     ingress:
       app:
         className: external
@@ -89,25 +66,20 @@ spec:
                 service:
                   identifier: app
                   port: http
-      code-server:
-        className: internal
-        hosts:
-          - host: hass-code.rodent.cc
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: code-server
     persistence:
       config:
         existingClaim: home-assistant
         globalMounts:
           - path: /config
-      logs:
+      config-cache:
+        existingClaim: home-assistant-cache
+        globalMounts:
+          - path: /config/.venv
+      config-logs:
         type: emptyDir
         globalMounts:
           - path: /config/logs
-      tts:
+      config-tts:
         type: emptyDir
         globalMounts:
           - path: /config/tts
