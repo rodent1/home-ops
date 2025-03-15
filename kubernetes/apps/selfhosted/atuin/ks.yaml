@@ -15,8 +15,10 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
+    - name: cloudnative-pg-cluster
+      namespace: databases
+    - name: onepassword
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/selfhosted/atuin/app
   postBuild:

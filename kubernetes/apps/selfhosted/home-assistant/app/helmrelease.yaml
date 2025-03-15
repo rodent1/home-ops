@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: &app home-assistant
 spec:
   interval: 1h
   chartRef:
@@ -54,17 +54,20 @@ spec:
         controller: home-assistant
         ports:
           http:
-            port: 8123
-    ingress:
+            port: &port 8123
+    route:
       app:
-        className: external
-        hosts:
-          - host: hass.rodent.cc
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+          - hass.rodent.cc
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         existingClaim: home-assistant

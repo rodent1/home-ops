@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: memos
+  name: &app memos
 spec:
   interval: 1h
   chartRef:
@@ -62,20 +62,22 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: memos
+        controller: *app
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        className: external
-        hosts:
-          - host: "{{ .Release.Name }}.rodent.cc"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         existingClaim: memos

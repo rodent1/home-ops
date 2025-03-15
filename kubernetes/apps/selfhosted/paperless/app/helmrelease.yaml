@@ -103,29 +103,28 @@ spec:
                 memory: 128Mi
     service:
       app:
-        controller: paperless
+        controller: *app
         ports:
           http:
-            port: 8000
+            primary: true
+            port: &port 8000
       redis:
         controller: redis
         ports:
           http:
             port: 6379
-    ingress:
+    route:
       app:
-        enabled: true
-        className: external
-        hosts:
-          - host: &host paperless.rodent.cc
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       data:
         enabled: true

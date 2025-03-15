@@ -46,14 +46,15 @@ spec:
         ports:
           http:
             enabled: true
-            port: 9000
-    ingress:
+            port: &port 9000
+    route:
       app:
-        className: internal
-        hosts:
-          - host: "{{ .Release.Name }}.rodent.cc"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.rodent.cc"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port

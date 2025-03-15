@@ -17,11 +17,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: intel-device-plugin-gpu
-      namespace: kube-system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     controllers:
       jellyfin:
@@ -71,23 +66,25 @@ spec:
         supplementalGroups: [44]
     service:
       app:
-        controller: jellyfin
+        controller: *app
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 10.1.1.205
+          lbipam.cilium.io/ips: 10.1.1.205 ::ffff:10.1.1.205
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        className: external
-        hosts:
-          - host: "{{ .Release.Name }}.rodent.cc"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         enabled: true

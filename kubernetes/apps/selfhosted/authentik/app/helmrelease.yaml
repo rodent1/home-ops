@@ -48,10 +48,3 @@ spec:
         prometheus:
           serviceMonitor:
             enabled: true
-      ingress:
-        enabled: true
-        ingressClassName: external
-        hosts:
-          - &host auth.rodent.cc
-        tls:
-          - hosts: [*host]

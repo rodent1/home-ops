@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: hoarder
+  name: &app hoarder
 spec:
   interval: 1h
   chartRef:
@@ -128,10 +128,10 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: hoarder
+        controller: *app
         ports:
           http:
-            port: 3000
+            port: &port 3000
       chrome:
         controller: chrome
         ports:
@@ -142,16 +142,18 @@ spec:
         ports:
           http:
             port: 7700
-    ingress:
+    route:
       app:
-        className: external
-        hosts:
-          - host: "{{ .Release.Name }}.rodent.cc"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       data:
         existingClaim: hoarder

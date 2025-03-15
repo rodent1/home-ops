@@ -1,4 +1,4 @@
-{% for namespace in ["cert-manager", "external-secrets", "flux-system"] %}
+{% for namespace in ["external-secrets", "flux-system", "network"] %}
 ---
 apiVersion: v1
 kind: Namespace
@@ -9,8 +9,24 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
+  name: onepassword-secret
+  namespace: external-secrets
+stringData:
+  token: op://home-ops/1password/OP_CONNECT_TOKEN
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sops-age
+  namespace: flux-system
+stringData:
+  age.agekey: op://home-ops/sops/SOPS_PRIVATE_KEY
+---
+apiVersion: v1
+kind: Secret
+metadata:
   name: rodent-cc-tls
-  namespace: cert-manager
+  namespace: kube-system
   annotations:
     cert-manager.io/alt-names: '*.rodent.cc,rodent.cc'
     cert-manager.io/certificate-name: rodent-cc
@@ -30,15 +46,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: onepassword-secret
-  namespace: external-secrets
+  name: cloudflare-tunnel-id-secret
+  namespace: network
 stringData:
-  token: op://home-ops/1password/OP_CONNECT_TOKEN
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: sops-age
-  namespace: flux-system
-stringData:
-  age.agekey: op://home-ops/sops/SOPS_PRIVATE_KEY
+  CLOUDFLARE_TUNNEL_ID: op://home-ops/cloudflare/CLOUDFLARE_TUNNEL_ID

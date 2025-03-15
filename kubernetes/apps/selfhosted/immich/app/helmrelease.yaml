@@ -28,8 +28,8 @@ spec:
         initContainers:
           01-init-db:
             image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16.8@sha256:217c47c886965474f5c234b5a35ed008f53b39ea90a3088b31c0da98e1f9284d
+              repository: ghcr.io/buroa/postgres-init
+              tag: 17
             envFrom: &envFrom
               - secretRef:
                   name: immich-secret
@@ -90,11 +90,11 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       server:
-        controller: server
+        controller: *app
         ports:
           http:
             primary: true
-            port: 2283
+            port: &port 2283
           metrics:
             port: 8081
       machine-learning:
@@ -107,23 +107,19 @@ spec:
         ports:
           http:
             port: 6379
-    ingress:
-      main:
-        enabled: true
-        className: external
-        annotations:
-          nginx.ingress.kubernetes.io/proxy-body-size: "50000M"
-        hosts:
-          - host: &host photos.rodent.cc
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: server
-                  port: http
-        tls:
-          - hosts:
-              - *host
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+          - photos.rodent.cc
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       media:
         type: nfs
