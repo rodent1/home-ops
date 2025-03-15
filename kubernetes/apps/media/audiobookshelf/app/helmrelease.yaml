@@ -68,7 +68,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.devbu.io"
+          - "{{ .Release.Name }}.rodent.cc"
         parentRefs:
           - name: external
             namespace: kube-system
