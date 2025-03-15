@@ -40,6 +40,9 @@ spec:
               ATUIN_OPEN_REGISTRATION: true
               TZ: Europe/Oslo
             envFrom: *envFrom
+            args:
+              - server
+              - start
             probes:
               liveness: &probes
                 enabled: true
