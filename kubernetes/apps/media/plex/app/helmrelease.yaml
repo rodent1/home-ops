@@ -104,6 +104,8 @@ spec:
     persistence:
       config:
         existingClaim: plex
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server
       config-cache:
         existingClaim: plex-cache
         globalMounts:
