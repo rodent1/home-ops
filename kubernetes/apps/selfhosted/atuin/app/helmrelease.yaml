@@ -20,6 +20,7 @@ spec:
   values:
     controllers:
       atuin:
+        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -36,16 +37,15 @@ spec:
               repository: ghcr.io/atuinsh/atuin
               tag: 18.4.0@sha256:8c6fa0aea944bf2a39665c9c69df1c2c0f9c05207bda5b942d450142285e3ee1
             env:
+              ATUIN_HOST: 0.0.0.0
               ATUIN_PORT: &port 80
               ATUIN_OPEN_REGISTRATION: true
               ATUIN_METRICS__ENABLE: true
               ATUIN_METRICS__HOST: 0.0.0.0
-              ATUIN_METRICS__PORT: &metricsPort 8081
+              ATUIN_METRICS__PORT: &metricsPort 8080
               TZ: Europe/Oslo
             envFrom: *envFrom
-            args:
-              - server
-              - start
+            args: ["server", "start"]
             probes:
               liveness: &probes
                 enabled: true
@@ -84,6 +84,15 @@ spec:
             port: *port
           metrics:
             port: *metricsPort
+    serviceMonitor:
+      app:
+        serviceName: atuin
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
     route:
       app:
         hostnames:
@@ -100,8 +109,3 @@ spec:
     persistence:
       config:
         existingClaim: atuin
-    serviceMonitor:
-      app:
-        serviceName: *app
-        endpoints:
-          - port: metrics
