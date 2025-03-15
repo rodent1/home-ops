@@ -118,7 +118,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: immich-server
                 port: *port
     persistence:
       media:

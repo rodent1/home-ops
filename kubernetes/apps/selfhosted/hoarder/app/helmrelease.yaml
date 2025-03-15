@@ -128,7 +128,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: hoarder
         ports:
           http:
             port: &port 3000
@@ -152,7 +152,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: hoarder-app
                 port: *port
     persistence:
       data:
