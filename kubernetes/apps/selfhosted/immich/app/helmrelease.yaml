@@ -89,8 +89,8 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      immich:
-        controller: *app
+      server:
+        controller: immich
         ports:
           http:
             primary: true
