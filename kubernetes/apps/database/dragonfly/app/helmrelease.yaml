@@ -1,16 +1,14 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: OCIRepository
+# yaml-language-server: $schema=https://crd.movishell.pl/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
 metadata:
-  name: dragonfly-operator
+  name: dragonfly
+  namespace: flux-system
 spec:
-  interval: 1h
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: v1.1.10
-  url: oci://ghcr.io/dragonflydb/dragonfly-operator/helm/dragonfly-operator
+  type: oci
+  interval: 30m
+  url: oci://ghcr.io/dragonflydb/dragonfly-operator/helm
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -18,9 +16,14 @@ kind: HelmRelease
 metadata:
   name: dragonfly-operator
 spec:
-  chartRef:
-    kind: OCIRepository
-    name: dragonfly-operator
+  chart:
+    spec:
+      chart: dragonfly-operator
+      version: v1.1.10
+      sourceRef:
+        kind: HelmRepository
+        name: dragonfly
+        namespace: flux-system
   install:
     crds: CreateReplace
   interval: 1h
