@@ -13,5 +13,5 @@ spec:
   rules:
     - backendRefs:
         - name: authentik-server
-          namespace: security
+          namespace: selfhosted
           port: 80
