@@ -16,7 +16,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: cloudnative-pg-cluster
-      namespace: databases
+      namespace: database
     - name: external-secrets
       namespace: external-secrets
   interval: 1h
