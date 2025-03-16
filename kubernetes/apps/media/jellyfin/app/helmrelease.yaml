@@ -65,10 +65,10 @@ spec:
         supplementalGroups: [44]
     service:
       app:
-        controller: *app
+        controller: jellyfin
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 10.1.1.205 ::ffff:10.1.1.205
+          lbipam.cilium.io/ips: 10.1.1.202, ::ffff:10.1.1.202
         ports:
           http:
             port: *port
