@@ -17,33 +17,27 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: cloudnative-pg
-      namespace: database
   values:
     controllers:
       autobrr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/buroa/postgres-init
-              tag: 17
-            envFrom: &envFrom
-              - secretRef:
-                  name: autobrr-secret
         containers:
           app:
             image:
               repository: ghcr.io/autobrr/autobrr
               tag: v1.59.0@sha256:2c0dda4c7cc4e0597292132e3abe93b86e38fa21a491bef4de32861eb6700029
             env:
-              AUTOBRR__CHECK_FOR_UPDATES: "false"
               AUTOBRR__HOST: 0.0.0.0
               AUTOBRR__PORT: &port 80
+              AUTOBRR__METRICS_ENABLED: true
+              AUTOBRR__METRICS_HOST: 0.0.0.0
+              AUTOBRR__METRICS_PORT: &metricsPort 9094
+              AUTOBRR__CHECK_FOR_UPDATES: false
               AUTOBRR__LOG_LEVEL: INFO
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: autobrr-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -65,7 +59,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 100Mi
+                memory: 256Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -75,10 +69,17 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: autobrr
         ports:
           http:
             port: *port
+          metrics:
+            port: *metricsPort
+    serviceMonitor:
+      app:
+        serviceName: autobrr
+        endpoints:
+          - port: metrics
     route:
       app:
         hostnames: ["{{ .Release.Name }}.rodent.cc"]
@@ -93,7 +94,7 @@ spec:
     persistence:
       config:
         existingClaim: autobrr
-      log:
+      config-log:
         type: emptyDir
         globalMounts:
           - path: /config/log
