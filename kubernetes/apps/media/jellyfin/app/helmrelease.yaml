@@ -29,7 +29,6 @@ spec:
               tag: 10.10.6@sha256:2aa67ae3eff5384ade5a5675a61ca487e9e1a510312289ac80076837ebeda8c8
             env:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
-              JELLYFIN_PublishedServerUrl:
               TZ: Europe/Oslo
             probes:
               liveness: &probes
