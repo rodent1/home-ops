@@ -11,7 +11,7 @@ releases:
   - name: cilium
     namespace: kube-system
     atomic: true
-    chart: oci://ghcr.io/onedr0p/charts-mirror/cilium
+    chart: oci://ghcr.io/home-operations/charts-mirror/cilium
     version: 1.17.2
     values:
       [
@@ -61,7 +61,7 @@ releases:
   - name: cert-manager
     namespace: cert-manager
     atomic: true
-    chart: oci://ghcr.io/onedr0p/charts-mirror/cert-manager
+    chart: oci://ghcr.io/home-operations/charts-mirror/cert-manager
     version: v1.17.1
     values:
       [

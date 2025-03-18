@@ -4,8 +4,8 @@
     {
       description: "Actions Runner Controller Group",
       groupName: "Actions Runner Controller",
-      matchDatasources: [ "docker", "helm" ],
-      matchPackageNames: [ "/gha-runner-scale-set-controller/", "/gha-runner-scale-set/" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/gha-runner-scale-set-controller/", "/gha-runner-scale-set/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -13,8 +13,8 @@
     {
       description: "Cert-Manager Group",
       groupName: "Cert-Manager",
-      matchDatasources: [ "docker" ],
-      matchPackageNames: [ "/cert-manager/" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/cert-manager/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -22,8 +22,8 @@
     {
       description: "Cilium Group",
       groupName: "Cilium",
-      matchDatasources: [ "docker" ],
-      matchPackageNames: [ "/cilium/" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/cilium/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -31,8 +31,8 @@
     {
       description: "CoreDNS Group",
       groupName: "CoreDNS",
-      matchDatasources: [ "docker" ],
-      matchPackageNames: [ "/coredns/" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/coredns/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -40,8 +40,8 @@
     {
       description: "External Secrets Operator Group",
       groupName: "External Secrets Operator",
-      matchDatasources: [ "docker" ],
-      matchPackageNames: [ "/external-secrets/" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/external-secrets/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -49,17 +49,17 @@
     {
       description: "Flux Operator Group",
       groupName: "Flux Operator",
-      matchDatasources: [ "docker" ],
-      matchPackageNames: [ "/flux-operator/", "/flux-instance/" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
     {
-      description: [ "Immich Group" ],
+      description: "Immich Group",
       groupName: "Immich",
-      matchPackagePatterns: [ "ghcr.io/immich-app" ],
-      matchDatasources: [ "docker", "github-releases" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: [ "/immich-app/" ],
       group: {
         commitMessageTopic: "{{{groupName}}} group"
       }
@@ -67,8 +67,8 @@
     {
       description: "Intel Device Plugins Group",
       groupName: "Intel-Device-Plugins",
-      matchDatasources: [ "helm" ],
-      matchPackageNames: [ "/intel-device-plugins-operator/", "/intel-device-plugins-gpu/" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/intel-device-plugins-operator/", "/intel-device-plugins-gpu/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -76,8 +76,8 @@
     {
       description: "Rook-Ceph Group",
       groupName: "Rook-Ceph",
-      matchDatasources: [ "helm" ],
-      matchPackageNames: [ "/rook-ceph/", "/rook-ceph-cluster/" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -85,8 +85,8 @@
     {
       description: "Spegel Group",
       groupName: "Spegel",
-      matchDatasources: [ "docker" ],
-      matchPackageNames: [ "/spegel/" ],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/spegel/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
