@@ -25,7 +25,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/sonarr-develop
+              repository: ghcr.io/home-operations/sonarr
               tag: 4.0.14.2938@sha256:0169c421055790ef8bd9b5c2807663bb487f56daf1f602a20612a0257c491462
             env:
               SONARR__APP__INSTANCENAME: Sonarr

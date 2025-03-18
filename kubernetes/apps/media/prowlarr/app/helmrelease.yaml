@@ -25,7 +25,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/prowlarr-develop
+              repository: ghcr.io/home-operations/prowlarr
               tag: 1.32.2.4987@sha256:77f6b6850d6191f68d2d2d4d21655b103acc5c6f6243d8cb62bb75888499b78a
             env:
               PROWLARR__APP__INSTANCENAME: Prowlarr
