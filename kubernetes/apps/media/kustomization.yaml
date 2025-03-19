@@ -12,6 +12,7 @@ resources:
   - ./cross-seed/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
+  - ./jellystat/ks.yaml
   # - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
@@ -19,6 +20,6 @@ resources:
   - ./readarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
-  - ./tautulli/ks.yaml
+  # - ./tautulli/ks.yaml
   # - ./threadfin/ks.yaml
   - ./unpackerr/ks.yaml
