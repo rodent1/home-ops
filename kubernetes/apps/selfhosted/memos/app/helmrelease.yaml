@@ -71,7 +71,7 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.rodent.cc"
         parentRefs:
-          - name: external
+          - name: internal
             namespace: kube-system
             sectionName: https
         rules:
