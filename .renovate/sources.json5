@@ -2,40 +2,28 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      matchPackagePatterns: [ "actualbudget" ],
+      matchPackageNames: [ "/actualbudget/" ],
       sourceUrl: "https://github.com/actualbudget/actual",
     },
     {
-      matchPackagePatterns: [ "audiobookshelf" ],
+      matchPackageNames: [ "advplyr/audiobookshelf" ],
       sourceUrl: "https://github.com/advplyr/audiobookshelf",
     },
     {
-      matchPackagePatterns: [ "dragonfly-operator" ],
-      sourceUrl: "https://github.com/dragonflydb/dragonfly-operator",
-    },
-    {
-      matchPackagePatterns: [ "twin/gatus" ],
+      matchPackageNames: [ "twin/gatus" ],
       sourceUrl: "https://github.com/TwiN/gatus",
     },
     {
-      matchPackagePatterns: [ "getmeili/meilisearch" ],
+      matchPackageNames: [ "getmeili/meilisearch" ],
       sourceUrl: "https://github.com/meilisearch/meilisearch",
     },
     {
-      matchPackagePatterns: [ "immich" ],
+      matchPackageNames: [ "/immich-app/" ],
       sourceUrl: "https://github.com/immich-app/immich",
     },
     {
-      matchPackagePatterns: [ "memos" ],
-      sourceUrl: "https://github.com/usememos/memos",
-    },
-    {
-      matchPackagePatterns: [ "restic" ],
-      sourceUrl: "https://github.com/restic/restic",
-    },
-    {
-      matchPackagePatterns: [ "system-upgrade-controller" ],
-      sourceUrl: "https://github.com/rancher/system-upgrade-controller",
+      matchPackagesPatterns: [ "/jellyfin/" ],
+      sourceUrl: "https://github.com/jellyfin/jellyfin",
     },
   ],
 }
