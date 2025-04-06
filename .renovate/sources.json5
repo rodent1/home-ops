@@ -22,7 +22,7 @@
       sourceUrl: "https://github.com/immich-app/immich",
     },
     {
-      matchPackagesPatterns: [ "/jellyfin/" ],
+      matchPackageNames: [ "/jellyfin/" ],
       sourceUrl: "https://github.com/jellyfin/jellyfin",
     },
   ],
