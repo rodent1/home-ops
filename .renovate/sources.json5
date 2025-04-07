@@ -25,5 +25,9 @@
       matchPackageNames: [ "/jellyfin/" ],
       sourceUrl: "https://github.com/jellyfin/jellyfin",
     },
+    {
+      matchPackageNames: [ "cyfershepard/jellystat" ],
+      sourceUrl: "https://github.com/CyferShepard/Jellystat",
+    },
   ],
 }
