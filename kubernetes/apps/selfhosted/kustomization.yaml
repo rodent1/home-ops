@@ -10,10 +10,10 @@ resources:
   - ./atuin/ks.yaml
   - ./authentik/ks.yaml
   - ./fusion/ks.yaml
-  - ./hoarder/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
   - ./it-tools/ks.yaml
+  - ./karakeep/ks.yaml
   - ./miniflux/ks.yaml
   - ./paperless/ks.yaml
   - ./paperless-ai/ks.yaml
