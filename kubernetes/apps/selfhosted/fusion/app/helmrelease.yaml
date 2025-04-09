@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app it-tools
+  name: &app fusion
 spec:
   interval: 1h
   chartRef:
@@ -18,24 +18,41 @@ spec:
       retries: 3
   values:
     controllers:
-      it-tools:
+      fusion:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/it-tools
-              tag: 2024.10.22@sha256:7f26ae8d7a4a58b8d70b685cba5cbaa54d7df876d9f8bae702207f45b06d9b7c
+              repository: rook1e404/fusion
+              tag: 0.9.4@sha256:1888a680292fda59b8042a0452dcccbeb995118f84b709b6a930503114af98df
+            env:
+              TZ: Europe/Oslo
+            envFrom:
+              - secretRef:
+                  name: fusion-secret
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8080
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             resources:
               requests:
-                cpu: 5m
-                memory: 32Mi
+                cpu: 10m
               limits:
-                memory: 256Mi
+                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -45,10 +62,10 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: fusion
         ports:
           http:
-            port: &port 8080
+            port: *port
     route:
       app:
         hostnames:
@@ -62,5 +79,7 @@ spec:
               - name: *app
                 port: *port
     persistence:
-      tmp:
-        type: emptyDir
+      config:
+        existingClaim: fusion
+        globalMounts:
+          - path: /data
