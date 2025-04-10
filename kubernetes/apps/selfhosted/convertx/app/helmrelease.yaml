@@ -83,3 +83,5 @@ spec:
         existingClaim: convertx
         globalMounts:
           - path: /app/data
+      tmp:
+        type: emptyDir
