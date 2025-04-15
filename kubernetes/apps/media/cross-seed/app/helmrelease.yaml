@@ -71,17 +71,17 @@ spec:
     persistence:
       config:
         existingClaim: cross-seed
-      config-cross-seeds:
-        type: emptyDir
-        globalMounts:
-          - path: /config/cross-seeds
-      secret-file:
-        type: secret
-        name: cross-seed-secret
+      config-file:
+        type: configMap
+        name: cross-seed-configmap
         globalMounts:
           - path: /config/config.js
             subPath: config.js
             readOnly: true
+      config-logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
       media:
         type: nfs
         server: tank.internal
