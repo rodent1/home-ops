@@ -32,6 +32,9 @@ spec:
             env:
               CROSS_SEED_PORT: &port 80
               TZ: Europe/Oslo
+            envFrom:
+              - secretRef:
+                  name: cross-seed-secret
             args: ["daemon"]
             probes:
               liveness: &probes
