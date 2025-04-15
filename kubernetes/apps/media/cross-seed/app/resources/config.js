@@ -15,7 +15,7 @@ module.exports = {
   matchMode: "partial",
   outputDir: null,
   port: Number(process.env.CROSS_SEED_PORT),
-  qbittorrentUrl: "http://qbittorrent.media.svc.cluster.local:8080",
+  qbittorrentUrl: "http://qbittorrent.media.svc.cluster.local",
   skipRecheck: true,
   torznab: [], // Only using announcements from autobrr
   useClientTorrents: true,
