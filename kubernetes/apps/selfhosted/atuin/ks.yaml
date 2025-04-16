@@ -15,10 +15,6 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: cloudnative-pg-cluster
-      namespace: database
-    - name: external-secrets
-      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/selfhosted/atuin/app
   postBuild:
