@@ -2,6 +2,7 @@
   "editor.formatOnSave": false,
   "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
+    "vs-kubernetes.crd-code-completion": "enabled",
     "vs-kubernetes.kubeconfig": "./kubeconfig",
     "vs-kubernetes.knownKubeconfigs": ["./kubeconfig"],
   },
