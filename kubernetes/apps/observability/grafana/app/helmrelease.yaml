@@ -138,23 +138,29 @@ spec:
           revision: 6
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-        dragonfly:
-          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/refs/heads/main/tools/local/monitoring/grafana/provisioning/dashboards/dragonfly.json
-          datasource: Prometheus
         eaton-ups:
           # renovate: depName="Prometheus NUT Exporter for DRuggeri"
           gnetId: 19308
           revision: 3
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
+        envoy:
+           # renovate: depName="Envoy Proxy Monitoring gRPC"
+           gnetId: 23239
+           revision: 1
+           datasource:
+             - { name: DS_AFRANET_PROMETHEUS, value: Prometheus }
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
           revision: 3
           datasource: Prometheus
         external-secrets:
-          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
-          datasource: Prometheus
+          # renovate: depName="External Secrets"
+          gnetId: 21640
+          revision: 4
+          datasource:
+            - { name: DS_METRICS, value: Prometheus }
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
           gnetId: 15761
@@ -193,7 +199,7 @@ spec:
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
-          revision: 37
+          revision: 39
           datasource: Prometheus
         prometheus:
           # renovate: depName="Prometheus"
