@@ -51,8 +51,7 @@ function apply_talos_config() {
 
             log info "Talos node configuration rendered successfully" "node=${node}"
 
-            if ! output=$(echo "${machine_config}" | talosctl --nodes "${node}" apply-config --insecure --file /dev/stdin 2>&1);
-            then
+            if ! output=$(echo "${machine_config}" | talosctl --nodes "${node}" apply-config --insecure --file /dev/stdin 2>&1); then
                 if [[ "${output}" == *"certificate required"* ]]; then
                     log warn "Talos node is already configured, skipping apply of config" "node=${node}"
                     continue
@@ -120,12 +119,12 @@ function apply_crds() {
     log debug "Applying CRDs"
 
     local -r crds=(
+        # renovate: datasource=github-releases depName=kubernetes-sigs/external-dns
+        https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.16.1/docs/sources/crd/crd-manifest.yaml
         # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
         https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/experimental-install.yaml
         # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
         https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.82.0/stripped-down-crds.yaml
-        # renovate: datasource=github-releases depName=kubernetes-sigs/external-dns
-        https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.16.1/docs/sources/crd/crd-manifest.yaml
     )
 
     for crd in "${crds[@]}"; do
