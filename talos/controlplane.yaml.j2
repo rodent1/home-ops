@@ -30,7 +30,6 @@ machine:
           ip: 10.1.1.30
   install:
     extraKernelArgs:
-      - -init_on_alloc                      # Less security, faster puter
       - -selinux                            # Less security, faster puter
       - net.ifnames=0                       # eth0
       - apparmor=0                          # Less security, faster puter

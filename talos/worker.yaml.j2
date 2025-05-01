@@ -26,7 +26,6 @@ machine:
         dhcp: true
   install:
     extraKernelArgs:
-      - -init_on_alloc                      # Less security, faster puter
       - -selinux                            # Less security, faster puter
       - net.ifnames=0                       # eth0
       - apparmor=0                          # Less security, faster puter
