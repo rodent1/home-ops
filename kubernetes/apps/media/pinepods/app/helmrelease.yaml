@@ -39,7 +39,7 @@ spec:
               SEARCH_API_URL: 'https://search.pinepods.online/api/search'
               PEOPLE_API_URL: 'https://people.pinepods.online'
               # Valkey Settings
-              VALKEY_HOST: valkey
+              VALKEY_HOST: pinepods-valkey
               VALKEY_PORT: 6379
             envFrom: *envFrom
             probes:
