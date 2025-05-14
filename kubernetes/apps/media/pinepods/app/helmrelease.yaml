@@ -110,3 +110,7 @@ spec:
         path: /mnt/tank/Media/Media/Pinepods
         globalMounts:
           - path: /opt/pinepods/downloads
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /pinepods/cache
