@@ -70,7 +70,7 @@ spec:
               limits:
                 memory: 128Mi
     service:
-      app:
+      server:
         controller: pinepods
         ports:
           http:
@@ -90,7 +90,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: pinepods-server
                 port: *port
     persistence:
       config:
