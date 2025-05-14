@@ -74,7 +74,7 @@ spec:
         controller: pinepods
         ports:
           http:
-            port: &port 3000
+            port: &port 8040
       valkey:
         controller: valkey
         ports:
