@@ -104,6 +104,10 @@ spec:
               - name: *app
                 port: *port
     persistence:
+      config:
+        existingClaim: pinepods
+        globalMounts:
+          - path: /opt/pinepods
       media:
         type: nfs
         server: tank.internal
