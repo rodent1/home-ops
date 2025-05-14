@@ -42,10 +42,6 @@ spec:
               VALKEY_HOST: valkey
               VALKEY_PORT: 6379
             envFrom: *envFrom
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
             probes:
               liveness:
                 enabled: true
