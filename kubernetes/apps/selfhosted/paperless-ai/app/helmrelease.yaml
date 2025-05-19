@@ -33,7 +33,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 750Mi
     service:
       app:
         controller: *app
