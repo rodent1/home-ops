@@ -151,7 +151,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: karakeep-app
+              - identifier: app
                 port: *port
     persistence:
       data:

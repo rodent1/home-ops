@@ -90,7 +90,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: pinepods-server
+              - identifier: server
                 port: *port
     persistence:
       config:
