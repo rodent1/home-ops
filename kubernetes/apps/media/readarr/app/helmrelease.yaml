@@ -69,7 +69,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: readarr
         ports:
           http:
             port: *port

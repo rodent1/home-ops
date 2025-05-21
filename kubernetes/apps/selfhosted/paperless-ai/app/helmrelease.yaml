@@ -36,7 +36,7 @@ spec:
                 memory: 750Mi
     service:
       app:
-        controller: *app
+        controller: paperless-ai
         ports:
           http:
             port: &port 3000

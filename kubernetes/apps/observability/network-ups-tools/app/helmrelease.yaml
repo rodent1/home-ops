@@ -41,7 +41,7 @@ spec:
             eaton.feature.node.kubernetes.io/ups: "true"
     service:
       app:
-        controller: *app
+        controller: network-ups-tools
         ports:
           http:
             port: 3493

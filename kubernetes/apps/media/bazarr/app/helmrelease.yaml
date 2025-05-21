@@ -77,7 +77,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: bazarr
         ports:
           http:
             port: *port

@@ -37,7 +37,7 @@ spec:
                 memory: 256Mi
     service:
       app:
-        controller: *app
+        controller: wallos
         ports:
           http:
             port: &port 80

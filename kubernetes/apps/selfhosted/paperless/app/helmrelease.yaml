@@ -102,7 +102,7 @@ spec:
                 memory: 128Mi
     service:
       app:
-        controller: *app
+        controller: paperless
         ports:
           http:
             primary: true

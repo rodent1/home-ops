@@ -39,7 +39,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: actual
         ports:
           http:
             port: &port 5006

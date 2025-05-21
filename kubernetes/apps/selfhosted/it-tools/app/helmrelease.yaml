@@ -45,7 +45,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: it-tools
         ports:
           http:
             port: &port 8080

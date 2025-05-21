@@ -17,7 +17,7 @@ spec:
     remediation:
       retries: 3
   values:
-    fullnameOverride: *app
+    fullnameOverride: nut-exporter
     controllers:
       nut-exporter:
         annotations:
@@ -43,7 +43,7 @@ spec:
                 memory: 200Mi
     service:
       app:
-        controller: *app
+        controller: nut-exporter
         ports:
           metrics:
             enabled: true

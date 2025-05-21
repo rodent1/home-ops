@@ -60,7 +60,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: audiobookshelf
         ports:
           http:
             port: *port
