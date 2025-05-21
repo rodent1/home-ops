@@ -33,7 +33,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 2Gi
     service:
       app:
         controller: paperless-ai
