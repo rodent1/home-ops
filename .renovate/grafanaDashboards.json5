@@ -4,14 +4,14 @@
     "grafana-dashboards": {
       defaultRegistryUrlTemplate: "https://grafana.com/api/dashboards/{{packageName}}",
       format: "json",
-      transformTemplates: [ '{"releases":[{"version": $string(revision)}]}' ],
+      transformTemplates: ['{"releases":[{"version": $string(revision)}]}'],
     },
   },
   customManagers: [
     {
       description: "Process Grafana dashboards",
       customType: "regex",
-      fileMatch: [ "(^|/)kubernetes/.+\\.ya?ml$" ],
+      managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
       matchStrings: [
         'depName="(?<depName>.*)"\\n(?<indentation>\\s+)gnetId: (?<packageName>\\d+)\\n.+revision: (?<currentValue>\\d+)'
       ],
@@ -22,13 +22,14 @@
   ],
   packageRules: [
     {
-      addLabels: [ "renovate/grafana-dashboard" ],
+      addLabels: ["renovate/grafana-dashboard"],
       automerge: true,
       automergeType: "branch",
       commitMessageExtra: "({{currentVersion}} → {{newVersion}})",
       commitMessageTopic: "dashboard {{depName}}",
-      matchDatasources: [ "custom.grafana-dashboards" ],
-      matchUpdateTypes: [ "major" ],
+      ignoreTests: true,
+      matchDatasources: ["custom.grafana-dashboards"],
+      matchUpdateTypes: ["major"],
       semanticCommitScope: "grafana-dashboards",
       semanticCommitType: "chore",
     },
