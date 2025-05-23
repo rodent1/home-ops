@@ -27,7 +27,6 @@ spec:
               repository: ghcr.io/jellyfin/jellyfin
               tag: 10.10.7@sha256:e4d1dc5374344446a3a78e43dd211247f22afba84ea2e5a13cbe1a94e1ff2141
             env:
-              DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               TZ: Europe/Oslo
             probes:
               liveness: &probes
@@ -43,17 +42,20 @@ spec:
                   failureThreshold: 3
               readiness: *probes
               startup:
-                enabled: false
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
               limits:
                 gpu.intel.com/i915: 1
                 memory: 8Gi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -85,10 +87,13 @@ spec:
                 port: *port
     persistence:
       config:
-        enabled: true
         existingClaim: jellyfin
         globalMounts:
           - path: /config
+      config-cache:
+        existingClaim: jellyfin-cache
+        globalMounts:
+          - path: /config/metadata
       media:
         type: nfs
         server: tank.internal
@@ -103,7 +108,7 @@ spec:
             app:
               - path: /cache
                 subPath: cache
-              - path: /transcode
-                subPath: transcode
+              - path: /config/log
+                subPath: log
               - path: /tmp
                 subPath: tmp
