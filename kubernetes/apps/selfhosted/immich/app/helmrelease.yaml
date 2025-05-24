@@ -133,7 +133,9 @@ spec:
           machine-learning:
             app:
               - path: /cache
-                subPath: machine-learning
+                subPath: cache
+              - path: /.cache
+                subPath: dotCache
           redis:
             redis:
               - path: /data
