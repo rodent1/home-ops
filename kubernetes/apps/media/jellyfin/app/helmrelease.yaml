@@ -91,7 +91,7 @@ spec:
         globalMounts:
           - path: /config
       config-cache:
-        existingClaim: jellyfin-cache
+        existingClaim: jellyfin-metadata
         globalMounts:
           - path: /config/metadata
       media:
