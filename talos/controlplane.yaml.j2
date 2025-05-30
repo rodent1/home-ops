@@ -118,7 +118,7 @@ cluster:
         "prometheuses", "prometheusrules", "scrapeconfigs", "servicemonitors", "thanosrulers"
     ] %}
     - # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
-      https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.82.2/example/prometheus-operator-crd/monitoring.coreos.com_{{ crd }}.yaml
+      https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.83.0/example/prometheus-operator-crd/monitoring.coreos.com_{{ crd }}.yaml
     {% endfor %}
   token: op://home-ops/talos/CLUSTER_TOKEN
   secretboxEncryptionSecret: op://home-ops/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
