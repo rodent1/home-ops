@@ -16,4 +16,3 @@ resources:
   - ./karakeep/ks.yaml
   - ./paperless/ks.yaml
   - ./paperless-ai/ks.yaml
-  - ./wallos/ks.yaml
