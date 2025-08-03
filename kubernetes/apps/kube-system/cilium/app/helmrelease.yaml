@@ -20,6 +20,7 @@ metadata:
   name: cilium
 spec:
   interval: 1h
+  timeout: 15m0s
   chartRef:
     kind: OCIRepository
     name: cilium

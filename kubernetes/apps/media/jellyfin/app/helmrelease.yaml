@@ -91,7 +91,7 @@ spec:
         globalMounts:
           - path: /config
       config-cache:
-        existingClaim: "{{ .Release.Name }}-cache"
+        existingClaim: "{{ .Release.Name }}-metadata"
         globalMounts:
           - path: /config/metadata
       media:
