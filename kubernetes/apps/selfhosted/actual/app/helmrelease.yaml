@@ -56,4 +56,4 @@ spec:
                 port: *port
     persistence:
       data:
-        existingClaim: actual
+        existingClaim: "{{ .Release.Name }}"

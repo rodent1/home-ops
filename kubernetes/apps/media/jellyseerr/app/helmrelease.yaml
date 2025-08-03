@@ -83,11 +83,11 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: jellyseerr
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/config
       config-cache:
-        existingClaim: jellyseerr-cache
+        existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /app/config/cache
       config-logs:

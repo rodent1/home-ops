@@ -87,11 +87,11 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: jellyfin
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /config
       config-cache:
-        existingClaim: jellyfin-metadata
+        existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/metadata
       media:

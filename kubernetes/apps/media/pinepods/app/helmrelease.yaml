@@ -94,7 +94,7 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: pinepods
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/pinepods
       media:

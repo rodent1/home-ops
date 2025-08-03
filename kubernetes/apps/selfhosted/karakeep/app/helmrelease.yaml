@@ -155,7 +155,7 @@ spec:
                 port: *port
     persistence:
       data:
-        existingClaim: karakeep
+        existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           karakeep:
             app:

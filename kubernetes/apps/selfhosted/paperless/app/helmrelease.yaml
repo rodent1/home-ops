@@ -127,7 +127,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: paperless
+        existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           paperless:
             app:

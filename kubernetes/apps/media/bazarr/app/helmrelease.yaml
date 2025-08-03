@@ -94,7 +94,7 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: bazarr
+        existingClaim: "{{ .Release.Name }}"
       config-cache:
         type: emptyDir
         globalMounts:

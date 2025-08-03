@@ -78,7 +78,7 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: audiobookshelf
+        existingClaim: "{{ .Release.Name }}"
       cache:
         type: emptyDir
         globalMounts:
