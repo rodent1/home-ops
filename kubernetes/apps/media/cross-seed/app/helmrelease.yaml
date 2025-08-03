@@ -73,7 +73,7 @@ spec:
             port: *port
     persistence:
       config:
-        existingClaim: cross-seed
+        existingClaim: "{{ .Release.Name }}"
       config-file:
         type: configMap
         name: cross-seed-configmap

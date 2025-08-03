@@ -80,6 +80,6 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: fusion
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /data

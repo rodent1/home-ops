@@ -86,9 +86,9 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: readarr
+        existingClaim: "{{ .Release.Name }}"
       cache:
-        existingClaim: readarr-cache
+        existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/MediaCover
       tmp:

@@ -92,7 +92,7 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: autobrr
+        existingClaim: "{{ .Release.Name }}"
       config-log:
         type: emptyDir
         globalMounts:

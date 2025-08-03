@@ -53,7 +53,7 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: paperless-ai
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/data
       logs:

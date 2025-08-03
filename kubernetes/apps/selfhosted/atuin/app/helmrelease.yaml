@@ -37,7 +37,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /healthz
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
@@ -76,4 +76,4 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: atuin
+        existingClaim: "{{ .Release.Name }}"

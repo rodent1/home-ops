@@ -87,9 +87,9 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: radarr
+        existingClaim: "{{ .Release.Name }}"
       cache:
-        existingClaim: radarr-cache
+        existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/MediaCover
       tmp:

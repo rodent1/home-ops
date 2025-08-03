@@ -1,13 +1,18 @@
 {
   "editor.formatOnSave": false,
+  "files.associations": {
+    "**/*.json5": "json5",
+    "**/*.yaml.j2": "yaml"
+  },
   "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
-    "vs-kubernetes.crd-code-completion": "enabled",
     "vs-kubernetes.kubeconfig": "./kubeconfig",
-    "vs-kubernetes.knownKubeconfigs": ["./kubeconfig"],
+    "vs-kubernetes.knownKubeconfigs": [
+      "./kubeconfig"
+    ]
   },
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"
-  },
+  }
 }
