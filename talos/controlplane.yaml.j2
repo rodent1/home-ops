@@ -1,6 +1,7 @@
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.10/website/content/v1.10/schemas/config.schema.json
 version: v1alpha1
-debug: false
-persist: true
 machine:
   token: op://home-ops/talos/MACHINE_TOKEN
   ca:
@@ -29,11 +30,11 @@ machine:
           ip: 10.1.1.30
   install:
     extraKernelArgs:
+      - -init_on_alloc                      # Less security, faster puter
+      - -init_on_free                       # Less security, faster puter
       - -selinux                            # Less security, faster puter
       - net.ifnames=0                       # eth0
       - apparmor=0                          # Less security, faster puter
-      - init_on_alloc=0                     # Less security, faster puter
-      - init_on_free=0                      # Less security, faster puter
       - intel_iommu=on                      # PCI Passthrough
       - iommu=pt                            # PCI Passthrough
       - mitigations=off                     # Less security, faster puter
@@ -41,15 +42,16 @@ machine:
       - talos.auditd.disabled=1             # Less security, faster puter
     wipe: false
   files:
-    - # Spegel
-      op: create
+    - op: create
       path: /etc/cri/conf.d/20-customization.part
       content: |
         [plugins."io.containerd.cri.v1.images"]
           discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.runtime"]
+          device_ownership_from_security_context = true
     - op: overwrite
       path: /etc/nfsmount.conf
-      permissions: 420
+      permissions: 0o644
       content: |
         [ NFSMount_Global_Options ]
         nfsvers=4.2
@@ -57,18 +59,24 @@ machine:
         nconnect=16
         noatime=True
   sysctls:
-    fs.inotify.max_user_watches: 1048576   # Watchdog
-    fs.inotify.max_user_instances: 8192    # Watchdog
-    net.core.default_qdisc: fq             # 10Gb/s
-    net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
-    net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
-    net.ipv4.tcp_congestion_control: bbr   # 10Gb/s
-    net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
-    net.ipv4.tcp_mtu_probing: 1            # 10Gb/s | Jumbo frames
-    net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
-    net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
-    net.ipv4.tcp_window_scaling: 1         # 10Gb/s
-    vm.nr_hugepages: 1024                  # PostgreSQL
+    fs.inotify.max_user_watches: "1048576"     # Watchdog
+    fs.inotify.max_user_instances: "8192"      # Watchdog
+    net.core.default_qdisc: fq                 # 10Gb/s
+    net.core.rmem_max: "67108864"              # 10Gb/s | Cloudflared / QUIC
+    net.core.wmem_max: "67108864"              # 10Gb/s | Cloudflared / QUIC
+    net.ipv4.neigh.default.gc_thresh1: "4096"  # Prevent ARP cache overflows
+    net.ipv4.neigh.default.gc_thresh2: "8192"  # Prevent ARP cache overflows
+    net.ipv4.neigh.default.gc_thresh3: "16384" # Prevent ARP cache overflows
+    net.ipv4.tcp_congestion_control: bbr       # 10Gb/s
+    net.ipv4.tcp_fastopen: "3"                 # Send and accept data in the opening SYN packet
+    net.ipv4.tcp_mtu_probing: "1"              # 10Gb/s | Jumbo frames
+    net.ipv4.tcp_rmem: 4096 87380 33554432     # 10Gb/s
+    net.ipv4.tcp_wmem: 4096 65536 33554432     # 10Gb/s
+    net.ipv4.tcp_window_scaling: "1"           # 10Gb/s
+    sunrpc.tcp_slot_table_entries: "128"       # 10Gb/s | NFS
+    sunrpc.tcp_max_slot_table_entries: "128"   # 10Gb/s | NFS
+    user.max_user_namespaces: "11255"          # User Namespaces
+    vm.nr_hugepages: "1024"                    # PostgreSQL
   features:
     rbac: true
     stableHostname: true
@@ -87,14 +95,13 @@ machine:
       forwardKubeDNSToHost: false
   udev:
     rules:
-      - # Intel GPU
-        SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
       - # Eaton UPS
         SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", GROUP="20", MODE="0660"
   kernel:
     modules:
       - name: nbd
   nodeLabels:
+    intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: main
     topology.kubernetes.io/zone: m
 cluster:
@@ -111,14 +118,6 @@ cluster:
     serviceSubnets: ["10.43.0.0/16"]
   coreDNS:
     disabled: true
-  extraManifests:
-    {% for crd in [
-        "alertmanagerconfigs", "alertmanagers", "podmonitors", "probes", "prometheusagents",
-        "prometheuses", "prometheusrules", "scrapeconfigs", "servicemonitors", "thanosrulers"
-    ] %}
-    - # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
-      https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.84.0/example/prometheus-operator-crd/monitoring.coreos.com_{{ crd }}.yaml
-    {% endfor %}
   token: op://home-ops/talos/CLUSTER_TOKEN
   secretboxEncryptionSecret: op://home-ops/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   ca:
@@ -132,7 +131,7 @@ cluster:
   apiServer:
     image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
-      enable-aggregator-routing: true
+      enable-aggregator-routing: "true"
       feature-gates: MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1alpha1=true
     certSANs: ["127.0.0.1", "10.1.1.30"]
