@@ -45,7 +45,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: it-tools
         ports:
           http:
             port: &port 8080
@@ -57,10 +56,6 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
     persistence:
       tmp:
         type: emptyDir

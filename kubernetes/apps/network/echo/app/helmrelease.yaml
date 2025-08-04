@@ -59,13 +59,11 @@ spec:
         runAsGroup: 1000
     service:
       app:
-        controller: echo
         ports:
           http:
             port: *port
     serviceMonitor:
       app:
-        serviceName: echo
         endpoints:
           - port: http
     route:
@@ -75,7 +73,3 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
