@@ -17,7 +17,7 @@ tasks:
   talos:
     desc: Bootstrap Talos
     cmds:
-      - for: { var: CONTROLPLANES }
+      - for: { var: NODES }
         cmd: |
           echo "Bootstrapping Talos [{{.ITEM}}]..."
           machine_config=$(minijinja-cli --define hostname={{.ITEM}} {{.TALOS_DIR}}/controlplane.yaml.j2 | op inject 2>/dev/null)
@@ -31,29 +31,12 @@ tasks:
               exit 1
           fi
           echo "Talos bootstrapped [{{.ITEM}}]"
-      - for: { var: WORKERS }
-        cmd: |
-          echo "Bootstrapping Talos [{{.ITEM}}]..."
-          machine_config=$(minijinja-cli --define hostname={{.ITEM}} {{.TALOS_DIR}}/worker.yaml.j2 | op inject 2>/dev/null)
-          if ! output=$(echo "${machine_config}" | talosctl --nodes {{.ITEM}} apply-config --insecure --file /dev/stdin 2>&1); then
-              if [[ "${output}" == *"certificate required"* ]]; then
-                  echo "Talos already bootstrapped [{{.ITEM}}]"
-                  exit 0
-              fi
-          else
-              echo "Failed to bootstrap Talos [{{.ITEM}}]"
-              exit 1
-          fi
-          echo "Talos bootstrapped [{{.ITEM}}]"
     vars:
-      CONTROLPLANES:
+      NODES:
         sh: yq '.contexts.main.endpoints | join (" ")' {{.ROOT_DIR}}/talosconfig
-      WORKERS:
-        sh: yq '.contexts.main.workers | join (" ")' {{.ROOT_DIR}}/talosconfig
     preconditions:
       - talosctl config info
       - test -f {{.TALOS_DIR}}/controlplane.yaml.j2
-      - test -f {{.TALOS_DIR}}/worker.yaml.j2
       - which kubectl minijinja-cli op talosctl yq
     silent: true
 
