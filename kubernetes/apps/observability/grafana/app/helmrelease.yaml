@@ -138,12 +138,6 @@ spec:
           revision: 6
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-        eaton-ups:
-          # renovate: depName="Prometheus NUT Exporter for DRuggeri"
-          gnetId: 19308
-          revision: 3
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
         envoy:
            # renovate: depName="Envoy Proxy Monitoring gRPC"
            gnetId: 23239
