@@ -74,6 +74,20 @@
       },
     },
     {
+      description: "Kubernetes Group",
+      groupName: "Kubernetes",
+      matchDatasources: ["docker"],
+      matchPackageNames: [
+        "/kube-apiserver/",
+        "/kube-controller-manager/",
+        "/kube-scheduler/",
+        "/kubelet/",
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "Rook-Ceph Group",
       groupName: "Rook-Ceph",
       matchDatasources: ["docker"],
@@ -87,6 +101,15 @@
       groupName: "Spegel",
       matchDatasources: ["docker"],
       matchPackageNames: ["/spegel/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Talos Group",
+      groupName: "Talos",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/metal-installer/", "/talosctl/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
