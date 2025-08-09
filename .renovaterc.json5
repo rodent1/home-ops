@@ -11,6 +11,7 @@
     "github>rodent1/home-ops//.renovate/labels.json5",
     "github>rodent1/home-ops//.renovate/semanticCommits.json5",
     "github>rodent1/home-ops//.renovate/sources.json5",
+    "github>rodent1/home-ops//.renovate/talosFactory.json5",
     ":automergeBranch",
     ":disableRateLimiting",
     ":dependencyDashboard",
@@ -27,12 +28,12 @@
     "**/resources/**",
   ],
   flux: {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"]
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   "helm-values": {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"]
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   kubernetes: {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"]
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
 }
