@@ -53,6 +53,11 @@ machine:
     modules:
       - name: nbd
   kubelet:
+    extraMounts:
+      - destination: /var/mnt/local-hostpath
+        type: bind
+        source: /var/mnt/local-hostpath
+        options: ["bind", "rshared", "rw"]
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
@@ -173,11 +178,3 @@ cluster:
   serviceAccount:
     key: op://home-ops/talos/CLUSTER_SERVICEACCOUNT_KEY
   token: op://home-ops/talos/CLUSTER_TOKEN
----
-apiVersion: v1alpha1
-kind: UserVolumeConfig
-name: local-hostpath
-provisioning:
-  diskSelector:
-    match: disk.transport == 'sata'
-  minSize: 500GB
