@@ -16,4 +16,5 @@ customization:
     - talos.auditd.disabled=1             # Less security, faster puter
   systemExtensions:
     officialExtensions:
-      - siderolabs/amd-ucode
+      - siderolabs/i915
+      - siderolabs/intel-ucode
