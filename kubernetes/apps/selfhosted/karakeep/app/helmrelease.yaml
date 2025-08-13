@@ -78,10 +78,12 @@ spec:
           app:
             image:
               repository: docker.io/getmeili/meilisearch
-              tag: v1.17.0
+              tag: v1.17.1
+            args:
+              - /bin/meilisearch
+              - --experimental-dumpless-upgrade
             env:
               MEILI_NO_ANALYTICS: true
-              MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE: true
               MEILI_MASTER_KEY:
                 valueFrom:
                   secretKeyRef:
