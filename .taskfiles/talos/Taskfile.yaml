@@ -2,81 +2,121 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
-# Taskfile used to manage certain VolSync tasks for a given application, limitations are as followed.
-#   1. Fluxtomization, HelmRelease, PVC, ReplicationSource all have the same name (e.g. plex)
-#   2. ReplicationSource and ReplicationDestination are a Restic repository
-#   3. Each application only has one PVC that is being replicated
-
 vars:
-  VOLSYNC_RESOURCES_DIR: '{{.ROOT_DIR}}/.taskfiles/volsync/resources'
+  TALOS_SCHEMATIC_FILES: ['{{.TALOS_DIR}}/schematic.controlplane.yaml', '{{.TALOS_DIR}}/schematic.worker.yaml']
 
 tasks:
 
-  state-*:
-    desc: Suspend or resume Volsync
-    cmds:
-      - flux --namespace volsync-system {{.STATE}} kustomization volsync
-      - flux --namespace volsync-system {{.STATE}} helmrelease volsync
-      - kubectl --namespace volsync-system scale deployment volsync --replicas {{if eq .STATE "suspend"}}0{{else}}1{{end}}
+  apply-node:
+    desc: Apply Talos config to a node [NODE=required] [MODE=auto]
+    cmd: |
+      minijinja-cli --define hostname={{.NODE}} {{.TALOS_DIR}}/controlplane.yaml.j2 \
+        | op inject \
+        | talosctl --nodes {{.NODE}} apply-config --mode {{.MODE}} --file /dev/stdin
     vars:
-      STATE: '{{index .MATCH 0}}'
-    preconditions:
-      - '[[ "{{.STATE}}" == "suspend" || "{{.STATE}}" == "resume" ]]'
-      - which flux kubectl
-
-  snapshot:
-    desc: Snapshot an app [NS=default] [APP=required]
-    cmds:
-      - kubectl --namespace {{.NS}} patch replicationsources {{.APP}} --type merge -p '{"spec":{"trigger":{"manual":"{{now | unixEpoch}}"}}}'
-      - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
-      - kubectl --namespace {{.NS}} wait job/{{.JOB}} --for=condition=complete --timeout=120m
-    vars:
-      NS: '{{.NS | default "default"}}'
-      JOB: volsync-src-{{.APP}}
+      MODE: '{{.MODE | default "auto"}}'
     requires:
-      vars: [APP]
+      vars: [NODE]
     preconditions:
-      - kubectl --namespace {{.NS}} get replicationsources {{.APP}}
-      - which kubectl
+      - talosctl --nodes {{.NODE}} get machineconfig
+      - which minijinja-cli talosctl op
 
-  restore:
-    desc: Restore an app [NS=default] [APP=required] [PREVIOUS=required]
-    cmds:
-      # Suspend
-      - flux --namespace {{.NS}} suspend kustomization {{.APP}}
-      - flux --namespace {{.NS}} suspend helmrelease {{.APP}}
-      - kubectl --namespace {{.NS}} scale {{.CONTROLLER}}/{{.APP}} --replicas 0
-      - kubectl --namespace {{.NS}} wait pod --for=delete --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m
-      # Restore
-      - minijinja-cli {{.VOLSYNC_RESOURCES_DIR}}/replicationdestination.yaml.j2 | kubectl apply --server-side --filename -
-      - until kubectl --namespace {{.NS}} get job/volsync-dst-{{.APP}}-manual &>/dev/null; do sleep 5; done
-      - kubectl --namespace {{.NS}} wait job/volsync-dst-{{.APP}}-manual --for=condition=complete --timeout=120m
-      - kubectl --namespace {{.NS}} delete replicationdestination {{.APP}}-manual
-      # Resume
-      - flux --namespace {{.NS}} resume kustomization {{.APP}}
-      - flux --namespace {{.NS}} resume helmrelease {{.APP}}
-      - flux --namespace {{.NS}} reconcile helmrelease {{.APP}} --force
-      - kubectl --namespace {{.NS}} wait pod --for=condition=ready --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m
+  upgrade-node:
+    desc: Upgrade Talos on a single node [NODE=required] [MODE=powercycle]
+    cmd: talosctl --nodes {{.NODE}} upgrade --image="{{.FACTORY_IMAGE}}" --reboot-mode={{.MODE}} --timeout=10m
     vars:
-      NS: '{{.NS | default "default"}}'
-      CONTROLLER:
-        sh: kubectl --namespace {{.NS}} get deployment {{.APP}} &>/dev/null && echo deployment || echo statefulset
-    env:
-      NS: '{{.NS}}'
-      APP: '{{.APP}}'
-      PREVIOUS: '{{.PREVIOUS}}'
-      CLAIM:
-        sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.sourcePVC}'
-      ACCESS_MODES:
-        sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.kopia.accessModes}'
-      STORAGE_CLASS_NAME:
-        sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.kopia.storageClassName}'
-      PUID:
-        sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.kopia.moverSecurityContext.runAsUser}'
-      PGID:
-        sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.kopia.moverSecurityContext.runAsGroup}'
+      MODE: '{{.MODE | default "powercycle"}}'
+      FACTORY_IMAGE:
+        sh: yq --exit-status '.machine.install.image' {{.TALOS_DIR}}/controlplane.yaml.j2
     requires:
-      vars: [APP, PREVIOUS]
+      vars: [NODE]
     preconditions:
-      - test -f {{.VOLSYNC_RESOURCES_DIR}}/replicationdestination.yaml.j2
-      - which flux kubectl minijinja-cli
+      - talosctl --nodes {{.NODE}} get machineconfig
+      - test -f {{.TALOS_DIR}}/controlplane.yaml.j2
+      - which talosctl yq
+
+  upgrade-k8s:
+    desc: Upgrade Kubernetes across the whole cluster
+    cmd: talosctl --nodes {{.NODE}} upgrade-k8s --to {{.VERSION}}
+    vars:
+      NODE:
+        sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
+    requires:
+      vars: [VERSION]
+    preconditions:
+      - talosctl --nodes {{.NODE}} get machineconfig
+      - which jq talosctl
+
+  reboot-node:
+    desc: Reboot Talos on a single node [NODE=required] [MODE=powercycle]
+    cmd: talosctl --nodes {{.NODE}} reboot --mode={{.MODE}}
+    vars:
+      MODE: '{{.MODE | default "powercycle"}}'
+    requires:
+      vars: [NODE]
+    preconditions:
+      - talosctl --nodes {{.NODE}} get machineconfig
+      - which talosctl
+
+  shutdown-cluster:
+    desc: Shutdown Talos across the whole cluster
+    prompt: Shutdown the Talos cluster ... continue?
+    cmd: talosctl shutdown --nodes {{.NODES}} --force
+    vars:
+      NODES:
+        sh: talosctl config info --output json | jq --exit-status --join-output '[.nodes[]] | join(",")'
+    preconditions:
+      - talosctl --nodes {{.NODES}} get machineconfig
+      - which jq talosctl
+
+  reset-node:
+    desc: Reset Talos on a single node [NODE=required]
+    prompt: Reset Talos node '{{.NODE}}' ... continue?
+    cmd: talosctl reset --nodes {{.NODE}} --graceful=false
+    requires:
+      vars: [NODE]
+    preconditions:
+      - talosctl --nodes {{.NODE}} get machineconfig
+      - which talosctl
+
+  reset-cluster:
+    desc: Reset Talos across the whole cluster
+    prompt: Reset the Talos cluster ... continue?
+    cmd: talosctl reset --nodes {{.NODES}} --graceful=false
+    vars:
+      NODES:
+        sh: talosctl config info --output json | jq --exit-status --join-output '[.nodes[]] | join(",")'
+    preconditions:
+      - talosctl --nodes {{.NODES}} get machineconfig
+      - which jq talosctl
+
+  generate-kubeconfig:
+    desc: Generate the kubeconfig for a Talos cluster
+    cmd: talosctl kubeconfig --nodes {{.NODE}} --force --force-context-name main {{.ROOT_DIR}}
+    vars:
+      NODE:
+        sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
+    preconditions:
+      - talosctl --nodes {{.NODE}} get machineconfig
+      - which jq talosctl
+
+  generate-schematic:
+    desc: Generate the Schematic ID for a Talos cluster [VERSION=required]
+    cmds:
+      - for: { var: TALOS_SCHEMATIC_FILES, as: TALOS_SCHEMATIC_FILE }
+        cmd: |
+          SCHEMATIC=$(curl --silent -X POST --data-binary @{{.TALOS_SCHEMATIC_FILE}} https://factory.talos.dev/schematics | jq --raw-output '.id')
+          case "{{.TALOS_SCHEMATIC_FILE}}" in
+            *controlplane*) KIND="Controlplane" ;;
+            *worker*)       KIND="Worker" ;;
+          esac
+          echo "Talos ${KIND} Schematic: ${SCHEMATIC}"
+          if [[ ! -f {{.TALOS_DIR}}/talos-{{.VERSION}}-${SCHEMATIC:0:8}.iso ]]; then
+              curl -o {{.TALOS_DIR}}/talos-{{.VERSION}}-${SCHEMATIC:0:8}.iso \
+                "https://factory.talos.dev/image/${SCHEMATIC}/{{.VERSION}}/metal-amd64.iso"
+          fi
+    requires:
+      vars: [VERSION]
+    preconditions:
+      - test -f {{.TALOS_SCHEMATIC_FILE}}
+      - which curl jq
