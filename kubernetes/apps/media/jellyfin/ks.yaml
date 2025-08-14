@@ -23,6 +23,7 @@ spec:
     substitute:
       APP: *app
       GATUS_PATH: /web/index.html
+      VOLSYNC_CAPACITY: 100Gi
   prune: true
   retryInterval: 2m
   sourceRef:
