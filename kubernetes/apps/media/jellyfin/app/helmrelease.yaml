@@ -89,10 +89,6 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /config
-      config-cache:
-        existingClaim: "{{ .Release.Name }}-metadata"
-        globalMounts:
-          - path: /config/metadata
       media:
         type: nfs
         server: tank.internal
