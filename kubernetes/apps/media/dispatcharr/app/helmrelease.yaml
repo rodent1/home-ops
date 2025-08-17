@@ -21,23 +21,12 @@ spec:
       dispatcharr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17
-            envFrom: &envFrom
-              - secretRef:
-                  name: dispatcharr-secret
         containers:
           app:
             image:
               repository: ghcr.io/dispatcharr/dispatcharr
               tag: 0.7.1-20250814174739
-            envFrom: *envFrom
             env:
-              REDIS_HOST: redis
-              CELERY_BROKER_URL: redis://dispatcharr-redis.media.svc.cluster.local:6379/0
               DISPATCHARR_LOG_LEVEL: info
             probes:
               liveness:
@@ -55,29 +44,12 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 1Gi
-      redis:
-        containers:
-          redis:
-            image:
-              repository: docker.io/valkey/valkey
-              tag: 8.1.3
-            resources:
-              requests:
-                cpu: 5m
-                memory: 32Mi
-              limits:
-                memory: 128Mi
     service:
       app:
         controller: dispatcharr
         ports:
           http:
             port: &port 9191
-      redis:
-        controller: redis
-        ports:
-          http:
-            port: 6379
     route:
       app:
         hostnames:
