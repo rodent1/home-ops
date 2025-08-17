@@ -2,44 +2,44 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      matchUpdateTypes: [ "major" ],
+      matchUpdateTypes: ["major"],
       semanticCommitType: "feat",
       commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}})!:",
       commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      matchUpdateTypes: [ "minor" ],
+      matchUpdateTypes: ["minor"],
       semanticCommitType: "feat",
       commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      matchUpdateTypes: [ "patch" ],
+      matchUpdateTypes: ["patch"],
       semanticCommitType: "fix",
       commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      matchUpdateTypes: [ "digest" ],
+      matchUpdateTypes: ["digest"],
       semanticCommitType: "chore",
       commitMessageExtra: "( {{currentDigestShort}} → {{newDigestShort}} )",
     },
     {
-      matchDatasources: [ "docker" ],
+      matchDatasources: ["docker"],
       semanticCommitScope: "container",
       commitMessageTopic: "image {{depName}}",
     },
     {
-      matchDatasources: [ "helm" ],
+      matchDatasources: ["helm"],
       semanticCommitScope: "helm",
       commitMessageTopic: "chart {{depName}}",
     },
     {
-      matchManagers: [ "github-actions" ],
+      matchManagers: ["github-actions"],
       semanticCommitType: "ci",
       semanticCommitScope: "github-action",
       commitMessageTopic: "action {{depName}}",
     },
     {
-      matchDatasources: [ "github-releases" ],
+      matchDatasources: ["github-releases"],
       semanticCommitScope: "github-release",
       commitMessageTopic: "release {{depName}}",
     },
