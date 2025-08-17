@@ -1,10 +1,11 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.11/website/content/v1.11/schemas/config.schema.json
 version: v1alpha1
 machine:
   ca:
     crt: op://home-ops/talos/MACHINE_CA_CRT
+    {% if machinetype == 'controlplane' %}
     key: op://home-ops/talos/MACHINE_CA_KEY
+    {% endif %}
   certSANs:
     - 127.0.0.1
     - 10.1.1.30
@@ -18,6 +19,7 @@ machine:
     kubePrism:
       enabled: true
       port: 7445
+    {% if machinetype == 'controlplane' %}
     kubernetesTalosAPIAccess:
       allowedKubernetesNamespaces:
         - actions-runner-system
@@ -25,6 +27,7 @@ machine:
       allowedRoles:
         - os:admin
       enabled: true
+    {% endif %}
     rbac: true
     stableHostname: true
   files:
@@ -45,19 +48,11 @@ machine:
         nconnect=16
         noatime=True
   install:
-    diskSelector:
-      model: SanDisk SD9TB8*
-    image: factory.talos.dev/metal-installer/66e414dd8eb469259f58d6903f7270b6b39c7acda84cc02a164903ebd46ae70a:v1.11.0-beta.2
     wipe: false
   kernel:
     modules:
       - name: nbd
   kubelet:
-    extraMounts:
-      - destination: /var/mnt/local-hostpath
-        type: bind
-        source: /var/mnt/local-hostpath
-        options: ["bind", "rshared", "rw"]
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
@@ -68,18 +63,8 @@ machine:
     nodeIP:
       validSubnets:
         - 10.1.1.0/24
-  network:
-    hostname: "{{ hostname }}"
-    interfaces:
-      - interface: eth0
-        mtu: 9000
-        dhcp: true
-        vip:
-          ip: 10.1.1.30
   nodeLabels:
-    intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: main
-    topology.kubernetes.io/zone: m
   sysctls:
     fs.inotify.max_user_instances: "8192"
     fs.inotify.max_user_watches: "1048576"
@@ -100,8 +85,27 @@ machine:
     user.max_user_namespaces: "11255"
     vm.nr_hugepages: "1024"
   token: op://home-ops/talos/MACHINE_TOKEN
-  type: controlplane
 cluster:
+  ca:
+    crt: op://home-ops/talos/CLUSTER_CA_CRT
+    {% if machinetype == 'controlplane' %}
+    key: op://home-ops/talos/CLUSTER_CA_KEY
+    {% endif %}
+  clusterName: main
+  controlPlane:
+    endpoint: https://10.1.1.30:6443
+  id: op://home-ops/talos/CLUSTER_ID
+  network:
+    cni:
+      name: none
+    dnsDomain: cluster.local
+    podSubnets:
+      - 10.42.0.0/16
+    serviceSubnets:
+      - 10.43.0.0/16
+  secret: op://home-ops/talos/CLUSTER_SECRET
+  token: op://home-ops/talos/CLUSTER_TOKEN
+  {% if machinetype == 'controlplane' %}
   aggregatorCA:
     crt: op://home-ops/talos/CLUSTER_AGGREGATORCA_CRT
     key: op://home-ops/talos/CLUSTER_AGGREGATORCA_KEY
@@ -121,12 +125,6 @@ cluster:
       feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1alpha1=true
     image: registry.k8s.io/kube-apiserver:v1.33.4
-  ca:
-    crt: op://home-ops/talos/CLUSTER_CA_CRT
-    key: op://home-ops/talos/CLUSTER_CA_KEY
-  clusterName: main
-  controlPlane:
-    endpoint: https://10.1.1.30:6443
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
@@ -141,15 +139,6 @@ cluster:
       key: op://home-ops/talos/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
-  id: op://home-ops/talos/CLUSTER_ID
-  network:
-    cni:
-      name: none
-    dnsDomain: cluster.local
-    podSubnets:
-      - 10.42.0.0/16
-    serviceSubnets:
-      - 10.43.0.0/16
   proxy:
     disabled: true
   scheduler:
@@ -173,8 +162,7 @@ cluster:
     extraArgs:
       bind-address: 0.0.0.0
     image: registry.k8s.io/kube-scheduler:v1.33.4
-  secret: op://home-ops/talos/CLUSTER_SECRET
   secretboxEncryptionSecret: op://home-ops/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
     key: op://home-ops/talos/CLUSTER_SERVICEACCOUNT_KEY
-  token: op://home-ops/talos/CLUSTER_TOKEN
+  {% endif %}

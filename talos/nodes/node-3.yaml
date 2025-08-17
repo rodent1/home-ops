@@ -1,0 +1,18 @@
+---
+machine:
+  install:
+    diskSelector:
+      model: SanDisk SD9TB8*
+    image: factory.talos.dev/metal-installer/66e414dd8eb469259f58d6903f7270b6b39c7acda84cc02a164903ebd46ae70a:v1.11.0-beta.2
+  network:
+    hostname: node-3
+    interfaces:
+      - interface: eth0
+        mtu: 9000
+        dhcp: true
+        vip:
+          ip: 10.1.1.30
+  nodeLabels:
+    intel.feature.node.kubernetes.io/gpu: "true"
+    topology.kubernetes.io/zone: m
+  type: controlplane
