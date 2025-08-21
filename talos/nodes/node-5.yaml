@@ -3,7 +3,7 @@ machine:
   install:
     diskSelector:
       model: KINGSTON SA400S3
-    image: factory.talos.dev/metal-installer/4c30b0249239cb74d8f2e353686db02e30d65870d851ba377b3304c9b5d1ff17:v1.11.0-beta.2
+    image: factory.talos.dev/metal-installer/4c30b0249239cb74d8f2e353686db02e30d65870d851ba377b3304c9b5d1ff17:v1.11.0-rc.0
   network:
     hostname: node-5
     interfaces:
