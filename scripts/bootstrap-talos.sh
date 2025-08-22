@@ -118,9 +118,7 @@ function apply_namespaces() {
         log error "Directory does not exist" "directory" "${apps_dir}"
     fi
 
-    for app in "${apps_dir}"/*/; do
-        namespace=$(basename "${app}")
-
+    find "${apps_dir}" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | while IFS= read -r namespace; do
         if kubectl get namespace "${namespace}" &>/dev/null; then
             log info "Namespace is up-to-date" "namespace" "${namespace}"
             continue
@@ -166,7 +164,7 @@ function apply_crds() {
         log fatal "File does not exist" "file" "${helmfile_file}"
     fi
 
-    if ! crds=$(helmfile --file "${helmfile_file}" template --include-crds --quiet | yq ea --exit-status 'select(.kind == "CustomResourceDefinition")' -) || [[ -z "${crds}" ]]; then
+    if ! crds=$(helmfile --file "${helmfile_file}" template --include-crds --no-hooks --quiet | yq ea --exit-status 'select(.kind == "CustomResourceDefinition")' -) || [[ -z "${crds}" ]]; then
         log fatal "Failed to render CRDs from Helmfile" "file" "${helmfile_file}"
     fi
 
