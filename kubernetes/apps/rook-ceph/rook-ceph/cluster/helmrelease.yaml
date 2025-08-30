@@ -86,7 +86,8 @@ spec:
           reclaimPolicy: Delete
           allowVolumeExpansion: true
           volumeBindingMode: Immediate
-          mountOptions: ["discard"]
+          mountOptions:
+            - "discard"
           parameters:
             # TODO: Consider enabling compression on cluster rebuild
             # compression_mode: aggressive

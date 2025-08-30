@@ -5,7 +5,8 @@ kind: HTTPRoute
 metadata:
   name: authentik
 spec:
-  hostnames: ["auth.rodent.cc"]
+  hostnames:
+    - "auth.rodent.cc"
   parentRefs:
     - name: external
       namespace: kube-system

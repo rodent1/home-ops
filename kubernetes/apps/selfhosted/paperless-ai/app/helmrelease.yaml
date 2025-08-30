@@ -41,7 +41,8 @@ spec:
             port: &port 3000
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.rodent.cc"]
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
         parentRefs:
           - name: internal
             namespace: kube-system

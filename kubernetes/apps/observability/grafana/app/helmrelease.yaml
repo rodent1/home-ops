@@ -74,9 +74,9 @@ spec:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
-          - { name: Alertmanager, orgId: 1 }
-          - { name: Loki, orgId: 1 }
-          - { name: Prometheus, orgId: 1 }
+          - {name: Alertmanager, orgId: 1}
+          - {name: Loki, orgId: 1}
+          - {name: Prometheus, orgId: 1}
         datasources:
           - name: Prometheus
             type: prometheus
@@ -137,13 +137,13 @@ spec:
           gnetId: 17457
           revision: 6
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
+            - {name: DS_PROMETHEUS, value: Prometheus}
         envoy:
-           # renovate: depName="Envoy Proxy Monitoring gRPC"
-           gnetId: 23239
-           revision: 1
-           datasource:
-             - { name: DS_AFRANET_PROMETHEUS, value: Prometheus }
+          # renovate: depName="Envoy Proxy Monitoring gRPC"
+          gnetId: 23239
+          revision: 1
+          datasource:
+            - {name: DS_AFRANET_PROMETHEUS, value: Prometheus}
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
@@ -154,7 +154,7 @@ spec:
           gnetId: 21640
           revision: 4
           datasource:
-            - { name: DS_METRICS, value: Prometheus }
+            - {name: DS_METRICS, value: Prometheus}
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
           gnetId: 15761
@@ -205,7 +205,7 @@ spec:
           gnetId: 22604
           revision: 2
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
+            - {name: DS_PROMETHEUS, value: Prometheus}
         unifi-insights:
           # renovate: depName="UniFi-Poller: Client Insights - Prometheus"
           gnetId: 11315
@@ -231,14 +231,14 @@ spec:
           gnetId: 18817
           revision: 1
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
+            - {name: DS_PROMETHEUS, value: Prometheus}
         volsync:
           # renovate: depName="VolSync Dashboard"
           gnetId: 21356
           revision: 3
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
-            - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
+            - {name: DS_PROMETHEUS, value: Prometheus}
+            - {name: VAR_REPLICATIONDESTNAME, value: .*-dst}
         zfs:
           # renovate: depName="ZFS"
           gnetId: 7845
@@ -273,7 +273,8 @@ spec:
     route:
       main:
         enabled: true
-        hostnames: ["{{ .Release.Name }}.rodent.cc"]
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
         parentRefs:
           - name: internal
             namespace: kube-system

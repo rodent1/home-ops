@@ -41,7 +41,8 @@ spec:
       route:
         main:
           enabled: true
-          hostnames: ["alertmanager.rodent.cc"]
+          hostnames:
+            - "alertmanager.rodent.cc"
           parentRefs:
             - name: internal
               namespace: kube-system
@@ -69,7 +70,8 @@ spec:
       route:
         main:
           enabled: true
-          hostnames: ["prometheus.rodent.cc"]
+          hostnames:
+            - "prometheus.rodent.cc"
           parentRefs:
             - name: internal
               namespace: kube-system
@@ -112,7 +114,8 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              sourceLabels:
+                - "__meta_kubernetes_pod_node_name"
               targetLabel: kubernetes_node
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
@@ -127,7 +130,8 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              sourceLabels:
+                - "__meta_kubernetes_pod_node_name"
               targetLabel: kubernetes_node
     grafana:
       enabled: false

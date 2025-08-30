@@ -35,7 +35,8 @@ spec:
             envFrom:
               - secretRef:
                   name: cross-seed-secret
-            args: ["daemon"]
+            args:
+              - "daemon"
             probes:
               liveness: &probes
                 enabled: true
@@ -52,7 +53,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m

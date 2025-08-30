@@ -16,10 +16,15 @@ metadata:
 spec:
   matchConstraints:
     resourceRules:
-      - apiGroups: ["batch"]
-        apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
-        resources: ["jobs"]
+      - apiGroups:
+          - "batch"
+        apiVersions:
+          - "v1"
+        operations:
+          - "CREATE"
+          - "UPDATE"
+        resources:
+          - "jobs"
   matchConditions:
     - name: has-volsync-job-name-prefix
       expression: >
@@ -65,10 +70,15 @@ metadata:
 spec:
   matchConstraints:
     resourceRules:
-      - apiGroups: ["batch"]
-        apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
-        resources: ["jobs"]
+      - apiGroups:
+          - "batch"
+        apiVersions:
+          - "v1"
+        operations:
+          - "CREATE"
+          - "UPDATE"
+        resources:
+          - "jobs"
   matchConditions:
     - name: has-volsync-job-name-prefix
       expression: >
@@ -84,7 +94,7 @@ spec:
   mutations:
     - patchType: JSONPatch
       jsonPatch:
-        expression: >
+        expression: >-
           [
             JSONPatch{
               op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",

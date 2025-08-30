@@ -5,7 +5,8 @@ kind: HTTPRoute
 metadata:
   name: rook-ceph-dashboard
 spec:
-  hostnames: ["rook.rodent.cc"]
+  hostnames:
+    - "rook.rodent.cc"
   parentRefs:
     - name: internal
       namespace: kube-system

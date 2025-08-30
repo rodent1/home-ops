@@ -17,7 +17,8 @@ metadata:
   name: l2-policy
 spec:
   loadBalancerIPs: true
-  interfaces: ["^eth.*"]
+  interfaces:
+    - "^eth.*"
   nodeSelector:
     matchLabels:
       kubernetes.io/os: linux
@@ -33,10 +34,11 @@ spec:
   advertisements:
     - advertisementType: Service
       service:
-        addresses: ["LoadBalancerIP"]
+        addresses:
+          - "LoadBalancerIP"
       selector:
         matchExpressions:
-          - { key: somekey, operator: NotIn, values: ["never-used-value"] }
+          - {key: somekey, operator: NotIn, values: ["never-used-value"]}
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgppeerconfig_v2.json
 apiVersion: cilium.io/v2

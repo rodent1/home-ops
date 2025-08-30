@@ -47,7 +47,7 @@ spec:
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
@@ -82,7 +82,8 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.rodent.cc"]
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
         parentRefs:
           - name: internal
             namespace: kube-system

@@ -35,11 +35,12 @@ spec:
             envFrom:
               - secretRef:
                   name: recyclarr-secret
-            args: ["sync"]
+            args:
+              - "sync"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
