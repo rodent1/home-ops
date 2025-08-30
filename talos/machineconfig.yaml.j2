@@ -123,7 +123,7 @@ cluster:
     extraArgs:
       enable-aggregator-routing: "true"
       feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
-      runtime-config: admissionregistration.k8s.io/v1alpha1=true
+      runtime-config: admissionregistration.k8s.io/v1beta1=true
     image: registry.k8s.io/kube-apiserver:v1.34.0
   controllerManager:
     extraArgs:
@@ -141,6 +141,7 @@ cluster:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
     disabled: true
+    image: registry.k8s.io/kube-proxy:v1.34.0
   scheduler:
     config:
       apiVersion: kubescheduler.config.k8s.io/v1
@@ -166,3 +167,8 @@ cluster:
   serviceAccount:
     key: op://home-ops/talos/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 5m

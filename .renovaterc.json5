@@ -9,9 +9,8 @@
     "github>rodent1/home-ops//.renovate/grafanaDashboards.json5",
     "github>rodent1/home-ops//.renovate/groups.json5",
     "github>rodent1/home-ops//.renovate/labels.json5",
-    "github>rodent1/home-ops//.renovate/ociChartGroups.json5",
-    "github>rodent1/home-ops//.renovate/semanticCommits.json5",
     "github>rodent1/home-ops//.renovate/overrides.json5",
+    "github>rodent1/home-ops//.renovate/semanticCommits.json5",
     ":automergeBranch",
     ":disableRateLimiting",
     ":dependencyDashboard",
@@ -28,9 +27,6 @@
     "**/resources/**",
   ],
   flux: {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
-  },
-  "helm-values": {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   kubernetes: {

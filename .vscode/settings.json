@@ -1,5 +1,4 @@
 {
-  "editor.formatOnSave": false,
   "files.associations": {
     "**/*.json5": "json5"
   },
@@ -10,5 +9,11 @@
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"
+  },
+  "[json5]": {
+    "editor.formatOnSave": false
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "bluebrown.yamlfmt"
   }
 }
