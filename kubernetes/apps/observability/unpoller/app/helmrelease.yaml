@@ -8,7 +8,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: app-template
+    name: unpoller
   install:
     remediation:
       retries: -1
@@ -32,12 +32,20 @@ spec:
               UP_INFLUXDB_DISABLE: true
             envFrom:
               - secretRef:
-                  name: unpoller-secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
-              readiness:
-                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -56,7 +64,7 @@ spec:
       app:
         ports:
           http:
-            port: 80
+            port: *port
     serviceMonitor:
       app:
         endpoints:

@@ -7,8 +7,8 @@ metadata:
 spec:
   route:
     groupBy:
-      - "alertname"
-      - "job"
+      - alertname
+      - job
     groupInterval: 10m
     groupWait: 1m
     receiver: pushover
@@ -34,8 +34,8 @@ spec:
             matchType: =
   inhibitRules:
     - equal:
-        - "alertname"
-        - "namespace"
+        - alertname
+        - namespace
       sourceMatch:
         - name: severity
           value: critical
@@ -78,8 +78,7 @@ spec:
           sendResolved: true
           sound: gamelan
           title: >-
-            [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}]
-            {{ .CommonLabels.alertname }}
+            [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
           ttl: 86400s
           token:
             name: *secret

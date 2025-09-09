@@ -8,7 +8,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: app-template
+    name: system-upgrade-controller
   install:
     remediation:
       retries: -1
@@ -51,7 +51,7 @@ spec:
         spec:
           spec:
             roles:
-              - "os:admin"
+              - os:admin
     rbac:
       bindings:
         system-upgrade-controller:
