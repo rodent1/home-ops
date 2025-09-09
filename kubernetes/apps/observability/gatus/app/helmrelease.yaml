@@ -91,8 +91,8 @@ spec:
           - "{{ .Release.Name }}.rodent.cc"
           - status.rodent.cc
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
     rbac:
       roles:

@@ -44,8 +44,8 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.rodent.cc"
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: envoy-internal
+            namespace: network
             sectionName: https
     persistence:
       config:
