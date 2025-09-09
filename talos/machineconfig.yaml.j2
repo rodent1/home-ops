@@ -3,7 +3,7 @@ version: v1alpha1
 machine:
   ca:
     crt: op://home-ops/talos/MACHINE_CA_CRT
-    {% if machinetype == 'controlplane' %}
+    {% if ENV.IS_CONTROLLER %}
     key: op://home-ops/talos/MACHINE_CA_KEY
     {% endif %}
   certSANs:
@@ -19,7 +19,7 @@ machine:
     kubePrism:
       enabled: true
       port: 7445
-    {% if machinetype == 'controlplane' %}
+    {% if ENV.IS_CONTROLLER %}
     kubernetesTalosAPIAccess:
       allowedKubernetesNamespaces:
         - actions-runner-system
@@ -88,7 +88,7 @@ machine:
 cluster:
   ca:
     crt: op://home-ops/talos/CLUSTER_CA_CRT
-    {% if machinetype == 'controlplane' %}
+    {% if ENV.IS_CONTROLLER %}
     key: op://home-ops/talos/CLUSTER_CA_KEY
     {% endif %}
   clusterName: main
@@ -105,7 +105,7 @@ cluster:
       - 10.43.0.0/16
   secret: op://home-ops/talos/CLUSTER_SECRET
   token: op://home-ops/talos/CLUSTER_TOKEN
-  {% if machinetype == 'controlplane' %}
+  {% if ENV.IS_CONTROLLER %}
   aggregatorCA:
     crt: op://home-ops/talos/CLUSTER_AGGREGATORCA_CRT
     key: op://home-ops/talos/CLUSTER_AGGREGATORCA_KEY
@@ -167,3 +167,8 @@ cluster:
   serviceAccount:
     key: op://home-ops/talos/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 5m
