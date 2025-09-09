@@ -6,10 +6,10 @@ metadata:
   name: github-webhook
 spec:
   hostnames:
-    - "flux-webhook.rodent.cc"
+    - flux-webhook.rodent.cc
   parentRefs:
-    - name: external
-      namespace: kube-system
+    - name: envoy-external
+      namespace: network
       sectionName: https
   rules:
     - backendRefs:
