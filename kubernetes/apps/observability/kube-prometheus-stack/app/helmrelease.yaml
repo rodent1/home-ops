@@ -1,18 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: kube-prometheus-stack
-spec:
-  interval: 5m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 77.5.0
-  url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -31,18 +17,13 @@ spec:
     remediation:
       retries: 3
   values:
-    crds:
-      enabled: true
-      upgradeJob:
-        enabled: true
-        forceConflicts: true
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
       route:
         main:
           enabled: true
           hostnames:
-            - "alertmanager.rodent.cc"
+            - alertmanager.rodent.cc
           parentRefs:
             - name: internal
               namespace: kube-system
@@ -71,7 +52,7 @@ spec:
         main:
           enabled: true
           hostnames:
-            - "prometheus.rodent.cc"
+            - prometheus.rodent.cc
           parentRefs:
             - name: internal
               namespace: kube-system
@@ -80,7 +61,7 @@ spec:
         image:
           registry: docker.io
           repository: prompp/prompp
-          tag: 2.53.2-0.2.5
+          tag: 2.53.2-0.4.0
         securityContext:
           runAsNonRoot: true
           runAsUser: 64535
@@ -115,7 +96,7 @@ spec:
               regex: (.*)
               replacement: $1
               sourceLabels:
-                - "__meta_kubernetes_pod_node_name"
+                - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
@@ -131,7 +112,7 @@ spec:
               regex: (.*)
               replacement: $1
               sourceLabels:
-                - "__meta_kubernetes_pod_node_name"
+                - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
     grafana:
       enabled: false

@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   # App
   - ./helmrelease.yaml
+  - ./ocirepository.yaml

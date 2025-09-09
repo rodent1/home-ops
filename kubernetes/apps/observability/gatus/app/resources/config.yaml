@@ -1,20 +1,4 @@
 ---
-web:
-  port: ${GATUS_WEB_PORT}
-
-metrics: true
-
-ui:
-  title: Status | Gatus
-  header: Status
-  logo: https://avatars.githubusercontent.com/u/24843521
-  link: https://github.com/rodent1
-  buttons:
-    - name: Github
-      link: https://github.com/rodent1
-    - name: Homelab
-      link: https://github.com/rodent1/home-ops
-
 connectivity:
   checker:
     target: 1.1.1.1:53
@@ -29,3 +13,20 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 404"
+
+metrics: true
+
+ui:
+  title: Status | Gatus
+  header: Status
+  logo: https://avatars.githubusercontent.com/u/24843521
+  link: https://github.com/rodent1
+  buttons:
+    - name: Github
+      link: https://github.com/rodent1
+
+    - name: Homelab
+      link: https://github.com/rodent1/home-ops
+
+web:
+  port: ${GATUS_WEB_PORT}
