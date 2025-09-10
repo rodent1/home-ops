@@ -1,10 +1,11 @@
 ---
-originRequest:
-  originServerName: external.rodent.cc
-
 ingress:
   - hostname: rodent.cc
-    service: &service https://envoy-external.network.svc.cluster.local
+    originRequest:
+      originServerName: rodent.cc
+    service: https://envoy-external.network.svc.cluster.local:443
   - hostname: "*.rodent.cc"
-    service: *service
+    originRequest:
+      originServerName: external.rodent.cc
+    service: https://envoy-external.network.svc.cluster.local:443
   - service: http_status:404
