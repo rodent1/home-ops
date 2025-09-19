@@ -46,7 +46,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 3Gi
       valkey:
         containers:
           valkey:
