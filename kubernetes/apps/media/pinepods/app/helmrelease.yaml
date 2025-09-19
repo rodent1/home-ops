@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: madeofpendletonwool/pinepods
-              tag: 0.7.9@sha256:d722388502248c91e154377a8ac5299a2b0b4becda65d15cc7c00feee675a355
+              tag: 0.8.0@sha256:76be7d8245ba82f60e86af4055cae91c573a54f58046a787e85af31649ddf471
             env:
               # Basic Server Info
               SEARCH_API_URL: 'https://search.pinepods.online/api/search'
