@@ -46,7 +46,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 3Gi
+                memory: 1Gi
       valkey:
         containers:
           valkey:
@@ -85,15 +85,21 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /opt/pinepods
+        advancedMounts:
+          pinepods:
+            app:
+              - path: /opt/pinepods
       media:
         type: nfs
         server: tank.internal
         path: /mnt/tank/Media/Media/Pinepods
-        globalMounts:
-          - path: /opt/pinepods/downloads
+        advancedMounts:
+          pinepods:
+            app:
+              - path: /opt/pinepods/downloads
       cache:
         type: emptyDir
-        globalMounts:
-          - path: /pinepods/cache
+        advancedMounts:
+          pinepods:
+            app:
+              - path: /pinepods/cache
