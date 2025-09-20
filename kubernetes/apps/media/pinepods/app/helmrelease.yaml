@@ -38,6 +38,8 @@ spec:
               # Basic Server Info
               SEARCH_API_URL: 'https://search.pinepods.online/api/search'
               PEOPLE_API_URL: 'https://people.pinepods.online'
+              HOSTNAME: "https://pinepods.rodent.cc"
+              TZ: Europe/Oslo
               # Valkey Settings
               VALKEY_HOST: pinepods-valkey
               VALKEY_PORT: 6379
