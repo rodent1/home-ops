@@ -41,7 +41,7 @@ spec:
               HOSTNAME: "https://pinepods.rodent.cc"
               TZ: Europe/Oslo
               # Valkey Settings
-              VALKEY_HOST: pinepods-valkey
+              VALKEY_HOST: dragonfly.database.svc.cluster.local
               VALKEY_PORT: 6379
             envFrom: *envFrom
             resources:
@@ -49,29 +49,12 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-      valkey:
-        containers:
-          valkey:
-            image:
-              repository: docker.io/valkey/valkey
-              tag: 8.1.3
-            resources:
-              requests:
-                cpu: 5m
-                memory: 32Mi
-              limits:
-                memory: 128Mi
     service:
       server:
         controller: pinepods
         ports:
           http:
             port: &port 8040
-      valkey:
-        controller: valkey
-        ports:
-          http:
-            port: 6379
     route:
       app:
         hostnames:
@@ -87,21 +70,15 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        advancedMounts:
-          pinepods:
-            app:
-              - path: /opt/pinepods
+        globalMounts:
+          - path: /opt/pinepods
       media:
         type: nfs
         server: tank.internal
         path: /mnt/tank/Media/Media/Pinepods
-        advancedMounts:
-          pinepods:
-            app:
-              - path: /opt/pinepods/downloads
+        globalMounts:
+          - path: /opt/pinepods/downloads
       cache:
         type: emptyDir
-        advancedMounts:
-          pinepods:
-            app:
-              - path: /pinepods/cache
+        globalMounts:
+          - path: /pinepods/cache
