@@ -32,8 +32,8 @@ spec:
               NO_AUTOUPDATE: true
               TUNNEL_METRICS: 0.0.0.0:8080
               TUNNEL_ORIGIN_ENABLE_HTTP2: true
-              # TUNNEL_POST_QUANTUM: true
-              TUNNEL_TRANSPORT_PROTOCOL: http2 # quic
+              TUNNEL_POST_QUANTUM: true # disable when using http2
+              TUNNEL_TRANSPORT_PROTOCOL: quic # http2
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -76,11 +76,24 @@ spec:
       app:
         endpoints:
           - port: http
+    configMaps:
+      config:
+        data:
+          config.yaml: |-
+            ingress:
+              - hostname: rodent.cc
+                originRequest:
+                  originServerName: rodent.cc
+                service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
+              - hostname: "*.rodent.cc"
+                originRequest:
+                  originServerName: external.rodent.cc
+                service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
+              - service: http_status:404
     persistence:
       config-file:
         type: configMap
-        name: cloudflare-tunnel-configmap
+        identifier: config
         globalMounts:
           - path: /etc/cloudflared/config.yaml
             subPath: config.yaml
-            readOnly: true
