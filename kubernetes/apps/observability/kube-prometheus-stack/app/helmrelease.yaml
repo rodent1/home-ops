@@ -25,8 +25,8 @@ spec:
           hostnames:
             - alertmanager.rodent.cc
           parentRefs:
-            - name: internal
-              namespace: kube-system
+            - name: envoy-internal
+              namespace: network
               sectionName: https
       alertmanagerSpec:
         alertmanagerConfiguration:
@@ -54,10 +54,11 @@ spec:
           hostnames:
             - prometheus.rodent.cc
           parentRefs:
-            - name: internal
-              namespace: kube-system
+            - name: envoy-internal
+              namespace: network
               sectionName: https
       prometheusSpec:
+        externalUrl: https://prometheus.rodent.cc
         image:
           registry: docker.io
           repository: prompp/prompp

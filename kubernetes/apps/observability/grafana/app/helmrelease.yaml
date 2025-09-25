@@ -17,28 +17,16 @@ spec:
     remediation:
       retries: 3
   values:
-    extraInitContainers:
-      - name: 01-init-db
-        image: ghcr.io/home-operations/postgres-init:17
-        envFrom:
-          - secretRef:
-              name: &secret grafana-admin-secret
     deploymentStrategy:
       type: Recreate
     admin:
-      existingSecret: *secret
+      existingSecret: grafana-admin-secret
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SERVER_ROOT_URL: https://grafana.rodent.cc
-      GF_AUTH_OAUTH_AUTO_LOGIN: "false"
-      # Database
-      GF_DATABASE_SSL_MODE: disable
-      GF_DATABASE_TYPE: postgres
-    envFromSecrets:
-      - name: *secret
     grafana.ini:
       analytics:
         check_for_updates: false
@@ -49,11 +37,6 @@ spec:
         org_id: 1
         org_name: Main Org.
         org_role: Viewer
-      auth.generic_oauth:
-        enabled: true
-        name: OAuth
-        scopes: openid email profile offline_access
-        role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
       news:
         news_feed_enabled: false
     datasources:
@@ -124,12 +107,12 @@ spec:
           revision: 6
           datasource:
             - {name: DS_PROMETHEUS, value: Prometheus}
-        envoy:
-          # renovate: depName="Envoy Proxy Monitoring gRPC"
-          gnetId: 23239
-          revision: 1
-          datasource:
-            - {name: DS_AFRANET_PROMETHEUS, value: Prometheus}
+        envoy-gateway:
+          url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-gateway-global.json
+          datasource: Prometheus
+        envoy-proxy:
+          url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-proxy-global.json
+          datasource: Prometheus
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
@@ -207,12 +190,6 @@ spec:
           gnetId: 11312
           revision: 9
           datasource: Prometheus
-        unpackerr:
-          # renovate: depName="Unpackerr"
-          gnetId: 18817
-          revision: 1
-          datasource:
-            - {name: DS_PROMETHEUS, value: Prometheus}
         volsync:
           # renovate: depName="VolSync Dashboard"
           gnetId: 21356
