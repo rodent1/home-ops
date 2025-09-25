@@ -6,7 +6,7 @@ metadata:
   name: cluster
 spec:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-  version: v1.11.1
+  version: v1.11.2
   upgradePolicy:
     debug: true
     force: false
