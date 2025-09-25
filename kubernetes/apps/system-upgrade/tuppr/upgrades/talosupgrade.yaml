@@ -22,20 +22,20 @@ spec:
       kind: CephCluster
       expr: |-
         status.ceph.health in ['HEALTH_OK']
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/tuppr.home-operations.com/talosupgrade_v1alpha1.json
-apiVersion: tuppr.home-operations.com/v1alpha1
-kind: TalosUpgrade
-metadata:
-  name: talos-workers
-spec:
-  talos:
-    # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-    version: v1.11.2
-  policy:
-    rebootMode: powercycle
-  nodeSelector:
-    matchExpressions:
-      - key: node-role.kubernetes.io/control-plane
-        operator: DoesNotExist
+      # ---
+      # # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/tuppr.home-operations.com/talosupgrade_v1alpha1.json
+      # apiVersion: tuppr.home-operations.com/v1alpha1
+      # kind: TalosUpgrade
+      # metadata:
+      #   name: talos-workers
+      # spec:
+      #   talos:
+      #     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+      #     version: v1.11.2
+      #   policy:
+      #     rebootMode: powercycle
+      #   nodeSelector:
+      #     matchExpressions:
+      #       - key: node-role.kubernetes.io/control-plane
+      #         operator: DoesNotExist
 
