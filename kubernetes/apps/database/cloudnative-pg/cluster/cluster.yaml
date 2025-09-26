@@ -27,20 +27,20 @@ spec:
   monitoring:
     enablePodMonitor: true
   plugins:
-  - name: barman-cloud.cloudnative-pg.io
-    isWALArchiver: true
-    parameters:
-      barmanObjectName: &barmanObjectName cloudflare-r2
-  # Note: previousCluster needs to be set to the name of the previous
-  # cluster when recovering from an existing cnpg cluster
-  bootstrap:
-    recovery:
-      source: &previousCluster cnpg17-v6
-  # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  externalClusters:
-  - name: *previousCluster
-    plugin:
-      name: barman-cloud.cloudnative-pg.io
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
       parameters:
-        barmanObjectName: *barmanObjectName
-        serverName: *previousCluster
+        barmanObjectName: &barmanObjectName cloudflare-r2
+  # # Note: previousCluster needs to be set to the name of the previous
+  # # cluster when recovering from an existing cnpg cluster
+  # bootstrap:
+  #   recovery:
+  #     source: &previousCluster cnpg17-v8
+  # # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # externalClusters:
+  #   - name: *previousCluster
+  #     plugin:
+  #       name: barman-cloud.cloudnative-pg.io
+  #       parameters:
+  #         barmanObjectName: *barmanObjectName
+  #         serverName: *previousCluster

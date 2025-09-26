@@ -6,7 +6,9 @@ metadata:
   name: cloudflare-r2
 spec:
   configuration:
-    destinationPath: s3://cnpg/
+    data:
+      compression: bzip2
+    destinationPath: s3://cnpg/barman-v1
     endpointURL: https://d74d8dfc1170c5004e77bb7bb67219a6.r2.cloudflarestorage.com/
     s3Credentials:
       accessKeyId:
@@ -16,4 +18,6 @@ spec:
         name: cloudnative-pg-secret
         key: aws-secret-access-key
     wal:
-      compression: gzip
+      compression: bzip2
+      maxParallel: 4
+  retentionPolicy: 30d
