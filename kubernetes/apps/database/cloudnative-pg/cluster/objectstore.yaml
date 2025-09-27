@@ -3,29 +3,6 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: cloudflare-r2-old
-spec:
-  configuration:
-    data:
-      compression: bzip2
-    destinationPath: s3://cnpg/barman-v1
-    endpointURL: https://d74d8dfc1170c5004e77bb7bb67219a6.r2.cloudflarestorage.com/
-    s3Credentials:
-      accessKeyId:
-        name: cloudnative-pg-secret
-        key: aws-access-key-id
-      secretAccessKey:
-        name: cloudnative-pg-secret
-        key: aws-secret-access-key
-    wal:
-      compression: bzip2
-      maxParallel: 4
-  retentionPolicy: 30d
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/barmancloud.cnpg.io/objectstore_v1.json
-apiVersion: barmancloud.cnpg.io/v1
-kind: ObjectStore
-metadata:
   name: cloudflare-r2
 spec:
   configuration:
