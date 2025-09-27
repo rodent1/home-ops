@@ -20,7 +20,7 @@ spec:
       shared_buffers: 256MB
   resources:
     requests:
-      cpu: 50m
+      cpu: 150m
     limits:
       hugepages-2Mi: 1Gi # Requires sysctl set on the host
       memory: 1Gi
@@ -31,7 +31,7 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: &barmanObjectName cloudflare-r2
-        serverName: barman-v2
+        serverName: barman-v1
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
@@ -43,4 +43,5 @@ spec:
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-          barmanObjectName: *barmanObjectName
+          barmanObjectName: cloudflare-r2-old
+          serverName: barman-v2
