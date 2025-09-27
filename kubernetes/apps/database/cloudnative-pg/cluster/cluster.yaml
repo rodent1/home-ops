@@ -31,16 +31,16 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: &barmanObjectName cloudflare-r2
-        # # Note: previousCluster needs to be set to the name of the previous
-        # # cluster when recovering from an existing cnpg cluster
-        # bootstrap:
-        #   recovery:
-        #     source: &previousCluster cnpg17-v8
-        # # Note: externalClusters is needed when recovering from an existing cnpg cluster
-        # externalClusters:
-        #   - name: *previousCluster
-        #     plugin:
-        #       name: barman-cloud.cloudnative-pg.io
-        #       parameters:
-        #         barmanObjectName: *barmanObjectName
-        #         serverName: *previousCluster
+        serverName: barman-v2
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: source
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: *barmanObjectName
