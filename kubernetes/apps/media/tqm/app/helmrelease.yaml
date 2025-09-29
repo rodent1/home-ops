@@ -9,13 +9,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: tqm
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   dependsOn:
     - name: qbittorrent
       namespace: media
@@ -49,7 +42,7 @@ spec:
               capabilities: {drop: ["ALL"]}
         containers:
           clean:
-            <<: *container
+            !!merge <<: *container
             args:
               - clean
               - qb
@@ -58,12 +51,12 @@ spec:
       orphaned:
         type: cronjob
         cronjob:
-          <<: *cronJobSpec
+          !!merge <<: *cronJobSpec
           schedule: 0 0 * * 0
           suspend: true
         containers:
           app:
-            <<: *container
+            !!merge <<: *container
             args:
               - orphan
               - qb

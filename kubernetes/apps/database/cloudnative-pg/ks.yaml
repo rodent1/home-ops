@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: external-secrets
       namespace: external-secrets
@@ -34,6 +36,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
@@ -63,6 +67,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: cloudnative-pg
       namespace: database
