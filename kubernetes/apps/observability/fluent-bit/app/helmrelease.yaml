@@ -10,14 +10,6 @@ spec:
     name: fluent-bit
   maxHistory: 2
   interval: 1h
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     config:
       service: |-
@@ -31,7 +23,6 @@ spec:
           http_listen 0.0.0.0
           http_port {{ .Values.metricsPort }}
           health_check on
-
       inputs: |-
         [INPUT]
           name tail
@@ -42,7 +33,6 @@ spec:
           mem_buf_limit 5MB
           skip_empty_lines on
           skip_long_lines on
-
       filters: |-
         [FILTER]
           name kubernetes
@@ -79,7 +69,6 @@ spec:
           rename k_labels_app.kubernetes.io/name app
           rename k_labels_app app
           rename k_labels_k8s-app app
-
       outputs: |-
         [OUTPUT]
           name loki

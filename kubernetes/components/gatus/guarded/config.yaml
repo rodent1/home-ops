@@ -11,6 +11,4 @@ endpoints:
       query-name: "${GATUS_SUBDOMAIN:=${APP}}.rodent.cc"
       query-type: A
     conditions:
-      - "len([BODY]) == 0"
-    alerts:
-      - type: pushover
+      - len([BODY]) == 0
