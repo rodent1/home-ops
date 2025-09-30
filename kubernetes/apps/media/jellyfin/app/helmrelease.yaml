@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: jellyfin
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: jellyfin
+  interval: 1h
   values:
     controllers:
       jellyfin:
@@ -68,6 +68,9 @@ spec:
             port: *port
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 401"]
         hostnames:
           - "{{ .Release.Name }}.rodent.cc"
         parentRefs:

@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: paperless-ai
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: paperless-ai
+  interval: 1h
   values:
     controllers:
       paperless-ai:
