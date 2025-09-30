@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: audiobookshelf
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: audiobookshelf
+  interval: 1h
   values:
     controllers:
       audiobookshelf:

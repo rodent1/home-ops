@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: pinepods
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: pinepods
+  interval: 1h
   values:
     controllers:
       pinepods:

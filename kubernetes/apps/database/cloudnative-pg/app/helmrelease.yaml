@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: cloudnative-pg
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: cloudnative-pg
+  interval: 1h
   values:
     crds:
       create: true
