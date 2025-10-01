@@ -6,9 +6,6 @@ machine:
     {% if ENV.IS_CONTROLLER %}
     key: op://home-ops/talos/MACHINE_CA_KEY
     {% endif %}
-  certSANs:
-    - 127.0.0.1
-    - 10.1.1.30
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -93,7 +90,14 @@ cluster:
     {% endif %}
   clusterName: main
   controlPlane:
-    endpoint: https://10.1.1.30:6443
+    endpoint: https://k8s.internal:6443
+  discovery:
+    enabled: true
+    registries:
+      kubernetes:
+        disabled: true
+      service:
+        disabled: false
   id: op://home-ops/talos/CLUSTER_ID
   network:
     cni:
@@ -117,8 +121,7 @@ cluster:
       rules:
         - level: Metadata
     certSANs:
-      - 127.0.0.1
-      - 10.1.1.30
+      - k8s.internal
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
