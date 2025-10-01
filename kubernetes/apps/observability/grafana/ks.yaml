@@ -11,7 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
-    - ../../../../components/gatus/guarded
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/app
   postBuild:
