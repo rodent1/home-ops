@@ -11,13 +11,8 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
-    - ../../../../components/gatus/external
   interval: 1h
   path: ./kubernetes/apps/observability/kromgo/app
-  postBuild:
-    substitute:
-      APP: *app
-      GATUS_PATH: /talos_version
   prune: true
   retryInterval: 2m
   sourceRef:

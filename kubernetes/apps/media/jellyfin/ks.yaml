@@ -11,7 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: intel-device-plugin-gpu
@@ -23,7 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_PATH: /web/index.html
       VOLSYNC_CAPACITY: 100Gi
   prune: true
   retryInterval: 2m
