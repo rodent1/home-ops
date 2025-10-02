@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: immich
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: immich
+  interval: 1h
   values:
     controllers:
       immich:

@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: actual
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: actual
+  interval: 1h
   values:
     controllers:
       actual:

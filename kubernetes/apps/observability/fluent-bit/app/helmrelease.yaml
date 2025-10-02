@@ -8,8 +8,8 @@ spec:
   chartRef:
     kind: OCIRepository
     name: fluent-bit
-  maxHistory: 2
   interval: 1h
+  maxHistory: 2
   values:
     config:
       service: |-
