@@ -18,9 +18,9 @@ spec:
           gatus-sidecar:
             image:
               repository: ghcr.io/home-operations/gatus-sidecar
-              tag: 0.0.3@sha256:9d227ecdd2b1db04f484c108d58f6defb3f72447c44ddb8f609d2e66f77f52d4
+              tag: 0.0.5@sha256:59c439d8d6fffcdd1e277618f461892f8a285ac4abd22f2ee73c534b9ef2e890
             args:
-              - --gateway=envoy-external
+              - --auto-httproute
             resources:
               requests:
                 cpu: 10m
