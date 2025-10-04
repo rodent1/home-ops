@@ -5,6 +5,13 @@ metadata:
   name: postgres-lb
   annotations:
     lbipam.cilium.io/ips: 10.1.1.204
+    gatus.home-operations.com/enabled: "true"
+    gatus.home-operations.com/endpoint: |
+      group: infrastructure
+      interval: 15s
+      conditions:
+        - "[CONNECTED] == true"
+        - "[RESPONSE_TIME] < 100"
 spec:
   type: LoadBalancer
   ports:
