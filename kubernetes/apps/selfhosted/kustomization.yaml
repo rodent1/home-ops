@@ -16,5 +16,6 @@ resources:
   - ./immich/ks.yaml
   - ./it-tools/ks.yaml
   - ./karakeep/ks.yaml
+  - ./memos/ks.yaml
   - ./paperless-ai/ks.yaml
   - ./paperless/ks.yaml
