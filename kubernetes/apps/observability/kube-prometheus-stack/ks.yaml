@@ -3,10 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kube-prometheus-stack
-  namespace: &namespace observability
+  name: kube-prometheus-stack
 spec:
-  components:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph

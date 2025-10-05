@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: plugin-barman-cloud
 spec:
+  interval: 1h
   chartRef:
     kind: OCIRepository
-    name: barman-cloud
-  interval: 1h
+    name: plugin-barman-cloud
   values:
     crds:
       create: true

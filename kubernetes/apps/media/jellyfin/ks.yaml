@@ -3,8 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app jellyfin
-  namespace: &namespace media
+  name: jellyfin
 spec:
   components:
     - ../../../../components/volsync
@@ -17,7 +16,7 @@ spec:
   path: ./kubernetes/apps/media/jellyfin/app
   postBuild:
     substitute:
-      APP: *app
+      APP: jellyfin
       VOLSYNC_CAPACITY: 100Gi
   prune: true
   sourceRef:
