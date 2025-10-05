@@ -5,6 +5,8 @@ kind: Kustomization
 namespace: selfhosted
 components:
   - ../../components/namespace
+replacements:
+  - path: ../../components/replacements/ks.yaml
 resources:
   - ./actual/ks.yaml
   - ./atuin/ks.yaml
@@ -14,5 +16,5 @@ resources:
   - ./immich/ks.yaml
   - ./it-tools/ks.yaml
   - ./karakeep/ks.yaml
-  - ./paperless/ks.yaml
   - ./paperless-ai/ks.yaml
+  - ./paperless/ks.yaml
