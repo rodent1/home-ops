@@ -8,10 +8,10 @@ spec:
   chartRef:
     kind: OCIRepository
     name: tqm
+  interval: 1h
   dependsOn:
     - name: qbittorrent
       namespace: media
-  interval: 1h
   values:
     controllers:
       tqm:
@@ -42,7 +42,7 @@ spec:
               capabilities: {drop: ["ALL"]}
         containers:
           clean:
-            !!merge <<: *container
+            <<: *container
             args:
               - clean
               - qb
@@ -51,12 +51,12 @@ spec:
       orphaned:
         type: cronjob
         cronjob:
-          !!merge <<: *cronJobSpec
+          <<: *cronJobSpec
           schedule: 0 0 * * 0
           suspend: true
         containers:
           app:
-            !!merge <<: *container
+            <<: *container
             args:
               - orphan
               - qb
@@ -81,7 +81,6 @@ spec:
         globalMounts:
           - path: /.config/tqm/config.yaml
             subPath: config.yaml
-            readOnly: true
       media:
         type: nfs
         server: tank.internal
