@@ -12,6 +12,10 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/selfhosted/actual/app
+  postBuild:
+    substitute:
+      APP: actual
+      VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository
