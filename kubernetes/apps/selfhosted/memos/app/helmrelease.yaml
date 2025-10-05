@@ -66,26 +66,6 @@ spec:
             port: 5231
             targetPort: *port
             appProtocol: kubernetes.io/h2c
-    route:
-      memos:
-        hostnames:
-          - "{{ .Release.Name }}.rodent.cc"
-        parentRefs:
-          - name: envoy-external
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
-          - backendRefs:
-              - identifier: grpc
-                port: 5231
-            matches:
-              - headers:
-                  - type: Exact
-                    name: Content-Type
-                    value: "application/grpc-web+proto"
     persistence:
       config:
         existingClaim: memos
