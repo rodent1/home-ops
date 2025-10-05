@@ -8,13 +8,17 @@ default:
     just -l kube
 
 [doc('Apply local Flux Kustomization')]
-apply-ks namespace *args:
-    flux-local build ks --all-namespaces --path "{{ kubernetes_dir }}/apps/{{ namespace }}" {{ args }} \
-        | kubectl apply --server-side --field-manager kustomize-controller -f -
+apply-ks dir ks="*":
+    just kube render-local-ks "{{ dir }}" "{{ ks }}" \
+        | kubectl apply --server-side --field-manager=kustomize-controller -f /dev/stdin
 
 [doc('Browse a PVC')]
 browse-pvc namespace claim:
     kubectl browse-pvc -n {{ namespace }} -i mirror.gcr.io/alpine:latest {{ claim }}
+
+[doc('Delete local Flux Kustomization')]
+delete-ks dir ks="*":
+    just kube render-local-ks "{{ dir }}" "{{ ks }}" | kubectl delete -f /dev/stdin
 
 [doc('Open a shell on a node')]
 node-shell node:
@@ -27,9 +31,17 @@ prune-pods:
         kubectl delete pods -A --field-selector status.phase="$phase" --ignore-not-found=true; \
     done
 
-[doc('View a secret')]
-view-secret namespace secret:
-    kubectl view-secret -n {{ namespace }} {{ secret }}
+[doc('Snapshot VolSync PVCs')]
+snapshot:
+    kubectl get replicationsources --no-headers -A | while read -r ns name _; do \
+        kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
+    done
+
+[doc('Suspend or resume VolSync')]
+volsync state:
+    flux -n volsync-system {{ state }} kustomization volsync
+    flux -n volsync-system {{ state }} helmrelease volsync
+    kubectl -n volsync-system scale deployment volsync --replicas {{ if state != "suspend" { "1" } else { "0" } }}
 
 [doc('Sync ExternalSecrets')]
 sync-es:
@@ -60,3 +72,11 @@ sync-oci:
     kubectl get ocirepo --no-headers -A | while read -r ns name _; do \
         kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ocirepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
     done
+
+[doc('View a secret')]
+view-secret namespace secret:
+    kubectl view-secret -n {{ namespace }} {{ secret }}
+
+[private]
+render-local-ks dir ks="*":
+    flux-local build ks --all-namespaces --path "{{ kubernetes_dir }}/apps/{{ dir }}" {{ if ks != "*" { ks } else { "" } }}
