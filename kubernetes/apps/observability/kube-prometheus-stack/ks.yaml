@@ -6,9 +6,6 @@ metadata:
   name: &app kube-prometheus-stack
   namespace: &namespace observability
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
   dependsOn:
     - name: rook-ceph-cluster

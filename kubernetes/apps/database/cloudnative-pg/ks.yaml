@@ -6,9 +6,6 @@ metadata:
   name: &app cloudnative-pg
   namespace: &namespace database
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets
       namespace: external-secrets
@@ -28,9 +25,6 @@ metadata:
   name: &app cloudnative-pg-barman-cloud
   namespace: &namespace database
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
@@ -54,9 +48,6 @@ metadata:
   name: &app cloudnative-pg-cluster
   namespace: &namespace database
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg
       namespace: database

@@ -6,9 +6,6 @@ metadata:
   name: &app dragonfly
   namespace: &namespace database
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/database/dragonfly/app
   prune: true
@@ -25,9 +22,6 @@ metadata:
   name: &app dragonfly-cluster
   namespace: &namespace database
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: dragonfly
       namespace: database
