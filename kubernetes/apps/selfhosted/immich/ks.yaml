@@ -5,6 +5,8 @@ kind: Kustomization
 metadata:
   name: immich
 spec:
+  components:
+    - ../../../../components/gpu
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: database

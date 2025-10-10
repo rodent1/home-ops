@@ -6,6 +6,7 @@ metadata:
   name: jellyfin
 spec:
   components:
+    - ../../../../components/gpu
     - ../../../../components/volsync
   dependsOn:
     - name: intel-gpu-resource-driver
