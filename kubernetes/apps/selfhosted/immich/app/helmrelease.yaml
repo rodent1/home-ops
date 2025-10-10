@@ -41,11 +41,12 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
+              claims:
+                - name: gpu
               requests:
                 cpu: 100m
               limits:
                 memory: 1Gi
-                gpu.intel.com/i915: 1
       machine-learning:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -62,6 +63,9 @@ spec:
               limits:
                 memory: 4Gi
     defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: immich-gpu
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
