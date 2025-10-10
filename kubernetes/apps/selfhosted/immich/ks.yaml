@@ -10,6 +10,8 @@ spec:
       namespace: database
     - name: dragonfly-cluster
       namespace: database
+    - name: intel-gpu-resource-driver
+      namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/selfhosted/immich/app
   prune: true
