@@ -32,7 +32,7 @@ spec:
       enabled: true
       annotations:
         grafana_folder: kube-system
-    devices: bond+
+    devices: eth+
     enableIPv4BIGTCP: true
     endpointRoutes:
       enabled: true
