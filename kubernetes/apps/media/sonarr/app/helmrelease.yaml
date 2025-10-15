@@ -51,7 +51,7 @@ spec:
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m
               limits:
                 memory: 1Gi
     defaultPodOptions:
@@ -77,10 +77,12 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      config-cache:
-        existingClaim: "{{ .Release.Name }}-cache"
+      scripts:
+        type: configMap
+        name: sonarr-configmap
+        defaultMode: 0775
         globalMounts:
-          - path: /config/MediaCover
+          - readOnly: true
       media:
         type: nfs
         server: tank.internal

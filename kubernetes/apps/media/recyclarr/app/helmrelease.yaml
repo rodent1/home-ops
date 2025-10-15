@@ -29,7 +29,7 @@ spec:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
             args:
-              - "sync"
+              - sync
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -53,12 +53,9 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       config-file:
         type: configMap
-        name: recyclarr-configmap
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
-            readOnly: true
-      config-logs:
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /config/logs

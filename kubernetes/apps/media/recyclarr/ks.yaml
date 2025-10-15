@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: recyclarr
 spec:
-  components:
-    - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -21,4 +19,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: media
   wait: false

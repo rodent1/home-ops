@@ -5,17 +5,12 @@ kind: Kustomization
 metadata:
   name: gatus
 spec:
-  components:
-    - ../../../../components/volsync
   interval: 1h
   path: ./kubernetes/apps/observability/gatus/app
-  postBuild:
-    substitute:
-      APP: gatus
-      VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: observability
   wait: false

@@ -62,6 +62,9 @@ spec:
             port: *port
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}.rodent.cc"
           - requests.rodent.cc
@@ -74,13 +77,5 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/config
-      config-cache:
-        existingClaim: "{{ .Release.Name }}-cache"
-        globalMounts:
-          - path: /app/config/cache
-      config-logs:
-        type: emptyDir
-        globalMounts:
-          - path: /app/config/logs
       tmp:
         type: emptyDir
