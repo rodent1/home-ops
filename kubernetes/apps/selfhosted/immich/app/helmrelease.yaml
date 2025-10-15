@@ -65,7 +65,7 @@ spec:
     defaultPodOptions:
       resourceClaims:
         - name: gpu
-          resourceClaimTemplateName: immich-gpu
+          resourceClaimTemplateName: immich
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
