@@ -23,9 +23,6 @@ spec:
             env:
               CROSS_SEED_PORT: &port 80
               TZ: Europe/Oslo
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
             args:
               - daemon
             probes:
@@ -69,9 +66,9 @@ spec:
           http:
             port: *port
     persistence:
-      config-file:
-        type: configMap
-        name: cross-seed-configmap
+      secret-file:
+        type: secret
+        name: "{{ .Release.Name }}-secret"
         globalMounts:
           - path: /config/config.js
             subPath: config.js
