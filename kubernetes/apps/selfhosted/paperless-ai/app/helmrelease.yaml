@@ -21,7 +21,7 @@ spec:
               tag: 3.0.7
             envFrom:
               - secretRef:
-                  name: paperless-ai-secret
+                  name: "{{ .Release.Name }}-secret"
             resources:
               requests:
                 cpu: 10m

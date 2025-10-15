@@ -29,7 +29,7 @@ spec:
               AUTOBRR__LOG_LEVEL: INFO
             envFrom:
               - secretRef:
-                  name: autobrr-secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness:
                 enabled: true
