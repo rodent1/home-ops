@@ -6,7 +6,6 @@ metadata:
   name: jellyfin
 spec:
   components:
-    - ../../../../components/gpu
     - ../../../../components/volsync
   dependsOn:
     - name: intel-gpu-resource-driver
@@ -24,4 +23,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: media
   wait: false
