@@ -12,6 +12,7 @@ spec:
   values:
     controllers:
       gatus:
+        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -21,6 +22,8 @@ spec:
               tag: 0.0.9@sha256:31a52dd0e579c1f865b2580a4bb715d2a893deb1351fedeaba73598e9a578cbe
             args:
               - --auto-httproute
+              - --enable-httproute
+              - --enable-service
             resources:
               requests:
                 cpu: 10m
@@ -53,17 +56,20 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: {add: ["NET_RAW"], drop: ["ALL"]}
             resources:
               requests:
                 cpu: 100m
               limits:
                 memory: 256Mi
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              storageClass: ceph-block
+              accessMode: ReadWriteOnce
+              size: 5Gi
     defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
+      hostUsers: false
     service:
       app:
         ports:
@@ -75,6 +81,8 @@ spec:
           - port: http
     route:
       app:
+        annotations:
+          gatus.home-operations.com/enabled: "false"
         hostnames:
           - "{{ .Release.Name }}.rodent.cc"
           - status.rodent.cc
@@ -122,8 +130,6 @@ spec:
     serviceAccount:
       gatus: {}
     persistence:
-      config:
-        existingClaim: "{{ .Release.Name }}"
       config-file:
         type: configMap
         name: "{{ .Release.Name }}-configmap"
