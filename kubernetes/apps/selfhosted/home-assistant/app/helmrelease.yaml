@@ -24,7 +24,7 @@ spec:
               HASS_HTTP_TRUSTED_PROXY_1: 10.0.0.0/8
             envFrom:
               - secretRef:
-                  name: home-assistant-secret
+                  name: "{{ .Release.Name }}-secret"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

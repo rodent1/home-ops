@@ -38,7 +38,7 @@ spec:
               COREPACK_INTEGRITY_KEYS: 0
             envFrom: &envFrom
               - secretRef:
-                  name: karakeep-secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness:
                 enabled: true

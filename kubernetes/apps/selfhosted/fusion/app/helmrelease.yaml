@@ -23,7 +23,7 @@ spec:
               TZ: Europe/Oslo
             envFrom:
               - secretRef:
-                  name: fusion-secret
+                  name: "{{ .Release.Name }}-secret"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
