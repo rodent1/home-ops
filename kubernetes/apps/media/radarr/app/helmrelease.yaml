@@ -51,7 +51,7 @@ spec:
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m
               limits:
                 memory: 1Gi
     defaultPodOptions:
@@ -77,15 +77,11 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      cache:
-        existingClaim: "{{ .Release.Name }}-cache"
-        globalMounts:
-          - path: /config/MediaCover
-      tmp:
-        type: emptyDir
       media:
         type: nfs
         server: tank.internal
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
+      tmp:
+        type: emptyDir

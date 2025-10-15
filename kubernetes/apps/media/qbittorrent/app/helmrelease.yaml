@@ -74,14 +74,6 @@ spec:
             protocol: TCP
     route:
       app:
-        annotations:
-          gatus.home-operations.com/enabled: "true"
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["len([BODY]) == 0"]
-            dns:
-              query-name: {{ .Release.Name }}.rodent.cc
-              query-type: A
-            url: 1.1.1.1
         hostnames:
           - "{{ .Release.Name }}.rodent.cc"
         parentRefs:

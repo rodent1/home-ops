@@ -31,7 +31,7 @@ spec:
               - secretRef:
                   name: autobrr-secret
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
@@ -91,9 +91,5 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      config-log:
-        type: emptyDir
-        globalMounts:
-          - path: /config/log
       tmp:
         type: emptyDir
