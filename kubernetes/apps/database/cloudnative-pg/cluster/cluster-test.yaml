@@ -16,7 +16,7 @@ metadata:
 spec:
   instances: 1
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql repository=ghcr.io
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.0
+  imageName: ghcr.io/cloudnative-pg/postgresql:18-system-bookworm
   primaryUpdateStrategy: unsupervised
   storage:
     size: 1Gi
