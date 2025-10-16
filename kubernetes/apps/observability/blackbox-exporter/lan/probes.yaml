@@ -11,7 +11,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - expanse.internal
+        - tank.internal
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter-lan
