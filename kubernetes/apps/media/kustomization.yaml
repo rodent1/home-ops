@@ -11,7 +11,6 @@ resources:
   - ./namespace.yaml
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
-  - ./bazarr/ks.yaml
   - ./cross-seed/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
