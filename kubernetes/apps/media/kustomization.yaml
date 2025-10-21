@@ -12,6 +12,7 @@ resources:
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
   - ./cross-seed/ks.yaml
+  - ./dispatcharr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./pinepods/ks.yaml
