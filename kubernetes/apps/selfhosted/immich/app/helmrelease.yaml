@@ -48,6 +48,10 @@ spec:
               limits:
                 memory: 1Gi
       machine-learning:
+        pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: immich
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -63,9 +67,6 @@ spec:
               limits:
                 memory: 4Gi
     defaultPodOptions:
-      resourceClaims:
-        - name: gpu
-          resourceClaimTemplateName: immich
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
