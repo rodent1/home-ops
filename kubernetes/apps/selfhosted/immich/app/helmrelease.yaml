@@ -32,7 +32,6 @@ spec:
               tag: v2.1.0@sha256:72a9b9de6c6abfa7a9c9cdc244ae4d2bd9fea2ae00997f194cbd10aca72ea210
             envFrom: *envFrom
             env: &env
-              DB_VECTOR_EXTENSION: pgvector
               IMMICH_LOG_LEVEL: debug
               REDIS_HOSTNAME: dragonfly.database.svc.cluster.local
               TZ: Europe/Oslo

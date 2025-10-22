@@ -7,7 +7,7 @@ metadata:
 spec:
   instances: 3
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql repository=ghcr.io
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.0
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.0-standard-trixie@sha256:cb370f1fa54992fcf35c24407e51fa96939a5cdbf30f977b593366525a3981d2
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -16,6 +16,16 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   postgresql:
+    extensions:
+      - name: vchord
+        image:
+          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v0.5.3@sha256:c08f220a2f868cee58d0d630642ecf1a3617ffafa36dfc6a869f2283ff59ed8c
+        dynamic_library_path:
+          - /usr/lib/postgresql/18/lib/
+        extension_control_path:
+          - /usr/share/postgresql/18/
+    shared_preload_libraries:
+      - "vchord"
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
