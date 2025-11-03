@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: docker.io/clusterzx/paperless-ai
-              tag: 3.0.7
+              tag: 3.0.8
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
