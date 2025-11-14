@@ -11,12 +11,31 @@ spec:
   interval: 1h
   values:
     fullnameOverride: victoria-logs
-    retentionPeriod: 14d
     server:
       persistentVolume:
         enabled: true
         storageClassName: ceph-block
         size: 20Gi
+      retentionPeriod: 14d
+      route:
+        enabled: true
+        hostnames:
+          - victoria-logs.rodent.cc
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        extraRules:
+          - filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  path:
+                    type: ReplaceFullPath
+                    replaceFullPath: /select/vmui/
+                  statusCode: 302
+            matches:
+              - path:
+                  type: Exact
+                  value: /
       serviceMonitor:
         enabled: true
     dashboards:
