@@ -11,7 +11,7 @@ machine:
     diskQuotaSupport: true
     hostDNS:
       enabled: true
-      forwardKubeDNSToHost: false
+      forwardKubeDNSToHost: true # Requires Cilium socketLB features
       resolveMemberNames: true
     kubePrism:
       enabled: true
@@ -72,6 +72,7 @@ machine:
     net.ipv4.neigh.default.gc_thresh1: "4096"
     net.ipv4.neigh.default.gc_thresh2: "8192"
     net.ipv4.neigh.default.gc_thresh3: "16384"
+    net.ipv4.ping_group_range: 0 2147483647
     net.ipv4.tcp_congestion_control: bbr
     net.ipv4.tcp_fastopen: "3"
     net.ipv4.tcp_mtu_probing: "1"
