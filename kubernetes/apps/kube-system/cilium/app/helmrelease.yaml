@@ -30,8 +30,6 @@ spec:
       exclusive: false
     dashboards:
       enabled: true
-      annotations:
-        grafana_folder: kube-system
     devices: eth+
     enableIPv4BIGTCP: true
     endpointRoutes:
@@ -52,12 +50,11 @@ spec:
     loadBalancer:
       algorithm: maglev
       mode: dsr
-    localRedirectPolicy: true
+    localRedirectPolicies:
+      enabled: true
     operator:
       dashboards:
         enabled: true
-        annotations:
-          grafana_folder: kube-system
       prometheus:
         enabled: true
         serviceMonitor:
@@ -93,3 +90,6 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
+    socketLB:
+      enabled: true
+      hostNamespaceOnly: true
