@@ -63,13 +63,7 @@ spec:
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
-        advancedMounts:
-          dispatcharr:
-            app:
-              - path: /data
-                subPath: data
-            chown-dbdir:
-              - path: /data
-                subPath: data
+        globalMounts:
+          - path: /data
       tmp:
         type: emptyDir
