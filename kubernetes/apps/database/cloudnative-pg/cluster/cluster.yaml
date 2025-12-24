@@ -54,4 +54,4 @@ spec:
         parameters:
           barmanObjectName: *barmanObjectName
           # previous cluster
-          serverName: cnpg-v1
+          serverName: cnpg17-v1
