@@ -3,11 +3,25 @@ machine:
   install:
     diskSelector:
       model: KINGSTON SA400S3
-    image: factory.talos.dev/metal-installer/4c30b0249239cb74d8f2e353686db02e30d65870d851ba377b3304c9b5d1ff17:v1.11.6
-  network:
-    hostname: node-5
-    interfaces:
-      - interface: eth0
-        mtu: 9000
-        dhcp: true
+    image: factory.talos.dev/metal-installer/4c30b0249239cb74d8f2e353686db02e30d65870d851ba377b3304c9b5d1ff17:v1.12.0
   type: worker
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: node-5
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: net0
+selector:
+    match: true
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: net0
+mtu: 9000
+up: true
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: net0
