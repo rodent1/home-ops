@@ -43,10 +43,10 @@ spec:
       parameters:
         barmanObjectName: &barmanObjectName cloudflare-r2
         # current cluster
-        serverName: cnpg17-v1
-  # bootstrap:
-  #   recovery:
-  #     source: source
+        serverName: cnpg17-v2
+  bootstrap:
+    recovery:
+      source: source
   externalClusters:
     - name: source
       plugin:
