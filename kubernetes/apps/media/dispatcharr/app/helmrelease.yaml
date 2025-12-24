@@ -12,6 +12,19 @@ spec:
   values:
     controllers:
       dispatcharr:
+        initContainers:
+          chown-dbdir:
+            image:
+              repository: docker.io/library/alpine
+              tag: "3.23"
+            command:
+              - /bin/sh
+              - -c
+            args:
+              - |
+                chmod 0750 /data/db
+            securityContext:
+              runAsUser: 0
         containers:
           app:
             image:
@@ -50,5 +63,13 @@ spec:
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          dispatcharr:
+            app:
+              - path: /data
+                subPath: data
+            chown-dbdir:
+              - path: /data
+                subPath: dataf
       tmp:
         type: emptyDir
