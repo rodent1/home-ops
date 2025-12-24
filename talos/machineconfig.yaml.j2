@@ -26,7 +26,6 @@ machine:
       enabled: true
     {% endif %}
     rbac: true
-    stableHostname: true
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
@@ -54,10 +53,8 @@ machine:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
-      featureGates:
-        ImageVolume: true
       serializeImagePulls: false
-    image: ghcr.io/siderolabs/kubelet:v1.34.3
+    image: ghcr.io/siderolabs/kubelet:v1.35.0
     nodeIP:
       validSubnets:
         - 10.1.1.0/24
@@ -76,7 +73,9 @@ machine:
     net.ipv4.tcp_congestion_control: bbr
     net.ipv4.tcp_fastopen: "3"
     net.ipv4.tcp_mtu_probing: "1"
+    net.ipv4.tcp_notsent_lowat: "131072"
     net.ipv4.tcp_rmem: 4096 87380 33554432
+    net.ipv4.tcp_slow_start_after_idle: "0"
     net.ipv4.tcp_window_scaling: "1"
     net.ipv4.tcp_wmem: 4096 65536 33554432
     sunrpc.tcp_max_slot_table_entries: "128"
@@ -127,13 +126,13 @@ cluster:
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
-      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
+      feature-gates: MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
-    image: registry.k8s.io/kube-apiserver:v1.34.3
+    image: registry.k8s.io/kube-apiserver:v1.35.0
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-controller-manager:v1.34.3
+    image: registry.k8s.io/kube-controller-manager:v1.35.0
   coreDNS:
     disabled: true
   etcd:
@@ -146,7 +145,7 @@ cluster:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:v1.34.3
+    image: registry.k8s.io/kube-proxy:v1.35.0
   scheduler:
     config:
       apiVersion: kubescheduler.config.k8s.io/v1
@@ -167,7 +166,7 @@ cluster:
                     whenUnsatisfiable: ScheduleAnyway
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.34.3
+    image: registry.k8s.io/kube-scheduler:v1.35.0
   secretboxEncryptionSecret: op://home-ops/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
     key: op://home-ops/talos/CLUSTER_SERVICEACCOUNT_KEY
