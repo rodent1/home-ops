@@ -63,6 +63,7 @@ spec:
     route:
       app:
         hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
           - id.rodent.cc
         parentRefs:
           - name: envoy-external
