@@ -19,3 +19,4 @@ resources:
   - ./karakeep/ks.yaml
   - ./paperless-ai/ks.yaml
   - ./paperless/ks.yaml
+  - ./pocket-id/ks.yaml
