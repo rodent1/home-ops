@@ -20,7 +20,7 @@ spec:
               repository: ghcr.io/pocket-id/pocket-id
               tag: v2.0.2@sha256:9bf8e9ef44bc58c48be0d01bfb02e5732ba85cd88ec2ab16085021d374ed3ae4
             env:
-              APP_URL: https://pocket-id.rodent.cc
+              APP_URL: https://id.rodent.cc
               PORT: &port 1411
               TZ: Europe/Oslo
             envFrom:
@@ -63,7 +63,6 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.rodent.cc"
           - id.rodent.cc
         parentRefs:
           - name: envoy-external
