@@ -31,7 +31,6 @@ spec:
               CRAWLER_FULL_PAGE_SCREENSHOT: true
               CRAWLER_VIDEO_DOWNLOAD: true
               # OAuth setup
-              OAUTH_PROVIDER_NAME: Authentik
               DISABLE_PASSWORD_AUTH: true
               DISABLE_NEW_RELEASE_CHECK: true
               # FIXME: Remove this when the following PR is merged and released https://github.com/karakeep-app/karakeep/pull/969/files
