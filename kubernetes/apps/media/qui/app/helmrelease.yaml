@@ -3,56 +3,52 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: cross-seed
+  name: qui
 spec:
   chartRef:
     kind: OCIRepository
-    name: cross-seed
+    name: qui
   interval: 1h
   values:
     controllers:
-      cross-seed:
-        type: statefulset
+      qui:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/cross-seed/cross-seed
-              tag: 6.13.6@sha256:e2bf5b593e4e7d699e6242423ad7966190cd52ba8eefafdfdbb0cb5b0b609b96
+              repository: ghcr.io/autobrr/qui
+              tag: develop@sha256:1101db86ab23c31b04473dc0ce5c54385758e7354e2c69d07b4c159228511e89
             env:
-              CROSS_SEED_PORT: &port 80
+              QUI__HOST: 0.0.0.0
+              QUI__PORT: &port 80
+              QUI__LOG_LEVEL: INFO
               TZ: Europe/Oslo
-            args:
-              - daemon
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/ping
+                    path: /health
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 512Mi
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              storageClass: ceph-block
-              accessMode: ReadWriteOnce
-              size: 5Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -65,13 +61,16 @@ spec:
         ports:
           http:
             port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
-      secret-file:
-        type: secret
-        name: "{{ .Release.Name }}-secret"
-        globalMounts:
-          - path: /config/config.js
-            subPath: config.js
+      config:
+        existingClaim: "{{ .Release.Name }}"
       media:
         type: nfs
         server: tank.internal

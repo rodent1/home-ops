@@ -11,14 +11,13 @@ resources:
   - ./namespace.yaml
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
-  - ./cross-seed/ks.yaml
   - ./dispatcharr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./pinepods/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
+  - ./qui/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
-  - ./tqm/ks.yaml
