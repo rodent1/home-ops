@@ -33,9 +33,10 @@ spec:
               # OAuth setup
               DISABLE_PASSWORD_AUTH: true
               DISABLE_NEW_RELEASE_CHECK: true
-              # FIXME: Remove this when the following PR is merged and released https://github.com/karakeep-app/karakeep/pull/969/files
+              OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
+              OAUTH_PROVIDER_NAME: Pocket-ID
               COREPACK_INTEGRITY_KEYS: 0
-            envFrom: &envFrom
+            envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
             probes:
