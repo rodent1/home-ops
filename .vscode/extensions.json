@@ -1,8 +1,8 @@
 {
   "recommendations": [
+    "bluebrown.yamlfmt",
     "blueglassblock.better-json5",
     "irongeek.vscode-env",
-    "redhat.vscode-yaml",
-    "samuelcolvin.jinjahtml"
+    "redhat.vscode-yaml"
   ]
 }
