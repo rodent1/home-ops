@@ -2,9 +2,11 @@
   "files.associations": {
     "**/*.json5": "json5"
   },
-  "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
-    "vs-kubernetes.crd-code-completion": "enabled"
+    "vs-kubernetes.kubeconfig": "./kubeconfig",
+    "vs-kubernetes.knownKubeconfigs": [
+      "./kubeconfig"
+    ]
   },
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
