@@ -19,4 +19,5 @@ resources:
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
+  - ./shelfmark/ks.yaml
   - ./sonarr/ks.yaml
