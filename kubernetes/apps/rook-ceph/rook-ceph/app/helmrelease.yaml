@@ -9,10 +9,12 @@ spec:
     kind: OCIRepository
     name: rook-ceph
   interval: 1h
-  timeout: 15m
   values:
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
+      # NOTE: Enable the driver and shapshotter if you want to use CephFS
+      enableCephfsDriver: false
+      enableCephfsSnapshotter: false
       enableLiveness: true
       serviceMonitor:
         enabled: true
@@ -22,6 +24,6 @@ spec:
       enabled: true
     resources:
       requests:
-        memory: 128Mi # unchangable
         cpu: 100m # unchangable
+        memory: 128Mi # unchangable
       limits: {}
