@@ -11,6 +11,7 @@ resources:
   - ./namespace.yaml
   - ./actual/ks.yaml
   - ./atuin/ks.yaml
+  - ./donetick/ks.yaml
   - ./fusion/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
