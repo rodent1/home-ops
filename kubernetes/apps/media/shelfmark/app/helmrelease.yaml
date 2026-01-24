@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/calibrain/shelfmark-lite
-              tag: dev@sha256:32c1f704eedbfe73f0ba929b7602bf5168a8b8e24ae230b2aaca596c03dc5fc3
+              tag: v1.0.2@sha256:fcbb8696cab4b659c34a03c6f5f9854316e97ea1cbbd00ba68672733463c2e79
             env:
               TZ: Europe/Oslo
               FLASK_PORT: &port 8084
