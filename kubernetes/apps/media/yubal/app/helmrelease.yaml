@@ -1,0 +1,81 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: yubal
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: yubal
+  interval: 1h
+  values:
+    controllers:
+      yubal:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/guillevc/yubal
+              tag: next@sha256:2bb44379b4d86051cacd88e438a053d987aa1ba365543c828435b84bc4bc5b2b
+            env:
+              YUBAL_TZ: Europe/Oslo
+              YUBAL_PORT: &port 8000
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/config
+      media:
+        type: nfs
+        server: tank.internal
+        path: /mnt/tank/Media
+        globalMounts:
+          - path: /app/data
+            subPath: Media/Music
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
