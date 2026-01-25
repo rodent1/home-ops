@@ -21,3 +21,4 @@ resources:
   - ./recyclarr/ks.yaml
   - ./shelfmark/ks.yaml
   - ./sonarr/ks.yaml
+  - ./yubal/ks.yaml
