@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: yubal
+  name: navidrome
 spec:
   components:
     - ../../../../components/volsync
@@ -11,11 +11,11 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/media/yubal/app
+  path: ./kubernetes/apps/media/navidrome/app
   postBuild:
     substitute:
-      APP: yubal
-      VOLSYNC_CAPACITY: 2Gi
+      APP: navidrome
+      VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository

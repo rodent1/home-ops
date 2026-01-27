@@ -3,47 +3,49 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: yubal
+  name: navidrome
 spec:
   chartRef:
     kind: OCIRepository
-    name: yubal
+    name: navidrome
   interval: 1h
   values:
     controllers:
-      yubal:
+      navidrome:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/guillevc/yubal
-              tag: next@sha256:f3bea3a34466d3774a066f2c71861fec8224ce2cf3dc9f906f9ccddbd29c5cc1
+              repository: ghcr.io/navidrome/navidrome
+              tag: 0.59.0@sha256:4edc8a1de3e042f30b78a478325839f4395177eb8201c27543dccc0eba674f23
             env:
-              YUBAL_TZ: Europe/Oslo
-              YUBAL_PORT: &port 8000
+              ND_DATAFOLDER: /config
+              ND_ENABLEDOWNLOADS: "true"
+              ND_ENABLEEXTERNALSERVICES: "true"
+              ND_ENABLESHARING: "true"
+              ND_ENABLESTARRATING: "true"
+              ND_LOGLEVEL: info
+              ND_MUSICFOLDER: /media/Media/Music
+              ND_PORT: &port 4533
+              ND_SCANNER_SCHEDULE: "@every 1h"
+              ND_SEARCHFULLSTRING: true
+              TZ: Europe/Oslo
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
-                custom: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
                 spec:
-                  httpGet:
-                    path: /api/health
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 512Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -66,16 +68,9 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /app/config
       media:
         type: nfs
         server: tank.internal
         path: /mnt/tank/Media
         globalMounts:
-          - path: /app/data
-            subPath: Media/Music
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp
+          - path: /media
