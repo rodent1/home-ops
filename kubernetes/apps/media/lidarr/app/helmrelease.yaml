@@ -17,8 +17,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/lidarr
-              tag: 3.1.2@sha256:dab0e07502a34436fc50c3e789388f0a29f8cbf681fb7a02ed703ad7c368a22c
+              repository: ghcr.io/linuxserver/lidarr
+              tag: 3.1.2-nightly@sha256:ef7f37bcf3031b696d01ac24df034e5ebb0ec480aa961e6bfa8f7eb6b38b1032
             env:
               TZ: Europe/Oslo
               LIDARR__APP__INSTANCENAME: Lidarr
@@ -28,6 +28,14 @@ spec:
               LIDARR__LOG__DBENABLED: "False"
               LIDARR__LOG_LEVEL: info
               LIDARR__SERVER__PORT: &port 8686
+
+              # just s6-overlay things
+              PUID: 1000
+              GUID: 1000
+              S6_YES_I_WANT_A_WORLD_WRITABLE_RUN_BECAUSE_KUBERNETES: 1
+              S6_READ_ONLY_ROOT: 1
+              LSIO_READ_ONLY_FS: 1
+              LSIO_NON_ROOT_USER: 1
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -81,5 +89,12 @@ spec:
         path: /mnt/tank/Media
         globalMounts:
           - path: /media
-      tmp:
+      tmpfs:
         type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+          - path: /config/logs
+            subPath: logs
+          - path: /run
+            subPath: run

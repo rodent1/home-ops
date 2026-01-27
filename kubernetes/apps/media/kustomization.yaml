@@ -15,11 +15,12 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./lidarr/ks.yaml
+  - ./navidrome/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./shelfmark/ks.yaml
+  - ./slskd/ks.yaml
   - ./sonarr/ks.yaml
-  - ./yubal/ks.yaml
