@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/guillevc/yubal
-              tag: next@sha256:c4f4eb1b9db3876e394af4563c62869a740cbd6445d384bc1aeba05ba9e46964
+              tag: next@sha256:f3bea3a34466d3774a066f2c71861fec8224ce2cf3dc9f906f9ccddbd29c5cc1
             env:
               YUBAL_TZ: Europe/Oslo
               YUBAL_PORT: &port 8000
