@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kikootwo/readmeabook
-              tag: latest@sha256:a50989e1868a74439eda5f0c2149b49c14c647e2162c5bd07a5e35c2a5295b54
+              tag: latest@sha256:26b74bf0bfae8df1e58f1be6e86c4b0579a519147760635926e5403a0c94986b
             env:
               PUBLIC_URL: "https://readmeabook.rodent.cc"
               TZ: Europe/Oslo
@@ -39,7 +39,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 1Gi
     service:
       app:
         ports:
