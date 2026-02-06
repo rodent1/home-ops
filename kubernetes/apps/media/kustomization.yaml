@@ -20,7 +20,7 @@ resources:
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
+  - ./readmeabook/ks.yaml
   - ./recyclarr/ks.yaml
-  - ./shelfmark/ks.yaml
   - ./slskd/ks.yaml
   - ./sonarr/ks.yaml

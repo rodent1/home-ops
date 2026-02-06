@@ -3,58 +3,43 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyseerr
+  name: readmeabook
 spec:
   chartRef:
     kind: OCIRepository
-    name: jellyseerr
+    name: readmeabook
   interval: 1h
   values:
     controllers:
-      jellyseerr:
+      readmeabook:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/seerr-team/seerr
-              tag: develop@sha256:52d9e1466f7e2a3d1b5a3463d4b28afa6e51eac4cadfbcde28f04bb1ce94bf20
+              repository: ghcr.io/kikootwo/readmeabook
+              tag: latest@sha256:26b74bf0bfae8df1e58f1be6e86c4b0579a519147760635926e5403a0c94986b
             env:
+              PUBLIC_URL: "https://readmeabook.rodent.cc"
               TZ: Europe/Oslo
-              LOG_LEVEL: "info"
-              PORT: &port 80
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/v1/status
-                    port: *port
+                    path: /api/health
+                    port: &port 3030
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 2Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
+                memory: 1Gi
     service:
       app:
         ports:
@@ -62,19 +47,30 @@ spec:
             port: *port
     route:
       app:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}.rodent.cc"
-          - requests.rodent.cc
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: network
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /app/config
-      tmp:
+        advancedMounts:
+          readmeabook:
+            app:
+              - path: /app/config
+                subPath: config
+              - path: /var/lib/postgresql/data
+                subPath: postgres
+              - path: /var/lib/redis
+                subPath: redis
+      cache:
         type: emptyDir
+        globalMounts:
+          - path: /app/cache
+      media:
+        type: nfs
+        server: tank.internal
+        path: /mnt/tank/Media
+        globalMounts:
+          - path: /media
