@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/linuxserver/lidarr
-              tag: 3.1.2-nightly@sha256:adc776c4deb0b36909472a8d22ce00306b4a37f0d584407d846efd59060279ac
+              tag: 3.1.2-nightly@sha256:bcad2fdb95a60cf3e634a37ec833a54f8dc5346fe9e8d8963b44ba35bb78c9cd
             env:
               TZ: Europe/Oslo
               LIDARR__APP__INSTANCENAME: Lidarr
