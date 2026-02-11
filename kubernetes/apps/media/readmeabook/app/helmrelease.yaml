@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kikootwo/readmeabook
-              tag: 1.0.6@sha256:354e96d8fd4daecc7fc8d3cc7fd510a98246336723475525a046af39c99927f2
+              tag: 1.0.7@sha256:369304b2a0895e5ca36ba2b6fc790b1042279f189e5226268892fb29ca8cfe2e
             env:
               PUBLIC_URL: "https://readmeabook.rodent.cc"
               TZ: Europe/Oslo
