@@ -31,6 +31,7 @@ spec:
               DISPATCHARR_PORT: &port 9191
               REDIS_HOST: dragonfly.database.svc.cluster.local
               REDIS_PORT: 6379
+              REDIS_DB: 9
               PYTHONDONTWRITEBYTECODE: 1
               TZ: Europe/Oslo
             envFrom: *envFrom
@@ -79,3 +80,5 @@ spec:
           - path: /data
       tmp:
         type: emptyDir
+        globalMounts:
+          - path: /tmp
