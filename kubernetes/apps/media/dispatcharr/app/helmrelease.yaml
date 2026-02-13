@@ -13,36 +13,48 @@ spec:
     controllers:
       dispatcharr:
         initContainers:
-          chown-dbdir:
+          01-init-db:
             image:
-              repository: docker.io/library/alpine
-              tag: "3.23"
-            command:
-              - /bin/sh
-              - -c
-            args:
-              - |
-                chmod 0750 /data/db
-            securityContext:
-              runAsUser: 0
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
-            image:
+            image: &image
               repository: ghcr.io/dispatcharr/dispatcharr
-              tag: 0.18.1@sha256:425be855292df282db6f8daed0b3f0ac40a6dc451ddc66f7cbb299a4659e96da
-            env:
-              CELERY_BROKER_URL: redis://localhost:6379/0
-              DISPATCHARR_ENV: aio
+              tag: 0.19.0@sha256:8b53fbe12122e827034a6fb0a4ab9a9b8d31699587dca6d6d6394619d44dbb16
+            env: &env
+              DISPATCHARR_ENV: modular
               DISPATCHARR_LOG_LEVEL: info
               DISPATCHARR_PORT: &port 9191
-              REDIS_HOST: localhost
+              REDIS_HOST: dragonfly.database.svc.cluster.local
+              REDIS_PORT: 6379
+              PYTHONDONTWRITEBYTECODE: 1
+              TZ: Europe/Oslo
+            envFrom: *envFrom
             resources:
               claims:
                 - name: gpu
               requests:
                 cpu: 100m
               limits:
-                memory: 4Gi
+                memory: 2Gi
+          celery:
+            image: *image
+            command:
+              - "/app/docker/entrypoint.celery.sh"
+            env:
+              <<: *env
+              DJANGO_SETTINGS_MODULE: dispatcharr.settings
+              PYTHONUNBUFFERED: 1
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
     defaultPodOptions:
       hostUsers: false
       resourceClaims:
