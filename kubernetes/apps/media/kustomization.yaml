@@ -13,7 +13,7 @@ resources:
   - ./autobrr/ks.yaml
   - ./dispatcharr/ks.yaml
   - ./jellyfin/ks.yaml
-  - ./jellyseerr/ks.yaml
+  - ./seerr/ks.yaml
   - ./lidarr/ks.yaml
   - ./navidrome/ks.yaml
   - ./prowlarr/ks.yaml
