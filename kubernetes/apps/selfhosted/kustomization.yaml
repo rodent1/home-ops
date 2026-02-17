@@ -20,3 +20,4 @@ resources:
   - ./paperless-ai/ks.yaml
   - ./paperless/ks.yaml
   - ./pocket-id/ks.yaml
+  - ./zeroclaw/ks.yaml
