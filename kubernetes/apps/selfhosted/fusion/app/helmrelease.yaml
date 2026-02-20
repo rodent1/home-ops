@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/0x2e/fusion
-              tag: 1.0.0@sha256:7e411d0b9d7e44cd518367b01d9ce52229fd12f464ced929baad5dad617e38d3
+              tag: 0.9.8@sha256:2d98a5bf0cabd6998d07fa26c63f1b742a1c33a4c926f2da1dfd7ee49e88e3e0
             env:
               TZ: Europe/Oslo
             envFrom:
