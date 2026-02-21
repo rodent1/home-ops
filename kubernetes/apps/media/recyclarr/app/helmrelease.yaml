@@ -25,6 +25,8 @@ spec:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 8.1.0@sha256:1039bcecc98f4d3f4d9c8bb29cbfd1829c2b06d44d8802e392e7c2b42dfb2f40
+            env:
+              RECYCLARR_DATA_DIR: /tmp
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
