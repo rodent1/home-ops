@@ -11,6 +11,7 @@ resources:
   - ./namespace.yaml
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
+  - ./booklore/ks.yaml
   # - ./dispatcharr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./seerr/ks.yaml
