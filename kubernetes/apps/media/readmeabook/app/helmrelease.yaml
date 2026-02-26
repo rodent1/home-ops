@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kikootwo/readmeabook
-              tag: 1.0.13@sha256:ef20aefaa99fbeb07647efb08dce9c453e4ac742b8d9b7734da39ce7a8d002a7
+              tag: 1.0.14@sha256:261db0b7394778ac46b5489254b7e55e6a924801a817f12815a882064821e09c
             env:
               PUID: 1000
               PGID: 1000
