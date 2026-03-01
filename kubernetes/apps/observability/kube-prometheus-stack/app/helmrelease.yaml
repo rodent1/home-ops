@@ -9,6 +9,10 @@ spec:
     kind: OCIRepository
     name: kube-prometheus-stack
   interval: 1h
+  valuesFrom:
+    - kind: ConfigMap
+      name: flux-metrics-configmap
+      valuesKey: flux-metrics.yaml
   values:
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
@@ -78,7 +82,7 @@ spec:
         dashboardsConfigMapRefEnabled: true
         folder: observability
         matchLabels:
-          grafana.internal/instance: grafana
+          dashboards: grafana
     additionalPrometheusRulesMap:
       dockerhub-rules:
         groups:
