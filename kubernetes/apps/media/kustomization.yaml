@@ -14,7 +14,6 @@ resources:
   # - ./dispatcharr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./seerr/ks.yaml
-  - ./lidarr/ks.yaml
   - ./navidrome/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
@@ -22,5 +21,4 @@ resources:
   - ./radarr/ks.yaml
   - ./readmeabook/ks.yaml
   - ./recyclarr/ks.yaml
-  - ./slskd/ks.yaml
   - ./sonarr/ks.yaml
