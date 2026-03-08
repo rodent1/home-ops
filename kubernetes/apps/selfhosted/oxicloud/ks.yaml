@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: oxicloud
+spec:
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: cloudnative-pg-cluster
+      namespace: database
+  interval: 1h
+  path: ./kubernetes/apps/selfhosted/oxicloud/app
+  postBuild:
+    substitute:
+      APP: oxicloud
+      VOLSYNC_CAPACITY: 150Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: selfhosted
+  wait: false
