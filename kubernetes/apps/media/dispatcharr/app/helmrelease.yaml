@@ -24,7 +24,7 @@ spec:
           app:
             image: &image
               repository: ghcr.io/dispatcharr/dispatcharr
-              tag: 0.21.1
+              tag: 0.22.0
             env: &env
               DISPATCHARR_ENV: modular
               DISPATCHARR_LOG_LEVEL: info
