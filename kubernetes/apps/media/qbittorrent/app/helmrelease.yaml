@@ -103,7 +103,6 @@ spec:
         server: tank.internal
         path: /mnt/tank/Media
         globalMounts:
-          - path: /media/Downloads
-            subPath: Downloads
+          - path: /media
       tmp:
         type: emptyDir
