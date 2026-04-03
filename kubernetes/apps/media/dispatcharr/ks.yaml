@@ -21,7 +21,6 @@ spec:
   postBuild:
     substitute:
       APP: dispatcharr
-      VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository
