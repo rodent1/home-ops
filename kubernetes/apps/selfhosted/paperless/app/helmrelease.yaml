@@ -78,7 +78,7 @@ spec:
                   periodSeconds: 5
             resources:
               requests:
-                cpu: 25m
+                cpu: 100m
               limits:
                 memory: 2Gi
     service:
