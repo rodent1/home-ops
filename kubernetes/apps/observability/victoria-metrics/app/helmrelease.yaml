@@ -44,7 +44,6 @@ spec:
               - url_secret:
                   name: vmalertmanager-secret
                   key: ALERTMANAGER_HEARTBEAT_URL
-          - name: blackhole
           - name: pushover
             pushover_configs:
               - html: true
