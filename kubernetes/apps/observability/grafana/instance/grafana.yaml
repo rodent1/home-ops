@@ -29,7 +29,6 @@ spec:
       angular_support_enabled: "true"
     server:
       enable_gzip: "true"
-      root_url: https://grafana.rodent.cc
   deployment:
     spec:
       strategy:
@@ -65,10 +64,6 @@ spec:
       parentRefs:
         - name: envoy-internal
           namespace: network
-      rules:
-        - backendRefs:
-            - name: grafana-service
-              port: 3000
   persistentVolumeClaim:
     spec:
       accessModes:

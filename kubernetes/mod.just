@@ -1,4 +1,5 @@
-set quiet := true
+set lazy
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 kubernetes_dir := justfile_dir() + '/kubernetes'
@@ -12,8 +13,8 @@ apply-ks ns ks:
     just kube render-local-ks "{{ ns }}" "{{ ks }}" | kubectl apply --server-side --force-conflicts --field-manager=kustomize-controller -f /dev/stdin
 
 [doc('Browse a PVC')]
-browse-pvc namespace claim:
-    kubectl browse-pvc -n {{ namespace }} -i mirror.gcr.io/alpine:latest {{ claim }}
+browse-pvc ns claim:
+    kubectl browse-pvc -n {{ ns }} -i mirror.gcr.io/alpine:latest {{ claim }}
 
 [doc('Delete local Flux Kustomization')]
 delete-ks ns ks:
@@ -34,12 +35,6 @@ prune-pods:
 snapshot:
     kubectl get replicationsources --no-headers -A | while read -r ns name _; do \
         kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
-    done
-
-[doc('Suspend or resume Keda ScaledObjects')]
-keda state:
-    kubectl get scaledobjects --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite so "$name" autoscaling.keda.sh/paused{{ if state != "suspend" { "-" } else { "=true" } }}; \
     done
 
 [doc('Suspend or resume VolSync')]
@@ -79,8 +74,8 @@ sync-oci:
     done
 
 [doc('View a secret')]
-view-secret namespace secret:
-    kubectl view-secret -n {{ namespace }} {{ secret }}
+view-secret ns secret:
+    kubectl view-secret -n {{ ns }} {{ secret }}
 
 [private]
 render-local-ks ns ks:
