@@ -6,7 +6,7 @@ metadata:
   name: readmeabook
 spec:
   components:
-    - ../../../../components/nfs-scaler
+    - ../../../../components/zeroscaler
     - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg-cluster

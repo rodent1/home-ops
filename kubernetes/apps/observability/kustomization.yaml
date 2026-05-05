@@ -10,13 +10,14 @@ components:
 resources:
   - ./namespace.yaml
   - ./blackbox-exporter/ks.yaml
-  - ./fluent-bit/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
-  - ./keda/ks.yaml
   - ./kromgo/ks.yaml
-  - ./kube-prometheus-stack/ks.yaml
+  - ./kube-state-metrics/ks.yaml
+  - ./prometheus-adapater/ks.yaml
+  - ./prometheus-adapter-crds/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
   - ./victoria-logs/ks.yaml
+  - ./victoria-metrics/ks.yaml
