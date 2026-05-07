@@ -14,6 +14,7 @@ resources:
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml
   - ./kube-state-metrics/ks.yaml
+  - ./node-exporter/ks.yaml
   - ./prometheus-adapter/ks.yaml
   - ./prometheus-adapter-crds/ks.yaml
   - ./silence-operator/ks.yaml
