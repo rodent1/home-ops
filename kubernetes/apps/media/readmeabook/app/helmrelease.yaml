@@ -58,9 +58,9 @@ spec:
                   periodSeconds: 10
             resources:
               requests:
-                cpu: 20m
+                cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 512Mi
     service:
       app:
         ports:
