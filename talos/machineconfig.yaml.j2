@@ -3,7 +3,7 @@ version: v1alpha1
 machine:
   ca:
     crt: op://home-ops/talos/MACHINE_CA_CRT
-    {% if ENV.IS_CONTROLLER %}
+    {% if ENV.CONTROLPLANE %}
     key: op://home-ops/talos/MACHINE_CA_KEY
     {% endif %}
   features:
@@ -16,7 +16,7 @@ machine:
     kubePrism:
       enabled: true
       port: 7445
-    {% if ENV.IS_CONTROLLER %}
+    {% if ENV.CONTROLPLANE %}
     kubernetesTalosAPIAccess:
       enabled: true
       allowedKubernetesNamespaces:
@@ -87,7 +87,7 @@ machine:
 cluster:
   ca:
     crt: op://home-ops/talos/CLUSTER_CA_CRT
-    {% if ENV.IS_CONTROLLER %}
+    {% if ENV.CONTROLPLANE %}
     key: op://home-ops/talos/CLUSTER_CA_KEY
     {% endif %}
   clusterName: main
@@ -111,7 +111,7 @@ cluster:
       - 10.43.0.0/16
   secret: op://home-ops/talos/CLUSTER_SECRET
   token: op://home-ops/talos/CLUSTER_TOKEN
-  {% if ENV.IS_CONTROLLER %}
+  {% if ENV.CONTROLPLANE %}
   aggregatorCA:
     crt: op://home-ops/talos/CLUSTER_AGGREGATORCA_CRT
     key: op://home-ops/talos/CLUSTER_AGGREGATORCA_KEY
@@ -132,6 +132,7 @@ cluster:
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
+      feature-gates: HPAScaleToZero=true
     image: registry.k8s.io/kube-controller-manager:v1.36.0
   coreDNS:
     disabled: true

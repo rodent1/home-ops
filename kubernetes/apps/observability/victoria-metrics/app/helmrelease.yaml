@@ -22,7 +22,13 @@ spec:
           routes:
             - receiver: blackhole
               matchers:
-                - alertname = InfoInhibitor
+                - alertname=~"InfoInhibitor|KubeHpaMaxedOut"
+            - receiver: heartbeat
+              matchers:
+                - alertname = "Watchdog"
+              group_interval: 2m
+              group_wait: 0s
+              repeat_interval: 2m30s
           group_by:
             - alertname
             - cluster
