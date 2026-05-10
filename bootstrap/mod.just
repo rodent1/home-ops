@@ -1,11 +1,8 @@
 set lazy
-set positional-arguments
 set quiet
 set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
-bootstrap_dir := justfile_dir() + '/bootstrap'
-kubernetes_dir := justfile_dir() + '/kubernetes'
 controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
 nodes := `talosctl config info -o yaml | yq -e '.nodes | join (" ")'`
 
@@ -14,16 +11,17 @@ nodes := `talosctl config info -o yaml | yq -e '.nodes | join (" ")'`
 default:
     just -l bootstrap
 
-[doc('Bootstrap Cluster')]
+[confirm('Bootstrap cluster? [y|N]')]
+[doc('Bootstrap a Talos & Kubernetes cluster end-to-end')]
 [script]
-cluster: talos kube (kubeconfig "node") wait namespaces resources crds apps kubeconfig
+cluster: nodes k8s (kubeconfig "node") base apps kubeconfig
 
 [private]
 [script]
-talos:
+nodes:
     just log info "Running stage..." "stage" "$(basename "$0")"
     for n in {{ nodes }}; do
-        if ! op=$(just talos apply-node "$n" --insecure 2>&1); then
+        if ! op=$(just --yes talos apply-node "$n" --insecure 2>&1); then
             if [[ "$op" == *"certificate required"* ]]; then
                 just log info "Talos already configured, skipping apply of config" "stage" "$(basename "$0")" "node" "$n"
                 continue
@@ -34,7 +32,7 @@ talos:
 
 [private]
 [script]
-kube:
+k8s:
     just log info "Running stage..." "stage" "$(basename "$0")"
     until op=$(talosctl -n "{{ controller }}" bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do
         just log info "Kubernetes bootstrap in progress. Retrying in 5 seconds..." "stage" "$(basename "$0")"
@@ -56,38 +54,12 @@ kubeconfig lb="cilium":
 
 [private]
 [script]
-wait:
+base: ready
     just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! kubectl wait nodes --for=condition=Ready=True --all --timeout=10s &>/dev/null; then
-        until kubectl wait nodes --for=condition=Ready=False --all --timeout=10s &>/dev/null; do
-            just log info "Nodes not available, waiting for nodes to be available. Retrying in 5 seconds..." "stage" "$(basename "$0")"
-            sleep 5
-        done
+    if ! kustomize build {{ source_directory() }}/kustomize/apps | just template - | kubectl apply --server-side --force-conflicts -f -; then
+        just log fatal "Failed to apply base manifests" "stage" "$(basename "$0")" "file" "$f"
     fi
-
-[private]
-[script]
-namespaces:
-    just log info "Running stage..." "stage" "$(basename "$0")"
-    find "{{ kubernetes_dir }}/apps" -mindepth 1 -maxdepth 1 -type d | while IFS= read -r dir; do
-        if ! kustomize build "$dir" | yq ea -e 'select(.kind == "Namespace")' | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then
-            just log fatal "Failed to apply namespace" "stage" "$(basename "$0")" "namespace" "$(basename "$dir")"
-        fi
-    done
-
-[private]
-[script]
-resources:
-    just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! just template "{{ bootstrap_dir }}/resources.yaml.j2" | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then
-        just log fatal "Failed to apply resources" "stage" "$(basename "$0")"
-    fi
-
-[private]
-[script]
-crds:
-    just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! helmfile -f "{{ bootstrap_dir }}/helmfile.d/00-crds.yaml" template -q | yq ea -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then
+    if ! helmfile -f "{{ source_directory() }}/helmfile/crds.yaml" template -q | yq ea -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --force-conflicts -f -; then
         just log fatal "Failed to apply crds" "stage" "$(basename "$0")"
     fi
 
@@ -95,6 +67,18 @@ crds:
 [script]
 apps:
     just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! helmfile -f "{{ bootstrap_dir }}/helmfile.d/01-apps.yaml" sync --hide-notes; then
+    if ! helmfile -f "{{ source_directory() }}/helmfile/apps.yaml" sync --hide-notes; then
         just log fatal "Failed to sync helmfile" "stage" "$(basename "$0")"
+    fi
+
+# Wait until nodes register as Ready=False. They only become Ready=True once the CNI is healthy.
+[private]
+[script]
+ready:
+    just log info "Running stage..." "stage" "$(basename "$0")"
+    if ! kubectl wait nodes --for=condition=Ready=True --all --timeout=10s &>/dev/null; then
+        until kubectl wait nodes --for=condition=Ready=False --all --timeout=10s &>/dev/null; do
+            just log info "Nodes not available, waiting for nodes to be available. Retrying in 5 seconds..." "stage" "$(basename "$0")"
+            sleep 5
+        done
     fi
