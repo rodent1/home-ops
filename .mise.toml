@@ -7,6 +7,10 @@ LEFTHOOK_OUTPUT = "false"
 
 _.file = ["{{config_root}}/.secrets.env"]
 
+[plugins]
+krew = "https://github.com/soupglasses/mise-krew"
+
 [tools]
 "uv" = "latest"
 "pipx:flux-local" = "latest"
+"krew:cnpg" = "latest"
