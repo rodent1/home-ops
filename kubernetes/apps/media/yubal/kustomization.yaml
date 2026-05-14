@@ -13,6 +13,7 @@ resources:
   - ./autobrr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./seerr/ks.yaml
+  - ./navidrome/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
@@ -20,4 +21,3 @@ resources:
   - ./readmeabook/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
-  - ./yubal/ks.yaml
