@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: oxicloud
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: oxicloud
+  interval: 1h
+  values:
+    controllers:
+      oxicloud:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+        containers:
+          app:
+            image:
+              repository: diocrafts/oxicloud
+              tag: 0.5.6@sha256:8f5dc1911f7c5990b4366097dc4c0cce975da2f1e769cbab403605f77d486ffa
+            env:
+              OXICLOUD_BASE_URL: "https://files.rodent.cc"
+              OXICLOUD_OIDC_ADMIN_GROUPS: "admins"
+              OXICLOUD_OIDC_ENABLED: "true"
+              OXICLOUD_OIDC_PROVIDER_NAME: "Pocket ID"
+              OXICLOUD_SERVER_PORT: &port 8086
+              OXICLOUD_STORAGE_BACKEND: "s3"
+              OXICLOUD_STORAGE_CACHE_ENABLED: "true"
+              OXICLOUD_S3_REGION: "auto"
+              OXICLOUD_S3_FORCE_PATH_STYLE: "true"
+              OXICLOUD_STORAGE_ENCRYPTION_ENABLED: "true"
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "files.rodent.cc"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      storage:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/storage
+      tmp:
+        type: emptyDir

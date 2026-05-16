@@ -17,6 +17,7 @@ resources:
   - ./immich/ks.yaml
   - ./it-tools/ks.yaml
   - ./karakeep/ks.yaml
+  - ./oxicloud/ks.yaml
   - ./paperless-ai/ks.yaml
   - ./paperless/ks.yaml
   - ./pocket-id/ks.yaml
