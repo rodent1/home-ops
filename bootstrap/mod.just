@@ -1,4 +1,4 @@
-set lazy
+set no-exit-message
 set quiet
 set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
@@ -7,13 +7,11 @@ controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
 nodes := `talosctl config info -o yaml | yq -e '.nodes | join (" ")'`
 
 [private]
-[script]
 default:
     just -l bootstrap
 
 [confirm('Bootstrap cluster? [y|N]')]
 [doc('Bootstrap a Talos & Kubernetes cluster end-to-end')]
-[script]
 cluster: nodes k8s (kubeconfig "node") base apps kubeconfig
 
 [private]
@@ -59,15 +57,15 @@ base: ready
     if ! kustomize build {{ source_directory() }}/kustomize/apps | just template - | kubectl apply --server-side --force-conflicts -f -; then
         just log fatal "Failed to apply base manifests" "stage" "$(basename "$0")" "file" "$f"
     fi
-    if ! helmfile -f "{{ source_directory() }}/helmfile/crds.yaml" template -q | yq ea -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --force-conflicts -f -; then
-        just log fatal "Failed to apply crds" "stage" "$(basename "$0")"
+    if ! helmfile -f "{{ source_directory() }}/helmfile.d/crds.yaml" template -q | yq ea -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --force-conflicts -f -; then
+        just log fatal "Failed to apply base crds" "stage" "$(basename "$0")"
     fi
 
 [private]
 [script]
 apps:
     just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! helmfile -f "{{ source_directory() }}/helmfile/apps.yaml" sync --hide-notes; then
+    if ! helmfile -f "{{ source_directory() }}/helmfile.d/apps.yaml" sync --hide-notes; then
         just log fatal "Failed to sync helmfile" "stage" "$(basename "$0")"
     fi
 
