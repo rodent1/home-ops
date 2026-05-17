@@ -17,8 +17,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/it-tools
-              tag: 2024.10.22@sha256:7f26ae8d7a4a58b8d70b685cba5cbaa54d7df876d9f8bae702207f45b06d9b7c
+              repository: ghcr.io/sharevb/it-tools
+              tag: 2026.1.4@sha256:6d335b5d6f7d28a540ef36c0ab2e20cbf7df2c0d8b7adb16585ccd3ebcfeed59
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -40,7 +40,7 @@ spec:
       app:
         ports:
           http:
-            port: &port 8080
+            port: 8080
     route:
       app:
         hostnames:
