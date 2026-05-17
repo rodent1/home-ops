@@ -12,7 +12,6 @@ _.file = ["{{config_root}}/.secrets.env"]
 krew = "https://github.com/soupglasses/mise-krew"
 
 [tools]
-"python" = "latest"
 "uv" = "latest"
 "pipx:flux-local" = "latest"
 "krew:cnpg" = "latest"
