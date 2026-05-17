@@ -2,11 +2,8 @@
   "files.associations": {
     "**/*.json5": "json5"
   },
-  "vs-kubernetes": {
-    "vs-kubernetes.kubeconfig": "./kubeconfig",
-    "vs-kubernetes.knownKubeconfigs": [
-      "./kubeconfig"
-    ]
+  "json5.schemaDownload.trustedDomains": {
+    "https://docs.renovatebot.com": true
   },
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
