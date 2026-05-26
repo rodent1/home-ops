@@ -7,6 +7,3 @@ JUST_UNSTABLE = "1"
 LEFTHOOK_OUTPUT = "false"
 
 _.file = ["{{config_root}}/.secrets.env"]
-
-[hooks]
-postinstall = "lefthook install"
