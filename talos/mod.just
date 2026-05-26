@@ -14,6 +14,7 @@ apply-node node *args:
 [doc('Download Talos machine image')]
 [script]
 download-image version:
+    export CONTROLPLANE="$(just talos machine-controller {{ node }})"
     export SCHEMATIC="$(just talos schematic-id)"
     curl -fL --remove-on-error --retry 5 --retry-delay 5 --retry-all-errors --progress-bar \
         -o "{{ source_directory() }}/talos-{{ version }}-${SCHEMATIC:0:8}.iso" \
@@ -64,5 +65,6 @@ machine-controller node:
 [private]
 [script]
 machine-image:
+    export CONTROLPLANE="$(just talos machine-controller {{ node }})"
     export SCHEMATIC="$(just talos schematic-id)"
     just template "{{ source_directory() }}/machineconfig.yaml.j2" | yq -e 'select(.machine) | .machine.install.image'

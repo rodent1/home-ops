@@ -1,8 +1,0 @@
----
-customization:
-  extraKernelArgs:
-    - amd_iommu=on # PCI Passthrough
-    - iommu=pt # PCI Passthrough
-  systemExtensions:
-    officialExtensions:
-      - siderolabs/amd-ucode # AMD Microcode
