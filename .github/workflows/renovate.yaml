@@ -10,7 +10,7 @@ on:
       - .renovaterc.json5
       - .renovate/**.json5
   schedule:
-    - cron: 0 * * * *
+    - cron: 20 * * * *
   workflow_dispatch:
     inputs:
       dryRun:
@@ -59,13 +59,16 @@ jobs:
         with:
           client-id: ${{ steps.load-secrets.outputs.GITHUB_BOT_APP_CLIENT_ID }}
           private-key: ${{ steps.load-secrets.outputs.GITHUB_BOT_APP_PRIVATE_KEY }}
+          permission-checks: write
           permission-contents: write
-          permission-pull-requests: write
           permission-issues: write
+          permission-pull-requests: write
+          permission-statuses: write
+          permission-vulnerability-alerts: read
           permission-workflows: write
 
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
           token: ${{ steps.app-token.outputs.token }}
