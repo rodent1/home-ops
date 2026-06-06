@@ -8,7 +8,7 @@ default:
 
 [doc('Apply local Flux Kustomization')]
 apply-ks ns ks:
-    just kube render-local-ks "{{ ns }}" "{{ ks }}" | kubectl apply --server-side --force-conflicts --field-manager=kustomize-controller -f -
+    just kube render-local-ks "{{ ns }}" "{{ ks }}" | kubectl apply --server-side --field-manager=kustomize-controller -f -
 
 [doc('Browse a PVC')]
 browse-pvc ns claim:

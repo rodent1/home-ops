@@ -2,8 +2,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/helmfile
 
 helmDefaults:
-  args:
-    - --force-conflicts
   cleanupOnFail: true
   wait: true
   waitForJobs: true
@@ -35,7 +33,6 @@ releases:
           - apply
           - --namespace={{ .Release.Namespace }}
           - --server-side
-          - --force-conflicts
           - --filename=../../kubernetes/apps/{{ .Release.Namespace }}/{{ .Release.Name }}/app/networking.yaml
         events:
           - postsync
@@ -99,7 +96,6 @@ releases:
         args:
           - apply
           - --server-side
-          - --force-conflicts
           - --filename=../../kubernetes/apps/{{ .Release.Namespace }}/{{ .Release.Name }}/app/clustersecretstore.yaml
         events:
           - postsync
