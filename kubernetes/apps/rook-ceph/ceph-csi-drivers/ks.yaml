@@ -5,6 +5,8 @@ kind: Kustomization
 metadata:
   name: ceph-csi-drivers
 spec:
+  dependsOn:
+    - name: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/rook-ceph/ceph-csi-drivers/app
   prune: true

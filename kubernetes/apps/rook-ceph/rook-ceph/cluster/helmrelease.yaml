@@ -17,9 +17,7 @@ spec:
         disable: false
       csi:
         readAffinity:
-          enabled: true
-          crushLocationLabels:
-            - kubernetes.io/hostname
+          enabled: false # https://github.com/ceph/ceph-csi/issues/5772
       dashboard:
         enabled: true
         urlPrefix: /
@@ -82,6 +80,8 @@ spec:
           mountOptions:
             - discard
           parameters:
+            compression_algorithm: zstd
+            compression_mode: passive
             csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
             csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/controller-publish-secret-name: rook-csi-rbd-provisioner
@@ -96,8 +96,8 @@ spec:
           volumeBindingMode: Immediate
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
-      name: csi-ceph-block
-      isDefault: true
+      name: csi-ceph-blockpool
       deletionPolicy: Delete
+      isDefault: true
     cephFileSystems: []
     cephObjectStores: []

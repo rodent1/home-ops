@@ -11,7 +11,8 @@ spec:
   interval: 1h
   values:
     csi:
-      cephFSKernelMountOptions: ms_mode=prefer-crc
+      serviceMonitor:
+        enabled: true
     image:
       repository: ghcr.io/rook/ceph
     monitoring:
