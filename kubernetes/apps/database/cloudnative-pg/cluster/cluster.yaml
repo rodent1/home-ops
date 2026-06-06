@@ -42,7 +42,7 @@ spec:
       parameters:
         barmanObjectName: &barmanObjectName cloudflare-r2
         # current cluster
-        serverName: cnpg18-v4
+        serverName: cnpg18-v5
   bootstrap:
     recovery:
       source: source
@@ -53,4 +53,4 @@ spec:
         parameters:
           barmanObjectName: *barmanObjectName
           # previous cluster
-          serverName: cnpg18-v3
+          serverName: cnpg18-v4
