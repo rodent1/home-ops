@@ -1,9 +1,6 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: [
-    "github>home-operations/renovate-presets#1.3.1",
-    ":timezone(Europe/Oslo)",
-  ],
+  extends: ["github>home-operations/renovate-presets#2.0.0", ":timezone(Europe/Oslo)"],
   packageRules: [
     // Auto-merge rules
     {
@@ -87,7 +84,7 @@
       matchDatasources: ["docker"],
       matchPackageNames: ["/immich-app/"],
       group: {
-        commitMessageTopic: "{{{groupName}}} group"
+        commitMessageTopic: "{{{groupName}}} group",
       },
       minimumGroupSize: 2,
     },
@@ -133,22 +130,6 @@
     {
       matchUpdateTypes: ["digest"],
       addLabels: ["type/digest"],
-    },
-    {
-      matchDatasources: ["docker"],
-      addLabels: ["renovate/container"],
-    },
-    {
-      matchDatasources: ["helm"],
-      addLabels: ["renovate/helm"],
-    },
-    {
-      matchManagers: ["github-actions"],
-      addLabels: ["renovate/github-action"],
-    },
-    {
-      matchDatasources: ["github-releases"],
-      addLabels: ["renovate/github-release"],
     },
   ],
 }

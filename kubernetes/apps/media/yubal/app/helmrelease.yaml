@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/guillevc/yubal
-              tag: 0.9.0@sha256:3250e7bb898e2ef6b7b6cd71bac6e2cbc08eec92ebea7b677fd9c030553a8599
+              tag: 0.9.1@sha256:6701297d9390fac4b1e7b28a916e2552423173ae29e2f562a55af4c14a58859a
             env:
               YUBAL_PORT: &port 8000
               YUBAL_TZ: Europe/Oslo
@@ -43,7 +43,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
