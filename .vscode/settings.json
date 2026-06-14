@@ -9,10 +9,22 @@
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"
   },
-  "[json5]": {
-    "editor.formatOnSave": false
+  "[just]": {
+    "editor.defaultFormatter": "nefrob.vscode-just-syntax"
   },
   "[yaml]": {
-    "editor.defaultFormatter": "bluebrown.yamlfmt"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[json5]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   }
 }
