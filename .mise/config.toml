@@ -7,7 +7,7 @@ JUST_UNSTABLE = "1"
 
 [tools]
 oxfmt = "0.55.0"
-zizmor = "1.25.2"
+zizmor = "1.26.1"
 
 [hooks]
 postinstall = "lefthook install"
