@@ -1,6 +1,6 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["github>home-operations/renovate-presets#2.0.1", ":timezone(Europe/Oslo)"],
+  extends: ["github>home-operations/renovate-presets#2.1.0", ":timezone(Europe/Oslo)"],
   packageRules: [
     // Auto-merge rules
     {
