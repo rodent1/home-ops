@@ -18,3 +18,7 @@ spec:
   retention:
     keepDaily: 7
     keepWeekly: 4
+  verification:
+    quick:
+      cron: 0 5 * * *
+      jitter: 2m
