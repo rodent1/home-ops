@@ -6,7 +6,6 @@ metadata:
   name: donetick
 spec:
   components:
-    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
