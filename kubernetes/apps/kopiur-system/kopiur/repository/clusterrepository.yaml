@@ -21,8 +21,6 @@ spec:
     enabled: true
   allowedNamespaces:
     all: true
-  credentialProjection:
-    allowed: true
   identityDefaults:
     hostnameExpr: namespace
     usernameExpr: namespace + '-' + policyName
@@ -33,6 +31,6 @@ spec:
     podSecurityContext:
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
-    ttlSecondsAfterFinished: 300
+    ttlSecondsAfterFinished: 86400
   maintenance:
     enabled: true

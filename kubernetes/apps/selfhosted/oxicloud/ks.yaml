@@ -6,7 +6,6 @@ metadata:
   name: oxicloud
 spec:
   components:
-    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg-cluster

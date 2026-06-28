@@ -6,7 +6,6 @@ metadata:
   name: paperless-ai
 spec:
   components:
-    - ../../../../components/kopiur
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
