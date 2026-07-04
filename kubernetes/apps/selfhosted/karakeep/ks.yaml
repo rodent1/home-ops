@@ -6,7 +6,8 @@ metadata:
   name: karakeep
 spec:
   components:
-    - ../../../../components/volsync/
+    - ../../../../components/volsync
+    - ../../../../components/kopiur
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
