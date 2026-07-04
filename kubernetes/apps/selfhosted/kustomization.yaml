@@ -12,6 +12,7 @@ resources:
   - ./actual/ks.yaml
   - ./atuin/ks.yaml
   - ./donetick/ks.yaml
+  - ./executor/ks.yaml
   - ./freshrss/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
