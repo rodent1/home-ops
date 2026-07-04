@@ -8,8 +8,5 @@ spec:
   policyRef:
     name: ${APP}
   schedule:
-    # Jenkins-style H pins a deterministic per-schedule minute.
-    cron: "H 2 * * *"
-    jitter: 2m
+    cron: H * * * *
     timezone: Europe/Oslo
-    runOnCreate: false
