@@ -6,7 +6,6 @@ metadata:
   name: jellyfin
 spec:
   components:
-    - ../../../../components/volsync
     - ../../../../components/kopiur
     - ../../../../components/zeroscaler
   dependsOn:
@@ -19,7 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: jellyfin
-      VOLSYNC_CAPACITY: 100Gi
+      KOPIUR_CAPACITY: 100Gi
   prune: true
   sourceRef:
     kind: GitRepository
