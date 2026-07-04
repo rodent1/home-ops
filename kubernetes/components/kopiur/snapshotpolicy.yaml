@@ -5,7 +5,6 @@ kind: SnapshotPolicy
 metadata:
   name: ${APP}
 spec:
-  copyMethod: Snapshot
   credentialProjection:
     enabled: true
   repository:
@@ -21,9 +20,7 @@ spec:
     deep:
       schedule:
         cron: H 5 1 * *
-        timezone: Europe/Oslo
     quick:
       schedule:
         cron: H 3 * * *
-        timezone: Europe/Oslo
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
