@@ -6,8 +6,9 @@ metadata:
   name: jellyfin
 spec:
   components:
-    - ../../../../components/zeroscaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur
+    - ../../../../components/zeroscaler
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system

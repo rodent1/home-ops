@@ -6,8 +6,9 @@ metadata:
   name: readmeabook
 spec:
   components:
-    - ../../../../components/zeroscaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur
+    - ../../../../components/zeroscaler
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: database

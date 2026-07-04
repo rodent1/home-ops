@@ -6,8 +6,9 @@ metadata:
   name: sonarr
 spec:
   components:
-    - ../../../../components/zeroscaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur
+    - ../../../../components/zeroscaler
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
