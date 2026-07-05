@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: yarr
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: yarr
+  interval: 1h
+  values:
+    controllers:
+      yarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/nkanaev/yarr
+              tag: v2.7@sha256:167d6601da45138ecd4ce1573a3dd2f52fb446090e47dae50626dde3879a6490
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: 7070
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /data
+      tmp:
+        type: emptyDir
