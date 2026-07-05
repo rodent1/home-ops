@@ -13,7 +13,6 @@ resources:
   - ./atuin/ks.yaml
   - ./donetick/ks.yaml
   - ./executor/ks.yaml
-  # - ./freshrss/ks.yaml fix the kopiur permissions at some point
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
   - ./it-tools/ks.yaml
@@ -21,3 +20,4 @@ resources:
   - ./paperless-ai/ks.yaml
   - ./paperless/ks.yaml
   - ./pocket-id/ks.yaml
+  - ./yarr/ks.yaml
