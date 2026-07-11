@@ -5,22 +5,20 @@ kind: SnapshotPolicy
 metadata:
   name: ${APP}
 spec:
+  compression:
+    compressor: zstd
   credentialProjection:
     enabled: true
   repository:
     kind: ClusterRepository
     name: nas
   retention:
-    keepDaily: 7
+    keepLatest: 3
     keepHourly: 24
+    keepDaily: 7
+
+    keepWeekly: 4
   sources:
     - pvc:
         name: ${APP}
-  verification:
-    deep:
-      schedule:
-        cron: H 5 1 * *
-    quick:
-      schedule:
-        cron: H 3 * * *
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
