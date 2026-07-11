@@ -16,6 +16,8 @@ spec:
           path: /mnt/cauldron/Kopiur
   credentialProjection:
     allowed: true
+  create:
+    enabled: true
   encryption:
     passwordSecretRef:
       name: kopiur-nas-secret
@@ -32,9 +34,6 @@ spec:
     podSecurityContext:
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
-    scratch:
-      capacity: 1Mi
-      storageClassName: openebs-hostpath
     securityContext:
       runAsUser: 1000
       runAsGroup: 1000
