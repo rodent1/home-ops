@@ -16,9 +16,15 @@ spec:
     keepLatest: 3
     keepHourly: 24
     keepDaily: 7
-
     keepWeekly: 4
   sources:
     - pvc:
         name: ${APP}
+  verification:
+    deep:
+      schedule:
+        cron: H 5 1 * * # First of the month at 5am
+    quick:
+      schedule:
+        cron: H 3 * * * # Every day at 3am
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
