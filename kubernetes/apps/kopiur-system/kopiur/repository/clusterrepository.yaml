@@ -38,3 +38,8 @@ spec:
     ttlSecondsAfterFinished: 300
   scheduleDefaults:
     timezone: Europe/Oslo
+  server:
+    auth:
+      insecure:
+        acknowledgeInsecure: true
+    namespace: kopiur-system
