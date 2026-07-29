@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/usefulsoftwareco/executor-selfhost
-              tag: 1.5.35@sha256:e0063e0d6cfcff5624a4447e569e16d97439510283f6962d143888789efe932f
+              tag: 1.5.36@sha256:568584bbfc232cb794b5bdf69fa2e6db4b4839b3500f5a99663d6f6a97f9fcbf
             env:
               EXECUTOR_WEB_BASE_URL: https://executor.rodent.cc
               TZ: Europe/Oslo
