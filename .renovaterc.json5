@@ -1,6 +1,15 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>home-operations/renovate-presets#3.0.0", ":timezone(Europe/Oslo)"],
+  hostRules: [
+    {
+      description: "Authenticate against the Ocharted OCI registry",
+      matchHost: "ocharted.rodent.cc",
+      hostType: "docker",
+      username: "{{ secrets.OCHARTED_USERNAME }}",
+      password: "{{ secrets.OCHARTED_PASSWORD }}",
+    },
+  ],
   packageRules: [
     // Auto-merge rules
     {
