@@ -125,6 +125,7 @@ cluster:
         - level: Metadata
     certSANs:
       - k8s.internal
+      - 10.1.66.1
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
@@ -178,3 +179,29 @@ apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
 timeout: 5m
+{% if ENV.CONTROLPLANE %}
+---
+# Talos 1.14+ only. See talos/ANYCAST.md before applying.
+apiVersion: v1alpha1
+kind: DummyLinkConfig
+name: dummy0
+addresses:
+  - address: 10.1.66.1/32
+---
+apiVersion: v1alpha1
+kind: RoutingRuleConfig
+name: "100"
+src: 10.1.66.1/32
+table: 100
+---
+apiVersion: v1alpha1
+kind: BGPInstanceConfig
+name: main
+localASN: 64515
+advertise:
+  - dummy0
+neighbors:
+  - address: 10.1.67.1
+    peerASN: 64513
+    holdTime: 9s
+{% endif %}

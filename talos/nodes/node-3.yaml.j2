@@ -31,3 +31,20 @@ apiVersion: v1alpha1
 kind: Layer2VIPConfig
 name: 10.1.1.30
 link: net0
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: net0.67
+vlanID: 67
+parent: net0
+mtu: 9000
+addresses:
+  - address: 10.1.67.33/24
+routes:
+  - gateway: 10.1.67.1
+    table: 100
+---
+apiVersion: v1alpha1
+kind: BGPInstanceConfig
+name: main
+routerID: 10.1.67.33
