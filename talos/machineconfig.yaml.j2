@@ -55,6 +55,10 @@ machine:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
+      crashLoopBackOff:
+        maxContainerRestartPeriod: 60s
+      imageMaximumGCAge: 168h
+      maxParallelImagePulls: 3
       serializeImagePulls: false
     image: ghcr.io/siderolabs/kubelet:v1.36.3
     nodeIP:
