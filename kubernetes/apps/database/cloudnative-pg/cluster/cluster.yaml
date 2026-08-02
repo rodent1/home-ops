@@ -31,6 +31,7 @@ spec:
   resources:
     requests:
       cpu: 150m
+      memory: 512Mi
     limits:
       hugepages-2Mi: 1Gi # Requires sysctl set on the host
       memory: 1Gi

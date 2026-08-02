@@ -24,9 +24,10 @@ spec:
                   name: "{{ .Release.Name }}-secret"
             resources:
               requests:
-                cpu: 10m
-              limits:
+                cpu: 50m
                 memory: 2Gi
+              limits:
+                memory: 3Gi
     service:
       app:
         ports:

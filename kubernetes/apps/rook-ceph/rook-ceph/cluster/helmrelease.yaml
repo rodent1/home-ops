@@ -33,10 +33,10 @@ spec:
       resources:
         mgr:
           limits:
-            memory: 1Gi
+            memory: 2Gi
           requests:
             cpu: 100m
-            memory: 512Mi
+            memory: 1Gi
         mon:
           limits:
             memory: 2Gi
@@ -48,6 +48,7 @@ spec:
             memory: 8Gi # Required for bootstrap
           requests:
             cpu: 500m
+            memory: 4Gi
       storage:
         devicePathFilter: /dev/disk/by-id/nvme-*
         useAllDevices: false

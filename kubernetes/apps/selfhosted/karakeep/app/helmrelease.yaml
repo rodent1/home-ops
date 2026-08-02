@@ -46,9 +46,10 @@ spec:
                 enabled: true
             resources:
               requests:
-                cpu: 10m
-              limits:
+                cpu: 25m
                 memory: 1Gi
+              limits:
+                memory: 1536Mi
       meilisearch:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -85,8 +86,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                memory: 256Mi
               limits:
-                memory: 2Gi
+                memory: 1Gi
       chrome:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -112,8 +114,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                memory: 256Mi
               limits:
-                memory: 2Gi
+                memory: 768Mi
     defaultPodOptions:
       securityContext:
         runAsUser: 1000
