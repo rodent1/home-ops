@@ -11,10 +11,8 @@ spec:
   interval: 1h
   values:
     replicaCount: 2
-    config:
-      upstreamAllowlist:
-        - ceph.github.io
-        - kubernetes-sigs.github.io
+    podDisruptionBudget:
+      enabled: true
     auth:
       existingSecret: ocharted-secret
       bypassNetworks:
@@ -28,15 +26,13 @@ spec:
           path: /healthz
           conditions: ["[STATUS] == 200"]
       hostnames:
-        - ocharted.rodent.cc
+        - "{{ .Release.Name }}.rodent.cc"
       parentRefs:
         - name: envoy-external
           namespace: network
     monitoring:
       serviceMonitor:
         enabled: true
-    podDisruptionBudget:
-      enabled: true
     resources:
       requests:
         cpu: 10m
