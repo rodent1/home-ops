@@ -11,6 +11,12 @@
     },
   ],
   packageRules: [
+    {
+      description: "Pin Meilisearch to the Karakeep-validated deployment version",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["getmeili/meilisearch"],
+      enabled: false,
+    },
     // Auto-merge rules
     {
       description: "Auto-merge trusted OCI digests",
