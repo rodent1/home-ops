@@ -1,6 +1,6 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["github>home-operations/renovate-presets#3.0.0", ":timezone(Europe/Oslo)"],
+  extends: ["github>home-operations/renovate-presets#4.0.0", ":timezone(Europe/Oslo)"],
   hostRules: [
     {
       description: "Authenticate against the Ocharted OCI registry",
