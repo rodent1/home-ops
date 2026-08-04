@@ -10,5 +10,7 @@ spec:
     name: dragonfly-operator
   interval: 1h
   values:
+    serviceMonitor:
+      enabled: true
     grafanaDashboard:
       enabled: true
