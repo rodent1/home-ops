@@ -1,9 +1,15 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["github>home-operations/renovate-presets#5.0.0", ":timezone(Europe/Oslo)"],
+  extends: [
+    "github>home-operations/renovate-presets#6.0.0",
+    "github>home-operations/renovate-presets//apps/cnpg.json5#6.0.0",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#6.0.0",
+    "github>home-operations/renovate-presets//apps/talosFactory.json5#6.0.0",
+    ":timezone(Europe/Oslo)",
+  ],
   hostRules: [
     {
-      description: "Authenticate against the Ocharted OCI registry",
+      description: "Authenticate against the ocharted OCI registry",
       matchHost: "ocharted.rodent.cc",
       hostType: "docker",
       username: "{{ secrets.OCHARTED_USERNAME }}",
@@ -11,12 +17,6 @@
     },
   ],
   packageRules: [
-    {
-      description: "Pin Meilisearch to the Karakeep-validated deployment version",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["getmeili/meilisearch"],
-      enabled: false,
-    },
     // Auto-merge rules
     {
       description: "Auto-merge trusted OCI digests",
@@ -128,6 +128,20 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
       minimumGroupSize: 2,
+    },
+    {
+      description: "Talos Group",
+      groupName: "talos",
+      matchPackageNames: ["siderolabs/talos"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: "Hold Meilisearch at v1.50.x",
+      matchPackageNames: ["/getmeili/meilisearch/"],
+      allowedVersions: "<1.50.0",
     },
     // Labeling rules
     {
