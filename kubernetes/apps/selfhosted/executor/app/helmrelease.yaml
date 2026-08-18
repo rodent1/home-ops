@@ -19,6 +19,7 @@ spec:
               tag: v1.5.41@sha256:d84ca694ce38095fe78cf463581dbdfc09204e68f0bda57c54deda17bcef6055
             env:
               EXECUTOR_WEB_BASE_URL: https://executor.rodent.cc
+              EXECUTOR_ALLOW_STDIO_MCP: true
               TZ: Europe/Oslo
             probes:
               liveness:
