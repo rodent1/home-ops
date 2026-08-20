@@ -49,6 +49,11 @@ spec:
           requests:
             cpu: 500m
             memory: 4Gi
+      security:
+        cephx:
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
       storage:
         devicePathFilter: /dev/disk/by-id/nvme-*
         useAllDevices: false
