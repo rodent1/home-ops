@@ -9,15 +9,19 @@ spec:
     kind: OCIRepository
     name: rook-ceph-cluster
   interval: 1h
-  upgrade:
-    timeout: 20m
+  timeout: 20m
   values:
     cephClusterSpec:
+      cephConfig:
+        mon:
+          mon_cluster_log_level: info
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
       crashCollector:
         disable: false
       csi:
+        cephfs:
+          kernelMountOptions: ms_mode=prefer-crc
         readAffinity:
           enabled: false # https://github.com/ceph/ceph-csi/issues/5772
       dashboard:
@@ -25,6 +29,16 @@ spec:
         urlPrefix: /
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
+      healthCheck:
+        muteHealthWarning:
+          AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_CLIENT_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_KEYS_ALLOWED:
+            policy: mute
+          AUTH_INSECURE_KEYS_CREATABLE:
+            policy: mute
       mgr:
         modules:
           - name: pg_autoscaler
@@ -57,7 +71,7 @@ spec:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2
           csi:
-            keyType: aes
+            keyType: aes # aes256k requires kernel 7.0+
       storage:
         devicePathFilter: /dev/disk/by-id/nvme-*
         useAllDevices: false
