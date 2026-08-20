@@ -56,6 +56,8 @@ spec:
           daemon:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2
+          csi:
+            keyType: aes
       storage:
         devicePathFilter: /dev/disk/by-id/nvme-*
         useAllDevices: false
