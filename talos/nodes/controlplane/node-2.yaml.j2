@@ -1,32 +1,16 @@
 ---
-machine:
-  install:
-    diskSelector:
-      model: SanDisk SD9TB8*
-  nodeLabels:
-    node.kubernetes.io/gpu: "true"
----
 apiVersion: v1alpha1
 kind: HostnameConfig
 hostname: node-2
 ---
 apiVersion: v1alpha1
-kind: LinkAliasConfig
-name: net0
-selector:
-    match: true
+kind: KubeNodeConfig
+labels:
+  topology.kubernetes.io/zone: m
+  node.kubernetes.io/gpu: "true"
 ---
 apiVersion: v1alpha1
-kind: LinkConfig
-name: net0
-mtu: 9000
-up: true
----
-apiVersion: v1alpha1
-kind: DHCPv4Config
-name: net0
----
-apiVersion: v1alpha1
-kind: Layer2VIPConfig
-name: 10.1.1.30
-link: net0
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.model.startsWith("SanDisk SD9TB8")
