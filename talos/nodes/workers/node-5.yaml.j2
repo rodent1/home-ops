@@ -2,14 +2,11 @@
 machine:
   install:
     diskSelector:
-      model: SanDisk SD9TB8*
-  nodeLabels:
-    node.kubernetes.io/gpu: "true"
-  type: controlplane
+      model: KINGSTON SA400S3
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
-hostname: node-2
+hostname: node-5
 ---
 apiVersion: v1alpha1
 kind: LinkAliasConfig
@@ -26,8 +23,3 @@ up: true
 apiVersion: v1alpha1
 kind: DHCPv4Config
 name: net0
----
-apiVersion: v1alpha1
-kind: Layer2VIPConfig
-name: 10.1.1.30
-link: net0
