@@ -3,9 +3,6 @@ version: v1alpha1
 machine:
   ca:
     crt: op://home-ops/talos/MACHINE_CA_CRT
-    {% if ENV.CONTROLPLANE %}
-    key: op://home-ops/talos/MACHINE_CA_KEY
-    {% endif %}
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -16,15 +13,6 @@ machine:
     kubePrism:
       enabled: true
       port: 7445
-    {% if ENV.CONTROLPLANE %}
-    kubernetesTalosAPIAccess:
-      enabled: true
-      allowedKubernetesNamespaces:
-        - actions-runner-system
-        - system-upgrade
-      allowedRoles:
-        - os:admin
-    {% endif %}
     rbac: true
   files:
     - op: create
@@ -47,7 +35,7 @@ machine:
         wsize=1048576
   install:
     wipe: false
-    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.13.9
+    image: factory.talos.dev/metal-installer/{{ schematic }}:v1.13.9
   kernel:
     modules:
       - name: nbd
@@ -92,9 +80,6 @@ machine:
 cluster:
   ca:
     crt: op://home-ops/talos/CLUSTER_CA_CRT
-    {% if ENV.CONTROLPLANE %}
-    key: op://home-ops/talos/CLUSTER_CA_KEY
-    {% endif %}
   clusterName: main
   controlPlane:
     endpoint: https://k8s.internal:6443
@@ -116,67 +101,6 @@ cluster:
       - 10.43.0.0/16
   secret: op://home-ops/talos/CLUSTER_SECRET
   token: op://home-ops/talos/CLUSTER_TOKEN
-  {% if ENV.CONTROLPLANE %}
-  aggregatorCA:
-    crt: op://home-ops/talos/CLUSTER_AGGREGATORCA_CRT
-    key: op://home-ops/talos/CLUSTER_AGGREGATORCA_KEY
-  allowSchedulingOnControlPlanes: true
-  apiServer:
-    auditPolicy:
-      apiVersion: audit.k8s.io/v1
-      kind: Policy
-      rules:
-        - level: Metadata
-    certSANs:
-      - k8s.internal
-    disablePodSecurityPolicy: true
-    extraArgs:
-      enable-aggregator-routing: "true"
-      feature-gates: HPAScaleToZero=true
-    image: registry.k8s.io/kube-apiserver:v1.36.4
-  controllerManager:
-    extraArgs:
-      bind-address: 0.0.0.0
-      feature-gates: HPAScaleToZero=true
-    image: registry.k8s.io/kube-controller-manager:v1.36.4
-  coreDNS:
-    disabled: true
-  etcd:
-    advertisedSubnets:
-      - 10.1.1.0/24
-    ca:
-      crt: op://home-ops/talos/CLUSTER_ETCD_CA_CRT
-      key: op://home-ops/talos/CLUSTER_ETCD_CA_KEY
-    extraArgs:
-      listen-metrics-urls: http://0.0.0.0:2381
-  proxy:
-    disabled: true
-    image: registry.k8s.io/kube-proxy:v1.36.4
-  scheduler:
-    config:
-      apiVersion: kubescheduler.config.k8s.io/v1
-      kind: KubeSchedulerConfiguration
-      profiles:
-        - schedulerName: default-scheduler
-          plugins:
-            score:
-              disabled:
-                - name: ImageLocality
-          pluginConfig:
-            - name: PodTopologySpread
-              args:
-                defaultingType: List
-                defaultConstraints:
-                  - maxSkew: 1
-                    topologyKey: kubernetes.io/hostname
-                    whenUnsatisfiable: ScheduleAnyway
-    extraArgs:
-      bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.36.4
-  secretboxEncryptionSecret: op://home-ops/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
-  serviceAccount:
-    key: op://home-ops/talos/CLUSTER_SERVICEACCOUNT_KEY
-  {% endif %}
 ---
 apiVersion: v1alpha1
 kind: WatchdogTimerConfig
