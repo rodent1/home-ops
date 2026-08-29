@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/usefulsoftwareco/executor-selfhost
-              tag: v1.6.2@sha256:b36e4974a2f34b412672f0d7be3c38ab6f79494b504f76417455990f6169d8d5
+              tag: v1.6.3@sha256:a1a6c014dbddb7c33e2b3e9126b897f8a169564e8312fa25060c8cf908a34c88
             env:
               EXECUTOR_WEB_BASE_URL: https://executor.rodent.cc
               EXECUTOR_ALLOW_STDIO_MCP: true
