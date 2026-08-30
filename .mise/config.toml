@@ -7,3 +7,6 @@ JUST_UNSTABLE = "1"
 
 [hooks]
 postinstall = "lefthook install"
+
+[tools]
+"github:home-operations/flate" = "0.6.1"
