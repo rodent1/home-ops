@@ -8,9 +8,6 @@ spec:
   components:
     - ../../../../components/kopiur
     - ../../../../components/zeroscaler
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/media/sonarr/app
   postBuild:
