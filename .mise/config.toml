@@ -10,3 +10,6 @@ postinstall = "lefthook install"
 
 [tools]
 "github:home-operations/flate" = "v0.6.5"
+actionlint = "1.7.12"
+oxfmt = "0.66.0"
+talos = "1.14.0"
