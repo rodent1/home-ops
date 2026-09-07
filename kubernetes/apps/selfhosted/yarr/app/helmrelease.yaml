@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/nkanaev/yarr
-              tag: v2.8@sha256:1d7d48a9111817a1e0a4cf08a320e9615907b209fdc5862ea1b6c046f0d1a721
+              tag: v2.9@sha256:804f15f7eaa8669e839aa420d584174a0566fee7c28ef4448b0468f4110f3c16
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
