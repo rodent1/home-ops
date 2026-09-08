@@ -7,6 +7,12 @@
     "github>home-operations/renovate-presets//apps/talosFactory.json5#8.1.0",
     ":timezone(Europe/Oslo)",
   ],
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: ["before 3am on the first day of the month"],
+    commitMessageExtra: "({{manager}})",
+    additionalBranchPrefix: "{{manager}}-",
+  },
   hostRules: [
     {
       description: "Authenticate against the ocharted OCI registry",
@@ -120,6 +126,12 @@
       minimumGroupSize: 5,
     },
     {
+      description: "Mise Tools Group",
+      matchManagers: ["mise"],
+      groupName: "mise tools",
+      groupSlug: "mise-tools",
+    },
+    {
       description: "Rook-Ceph Group",
       groupName: "rook-ceph",
       matchDatasources: ["docker"],
@@ -130,6 +142,8 @@
       minimumGroupSize: 2,
     },
     {
+      // After the mise tools catch-all so talos wins its own group; unites the
+      // mise pin, the factory installer image, and the tuppr upgrade version
       description: "Talos Group",
       groupName: "talos",
       matchPackageNames: ["siderolabs/talos"],
