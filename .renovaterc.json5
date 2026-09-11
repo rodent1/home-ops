@@ -153,9 +153,16 @@
       minimumGroupSize: 2,
     },
     {
-      description: "Hold Meilisearch at v1.50.x",
-      matchPackageNames: ["/getmeili/meilisearch/"],
-      allowedVersions: "<1.50.0",
+      description: "CoreDNS 1.14.3+ prefetch poisons autopath answers, hold until coredns/coredns#8390 is fixed",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/coredns/charts/coredns"],
+      enabled: false,
+    },
+    {
+      description: "Hold Meilisearch",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/getmeili/meilisearch"],
+      enabled: false,
     },
     // Labeling rules
     {
