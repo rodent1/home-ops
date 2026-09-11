@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/dragonflydb.io/dragonfly_v1alpha1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/dragonflydb.io/dragonfly_v1alpha1.json
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
@@ -14,11 +14,12 @@ spec:
           resource: limits.memory
           divisor: 1Mi
   args:
+    - --dbfilename=dump
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
-    - --lock_on_hashtags
     - --default_lua_flags=allow-undeclared-keys
+  networkPolicyEnabled: false
   resources:
     requests:
       cpu: 30m
@@ -26,8 +27,21 @@ spec:
       memory: 512Mi
   topologySpreadConstraints:
     - maxSkew: 1
-      topologyKey: "kubernetes.io/hostname"
-      whenUnsatisfiable: "DoNotSchedule"
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
       labelSelector:
         matchLabels:
-          app.kubernetes.io/part-of: dragonfly
+          app: dragonfly
+  serviceSpec:
+    annotations:
+      gatus.home-operations.com/enabled: "true"
+      gatus.home-operations.com/endpoint: |
+        conditions:
+          - "[CONNECTED] == true"
+        group: infrastructure
+        ui:
+          hide-url: true
+          hide-hostname: true
+        alerts:
+          - type: pushover
+            send-on-resolved: true

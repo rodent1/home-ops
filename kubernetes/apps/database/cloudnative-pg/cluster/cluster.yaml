@@ -44,14 +44,39 @@ spec:
         barmanObjectName: &barmanObjectName cloudflare-r2
         # current cluster
         serverName: cnpg18-v5
-  bootstrap:
-    recovery:
-      source: source
-  externalClusters:
-    - name: source
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: *barmanObjectName
-          # previous cluster
-          serverName: cnpg18-v4
+  # bootstrap:
+  #   recovery:
+  #     source: source
+  # externalClusters:
+  #   - name: source
+  #     plugin:
+  #       name: barman-cloud.cloudnative-pg.io
+  #       parameters:
+  #         barmanObjectName: *barmanObjectName
+  #         # previous cluster
+  #         serverName: cnpg18-v4
+  managed:
+    services:
+      additional:
+        - selectorType: rw
+          serviceTemplate:
+            metadata:
+              name: postgres
+              annotations:
+                external-dns.alpha.kubernetes.io/hostname: postgres.rodent.cc
+                gatus.home-operations.com/enabled: "true"
+                gatus.home-operations.com/endpoint: |
+                  name: postgres
+                  conditions:
+                    - "[CONNECTED] == true"
+                  group: infrastructure
+                  ui:
+                    hide-hostname: true
+                    hide-url: true
+                  alerts:
+                    - type: pushover
+                      send-on-resolved: true
+            spec:
+              type: LoadBalancer
+          updateStrategy: patch
+      disabledDefaultServices: ["r", "ro"]

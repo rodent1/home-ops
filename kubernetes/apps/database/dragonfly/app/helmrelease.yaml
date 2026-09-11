@@ -10,5 +10,13 @@ spec:
     name: dragonfly-operator
   interval: 1h
   values:
-    serviceMonitor:
+    manager:
+      image:
+        repository: ghcr.io/dragonflydb/operator
+    grafanaDashboard:
       enabled: true
+      folder: Dragonfly
+      grafanaOperator:
+        enabled: true
+        matchLabels:
+          dashboards: grafana
