@@ -181,5 +181,24 @@
       matchUpdateTypes: ["digest"],
       addLabels: ["type/digest"],
     },
+    {
+      description: "Point Atuin at its upstream changelog",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/atuinsh/atuin"],
+      sourceUrl: "https://github.com/atuinsh/atuin",
+    },
+    {
+      description: "Point Jellyfin image at its upstream changelog",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/jellyfin/jellyfin"],
+      sourceUrl: "https://github.com/jellyfin/jellyfin",
+    },
+    {
+      description: "Point Dragonfly Operator chart at its upstream repository",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/dragonflydb/dragonfly-operator/helm/dragonfly-operator"],
+      sourceUrl: "https://github.com/dragonflydb/dragonfly-operator",
+      sourceDirectory: "charts/dragonfly-operator",
+    },
   ],
 }
