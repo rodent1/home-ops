@@ -236,7 +236,7 @@ url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellche
 url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056932"
 
 [[tools.talos]]
-version = "1.14.1"
+version = "1.14.2"
 backend = "aqua:siderolabs/talos"
 
 [tools.talos."platforms.linux-arm64"]
