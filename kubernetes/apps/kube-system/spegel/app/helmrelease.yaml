@@ -12,8 +12,10 @@ spec:
   values:
     grafanaDashboard:
       enabled: true
-      annotations:
-        grafana_folder: kube-system
+      mode: GrafanaOperator
+      grafanaOperator:
+        matchLabels:
+          dashboards: grafana
     service:
       registry:
         hostPort: 29999
