@@ -10,11 +10,17 @@ spec:
     name: ceph-csi-drivers
   interval: 1h
   values:
+    operatorConfig:
+      namespace: rook-ceph
+      driverSpecDefaults:
+        imageSet:
+          name: rook-csi-operator-image-set-configmap
+        log:
+          rotation:
+            enabled: false
     drivers:
       cephfs:
-        enabled: true
-        name: rook-ceph.cephfs.csi.ceph.com
-        snapshotPolicy: volumeSnapshot
+        enabled: false
       nfs:
         enabled: false
       nvmeof:
@@ -22,4 +28,60 @@ spec:
       rbd:
         enabled: true
         name: rook-ceph.rbd.csi.ceph.com
+        clusterName: rook-ceph
+        grpcTimeout: 150
         snapshotPolicy: volumeSnapshot
+        log:
+          rotation:
+            enabled: false
+        # Per-driver values override the resource fields retained in the live Driver CR.
+        nodePlugin:
+          priorityClassName: system-node-critical
+          resources:
+            plugin:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            registrar:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+        controllerPlugin:
+          # The CSI operator supplies required pod anti-affinity across hostnames.
+          replicas: 2
+          priorityClassName: system-cluster-critical
+          resources:
+            plugin:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            attacher:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+            provisioner:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+            resizer:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+            snapshotter:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
