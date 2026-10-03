@@ -13,6 +13,7 @@ cluster:
     crt: op://home-ops/talos/CLUSTER_CA_CRT
   clusterName: main
   controlPlane:
+    # Cilium owns the API VIP; bootstrap connects directly to a control-plane node.
     endpoint: https://k8s.internal:6443
   token: op://home-ops/talos/CLUSTER_TOKEN
 ---
