@@ -24,7 +24,8 @@ releases:
   - name: envoy-gateway
     namespace: network
 
-  - name: grafana-operator
+  # Release aliases must match the app directory used by the shared templates.
+  - name: grafana
     namespace: observability
 
   - name: kopiur
