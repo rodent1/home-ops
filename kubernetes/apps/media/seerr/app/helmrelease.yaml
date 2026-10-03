@@ -75,6 +75,7 @@ spec:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
+            path: /api/v1/status
         hostnames:
           - "{{ .Release.Name }}.rodent.cc"
           - requests.rodent.cc
