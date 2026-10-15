@@ -42,23 +42,23 @@ url = "https://github.com/home-operations/flate/releases/download/v0.6.5/flate_0
 url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/541337298"
 
 [[tools."github:home-operations/kopiur"]]
-version = "0.10.14"
+version = "0.10.15"
 backend = "github:home-operations/kopiur"
 
 [tools."github:home-operations/kopiur"."platforms.linux-arm64"]
-checksum = "sha256:fbcdeecd2acc5644d91970ba6e45c8c852da9bb5d91ef65c983a319b4f3c18cb"
-url = "https://github.com/home-operations/kopiur/releases/download/0.10.14/kubectl-kopiur_0.10.14_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/home-operations/kopiur/releases/assets/638153748"
+checksum = "sha256:de1a2ac984f599c07fb2fa2b89b405b2d4bf000b95daf4609095aefc40e4852e"
+url = "https://github.com/home-operations/kopiur/releases/download/0.10.15/kubectl-kopiur_0.10.15_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/kopiur/releases/assets/645474947"
 
 [tools."github:home-operations/kopiur"."platforms.linux-x64"]
-checksum = "sha256:9eb87e0c0b387f4944312998d31017e0847d27c2bec1e19b5ae8558f66e43eb9"
-url = "https://github.com/home-operations/kopiur/releases/download/0.10.14/kubectl-kopiur_0.10.14_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/home-operations/kopiur/releases/assets/638153757"
+checksum = "sha256:b407b6c2ac3a838db60c2d045d57a81cf2e89784fe98fd9dc4a7bfb2c09cbca4"
+url = "https://github.com/home-operations/kopiur/releases/download/0.10.15/kubectl-kopiur_0.10.15_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/kopiur/releases/assets/645474951"
 
 [tools."github:home-operations/kopiur"."platforms.macos-arm64"]
-checksum = "sha256:85d8709305ac9319cb945dce19d233aa84bc4e775e67f25d1229ad760047ffcb"
-url = "https://github.com/home-operations/kopiur/releases/download/0.10.14/kubectl-kopiur_0.10.14_darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/home-operations/kopiur/releases/assets/638153750"
+checksum = "sha256:a5baf79e6be2dcedea021361cd12515a40a0457480f2775ca4c00aaae6a0367f"
+url = "https://github.com/home-operations/kopiur/releases/download/0.10.15/kubectl-kopiur_0.10.15_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/kopiur/releases/assets/645474940"
 
 [[tools."github:mitsuhiko/minijinja"]]
 version = "3.0.1"
@@ -258,23 +258,14 @@ url_api = "https://api.github.com/repos/siderolabs/talos/releases/assets/5990597
 provenance = "cosign"
 
 [[tools.zizmor]]
-version = "1.31.0"
+version = "1.31.1"
 backend = "aqua:zizmorcore/zizmor"
 
 [tools.zizmor."platforms.linux-arm64"]
-checksum = "sha256:99b53699d8fd4f7891a2505d740a6e5b05cd6f3a329e31bad1b8ff24e35d9513"
-url = "https://github.com/zizmorcore/zizmor/releases/download/v1.31.0/zizmor-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/zizmorcore/zizmor/releases/assets/642609256"
 provenance = "github-attestations"
 
 [tools.zizmor."platforms.linux-x64"]
-checksum = "sha256:95776c59c2d4c0d6e10560647b4830762b8dbcca8d7d9b7469ff227c73a6fee6"
-url = "https://github.com/zizmorcore/zizmor/releases/download/v1.31.0/zizmor-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/zizmorcore/zizmor/releases/assets/642609258"
 provenance = "github-attestations"
 
 [tools.zizmor."platforms.macos-arm64"]
-checksum = "sha256:59cbfffe055f7b605bcc9eae7631073f0c4322be8eb09c670d6a2c23108ba6b9"
-url = "https://github.com/zizmorcore/zizmor/releases/download/v1.31.0/zizmor-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/zizmorcore/zizmor/releases/assets/642609260"
 provenance = "github-attestations"
