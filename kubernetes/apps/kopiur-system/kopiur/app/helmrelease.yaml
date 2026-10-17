@@ -21,8 +21,6 @@ spec:
     features:
       credentialProjection:
         enabled: true
-      kopiaUi:
-        enabled: true
     monitoring:
       dashboards:
         enabled: true
@@ -46,3 +44,18 @@ spec:
         memory: 256Mi
       limits:
         memory: 512Mi
+    ui:
+      enabled: true
+      auth:
+        anonymous:
+          enabled: true
+          user: kopiur-internal
+      networkPolicy:
+        enabled: true
+        proxySelector:
+          namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: network
+          podSelector:
+            matchLabels:
+              gateway.networking.k8s.io/gateway-name: envoy-internal

@@ -12,6 +12,5 @@ spec:
       namespace: network
   rules:
     - backendRefs:
-        - name: nas-kopia-ui
-          namespace: kopiur-system
-          port: 51515
+        - name: kopiur-ui
+          port: 8090
