@@ -1,0 +1,56 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: kopiur-ui-oidc
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: kopiur
+
+  oidc:
+    provider:
+      issuer: https://id.rodent.cc
+    clientIDRef:
+      name: kopiur-ui-oidc-secret
+    clientSecret:
+      name: kopiur-ui-oidc-secret
+    redirectURL: https://kopiur.rodent.cc/oauth2/callback
+    cookieNames:
+      idToken: IdToken-kopiur-ui
+    scopes:
+      - openid
+      - profile
+      - email
+      - groups
+
+  jwt:
+    providers:
+      - name: pocket-id
+        issuer: https://id.rodent.cc
+        remoteJWKS:
+          uri: https://id.rodent.cc/.well-known/jwks.json
+        extractFrom:
+          cookies:
+            - IdToken-kopiur-ui
+        claimToHeaders:
+          - claim: preferred_username
+            header: x-user-username
+          - claim: groups
+            header: x-user-groups
+          - claim: email
+            header: x-user-email
+
+  authorization:
+    defaultAction: Deny
+    rules:
+      - name: allow-admins
+        action: Allow
+        principal:
+          jwt:
+            provider: pocket-id
+            claims:
+              - name: groups
+                valueType: StringArray
+                values:
+                  - admins
