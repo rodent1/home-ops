@@ -45,10 +45,26 @@ spec:
         memory: 2Gi
     ui:
       enabled: true
+
       auth:
-        anonymous:
-          enabled: true
-          user: kopiur-internal
+        userHeader: x-user-username
+        groupsHeader: x-user-groups
+        groupsFormat: base64Json
+        emailHeader: x-user-email
+
+        proxySecret:
+          existingSecret: kopiur-ui-proxy-token-secret
+          key: KOPIUR_PROXY_TOKEN
+
+        allowedGroups:
+          - admins
+
+      rbac:
+        userRoles: true
+        bindings:
+          - role: user
+            groups:
+              - admins
       networkPolicy:
         enabled: true
         proxySelector:

@@ -12,6 +12,10 @@ spec:
       namespace: kopiur-system
   interval: 1h
   path: ./kubernetes/apps/kopiur-system/kopiur/app
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: kopiur-ui-proxy-token-secret
   prune: true
   sourceRef:
     kind: GitRepository

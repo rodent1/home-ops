@@ -14,3 +14,9 @@ spec:
     - backendRefs:
         - name: kopiur-ui
           port: 8090
+      filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+              - name: X-Kopiur-Proxy-Token
+                value: "${KOPIUR_PROXY_TOKEN}"
