@@ -18,11 +18,11 @@ spec:
           app:
             image:
               repository: donetick/donetick
-              tag: v0.1.80@sha256:eb94251e1a22d1613b2cc05546509461e708f30c6ae02e0907c4a6d44ceaa18c
+              tag: v0.1.82@sha256:44fce161cb2cd4c46acb184f76212ed77ed961dca6f4face6528064b9b0f5ca5
             env:
               DT_ENV: selfhosted
               DT_SERVER_PORT: &port 2021
-              DT_SQLITE_PATH: /donetick-data/donetick.db
+              DT_SQLITE_PATH: /config/donetick.db
               DT_OAUTH2_NAME: "Pocket ID"
               DT_IS_USER_CREATION_DISABLED: true
               TZ: Europe/Oslo
@@ -83,5 +83,3 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /donetick-data
