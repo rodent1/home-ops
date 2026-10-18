@@ -14,7 +14,7 @@ _... managed with Flux, Renovate, and GitHub Actions_ 🤖
 [![Talos](https://kromgo.rodent.cc/badges/talos_version)](https://talos.dev)&nbsp;&nbsp;
 [![Kubernetes](https://kromgo.rodent.cc/badges/kubernetes_version)](https://kubernetes.io)&nbsp;&nbsp;
 [![Flux](https://kromgo.rodent.cc/badges/flux_version)](https://fluxcd.io)&nbsp;&nbsp;
-[![Renovate](https://img.shields.io/github/actions/workflow/status/rodent1/home-ops/renovate.yaml?branch=main&label&logo=renovate&color=blue)](https://github.com/rodent1/home-ops/actions/workflows/renovate.yaml)
+![Renovate](https://img.shields.io/badge/enabled-blue?logo=renovate)
 
 </div>
 
