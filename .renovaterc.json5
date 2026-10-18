@@ -10,21 +10,6 @@
   // The Main ruleset does not require up-to-date branches, and `auto` would
   // still rebase every automerge PR each time main moves
   rebaseWhen: "conflicted",
-  lockFileMaintenance: {
-    enabled: true,
-    schedule: ["before 3am on the first day of the month"],
-    commitMessageExtra: "({{manager}})",
-    additionalBranchPrefix: "{{manager}}-",
-  },
-  hostRules: [
-    {
-      description: "Authenticate against the ocharted OCI registry",
-      matchHost: "ocharted.rodent.cc",
-      hostType: "docker",
-      username: "{{ secrets.OCHARTED_USERNAME }}",
-      password: "{{ secrets.OCHARTED_PASSWORD }}",
-    },
-  ],
   packageRules: [
     // Auto-merge rules
     {
@@ -129,12 +114,6 @@
       minimumGroupSize: 5,
     },
     {
-      description: "Mise Tools Group",
-      matchManagers: ["mise"],
-      groupName: "mise tools",
-      groupSlug: "mise-tools",
-    },
-    {
       description: "Rook-Ceph Group",
       groupName: "rook-ceph",
       matchDatasources: ["docker"],
@@ -145,8 +124,7 @@
       minimumGroupSize: 2,
     },
     {
-      // After the mise tools catch-all so talos wins its own group; unites the
-      // mise pin, the factory installer image, and the tuppr upgrade version
+      // Unites the factory installer image and the tuppr upgrade version
       description: "Talos Group",
       groupName: "talos",
       matchPackageNames: ["siderolabs/talos"],
@@ -156,10 +134,26 @@
       minimumGroupSize: 2,
     },
     {
+      description: "Keep CloudNativePG on Postgres 18 until the extension images move with it",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      allowedVersions: "/^18\\./",
+    },
+    {
       description: "Hold Meilisearch",
       matchDatasources: ["docker"],
       matchPackageNames: ["docker.io/getmeili/meilisearch"],
       enabled: false,
+    },
+    // Commit message rules
+    {
+      // The flux manager also extracts HelmRelease values images, so the file
+      // name is the only signal that a docker dep is a chart
+      description: "Title OCI chart updates as charts instead of images",
+      matchDatasources: ["docker"],
+      matchFileNames: ["**/ocirepository.yaml"],
+      semanticCommitScope: "helm",
+      commitMessageTopic: "chart {{depName}}",
     },
     // Labeling rules
     {
@@ -178,6 +172,7 @@
       matchUpdateTypes: ["digest"],
       addLabels: ["type/digest"],
     },
+    // Upstream changelog pointing rules
     {
       description: "Point Atuin at its upstream changelog",
       matchDatasources: ["docker"],
