@@ -112,6 +112,7 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
       minimumGroupSize: 5,
+      separateMinorPatch: true,
     },
     {
       description: "Rook-Ceph Group",
