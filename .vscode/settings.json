@@ -10,9 +10,6 @@
     "kubernetes": "./kubernetes/**/*.yaml",
     "https://k8s-schemas.home-operations.com/kopiur.home-operations.com/clusterrepository_v1alpha1.json": "file:///home/stianrs/home-ops/kubernetes/apps/kopiur-system/kopiur/repository/clusterrepository.yaml"
   },
-  "[just]": {
-    "editor.defaultFormatter": "nefrob.vscode-just-syntax"
-  },
   "[yaml]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
