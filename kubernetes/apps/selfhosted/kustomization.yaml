@@ -10,6 +10,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./actual/ks.yaml
+  - ./anchor/ks.yaml
   - ./atuin/ks.yaml
   - ./donetick/ks.yaml
   - ./home-assistant/ks.yaml
