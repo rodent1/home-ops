@@ -30,6 +30,7 @@ spec:
             env:
               APP_URL: https://anchor.rodent.cc
               DATA_DIR: /data
+              DISABLE_INTERNAL_AUTH: true
               OIDC_ENABLED: true
               OIDC_PROVIDER_NAME: Pocket ID
               OIDC_ISSUER_URL: https://id.rodent.cc
