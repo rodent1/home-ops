@@ -1,0 +1,106 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: anchor
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: anchor
+  interval: 1h
+  values:
+    controllers:
+      anchor:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/zhfahim/anchor
+              tag: 0.18.0@sha256:434f8b2bc72e32d7027fa0259e565d7f3930cc2eca49f0c5b0b90befb5a45a77
+            env:
+              APP_URL: https://anchor.rodent.cc
+              DATA_DIR: /data
+              OIDC_ENABLED: true
+              OIDC_PROVIDER_NAME: Pocket ID
+              OIDC_ISSUER_URL: https://id.rodent.cc
+              TZ: Europe/Oslo
+            envFrom: *envFrom
+            probes:
+              liveness:
+                enabled: true
+                spec:
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: &port 3000
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+      supervisord:
+        type: configMap
+        name: "{{ .Release.Name }}-configmap"
+        advancedMounts:
+          anchor:
+            app:
+              - path: /etc/supervisord.conf
+                subPath: supervisord.conf
+                readOnly: true
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          anchor:
+            app:
+              - path: /tmp
