@@ -1,0 +1,161 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: silo
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: silo
+  interval: 1h
+  values:
+    controllers:
+      silo:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          01-init-db:
+            image: &pgInitImage
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+          # Silo's migrations create vector, pg_trgm and citext. pgvector is not
+          # a trusted extension, so the superuser creates them up front and the
+          # migrations' CREATE EXTENSION IF NOT EXISTS becomes a no-op.
+          02-init-extensions:
+            image: *pgInitImage
+            command:
+              - psql
+              - --set=ON_ERROR_STOP=1
+              - --command=CREATE EXTENSION IF NOT EXISTS vector; CREATE EXTENSION IF NOT EXISTS pg_trgm; CREATE EXTENSION IF NOT EXISTS citext;
+            env:
+              PGDATABASE: silo
+              PGUSER: postgres
+              PGHOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-secret
+                    key: INIT_POSTGRES_HOST
+              PGPASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-secret
+                    key: INIT_POSTGRES_SUPER_PASS
+        containers:
+          app:
+            image:
+              # Omnibus image (only one published). Running the binary directly
+              # skips s6 /init and the bundled Postgres/Redis/Meilisearch, which
+              # is the documented way to run Silo as non-root.
+              repository: ghcr.io/silo-server/silo-server
+              tag: build-3075@sha256:f105902d50b2ec1241b15031a30ae8f7e6d7f100a3d04f20760484a63c759518
+            command: ["silo"]
+            env:
+              TZ: Europe/Oslo
+              PORT: "8080"
+              JF_PORT: "8096"
+              SILO_PUBLIC_URL: https://silo.rodent.cc
+              SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-secret
+                    key: SECRET_KEY
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-secret
+                    key: DATABASE_URL
+              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
+              POSTGRES_TUNE: "off"
+              SILO_PLUGIN_CACHE_DIR: /var/lib/silo/plugins
+              SILO_NET_TCP_CONGESTION: "off"
+              SILO_NET_TCP_SEND_BUFFER: "off"
+              SILO_HW_DEVICE: /dev/dri/renderD128
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: &port 8080
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: *port
+                  periodSeconds: 10
+                  failureThreshold: 120
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              claims:
+                - name: gpu
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                memory: 4Gi
+    defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: silo
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 44
+      terminationGracePeriodSeconds: 120
+    service:
+      app:
+        ports:
+          http:
+            primary: true
+            port: *port
+          jellyfin:
+            port: 8096
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.rodent.cc"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+    persistence:
+      # The image symlinks /var/lib/silo -> /config/silo; without /init nothing
+      # creates the target, so the PVC is mounted there directly
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config/silo
+      media:
+        type: nfs
+        server: tank.internal
+        path: /mnt/tank/Media
+        globalMounts:
+          - path: /mnt/media
+            readOnly: true
+      # Transcode segments (/tmp/silo-transcode) and prepared downloads
+      # (/tmp/silo-download-artifacts) are disposable
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
