@@ -6,7 +6,11 @@ metadata:
   name: postgres
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.7-standard-trixie
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ClusterImageCatalog
+    name: postgresql
+    major: 18
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -21,7 +25,7 @@ spec:
     extensions:
       - name: vchord
         image:
-          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.1.1
+          reference: ghcr.io/home-operations/vchord:1.5.0@sha256:97b4a1aa15b65c29fa97e84b4270cb235e7bd39e80d4a4b2e91d9fa17997566d
         dynamic_library_path:
           - /usr/lib/postgresql/18/lib/
         extension_control_path:
@@ -34,7 +38,7 @@ spec:
       memory: 512Mi
     limits:
       hugepages-2Mi: 1Gi # Requires sysctl set on the host
-      memory: 1Gi
+      memory: 2Gi
   monitoring:
     enablePodMonitor: true
   plugins:
