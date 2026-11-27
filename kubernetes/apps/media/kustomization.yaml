@@ -12,7 +12,7 @@ resources:
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
   - ./cleanrr/ks.yaml
-  - ./jellyfin/ks.yaml
+  # - ./jellyfin/ks.yaml
   - ./seerr/ks.yaml
   - ./silo/ks.yaml
   - ./prowlarr/ks.yaml
