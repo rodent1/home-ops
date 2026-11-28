@@ -3,13 +3,13 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: cloudflare-r2
+  name: truenas
 spec:
   configuration:
     data:
       compression: bzip2
-    destinationPath: s3://cnpg
-    endpointURL: https://d74d8dfc1170c5004e77bb7bb67219a6.r2.cloudflarestorage.com/
+    destinationPath: s3://postgres
+    endpointURL: http://tank.internal:9000
     s3Credentials:
       accessKeyId:
         name: cloudnative-pg-secret
