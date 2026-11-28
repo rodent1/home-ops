@@ -74,13 +74,10 @@ spec:
         jitter: 1h
   moverDefaults:
     cache:
-      capacity: 1Mi # Ignored
       # Kopia's default budgets (5000 MiB each) never trigger cache sweeps. The
       # metadata budget applies twice: kopia caps the index-blobs cache at the same size.
       contentCacheSizeMb: 512
       metadataCacheSizeMb: 1024
-      mode: Ephemeral
-      storageClassName: openebs-hostpath
     podSecurityContext:
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
