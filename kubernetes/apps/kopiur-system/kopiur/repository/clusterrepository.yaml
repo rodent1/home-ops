@@ -21,11 +21,16 @@ spec:
       name: kopiur-nas-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  # Paused while `tank` seeds from this repository: maintenance compacts and then
+  # deletes index blobs, which a blob-level copy in progress can miss.
+  maintenance:
+    enabled: false
   moverDefaults:
     cache:
-      capacity: 1Mi # Ignored
-      mode: Ephemeral
-      storageClassName: openebs-hostpath
+      # Kopia's default budgets (5000 MiB each) never trigger cache sweeps. The
+      # metadata budget applies twice: kopia caps the index-blobs cache at the same size.
+      contentCacheSizeMb: 512
+      metadataCacheSizeMb: 1024
     podSecurityContext:
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
