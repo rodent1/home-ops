@@ -10,14 +10,6 @@ spec:
     name: kopiur
   interval: 1h
   values:
-    extraVolumes:
-      - name: repo
-        nfs:
-          server: tank.internal
-          path: /mnt/cauldron/Kopiur
-    extraVolumeMounts:
-      - name: repo
-        mountPath: /repo
     features:
       credentialProjection:
         enabled: true
