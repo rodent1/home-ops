@@ -9,6 +9,11 @@ spec:
     compressor: zstd
   credentialProjection:
     enabled: true
+  mover:
+    cache:
+      capacity: 15Gi
+      mode: Persistent
+      storageClassName: ceph-block
   repository:
     kind: ClusterRepository
     name: tank
