@@ -38,3 +38,74 @@ spec:
     ttlSecondsAfterFinished: 300
   scheduleDefaults:
     timezone: Europe/Oslo
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/clusterrepository_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: ClusterRepository
+metadata:
+  name: tank
+spec:
+  allowedNamespaces:
+    all: true
+  backend:
+    s3:
+      auth:
+        secretRef:
+          name: kopiur-repository-secret
+          namespace: kopiur-system
+      bucket: kopiur
+      endpoint: tank.internal:9000
+      tls:
+        disableTls: true
+  credentialProjection:
+    allowed: true
+  encryption:
+    passwordSecretRef:
+      name: kopiur-repository-secret
+      namespace: kopiur-system
+      key: KOPIA_PASSWORD
+  maintenance:
+    schedule:
+      quick:
+        cron: 0 * * * *
+        jitter: 10m
+      full:
+        cron: 0 3 * * *
+        jitter: 1h
+  moverDefaults:
+    cache:
+      capacity: 1Mi # Ignored
+      # Kopia's default budgets (5000 MiB each) never trigger cache sweeps. The
+      # metadata budget applies twice: kopia caps the index-blobs cache at the same size.
+      contentCacheSizeMb: 512
+      metadataCacheSizeMb: 1024
+      mode: Ephemeral
+      storageClassName: openebs-hostpath
+    podSecurityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+    scratch:
+      capacity: 1Mi # Ignored
+      storageClassName: openebs-hostpath
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+    ttlSecondsAfterFinished: 300
+  parameters:
+    epoch:
+      minDuration: 1h
+  scheduleDefaults:
+    timezone: Europe/Oslo
+  # One-time copy of the existing NFS repository's blobs on first bootstrap; inert
+  # once this repository has been initialized. Remove together with the `nas` repository.
+  seed:
+    from:
+      backend:
+        filesystem:
+          path: /repo
+          volume:
+            nfs:
+              server: tank.internal
+              path: /mnt/cauldron/Kopiur
+    sync:
+      parallel: 8
