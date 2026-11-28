@@ -6,5 +6,5 @@ resources:
   - ./clusterimagecatalog.yaml
   - ./cluster.yaml
   - ./objectstore.yaml
-  - ./prometheusrule.yaml
+  - ./podmonitor.yaml
   - ./scheduledbackup.yaml

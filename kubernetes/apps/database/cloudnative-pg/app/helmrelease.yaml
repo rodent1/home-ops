@@ -10,11 +10,5 @@ spec:
     name: cloudnative-pg
   interval: 1h
   values:
-    crds:
-      create: true
     monitoring:
-      podMonitorEnabled: false
-      grafanaDashboard:
-        create: true
-        annotations:
-          grafana_folder: database
+      podMonitorEnabled: true

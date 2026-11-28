@@ -20,7 +20,6 @@ spec:
   enableSuperuserAccess: true
   postgresql:
     parameters:
-      huge_pages: "off"
       max_connections: "200"
       shared_buffers: 256MB
     extensions:
@@ -33,14 +32,19 @@ spec:
           - /usr/share/postgresql/19/
     shared_preload_libraries:
       - "vchord"
+    synchronous:
+      method: any
+      number: 1
+      dataDurability: preferred
+  primaryUpdateMethod: switchover
+  affinity:
+    podAntiAffinityType: required
   resources:
     requests:
       cpu: 150m
       memory: 512Mi
     limits:
       memory: 2Gi
-  monitoring:
-    enablePodMonitor: true
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
