@@ -7,4 +7,5 @@ resources:
   - ./helmrelease.yaml
   - ./httproute.yaml
   - ./ocirepository.yaml
+  - ./rolebinding.yaml
   - ./securitypolicy.yaml

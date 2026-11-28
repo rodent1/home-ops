@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/rbac.authorization.k8s.io/rolebinding_v1.json
+# The chart renders kopiur-ui-doctor but leaves it unbound; it lets the UI's
+# doctor page read the controller and webhook Deployments.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kopiur-ui-doctor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kopiur-ui-doctor
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: admins
