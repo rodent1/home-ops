@@ -20,6 +20,7 @@ spec:
   enableSuperuserAccess: true
   postgresql:
     parameters:
+      huge_pages: "off"
       max_connections: "200"
       shared_buffers: 256MB
     extensions:
@@ -37,7 +38,6 @@ spec:
       cpu: 150m
       memory: 512Mi
     limits:
-      hugepages-2Mi: 1Gi # Requires sysctl set on the host
       memory: 2Gi
   monitoring:
     enablePodMonitor: true
