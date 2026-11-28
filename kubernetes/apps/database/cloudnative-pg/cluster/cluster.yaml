@@ -49,7 +49,7 @@ spec:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
-        barmanObjectName: &barmanObjectName cloudflare-r2
+        barmanObjectName: &barmanObjectName truenas
         # current cluster
         serverName: cnpg19-v1
   # bootstrap:
