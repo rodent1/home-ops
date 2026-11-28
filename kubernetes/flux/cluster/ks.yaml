@@ -6,7 +6,8 @@ metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
-  deletionPolicy: WaitForTermination
+  # Orphan so removing this Kustomization when Flux syncs kubernetes/apps directly keeps every app it manages
+  deletionPolicy: Orphan
   interval: 1h
   path: ./kubernetes/apps
   prune: true
